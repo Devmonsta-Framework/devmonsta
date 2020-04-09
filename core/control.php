@@ -1,7 +1,8 @@
 <?php
-namespace Devmonsta\Libs;
 
-class Color
+namespace Devmonsta;
+
+class Control
 {
     protected static $data;
 
@@ -10,15 +11,11 @@ class Color
 
         self::$data[] = $data;
 
-        
     }
 
     public function all_control()
     {
         return self::$data;
     }
-
-
-  
 
 }
