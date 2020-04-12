@@ -44,7 +44,10 @@ class Customizer
             foreach ($childrens as $child_class) {
 
                 $control = new $child_class;
-                $control->register_controls();
+
+                if (method_exists($control, 'register_controls')) {
+                    $control->register_controls();
+                }
 
             }
 
@@ -92,7 +95,7 @@ class Customizer
              * Set all section defined in the theme
              * @since 1.0.1
              */
-         
+
             foreach ($all_panels as $panel) {
                 Panel::instance()->add_panel($panel);
             }
