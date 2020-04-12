@@ -1,9 +1,11 @@
 <?php
 /**
  * Plugin Name: Devmonsta
+ * Description: Freamwork
  */
 
-use Devmonsta\Libs\Color;
+use Devmonsta\Bootstrap;
+
 
 if (!defined('ABSPATH')) {
     exit;
@@ -20,7 +22,7 @@ final class Devmonsta
     const version = '1.0';
 
     /**
-     * Class construcotr
+     * Construcotr of the class
      */
     private function __construct()
     {
@@ -53,7 +55,7 @@ final class Devmonsta
 
     public function define_constants()
     {
-        define('DEVMONSTA',true);
+        define('DEVMONSTA', true);
         define('DEVMONSTA_VERSION', self::version);
     }
 
@@ -62,7 +64,9 @@ final class Devmonsta
      */
     public function init_plugin()
     {
-        (new Color)->init();
+
+        Bootstrap::instance()->init();
+
     }
 
     /**
@@ -74,14 +78,4 @@ final class Devmonsta
     }
 }
 
-/**
- * Initializes the main plugin
- */
-function devmonsta()
-{
-    return Devmonsta::init();
-}
-
-
-devmonsta();
-
+Devmonsta::init();
