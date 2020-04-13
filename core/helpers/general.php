@@ -367,9 +367,7 @@ function dm_theme_path_uri($rel_path)
 
 /**
  * Search relative path in child then in parent theme directory and return full path
- *
  * @param  string $rel_path '/some/path_to_dir' or '/some/path_to_file.php'
- *
  * @return string URI
  */
 function dm_theme_path($rel_path)
@@ -406,12 +404,9 @@ function dm_fix_path($path)
 	return $fixed_path;
 }
 
-
 	/**
 	 * Full path to the parent-theme directory
-	 *
 	 * @param string $rel_path
-	 *
 	 * @return string
 	 */
 	function dm_get_framework_directory($rel_path = '')
