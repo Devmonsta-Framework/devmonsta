@@ -64,6 +64,14 @@ class Posts
             $all_meta_box = $post_lib->all_boxes();
 
             /**
+             *  Get all controls defined in theme
+             */
+
+            $all_controls = $post_lib->all_controls();
+
+        
+
+            /**
              *  Get Post type anem from the file name
              */
 
@@ -76,7 +84,7 @@ class Posts
 
                     if ($post_type == $args['type']) {
                         $this->data = $args;
-                        $this->add($post_type, $args);
+                        $this->add($post_type, $args, $all_controls);
                     }
 
                 }
@@ -84,7 +92,6 @@ class Posts
             }
 
         }
-        /** include post file from theme */
 
         // add_action('add_meta_boxes', [$this, 'add']);
         // add_action('save_post', [$this, 'save']);
@@ -102,23 +109,25 @@ class Posts
 
     /** Add Metabox to the post */
 
-    public function add($post_type, $args)
+    public function add($post_type, $args, $all_controls)
     {
 
-        add_action('add_meta_boxes', function () use ($post_type, $args) {
-            /**
-             * Create a random id for metabox
-             * So that user don't need to add a extra properties
-             */
-            $random_id = rand(1000, 9999);
+        add_action('add_meta_boxes', function () use ($post_type, $args, $all_controls) {
+
             add_meta_box(
-                $random_id, // Unique ID / metabox ID
+                $args['id'], // Unique ID / metabox ID
                 $args['title'], // Box title
-                function () use ($args) {
+                function () use ($args, $all_controls) {
 
-                    if (isset($args['contents'])) {
+                    if (!empty($all_controls)) {
 
-                        View::instance()->build($args['contents']);
+                        // foreach ($all_controls as $controls) {
+
+                            // if (isset($controls['box_id']) == $args['id']) {
+                                View::instance()->build($args['id'],$all_controls);
+                            // }
+
+                        // }
 
                     }
 
