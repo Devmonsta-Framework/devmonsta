@@ -427,7 +427,7 @@ function dm_fix_path($path)
 	}
 
 	/**
-	 * URI to the parent-theme directory
+	 * URI to the parent-theme/framework directory
 	 *
 	 * @param string $rel_path
 	 *
@@ -448,4 +448,285 @@ function dm_fix_path($path)
 		}
 
 		return $uri . $rel_path;
+	}
+
+
+	
+	/**
+	 * Escape markup with allowed tags and attributs
+	 * does not invalidate markup tags
+	 *
+	 * @param string $raw
+	 *
+	 * @return string
+	 */
+	function dm_kses($raw)
+	{
+		$allowed_tags = array(
+			'a'	  => array(
+					'class'	 => array(),
+					'href'	 => array(),
+					'rel'	 => array(),
+					'title'	 => array(),
+					'target' => array(),
+					),
+			'upload' => array(),
+			'input' => [
+						'value' => [],
+						'type' => [],
+						'size' => [],
+						'name' => [],
+						'checked' => [],
+						'placeholder' => [],
+						'id' => [],
+						'class' => [],
+					],
+
+			'select' => [
+						'value' => [],
+						'type' => [],
+						'size' => [],
+						'name' => [],
+						'placeholder' => [],
+						'id' => [],
+						'class' => [],
+						'option' => [
+							'value' => [],
+							'checked' => [],
+						]
+					],
+
+			'textarea' => [
+						'value' => [],
+						'type' => [],
+						'size' => [],
+						'name' => [],
+						'rows' => [],
+						'cols' => [],
+
+						'placeholder' => [],
+						'id' => [],
+						'class' => []
+					],
+			'abbr'	  => array(
+						'title' => array(),
+					),
+			'b'		    => array(),
+			'blockquote' => array(
+							'cite' => array(),
+						),
+			'cite'							 => array(
+				'title' => array(),
+			),
+			'code'							 => array(),
+			'del'							 => array(
+				'datetime'	 => array(),
+				'title'		 => array(),
+			),
+			'dd'							 => array(),
+			'div'							 => array(
+				'id' => array(),
+				'class'	 => array(),
+				'title'	 => array(),
+				'style'	 => array(),
+				'data-attid' => array(),
+			),
+			'dl'							 => array(),
+			'dt'							 => array(),
+			'em'							 => array(),
+			'h1'							 => array(
+				'class' => array(),
+			),
+			'h2'							 => array(
+				'class' => array(),
+			),
+			'h3'							 => array(
+				'class' => array(),
+			),
+			'h4'							 => array(
+				'class' => array(),
+			),
+			'h5'							 => array(
+				'class' => array(),
+			),
+			'h6'							 => array(
+				'class' => array(),
+			),
+			'i'								 => array(
+				'class' => array(),
+			),
+			'img'							 => array(
+				'id' => array(),
+				'alt'	 => array(),
+				'class'	 => array(),
+				'height' => array(),
+				'src'	 => array(),
+				'width'	 => array(),
+			),
+			'li'							 => array(
+				'class' => array(),
+			),
+			'ol'							 => array(
+				'class' => array(),
+			),
+			'p'								 => array(
+				'class' => array(),
+			),
+			'q'								 => array(
+				'cite'	 => array(),
+				'title'	 => array(),
+			),
+			'span'							 => array(
+				'class'	 => array(),
+				'title'	 => array(),
+				'style'	 => array(),
+			),
+			'iframe'						 => array(
+				'width'			 => array(),
+				'height'		 => array(),
+				'scrolling'		 => array(),
+				'frameborder'	 => array(),
+				'allow'			 => array(),
+				'src'			 => array(),
+			),
+			'strike'						 => array(),
+			'br'							 => array(
+				'class' => array()
+			),
+			'strong'						 => array(),
+			'data-wow-duration'				 => array(),
+			'data-wow-delay'				 => array(),
+			'data-wallpaper-options'		 => array(),
+			'data-stellar-background-ratio'	 => array(),
+			'ul'							 => array(
+				'class' => array(),
+			),
+			'label'	=> array(
+				'class' => array(),
+				'for' => array(),
+			)
+		);
+
+		if (function_exists('wp_kses')) { // WP is here
+			return wp_kses($raw, $allowed_tags);
+		} else {
+			return $raw;
+		}
+	}
+
+	function dm_kspan($text)
+	{
+		return str_replace(['{', '}'], ['<span>', '</span>'], dm_kses($text));
+	}
+
+	/**
+	 * Returns html markup if not null
+	 * Used for rendering html markup
+	 *
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	function dm_render_markup($content){
+		if($content == ""){
+			return null;
+		}
+		return $content;
+	}
+
+		
+	/**
+	 * @return string Current url
+	 */
+	function dm_current_url()
+	{
+		static $url = null;
+
+		if ($url === null) {
+			if (is_multisite() && !(defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL)) {
+				switch_to_blog(1);
+				$url = get_option('home');
+				restore_current_blog();
+			} else {
+				$url = get_option('home');
+			}
+
+			//Remove the "//" before the domain name
+			$url = ltrim(dm_get_url_without_scheme($url), '/');
+
+			//Remove the ulr subdirectory in case it has one
+			$split = explode('/', $url);
+
+			//Remove end slash
+			$url = rtrim($split[0], '/');
+
+			$url .= '/' . ltrim(dm_array_key_get('REQUEST_URI', $_SERVER, ''), '/');
+			$url = set_url_scheme('//' . $url); // https fix
+		}
+
+		return $url;
+	}
+
+	/*
+	* Return URI without scheme
+	*/
+	function dm_get_url_without_scheme($url)
+	{
+		return preg_replace('/^[^:]+:\/\//', '//', $url);
+	}
+
+	/**
+	 * Full path to the child-theme framework customizations directory
+	 *
+	 * @param string $rel_path
+	 *
+	 * @return null|string
+	 */
+	function dm_get_stylesheet_directory($rel_path = '')
+	{
+		if (is_child_theme()) {
+			return get_stylesheet_directory() .
+			 dm_get_customizations_dir_rel_path($rel_path);
+		} else {
+			// check is_child_theme() before using this function
+			return null;
+		}
+	}
+
+	/**
+	 * URI to the child-theme framework customizations directory
+	 *
+	 * @param string $rel_path
+	 *
+	 * @return null|string
+	 */
+	function dm_get_stylesheet_directory_uri($rel_path = '')
+	{
+		if (is_child_theme()) {
+			return get_stylesheet_directory_uri() .
+			 dm_get_customizations_dir_rel_path($rel_path);
+		} else {
+			// check is_child_theme() before using this function
+			return null;
+		}
+	}
+
+	
+	/**
+	 * Relative path of the framework customizations directory
+	 * @param string $append
+	 * @return string
+	 */
+	function dm_get_customizations_dir_rel_path($append = '')
+	{
+		try {
+			$dir = Dm_Cache::get($cache_key = 'dm_customizations_dir_rel_path');
+		} catch (Dm_Cache_Not_Found_Exception $e) {
+			Dm_Cache::set(
+				$cache_key,
+				$dir = apply_filters('dm_customizations_dir_rel_path', '/devmonsta')
+			);
+		}
+
+		return $dir . $append;
 	}
