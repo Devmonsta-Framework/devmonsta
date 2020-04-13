@@ -15,7 +15,7 @@ class Posts
 
     public function add_control($control)
     {
-        self::$control = $control;
+        self::$control[] = $control;
     }
 
 
