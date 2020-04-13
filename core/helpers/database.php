@@ -343,7 +343,7 @@ class DMS_Db_Options_Model_Term extends DMS_Db_Options_Model {
 		 *
 		 * @return null
 		 */
-		function dms_set_db_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
+		function dm_set_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
 			if ( ! taxonomy_exists( $taxonomy ) ) {
 				return null;
 			}
