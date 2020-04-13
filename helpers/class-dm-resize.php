@@ -1,9 +1,9 @@
-<?php if ( ! defined( 'DMS' ) ) {
+<?php if ( ! defined( 'DM' ) ) {
 	die( 'Forbidden' );
 }
 
-if ( ! class_exists( 'DMS_Resize' ) ) {
-	class DMS_Resize {
+if ( ! class_exists( 'Dm_Resize' ) ) {
+	class Dm_Resize {
 		/**
 		 * The singleton instance
 		 */

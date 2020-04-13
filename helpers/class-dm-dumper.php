@@ -1,6 +1,6 @@
 <?php
 
-class DMS_Dumper
+class Dm_Dumper
 {
 	private static $_objects;
 	private static $_output;
