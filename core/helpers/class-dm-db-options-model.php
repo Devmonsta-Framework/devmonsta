@@ -1,11 +1,11 @@
-<?php if (!defined('DMS')) die('Forbidden');
+<?php if (!defined('DM')) die('Forbidden');
 
 /**
  * Lets you create easy functions for get/set database option values
  * it will handle all clever logic with default values, multikeys and processing options dms-storage parameter
  * @since 2.5.9
  */
-abstract class DMS_Db_Options_Model {
+abstract class DM_Db_Options_Model {
 	/**
 	 * @return string Must not contain '/'
 	 */
@@ -82,7 +82,7 @@ abstract class DMS_Db_Options_Model {
 	 * @since 2.6.7
 	 */
 	final public function get_main_cache_key() {
-		return 'dms-options-model:'. $this->get_id();
+		return 'dm-options-model:'. $this->get_id();
 	}
 
 	final public function __construct() {

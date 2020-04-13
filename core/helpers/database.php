@@ -8,7 +8,7 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 	}
 
 	private function get_cache_key($key, $item_id = null, array $extra_data = array()) {
-		return 'dms-options-model:'. $this->get_id() .'/'. $key;
+		return 'dm-options-model:'. $this->get_id() .'/'. $key;
 	}
 
 	private function get_post_id($post_id) {
