@@ -69,8 +69,6 @@ class Posts
 
             $all_controls = $post_lib->all_controls();
 
-        
-
             /**
              *  Get Post type anem from the file name
              */
@@ -94,7 +92,7 @@ class Posts
         }
 
         // add_action('add_meta_boxes', [$this, 'add']);
-        // add_action('save_post', [$this, 'save']);
+        add_action('save_post', [$this, 'save']);
     }
 
     public function get_post_files()
@@ -123,9 +121,9 @@ class Posts
 
                         // foreach ($all_controls as $controls) {
 
-                            // if (isset($controls['box_id']) == $args['id']) {
-                                View::instance()->build($args['id'],$all_controls);
-                            // }
+                        // if (isset($controls['box_id']) == $args['id']) {
+                        View::instance()->build($args['id'], $all_controls);
+                        // }
 
                         // }
 
@@ -142,6 +140,23 @@ class Posts
 
     public function save($post_id)
     {
+        /**
+         * ========================================
+         *      Find Devmonsta metabox actions
+         *       And save them into database
+         * ========================================
+         */
+
+        $prefix = 'devmonsta_';
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, $prefix) !== false) {
+                update_post_meta(
+                    $post_id,
+                    $key,
+                    $_POST[$key]
+                );
+            }
+        }
         if (array_key_exists('wporg_field', $_POST)) {
             update_post_meta(
                 $post_id,
