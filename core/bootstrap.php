@@ -19,6 +19,8 @@ final class Bootstrap
 
     public function init()
     {
+        define('DM', true);
+        
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
 

@@ -5,409 +5,418 @@
 
 
 
-/**
- * print_r() alternative
- *
- * @param mixed $value Value to debug
- */
-function dm_print($value)
-{
-	static $first_time = true;
-
-	if ($first_time) {
-		ob_start();
-		echo '<style type="text/css">
-		div.dm_print_r {
-			max-height: 500px;
-			overflow-y: scroll;
-			background: #23282d;
-			margin: 10px 30px;
-			padding: 0;
-			border: 1px solid #F5F5F5;
-			border-radius: 3px;
-			position: relative;
-			z-index: 11111;
-		}
-
-		div.dm_print_r pre {
-			color: #78FF5B;
-			background: #23282d;
-			text-shadow: 1px 1px 0 #000;
-			font-family: Consolas, monospace;
-			font-size: 12px;
-			margin: 0;
-			padding: 5px;
-			display: block;
-			line-height: 16px;
-			text-align: left;
-		}
-
-		div.dm_print_r_group {
-			background: #f1f1f1;
-			margin: 10px 30px;
-			padding: 1px;
-			border-radius: 5px;
-			position: relative;
-			z-index: 11110;
-		}
-
-		div.dm_print_r_group div.dm_print_r {
-			margin: 9px;
-			border-width: 0;
-		}
-		</style>';
-		echo str_replace(array('  ', "\n"), '', ob_get_clean());
-
-		$first_time = false;
-	}
-
-	if (func_num_args() == 1) {
-		echo '<div class="dm_print_r"><pre>';
-		echo dm_htmlspecialchars(Dm_Dumper::dump($value));
-		echo '</pre></div>';
-	} else {
-		echo '<div class="dm_print_r_group">';
-		foreach (func_get_args() as $param) {
-			dm_print($param);
-		}
-		echo '</div>';
-	}
-}
-
-/**
- * Alias for dm_print
- *
- * @see dm_print()
- */
-if (!function_exists('debug')) {
-	function debug()
+	/**
+	 * print_r() alternative
+	 *
+	 * @param mixed $value Value to debug
+	 * @since 1.0.0
+	 */
+	function dm_print($value)
 	{
-		call_user_func_array('dm_print', func_get_args());
+		static $first_time = true;
+
+		if ($first_time) {
+			ob_start();
+			echo '<style type="text/css">
+			div.dm_print_r {
+				max-height: 500px;
+				overflow-y: scroll;
+				background: #23282d;
+				margin: 10px 30px;
+				padding: 0;
+				border: 1px solid #F5F5F5;
+				border-radius: 3px;
+				position: relative;
+				z-index: 11111;
+			}
+
+			div.dm_print_r pre {
+				color: #78FF5B;
+				background: #23282d;
+				text-shadow: 1px 1px 0 #000;
+				font-family: Consolas, monospace;
+				font-size: 12px;
+				margin: 0;
+				padding: 5px;
+				display: block;
+				line-height: 16px;
+				text-align: left;
+			}
+
+			div.dm_print_r_group {
+				background: #f1f1f1;
+				margin: 10px 30px;
+				padding: 1px;
+				border-radius: 5px;
+				position: relative;
+				z-index: 11110;
+			}
+
+			div.dm_print_r_group div.dm_print_r {
+				margin: 9px;
+				border-width: 0;
+			}
+			</style>';
+			echo str_replace(array('  ', "\n"), '', ob_get_clean());
+
+			$first_time = false;
+		}
+
+		if (func_num_args() == 1) {
+			echo '<div class="dm_print_r"><pre>';
+			echo dm_htmlspecialchars(Dm_Dumper::dump($value));
+			echo '</pre></div>';
+		} else {
+			echo '<div class="dm_print_r_group">';
+			foreach (func_get_args() as $param) {
+				dm_print($param);
+			}
+			echo '</div>';
+		}
 	}
-}
 
-
-/**
- * Use this id do not need to enter every time same last two parameters
- * Info: Cannot use default parameters because in php 5.2 encoding is not UTF-8 by default
- *
- * @param string $string
- *
- * @return string
- */
-function dm_htmlspecialchars($string)
-{
-	return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
-}
-
-
-/**
- * Recursively find a key's value in array
- *
- * @param string $keys 'a/b/c'
- * @param array|object $array_or_object
- * @param null|mixed $default_value
- * @param string $keys_delimiter
- *
- * @return null|mixed
- */
-function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
-{
-	if (!is_array($keys)) {
-		$keys = explode($keys_delimiter, (string) $keys);
+	/**
+	 * Alias for dm_print
+	 *
+	 * @see dm_print()
+	 * @since 1.0.0
+	 */
+	if (!function_exists('debug')) {
+		function debug()
+		{
+			call_user_func_array('dm_print', func_get_args());
+		}
 	}
 
-	$array_or_object = dm_call($array_or_object);
 
-	$key_or_property = array_shift($keys);
-	if ($key_or_property === null) {
-		return dm_call($default_value);
+	/**
+	 * Use this id do not need to enter every time same last two parameters
+	 * Info: Cannot use default parameters because in php 5.2 encoding is not UTF-8 by default
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function dm_htmlspecialchars($string)
+	{
+		return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 	}
 
-	$is_object = is_object($array_or_object);
 
-	if ($is_object) {
-		if (!property_exists($array_or_object, $key_or_property)) {
+	/**
+	 * Recursively find a key's value in array
+	 *
+	 * @param string $keys 'a/b/c'
+	 * @param array|object $array_or_object
+	 * @param null|mixed $default_value
+	 * @param string $keys_delimiter
+	 *
+	 * @return null|mixed
+	 * @since 1.0.0
+	 */
+	function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
+	{
+		if (!is_array($keys)) {
+			$keys = explode($keys_delimiter, (string) $keys);
+		}
+
+		$array_or_object = dm_call($array_or_object);
+
+		$key_or_property = array_shift($keys);
+		if ($key_or_property === null) {
 			return dm_call($default_value);
 		}
-	} else {
-		if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-			return dm_call($default_value);
-		}
-	}
 
-	if (isset($keys[0])) { // not used count() for performance reasons
+		$is_object = is_object($array_or_object);
+
 		if ($is_object) {
-			return dm_array_key_get($keys, $array_or_object->{$key_or_property}, $default_value);
+			if (!property_exists($array_or_object, $key_or_property)) {
+				return dm_call($default_value);
+			}
 		} else {
-			return dm_array_key_get($keys, $array_or_object[$key_or_property], $default_value);
+			if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
+				return dm_call($default_value);
+			}
 		}
-	} else {
+
+		if (isset($keys[0])) { // not used count() for performance reasons
+			if ($is_object) {
+				return dm_array_key_get($keys, $array_or_object->{$key_or_property}, $default_value);
+			} else {
+				return dm_array_key_get($keys, $array_or_object[$key_or_property], $default_value);
+			}
+		} else {
+			if ($is_object) {
+				return $array_or_object->{$key_or_property};
+			} else {
+				return $array_or_object[$key_or_property];
+			}
+		}
+	}
+
+	/**
+	 * Set (or create if not exists) value for specified key in some array level
+	 *
+	 * @param string $keys 'a/b/c', or 'a/b/c/' equivalent to: $arr['a']['b']['c'][] = $val;
+	 * @param mixed $value
+	 * @param array|object $array_or_object
+	 * @param string $keys_delimiter
+	 *
+	 * @return array|object
+	 * @since 1.0.0
+	 */
+	function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/')
+	{
+		if (!is_array($keys)) {
+			$keys = explode($keys_delimiter, (string) $keys);
+		}
+
+		$key_or_property = array_shift($keys);
+		if ($key_or_property === null) {
+			return $array_or_object;
+		}
+
+		$is_object = is_object($array_or_object);
+
 		if ($is_object) {
-			return $array_or_object->{$key_or_property};
+			if (
+				!property_exists($array_or_object, $key_or_property)
+				|| !(is_array($array_or_object->{$key_or_property}) || is_object($array_or_object->{$key_or_property}))
+			) {
+				if ($key_or_property === '') {
+					// this happens when use 'empty keys' like: abc/d/e////i/j//foo/
+					trigger_error('Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING);
+				} else {
+					$array_or_object->{$key_or_property} = array();
+				}
+			}
 		} else {
-			return $array_or_object[$key_or_property];
+			if (!is_array($array_or_object)) {
+				$array_or_object = array();
+			}
+
+			if (
+				!array_key_exists(
+					$key_or_property,
+					$array_or_object
+				) || !is_array($array_or_object[$key_or_property])
+			) {
+				if ($key_or_property === '') {
+					// this happens when use 'empty keys' like: abc.d.e....i.j..foo.
+					$array_or_object[] = array();
+
+					// get auto created key (last)
+					end($array_or_object);
+					$key_or_property = key($array_or_object);
+				} else {
+					$array_or_object[$key_or_property] = array();
+				}
+			}
 		}
-	}
-}
 
-/**
- * Set (or create if not exists) value for specified key in some array level
- *
- * @param string $keys 'a/b/c', or 'a/b/c/' equivalent to: $arr['a']['b']['c'][] = $val;
- * @param mixed $value
- * @param array|object $array_or_object
- * @param string $keys_delimiter
- *
- * @return array|object
- */
-function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/')
-{
-	if (!is_array($keys)) {
-		$keys = explode($keys_delimiter, (string) $keys);
-	}
+		if (isset($keys[0])) { // not used count() for performance reasons
+			if ($is_object) {
+				dm_array_key_set($keys, $value, $array_or_object->{$key_or_property});
+			} else {
+				dm_array_key_set($keys, $value, $array_or_object[$key_or_property]);
+			}
+		} else {
+			if ($is_object) {
+				$array_or_object->{$key_or_property} = $value;
+			} else {
+				$array_or_object[$key_or_property] = $value;
+			}
+		}
 
-	$key_or_property = array_shift($keys);
-	if ($key_or_property === null) {
 		return $array_or_object;
 	}
 
-	$is_object = is_object($array_or_object);
 
-	if ($is_object) {
-		if (
-			!property_exists($array_or_object, $key_or_property)
-			|| !(is_array($array_or_object->{$key_or_property}) || is_object($array_or_object->{$key_or_property}))
-		) {
-			if ($key_or_property === '') {
-				// this happens when use 'empty keys' like: abc/d/e////i/j//foo/
-				trigger_error('Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING);
-			} else {
-				$array_or_object->{$key_or_property} = array();
+	/**
+	 * Unset specified key in some array level
+	 * @param string $keys 'a/b/c' -> unset($arr['a']['b']['c']);
+	 * @param array|object $array_or_object
+	 * @param string $keys_delimiter
+	 * @return array|object
+	 * @since 1.0.0
+	 */
+	function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
+	{
+		if (!is_array($keys)) {
+			$keys = explode($keys_delimiter, (string) $keys);
+		}
+
+		$key_or_property = array_shift($keys);
+		if ($key_or_property === null || $key_or_property === '') {
+			return $array_or_object;
+		}
+
+		$is_object = is_object($array_or_object);
+
+		if ($is_object) {
+			if (!property_exists($array_or_object, $key_or_property)) {
+				return $array_or_object;
+			}
+		} else {
+			if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
+				return $array_or_object;
 			}
 		}
-	} else {
-		if (!is_array($array_or_object)) {
-			$array_or_object = array();
-		}
 
-		if (
-			!array_key_exists(
-				$key_or_property,
-				$array_or_object
-			) || !is_array($array_or_object[$key_or_property])
-		) {
-			if ($key_or_property === '') {
-				// this happens when use 'empty keys' like: abc.d.e....i.j..foo.
-				$array_or_object[] = array();
-
-				// get auto created key (last)
-				end($array_or_object);
-				$key_or_property = key($array_or_object);
+		if (isset($keys[0])) { // not used count() for performance reasons
+			if ($is_object) {
+				dm_array_key_unset($keys, $array_or_object->{$key_or_property});
 			} else {
-				$array_or_object[$key_or_property] = array();
+				dm_array_key_unset($keys, $array_or_object[$key_or_property]);
+			}
+		} else {
+			if ($is_object) {
+				unset($array_or_object->{$key_or_property});
+			} else {
+				unset($array_or_object[$key_or_property]);
 			}
 		}
-	}
 
-	if (isset($keys[0])) { // not used count() for performance reasons
-		if ($is_object) {
-			dm_array_key_set($keys, $value, $array_or_object->{$key_or_property});
-		} else {
-			dm_array_key_set($keys, $value, $array_or_object[$key_or_property]);
-		}
-	} else {
-		if ($is_object) {
-			$array_or_object->{$key_or_property} = $value;
-		} else {
-			$array_or_object[$key_or_property] = $value;
-		}
-	}
-
-	return $array_or_object;
-}
-
-
-/**
- * Unset specified key in some array level
- * @param string $keys 'a/b/c' -> unset($arr['a']['b']['c']);
- * @param array|object $array_or_object
- * @param string $keys_delimiter
- * @return array|object
- */
-function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
-{
-	if (!is_array($keys)) {
-		$keys = explode($keys_delimiter, (string) $keys);
-	}
-
-	$key_or_property = array_shift($keys);
-	if ($key_or_property === null || $key_or_property === '') {
 		return $array_or_object;
 	}
 
-	$is_object = is_object($array_or_object);
+	/**
+	 * If the value is instance of Dm_Callback class then it is executed and returns the callback value
+	 * In other case function returns the provided value
+	 *
+	 * @param mixed|Dm_Callback $value
+	 *
+	 * @return mixed
+	 *
+	 * @since 1.0.0
+	 */
+	function dm_call($value)
+	{
+		if (!dm_is_callback($value)) {
+			return $value;
+		}
 
-	if ($is_object) {
-		if (!property_exists($array_or_object, $key_or_property)) {
-			return $array_or_object;
-		}
-	} else {
-		if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-			return $array_or_object;
-		}
+		return (is_object($value) && get_class($value) == 'Closure')
+			? $value()
+			: $value->execute();
 	}
 
-	if (isset($keys[0])) { // not used count() for performance reasons
-		if ($is_object) {
-			dm_array_key_unset($keys, $array_or_object->{$key_or_property});
+	/**
+	 * Check if the current value is instance of Dm_Callback class
+	 *
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 * @since 1.0.0
+	 */
+	function dm_is_callback($value)
+	{
+		return $value instanceof Dm_Callback || (is_object($value) && get_class($value) == 'Closure');
+	}
+
+	/**
+	 * Convert bytes to human readable format
+	 * @param integer $bytes Size in bytes to convert
+	 * @param integer $precision
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function dm_human_bytes($bytes, $precision = 2)
+	{
+		$kilobyte = 1024;
+		$megabyte = $kilobyte * 1024;
+		$gigabyte = $megabyte * 1024;
+		$terabyte = $gigabyte * 1024;
+
+		if (($bytes >= 0) && ($bytes < $kilobyte)) {
+			return $bytes . ' B';
+		} elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+			return round($bytes / $kilobyte, $precision) . ' KB';
+		} elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+			return round($bytes / $megabyte, $precision) . ' MB';
+		} elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+			return round($bytes / $gigabyte, $precision) . ' GB';
+		} elseif ($bytes >= $terabyte) {
+			return round($bytes / $terabyte, $precision) . ' TB';
 		} else {
-			dm_array_key_unset($keys, $array_or_object[$key_or_property]);
+			return $bytes . ' B';
 		}
-	} else {
-		if ($is_object) {
-			unset($array_or_object->{$key_or_property});
+	}
+
+
+	/**
+	 * Generate random unique md5
+	 * @since 1.0.0
+	 */
+	function dm_rand()
+	{
+		return md5(time() . '-' . uniqid(rand(), true) . '-' . mt_rand(1, 1000));
+	}
+
+	/**
+	 * Search relative path in child then in parent theme directory and return URI
+	 * @param  string $rel_path '/some/path_to_dir' or '/some/path_to_file.php'
+	 * @return string URI
+	 * @since 1.0.0
+	 */
+	function dm_theme_path_uri($rel_path)
+	{
+		if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
+			return get_stylesheet_directory_uri() . $rel_path;
+		} elseif (file_exists(get_template_directory() . $rel_path)) {
+			return get_template_directory_uri() . $rel_path;
 		} else {
-			unset($array_or_object[$key_or_property]);
+			return 'about:blank#theme-file-not-found:' . $rel_path;
 		}
 	}
 
-	return $array_or_object;
-}
-
-
-
-/**
- * If the value is instance of Dm_Callback class then it is executed and returns the callback value
- * In other case function returns the provided value
- *
- * @param mixed|Dm_Callback $value
- *
- * @return mixed
- *
- * @since 2.6.14
- */
-function dm_call($value)
-{
-	if (!dm_is_callback($value)) {
-		return $value;
+	/**
+	 * Search relative path in child then in parent theme directory and return full path
+	 * @param  string $rel_path '/some/path_to_dir' or '/some/path_to_file.php'
+	 * @return string URI
+	 * @since 1.0.0
+	 */
+	function dm_theme_path($rel_path)
+	{
+		if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
+			return get_stylesheet_directory() . $rel_path;
+		} elseif (file_exists(get_template_directory() . $rel_path)) {
+			return get_template_directory() . $rel_path;
+		} else {
+			return false;
+		}
 	}
 
-	return (is_object($value) && get_class($value) == 'Closure')
-		? $value()
-		: $value->execute();
-}
+	/**
+	 * Convert to Unix style directory separators
+	 * @since 1.0.0
+	 */
+	function dm_fix_path($path)
+	{
+		$windows_network_path = isset($_SERVER['windir']) && in_array(
+			substr($path, 0, 2),
+			array('//', '\\\\'),
+			true
+		);
+		$fixed_path           = untrailingslashit(str_replace(array('//', '\\'), array('/', '/'), $path));
 
-/**
- * Check if the current value is instance of Dm_Callback class
- *
- * @param mixed $value
- *
- * @return bool
- */
-function dm_is_callback($value)
-{
-	return $value instanceof Dm_Callback || (is_object($value) && get_class($value) == 'Closure');
-}
+		if (empty($fixed_path) && !empty($path)) {
+			$fixed_path = '/';
+		}
 
-/**
- * Convert bytes to human readable format
- * @param integer $bytes Size in bytes to convert
- * @param integer $precision
- * @return string
- * @since 1.0.0
- */
-function dm_human_bytes($bytes, $precision = 2)
-{
-	$kilobyte = 1024;
-	$megabyte = $kilobyte * 1024;
-	$gigabyte = $megabyte * 1024;
-	$terabyte = $gigabyte * 1024;
+		if ($windows_network_path) {
+			$fixed_path = '//' . ltrim($fixed_path, '/');
+		}
 
-	if (($bytes >= 0) && ($bytes < $kilobyte)) {
-		return $bytes . ' B';
-	} elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-		return round($bytes / $kilobyte, $precision) . ' KB';
-	} elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-		return round($bytes / $megabyte, $precision) . ' MB';
-	} elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-		return round($bytes / $gigabyte, $precision) . ' GB';
-	} elseif ($bytes >= $terabyte) {
-		return round($bytes / $terabyte, $precision) . ' TB';
-	} else {
-		return $bytes . ' B';
+		return $fixed_path;
 	}
-}
-
-
-/**
- * Generate random unique md5
- */
-function dm_rand()
-{
-	return md5(time() . '-' . uniqid(rand(), true) . '-' . mt_rand(1, 1000));
-}
-
-
-/**
- * Search relative path in child then in parent theme directory and return URI
- * @param  string $rel_path '/some/path_to_dir' or '/some/path_to_file.php'
- * @return string URI
- */
-function dm_theme_path_uri($rel_path)
-{
-	if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
-		return get_stylesheet_directory_uri() . $rel_path;
-	} elseif (file_exists(get_template_directory() . $rel_path)) {
-		return get_template_directory_uri() . $rel_path;
-	} else {
-		return 'about:blank#theme-file-not-found:' . $rel_path;
-	}
-}
-
-/**
- * Search relative path in child then in parent theme directory and return full path
- * @param  string $rel_path '/some/path_to_dir' or '/some/path_to_file.php'
- * @return string URI
- */
-function dm_theme_path($rel_path)
-{
-	if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
-		return get_stylesheet_directory() . $rel_path;
-	} elseif (file_exists(get_template_directory() . $rel_path)) {
-		return get_template_directory() . $rel_path;
-	} else {
-		return false;
-	}
-}
-
-/**
- * Convert to Unix style directory separators
- */
-function dm_fix_path($path)
-{
-	$windows_network_path = isset($_SERVER['windir']) && in_array(
-		substr($path, 0, 2),
-		array('//', '\\\\'),
-		true
-	);
-	$fixed_path           = untrailingslashit(str_replace(array('//', '\\'), array('/', '/'), $path));
-
-	if (empty($fixed_path) && !empty($path)) {
-		$fixed_path = '/';
-	}
-
-	if ($windows_network_path) {
-		$fixed_path = '//' . ltrim($fixed_path, '/');
-	}
-
-	return $fixed_path;
-}
 
 	/**
 	 * Full path to the parent-theme directory
 	 * @param string $rel_path
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function dm_get_framework_directory($rel_path = '')
 	{
@@ -432,6 +441,7 @@ function dm_fix_path($path)
 	 * @param string $rel_path
 	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function dm_get_framework_directory_uri($rel_path = '')
 	{
@@ -449,16 +459,13 @@ function dm_fix_path($path)
 
 		return $uri . $rel_path;
 	}
-
-
 	
 	/**
 	 * Escape markup with allowed tags and attributs
 	 * does not invalidate markup tags
-	 *
 	 * @param string $raw
-	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function dm_kses($raw)
 	{
@@ -614,6 +621,12 @@ function dm_fix_path($path)
 		}
 	}
 
+	/**
+	 * Renders text into html surrounded with span tag
+	 * @param string $text
+	 * @return string
+	 * @since 1.0.0
+	 */
 	function dm_kspan($text)
 	{
 		return str_replace(['{', '}'], ['<span>', '</span>'], dm_kses($text));
@@ -626,6 +639,7 @@ function dm_fix_path($path)
 	 * @param string $content
 	 *
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function dm_render_markup($content){
 		if($content == ""){
@@ -637,6 +651,7 @@ function dm_fix_path($path)
 		
 	/**
 	 * @return string Current url
+	 * @since 1.0.0
 	 */
 	function dm_current_url()
 	{
@@ -669,6 +684,7 @@ function dm_fix_path($path)
 
 	/*
 	* Return URI without scheme
+	 * @since 1.0.0
 	*/
 	function dm_get_url_without_scheme($url)
 	{
@@ -681,6 +697,7 @@ function dm_fix_path($path)
 	 * @param string $rel_path
 	 *
 	 * @return null|string
+	 * @since 1.0.0
 	 */
 	function dm_get_stylesheet_directory($rel_path = '')
 	{
@@ -699,6 +716,7 @@ function dm_fix_path($path)
 	 * @param string $rel_path
 	 *
 	 * @return null|string
+	 * @since 1.0.0
 	 */
 	function dm_get_stylesheet_directory_uri($rel_path = '')
 	{
@@ -710,12 +728,12 @@ function dm_fix_path($path)
 			return null;
 		}
 	}
-
 	
 	/**
 	 * Relative path of the framework customizations directory
 	 * @param string $append
 	 * @return string
+	 * @since 1.0.0
 	 */
 	function dm_get_customizations_dir_rel_path($append = '')
 	{
@@ -729,4 +747,22 @@ function dm_fix_path($path)
 		}
 
 		return $dir . $append;
+	}
+
+	/**
+	 * Get a image alt value from the database.
+	 * @param string $image_id
+	 * @return string
+	 * @since 1.0.0
+	 */
+	function dm_post_img_alt($image_id) {
+		if ( !empty( $image_id ) ) {
+		   $alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+		   if ( !empty( $alt ) ) {
+			  $alt = $alt;
+		   } else {
+			  $alt = get_the_title( $image_id );
+		   }
+		   return $alt;
+		}
 	}
