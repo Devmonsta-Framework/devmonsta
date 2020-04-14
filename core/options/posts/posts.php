@@ -93,6 +93,8 @@ class Posts
 
         // add_action('add_meta_boxes', [$this, 'add']);
         add_action('save_post', [$this, 'save']);
+
+       
     }
 
     public function get_post_files()
@@ -109,6 +111,7 @@ class Posts
 
     public function add($post_type, $args, $all_controls)
     {
+        
 
         add_action('add_meta_boxes', function () use ($post_type, $args, $all_controls) {
 
@@ -157,15 +160,9 @@ class Posts
                 );
             }
         }
-        
-        
+
     }
 
-    public function box_content($post)
-    {
-        $options = $this->data;
 
-        print_r($options);
-    }
 
 }
