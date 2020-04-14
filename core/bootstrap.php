@@ -21,8 +21,9 @@ final class Bootstrap
     {
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
+
+        //Make all the helper functions available
+        require_once dirname(__FILE__) . '/helpers/general.php';
     }
-
-
 
 }
