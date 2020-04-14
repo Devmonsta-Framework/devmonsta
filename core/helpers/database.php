@@ -2,7 +2,7 @@
 	die( 'Forbidden' );
 }
 // Post Options
-class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
+class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
 	protected function get_id() {
 		return 'post';
 	}
@@ -16,8 +16,8 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 
 		try {
 			// Prevent too often execution of wp_get_post_autosave() because it does WP Query
-			return DMS_Cache::get($cache_key = $this->get_cache_key('id/'. $post_id));
-		} catch (DMS_Cache_Not_Found_Exception $e) {
+			return DM_Cache::get($cache_key = $this->get_cache_key('id/'. $post_id));
+		} catch (DM_Cache_Not_Found_Exception $e) {
 			if ( ! $post_id ) {
 				/** @var WP_Post $post */
 				global $post;
@@ -40,7 +40,7 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 				}
 			}
 
-			DMS_Cache::set($cache_key, $post_id);
+			DM_Cache::set($cache_key, $post_id);
 
 			return $post_id;
 		}
@@ -50,9 +50,9 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 		$post_id = $this->get_post_id($post_id);
 
 		try {
-			return DMS_Cache::get($cache_key = $this->get_cache_key('type/'. $post_id));
-		} catch (DMS_Cache_Not_Found_Exception $e) {
-			DMS_Cache::set(
+			return DM_Cache::get($cache_key = $this->get_cache_key('type/'. $post_id));
+		} catch (DM_Cache_Not_Found_Exception $e) {
+			DM_Cache::set(
 				$cache_key,
 				$post_type = get_post_type(
 					($post_revision_id = wp_is_post_revision($post_id)) ? $post_revision_id : $post_id
@@ -66,15 +66,15 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 	protected function get_options($item_id, array $extra_data = array()) {
 		$post_type = $this->get_post_type($item_id);
 
-		if (apply_filters('dms_get_db_post_option:dms-storage-enabled',
+		if (apply_filters('dm_get_db_post_option:dm-storage-enabled',
 			/**
-			 * Slider extension has too many dms_get_db_post_option()
+			 * Slider extension has too many dm_get_db_post_option()
 			 * inside post options altering filter and it creates recursive mess.
 			 * add_filter() was added in Slider extension
 			 * but this hardcode can be replaced with `true`
 			 * only after all users will install new version 1.1.15.
 			 */
-			$post_type !== 'dms-slider',
+			$post_type !== 'dm-slider',
 			$post_type
 		)) {
 			return dms()->theme->get_post_options( $post_type );
@@ -84,14 +84,14 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 	}
 
 	protected function get_values($item_id, array $extra_data = array()) {
-		return DMS_WP_Meta::get( 'post', $this->get_post_id($item_id), 'dms_options', array() );
+		return DM_WP_Meta::get( 'post', $this->get_post_id($item_id), 'dms_options', array() );
 	}
 
 	protected function set_values($item_id, $values, array $extra_data = array()) {
-		DMS_WP_Meta::set( 'post', $this->get_post_id($item_id), 'dms_options', $values );
+		DM_WP_Meta::set( 'post', $this->get_post_id($item_id), 'dms_options', $values );
 	}
 
-	protected function get_dms_storage_params($item_id, array $extra_data = array()) {
+	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
 		return array( 'post-id' => $this->get_post_id($item_id) );
 	}
 
@@ -113,7 +113,7 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 		/**
 		 * @since 2.2.8
 		 */
-		do_action('dms_post_options_update',
+		do_action('dm_post_options_update',
 			$post_id,
 			/**
 			 * Option id
@@ -143,7 +143,7 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 	protected function _init() {
 		
 		function dm_post_option($post_id = null, $option_id = null, $default_value = null) {
-			return DMS_Db_Options_Model::_get_instance('post')->get(intval($post_id), $option_id, $default_value);
+			return DM_Db_Options_Model::_get_instance('post')->get(intval($post_id), $option_id, $default_value);
 		}
 
 		/**
@@ -154,17 +154,17 @@ class DMS_Db_Options_Model_Post extends DMS_Db_Options_Model {
 		 * @param $value
 		 */
 		function dm_set_post_option( $post_id = null, $option_id = null, $value ) {
-			DMS_Db_Options_Model::_get_instance('post')->set(intval($post_id), $option_id, $value);
+			DM_Db_Options_Model::_get_instance('post')->set(intval($post_id), $option_id, $value);
 		}
 
-		// todo: add_action() to clear the DMS_Cache
+		// todo: add_action() to clear the DM_Cache
 	}
 }
 
-new DMS_Db_Options_Model_Post();
+new DM_Db_Options_Model_Post();
 
 // Term Options
-class DMS_Db_Options_Model_Term extends DMS_Db_Options_Model {
+class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 	protected function get_id() {
 		return 'term';
 	}
@@ -357,10 +357,10 @@ class DMS_Db_Options_Model_Term extends DMS_Db_Options_Model {
 		add_action( 'delete_term', array( __CLASS__, '_action_dms_delete_term' ) );
 	}
 }
-new DMS_Db_Options_Model_Term();
+new DM_Db_Options_Model_Term();
 
 // Customizer Options
-class DMS_Db_Options_Model_Customizer extends DMS_Db_Options_Model {
+class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 	protected function get_id() {
 		return 'customizer';
 	}
@@ -412,7 +412,7 @@ class DMS_Db_Options_Model_Customizer extends DMS_Db_Options_Model {
 	 * @internal
 	 */
 	public function _reset_cache() {
-		DMS_Cache::del($this->get_main_cache_key());
+		DM_Cache::del($this->get_main_cache_key());
 	}
 
 	protected function _init() {
@@ -444,4 +444,4 @@ class DMS_Db_Options_Model_Customizer extends DMS_Db_Options_Model {
 		);
 	}
 }
-new DMS_Db_Options_Model_Customizer();
+new DM_Db_Options_Model_Customizer();
