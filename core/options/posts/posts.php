@@ -157,13 +157,8 @@ class Posts
                 );
             }
         }
-        if (array_key_exists('wporg_field', $_POST)) {
-            update_post_meta(
-                $post_id,
-                '_wporg_meta_key',
-                $_POST['wporg_field']
-            );
-        }
+        
+        
     }
 
     public function box_content($post)
