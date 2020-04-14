@@ -1,31 +1,31 @@
-var dms;
+var dm;
 
 if (typeof Object['create'] != 'undefined') {
 	/**
 	 * create clean object
 	 * autocomplete in console to show only defined methods, without other unnecesary methods from Object prototype
 	 */
-	dms = Object.create(null);
+	dm = Object.create(null);
 } else {
-	dms = {};
+	dm = {};
 }
 
 /**
  * URI to framework directory
  */
-dms.DMS_URI = _dms_localized.DMS_URI;
-dms.SITE_URI = _dms_localized.SITE_URI;
+dm.DM_URI = _dm_localized.DM_URI;
+dm.SITE_URI = _dm_localized.SITE_URI;
 /**
  * Load ajax.php
  */
-dms.AJAX_URL = _dms_localized.AJAX_URL;
+dm.AJAX_URL = _dm_localized.AJAX_URL;
 
 /**
  * parseInt() alternative
  * Like intval() in php. Returns 0 on failure, not NaN
  * @param val
  */
-dms.intval = function(val) {
+dm.intval = function(val) {
 	val = parseInt(val);
 	return !isNaN(val) ? val : 0;
 };
@@ -34,7 +34,7 @@ dms.intval = function(val) {
  * Calculate md5 hash of the string
  * @param {String} string
  */
-dms.md5 = (function(){
+dm.md5 = (function(){
 	"use strict";
 
 	/*
@@ -219,12 +219,12 @@ dms.md5 = (function(){
 })();
 
 /**
- * dms.loading
+ * dm.loading
  * Show/Hide loading on the page
  *
  * Usage:
- * - dms.loading.show('unique-id');
- * - dms.loading.hide('unique-id');
+ * - dm.loading.show('unique-id');
+ * - dm.loading.hide('unique-id');
  */
 (function($){
 	var inst = {
@@ -236,13 +236,13 @@ dms.md5 = (function(){
 		$getEl: function(){
 			if (this.$el === null) { // lazy init
 				this.$el = $(
-					'<div id="dms-loading" style="display: none;">'+
+					'<div id="dm-loading" style="display: none;">'+
 						'<table width="100%" height="100%"><tbody><tr><td valign="middle" align="center">'+
-							'<img src="'+ dms.img.logoSvg +'"'+
+							'<img src="'+ dm.img.logoSvg +'"'+
 								' width="30"'+
-								' class="dms-animation-rotate-reverse-180"'+
+								' class="dm-animation-rotate-reverse-180"'+
 								' alt="Loading"' +
-								' onerror="this.onerror=null; this.src=\''+ dms.DMS_URI +'/static/img/logo-100.png\';"'+
+								' onerror="this.onerror=null; this.src=\''+ dm.dm_URI +'/static/img/logo-100.png\';"'+
 								' />'+
 						'</td></tr></tbody></table>'+
 					'</div>'
@@ -419,10 +419,10 @@ dms.md5 = (function(){
 		}
 	};
 
-	dms.loading = {
+	dm.loading = {
 		show: function(id, opts) {
 			/**
-			 * Compatibility with old version of dms.loading.show()
+			 * Compatibility with old version of dm.loading.show()
 			 * which didn't had the (id,opts) parameters
 			 */
 			if (typeof id == 'undefined') {
@@ -433,7 +433,7 @@ dms.md5 = (function(){
 		},
 		hide: function(id) {
 			/**
-			 * Compatibility with old version of dms.loading.hide()
+			 * Compatibility with old version of dm.loading.hide()
 			 * which didn't had the (id) parameter
 			 */
 			if (typeof id == 'undefined') {
