@@ -82,19 +82,42 @@ class Posts
 
                     if ($post_type == $args['type']) {
                         $this->data = $args;
-                        $this->add($post_type, $args, $all_controls);
+
+                        $this->load_enqueue($all_controls);
+                        $this->add_meta_box($post_type, $args, $all_controls);
                     }
 
                 }
 
             }
 
+            // update_option('devmonsta_scripts',[]);
+
         }
 
         // add_action('add_meta_boxes', [$this, 'add']);
         add_action('save_post', [$this, 'save']);
 
-       
+    }
+
+    public function load_enqueue($all_controls)
+    {
+
+        foreach ($all_controls as $control_content) {
+            if (isset($control_content['type'])) {
+                $class_name = ucwords($control_content['type']);
+                $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+                if (class_exists($control_class)) {
+
+                    $control = new $control_class($control_content);
+
+                    $control->enqueue();
+
+                }
+
+            }
+        }
+
     }
 
     public function get_post_files()
@@ -109,34 +132,36 @@ class Posts
 
     /** Add Metabox to the post */
 
-    public function add($post_type, $args, $all_controls)
+    public function add_meta_box($post_type, $args, $all_controls)
     {
-        
 
         add_action('add_meta_boxes', function () use ($post_type, $args, $all_controls) {
 
             add_meta_box(
                 $args['id'], // Unique ID / metabox ID
                 $args['title'], // Box title
-                function () use ($args, $all_controls) {
-
-                    if (!empty($all_controls)) {
-
-                        // foreach ($all_controls as $controls) {
-
-                        // if (isset($controls['box_id']) == $args['id']) {
-                        View::instance()->build($args['id'], $all_controls);
-                        // }
-
-                        // }
-
-                    }
-
-                }, // Content callback, must be of type callable
-                $post_type // Post type
+                [$this, 'render'], // Content callback, must be of type callable
+                $post_type, // Post type
+                'normal',
+                'high',
+                [$args, $all_controls]
             );
         });
 
+        // Adding asset files to metabox
+
+    }
+
+    public function render($post_id, $arr)
+    {
+        // print_r(json_encode($arr['args'][1]));
+        $args = $arr['args'][0];
+        $all_controls = $arr['args'][1];
+        if (!empty($all_controls)) {
+
+            View::instance()->build($args['id'], $all_controls);
+
+        }
     }
 
     /** Save metbox data */
@@ -162,7 +187,5 @@ class Posts
         }
 
     }
-
-
 
 }

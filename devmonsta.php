@@ -12,7 +12,6 @@
 
 use Devmonsta\Bootstrap;
 
-
 if (!defined('ABSPATH')) {
     exit;
 }
@@ -82,6 +81,8 @@ final class Devmonsta
     {
 
     }
+
+    
 }
 
 Devmonsta::init();

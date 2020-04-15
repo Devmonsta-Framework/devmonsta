@@ -6,13 +6,8 @@ use Devmonsta\Options\Posts\Structure;
 
 class Text extends Structure
 {
-    protected $name;
+
     protected $value;
-    protected $prefix;
-    /**
-     * Ever class must contain show method
-     * Before name of the controller must use @devmonsta prefix
-     */
 
     public function init()
     {
@@ -22,6 +17,14 @@ class Text extends Structure
     public function enqueue()
     {
 
+        add_action('admin_enqueue_scripts', [$this, 'load_scripts']);
+
+    }
+
+    public function load_scripts($hook)
+    {
+
+        wp_enqueue_script('custom-js', plugins_url('text/assets/js/script.js', dirname(__FILE__)));
     }
 
     public function render()
@@ -30,14 +33,13 @@ class Text extends Structure
         $content = $this->content;
         global $post;
 
-        $this->prefix = 'devmonsta_';
         $this->value = get_post_meta($post->ID, $this->prefix . $content['name'], true);
         $this->output();
     }
 
     public function output()
     {
-        error_log('output section from text');
+
         $lable = $this->content['label'];
         $name = $this->content['name'];
         ?>
