@@ -56,7 +56,7 @@ abstract class Structure
     public function __destruct()
     {
         $this->save_eneque();
-        // error_log('Scripts'. serialize(self::$scripts));
+ 
     }
 
     abstract public function init();
