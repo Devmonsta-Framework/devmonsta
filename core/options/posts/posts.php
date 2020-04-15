@@ -80,7 +80,7 @@ class Posts
 
                 foreach ($all_meta_box as $args) {
 
-                    if ($post_type == $args['type']) {
+                    if ($post_type == $args['post_type']) {
                         $this->data = $args;
 
                         $this->load_enqueue($all_controls);

@@ -62,4 +62,5 @@ abstract class Structure
     abstract public function init();
     abstract public function render();
     abstract public function output();
+    abstract public function enqueue();
 }
