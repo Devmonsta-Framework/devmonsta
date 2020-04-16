@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Checkbox;
+namespace Devmonsta\Options\Posts\Controls\DatePicker;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Checkbox extends Structure{
+class DatePicker extends Structure{
 
 	/**
 	 * @internal
@@ -28,10 +28,9 @@ class Checkbox extends Structure{
     public function render(){
         $content = $this->content;
         global $post;
-        $default_value = ($this->content['value'] === true) ? "on" :"off";
-        $this->value = (!is_null(get_post_meta($post->ID, $this->prefix . $content['name'], true))) ? 
-                        get_post_meta($post->ID, $this->prefix . $content['name'], true) 
-                        : $default_value;
+        $this->value = !is_null(get_post_meta($post->ID, $this->prefix . $content['name'], true)) ? 
+                        get_post_meta($post->ID, $this->prefix . $content['name'], true)
+                        : $content['value'];
         $this->output();
     }
 
@@ -44,15 +43,15 @@ class Checkbox extends Structure{
         $name           = isset($this->content['name']) ? $this->content['name'] : '';
         $desc           = isset($this->content['desc']) ? $this->content['desc'] : '';
         $attrs          = isset($this->content['attr']) ? $this->content['attr'] : '';
-        $is_checked     = ($this->value == "on") ? 'checked' : '';
+        $min_date       = isset($this->content['min-date']) ? $this->content['min-date'] : date('d-m-Y');
+        $max_date       = isset($this->content['max-date']) ? $this->content['max-date'] : '';
         ?>
         <div <?php echo esc_attr($attrs); ?>>
             <lable><?php echo esc_html($lable); ?> </lable>
             <div><small><?php echo esc_html($desc); ?> </small></div>
-                <input type="checkbox" 
-                        name="<?php echo esc_html($this->prefix . $name); ?>"
-                        value="<?php echo esc_html($this->value);?>"
-                        <?php echo esc_html($is_checked); ?>>  
+            <input type="date" name="<?php echo esc_html($this->prefix . $name);?>"
+                    value="<?php echo esc_html('Y-m-d', $this->value);?>"
+                    min="<?php echo esc_html($min_date)?>" max="<?php echo esc_html($max_date)?>">
         </div<>
     <?php
     }
