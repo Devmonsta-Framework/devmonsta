@@ -40,8 +40,7 @@ class Panel
                     'settings' => 'footer_text_block',
                     'type' => 'text',
                 )
-            )
-            );
+            ));
         });
     }
 }
