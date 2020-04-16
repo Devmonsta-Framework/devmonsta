@@ -3,8 +3,6 @@
 }
 // Useful functions
 
-
-
 	/**
 	 * print_r() alternative
 	 *

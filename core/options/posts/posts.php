@@ -105,10 +105,15 @@ class Posts
 
         foreach ($all_controls as $control_content) {
             if (isset($control_content['type'])) {
-                $class_name = ucwords($control_content['type']);
+                // dm_print($control_content['type']);
+                $class_name	 = explode( '-', $control_content['type']);
+                $class_name = array_map( 'ucfirst', $class_name);
+                $class_name	 = implode( '', $class_name );
                 $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+                
+               
                 if (class_exists($control_class)) {
-
+                    // dm_print($control_class);
                     $control = new $control_class($control_content);
 
                     $control->enqueue();
