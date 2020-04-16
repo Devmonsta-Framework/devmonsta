@@ -6,16 +6,17 @@
  * =============================================
  */
 
-namespace Devmonsta\Options\Customizer\Controls;
+namespace Devmonsta\Options\Customizer\Controls\Color;
 
+use Devmonsta\Options\Customizer\Structures\Control;
 use Devmonsta\Traits\Singleton;
 
-class Color
+class Color extends Control
 {
 
     use Singleton;
 
-    public function add_color($args)
+    public function add_control($args)
     {
         add_action('customize_register', function ($wp_customize) use ($args) {
 
@@ -35,6 +36,8 @@ class Color
             );
 
         });
-
+        
     }
+
+    
 }

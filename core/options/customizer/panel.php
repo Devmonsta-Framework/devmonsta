@@ -1,22 +1,14 @@
 <?php
-
-namespace Devmonsta\Options\Customizer\Controls;
+namespace Devmonsta\Options\Customizer;
 
 use Devmonsta\Traits\Singleton;
 
-class Section
+class Panel
 {
 
     use Singleton;
 
-    public function add_section($args)
-    {
-
-    }
-
-    
-
-    public function init()
+    public function add_panel($args)
     {
         add_action('customize_register', function ($wp_customize) {
 
@@ -35,8 +27,7 @@ class Section
             ));
             // Add setting
             $wp_customize->add_setting('footer_text_block', array(
-                'default' => __('default text', 'genesischild'),
-                'sanitize_callback' => 'sanitize_text',
+                'default' => __('default text', 'genesischild')
             ));
             // Add control
             $wp_customize->add_control(new \WP_Customize_Control(
@@ -48,15 +39,26 @@ class Section
                     'settings' => 'footer_text_block',
                     'type' => 'text',
                 )
-            )
+            ));
+
+            $wp_customize->add_setting('devmonsta_cool_color',[
+                'default' => '#000000'
+            ]);
+
+            $wp_customize->add_control(
+              new \WP_Customize_Color_Control(
+                  $wp_customize,
+                  'name',
+                  array(
+                    'name' => 'cool_color',
+                    'label' => __('Cool Color', 'devmonsta'),
+                    'section' => 'custom_footer_text',
+                    'settings' => 'devmonsta_cool_color',
+                    'default' => '#00c3ff',
+                    'type' => 'color',
+                  )
+              )  
             );
-
-            // Sanitize text
-            function sanitize_text($text)
-            {
-                return sanitize_text_field($text);
-            }
-
         });
     }
 }
