@@ -27,6 +27,10 @@ final class Bootstrap
         
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
+        // Load helper functions
+		foreach (array('general', 'meta','database') as $file) {
+			require $dir . '/helpers/' . $file . '.php';
+		}
     }
 
 }

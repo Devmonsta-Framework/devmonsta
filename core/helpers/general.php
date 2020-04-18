@@ -826,9 +826,9 @@ function dm_aks($keys, $value, &$array_or_object, $keys_delimiter = '/')
 
 	if (isset($keys[0])) { // not used count() for performance reasons
 		if ($is_object) {
-			dms_aks($keys, $value, $array_or_object->{$key_or_property});
+			dm_aks($keys, $value, $array_or_object->{$key_or_property});
 		} else {
-			dms_aks($keys, $value, $array_or_object[$key_or_property]);
+			dm_aks($keys, $value, $array_or_object[$key_or_property]);
 		}
 	} else {
 		if ($is_object) {
@@ -857,22 +857,22 @@ function dm_akg($keys, $array_or_object, $default_value = null, $keys_delimiter 
 		$keys = explode($keys_delimiter, (string) $keys);
 	}
 
-	$array_or_object = dms_call($array_or_object);
+	$array_or_object = dm_call($array_or_object);
 
 	$key_or_property = array_shift($keys);
 	if ($key_or_property === null) {
-		return dms_call($default_value);
+		return dm_call($default_value);
 	}
 
 	$is_object = is_object($array_or_object);
 
 	if ($is_object) {
 		if (!property_exists($array_or_object, $key_or_property)) {
-			return dms_call($default_value);
+			return dm_call($default_value);
 		}
 	} else {
 		if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-			return dms_call($default_value);
+			return dm_call($default_value);
 		}
 	}
 
@@ -897,11 +897,11 @@ function dm_akg($keys, $array_or_object, $default_value = null, $keys_delimiter 
  * Recommend when the function call may require many resources or time (database requests) , or the value is small
  * Not recommended using on very large values
  *
- * @return DMS_Callback
+ * @return DM_Callback
  *
  * @since 2.6.14
  */
 function dm_callback($callback, array $args = array(), $cache = true)
 {
-	return new DMS_Callback($callback, $args, $cache);
+	return new Dm_Callback($callback, $args, $cache);
 }
