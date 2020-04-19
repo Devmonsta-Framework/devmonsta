@@ -1,15 +1,15 @@
-<?php if (!defined('DMS')) die('Forbidden');
+<?php if (!defined('DM')) die('Forbidden');
 
 /**
- * Used in dms()->backend
+ * Used in dm()->backend
  * @internal
  */
-class DMS_Settings_Form_Theme extends DMS_Settings_Form {
+class DM_Settings_Form_Theme extends DM_Settings_Form {
 	protected function _init() {
 		$this
-			->set_is_ajax_submit( dms()->theme->get_config('settings_form_ajax_submit') )
-			->set_is_side_tabs( dms()->theme->get_config('settings_form_side_tabs') )
-			->set_string( 'title', __('Theme Settings', 'dms') );
+			->set_is_ajax_submit( dm()->theme->get_config('settings_form_ajax_submit') )
+			->set_is_side_tabs( dm()->theme->get_config('settings_form_side_tabs') )
+			->set_string( 'title', __('Theme Settings', 'dm') );
 
 		{
 			add_action('admin_init', array($this, '_action_get_title_from_menu'));
@@ -23,7 +23,7 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 
 	public function get_options() {
 		
-		return dms()->theme->get_settings_options();
+		return dm()->theme->get_settings_options();
 	}
 
 	public function set_values($values) {
@@ -39,16 +39,16 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 	
 	public function _action_get_title_from_menu() {
 		if ($this->get_is_side_tabs()) {
-			$title = dms()->theme->manifest->get_name();
+			$title = dm()->theme->manifest->get_name();
 
-			if (dms()->theme->manifest->get('author')) {
-				if (dms()->theme->manifest->get('author_uri')) {
-					$title .= ' '. dms_html_tag('a', array(
-							'href' => dms()->theme->manifest->get('author_uri'),
+			if (dm()->theme->manifest->get('author')) {
+				if (dm()->theme->manifest->get('author_uri')) {
+					$title .= ' '. dm_html_tag('a', array(
+							'href' => dm()->theme->manifest->get('author_uri'),
 							'target' => '_blank'
-						), '<small>' . __('by', 'dms') . ' ' . dms()->theme->manifest->get('author') . '</small>');
+						), '<small>' . __('by', 'dm') . ' ' . dm()->theme->manifest->get('author') . '</small>');
 				} else {
-					$title .= ' <small>' . dms()->theme->manifest->get('author') . '</small>';
+					$title .= ' <small>' . dm()->theme->manifest->get('author') . '</small>';
 				}
 			}
 
@@ -60,7 +60,7 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 
 				if (is_array($menu)) {
 					foreach ($menu as $_menu) {
-						if ($_menu[2] === dms()->backend->_get_settings_page_slug()) {
+						if ($_menu[2] === dm()->backend->_get_settings_page_slug()) {
 							$title = $_menu[0];
 							break 2;
 						}
@@ -70,7 +70,7 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 				if (is_array($submenu)) {
 					foreach ($submenu as $_menu) {
 						foreach ($_menu as $_submenu) {
-							if ($_submenu[2] === dms()->backend->_get_settings_page_slug()) {
+							if ($_submenu[2] === dm()->backend->_get_settings_page_slug()) {
 								$title = $_submenu[0];
 								break 3;
 							}
@@ -91,7 +91,7 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 	public function _action_admin_menu() {
 		$data = array(
 			'capability'       => 'manage_options',
-			'slug'             => dms()->backend->_get_settings_page_slug(),
+			'slug'             => dm()->backend->_get_settings_page_slug(),
 			'content_callback' => array( $this, 'render' ),
 		);
 
@@ -99,11 +99,11 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 			return;
 		}
 
-		if (dms()->theme->get_config('disable_theme_settings_page', false)) {
+		if (dm()->theme->get_config('disable_theme_settings_page', false)) {
 			return;
 		}
 
-		if ( ! dms()->theme->locate_path('/options/settings.php') ) {
+		if ( ! dm()->theme->locate_path('/options/settings.php') ) {
 			return;
 		}
 	
@@ -121,7 +121,7 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 			}
 		}
 		
-		do_action( 'dms_backend_add_custom_settings_menu', $data );
+		do_action( 'dm_backend_add_custom_settings_menu', $data );
 		
 		{
 			$menu_exists = false;
@@ -145,8 +145,8 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 		}
 
 		add_theme_page(
-			__( 'Theme Settings', 'dms' ),
-			__( 'Theme Settings', 'dms' ),
+			__( 'Theme Settings', 'dm' ),
+			__( 'Theme Settings', 'dm' ),
 			$data['capability'],
 			$data['slug'],
 			$data['content_callback']
@@ -166,7 +166,7 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 			return;
 		}
 
-		$id    = dms()->backend->_get_settings_page_slug();
+		$id    = dm()->backend->_get_settings_page_slug();
 		$index = null;
 
 		foreach ( $submenu['themes.php'] as $key => $sm ) {
@@ -191,10 +191,10 @@ class DMS_Settings_Form_Theme extends DMS_Settings_Form {
 		global $plugin_page;
 		
 		{
-			if (dms()->backend->_get_settings_page_slug() === $plugin_page) {
+			if (dm()->backend->_get_settings_page_slug() === $plugin_page) {
 				$this->enqueue_static();
 
-				do_action('dms_admin_enqueue_scripts:settings');
+				do_action('dm_admin_enqueue_scripts:settings');
 			}
 		}
 	}

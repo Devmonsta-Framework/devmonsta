@@ -952,3 +952,133 @@ function dm_callback($callback, array $args = array(), $cache = true)
 {
 	return new Dm_Callback($callback, $args, $cache);
 }
+	/**
+	 * Full path to the parent-theme framework customizations directory
+	 *
+	 * @param string $rel_path
+	 *
+	 * @return string
+	 */
+	function dm_get_template_customizations_directory($rel_path = '')
+	{
+		try {
+			$dir = DM_Cache::get($cache_key = 'dm_template_customizations_dir');
+		} catch (DM_Cache_Not_Found_Exception $e) {
+			DM_Cache::set(
+				$cache_key,
+				$dir = get_template_directory() . dm_get_framework_customizations_dir_rel_path()
+			);
+		}
+
+		return $dir . $rel_path;
+	}
+	/** Child theme related functions */ {
+	/**
+	 * Full path to the child-theme framework customizations directory
+	 *
+	 * @param string $rel_path
+	 *
+	 * @return null|string
+	 */
+	function dm_get_stylesheet_customizations_directory($rel_path = '')
+	{
+		if (is_child_theme()) {
+			return get_stylesheet_directory() . dm_get_framework_customizations_dir_rel_path($rel_path);
+		} else {
+			// check is_child_theme() before using this function
+			return null;
+		}
+	}
+	/**
+ * Relative path of the framework customizations directory
+ *
+ * @param string $append
+ *
+ * @return string
+ */
+function dm_get_framework_customizations_dir_rel_path($append = '')
+{
+	try {
+		$dir = DM_Cache::get($cache_key = 'dm_customizations_dir_rel_path');
+	} catch (DM_Cache_Not_Found_Exception $e) {
+		DM_Cache::set(
+			$cache_key,
+			$dir = apply_filters('dm_framework_customizations_dir_rel_path', '/framework-customizations')
+		);
+	}
+
+			return $dir . $append;
+		}
+}
+/**
+ * Safe load variables from an file
+ * Use this function to not include files directly and to not give access to current context variables (like $this)
+ *
+ * @param string $file_path
+ * @param array $_extract_variables Extract these from file array('variable_name' => 'default_value')
+ * @param array $_set_variables Set these to be available in file (like variables in view)
+ *
+ * @return array
+ */
+function dm_get_variables_from_file($file_path, array $_extract_variables, array $_set_variables = array())
+{
+	extract($_set_variables, EXTR_REFS);
+	unset($_set_variables);
+
+	require $file_path;
+
+	foreach ($_extract_variables as $variable_name => $default_value) {
+		if (isset($$variable_name)) {
+			$_extract_variables[$variable_name] = $$variable_name;
+		}
+	}
+
+	return $_extract_variables;
+}
+/**
+ * Generate html tag
+ *
+ * @param string $tag Tag name
+ * @param array $attr Tag attributes
+ * @param bool|string $end Append closing tag. Also accepts body content
+ *
+ * @return string The tag's html
+ */
+function dm_html_tag($tag, $attr = array(), $end = false)
+{
+	$html = '<' . $tag . ' ' . dm_attr_to_html($attr);
+
+	if ($end === true) {
+		# <script></script>
+		$html .= '></' . $tag . '>';
+	} else if ($end === false) {
+		# <br/>
+		$html .= '/>';
+	} else {
+		# <div>content</div>
+		$html .= '>' . $end . '</' . $tag . '>';
+	}
+
+	return $html;
+}
+/**
+ * Generate attributes string for html tag
+ *
+ * @param array $attr_array array('href' => '/', 'title' => 'Test')
+ *
+ * @return string 'href="/" title="Test"'
+ */
+function dm_attr_to_html(array $attr_array)
+{
+	$html_attr = '';
+
+	foreach ($attr_array as $attr_name => $attr_val) {
+		if ($attr_val === false) {
+			continue;
+		}
+
+		$html_attr .= $attr_name . '="' . dm_htmlspecialchars($attr_val) . '" ';
+	}
+
+	return $html_attr;
+}

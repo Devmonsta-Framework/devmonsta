@@ -5,10 +5,10 @@
 /**
  * Backend functionality
  */
-final class _DMS_Component_Backend
+final class _DM_Component_Backend
 {
 
-	/** @var DMS_Settings_Form */
+	/** @var DM_Settings_Form */
 	private $settings_form;
 
 	private $available_render_designs = array(
@@ -27,12 +27,12 @@ final class _DMS_Component_Backend
 
 	/**
 	 * Contains all option types
-	 * @var DMS_Option_Type[]
+	 * @var DM_Option_Type[]
 	 */
 	private $option_types = array();
 
 	/**
-	 * @var DMS_Option_Type_Undefined
+	 * @var DM_Option_Type_Undefined
 	 */
 	private $undefined_option_type;
 
@@ -46,19 +46,19 @@ final class _DMS_Component_Backend
 
 	/**
 	 * Contains all container types
-	 * @var DMS_Container_Type[]
+	 * @var DM_Container_Type[]
 	 */
 	private $container_types = array();
 
 	/**
-	 * @var DMS_Container_Type_Undefined
+	 * @var DM_Container_Type_Undefined
 	 */
 	private $undefined_container_type;
 
 	private $static_registered = false;
 
 	/**
-	 * @var DMS_Access_Key
+	 * @var DM_Access_Key
 	 */
 	private $access_key;
 
@@ -67,7 +67,7 @@ final class _DMS_Component_Backend
 	 */
 	public function _get_settings_page_slug()
 	{
-		return 'dms-settings';
+		return 'dm-settings';
 	}
 
 	/**
@@ -76,7 +76,7 @@ final class _DMS_Component_Backend
 	 */
 	public function get_options_name_attr_prefix()
 	{
-		return 'dms_options';
+		return 'dm_options';
 	}
 
 	/**
@@ -85,7 +85,7 @@ final class _DMS_Component_Backend
 	 */
 	public function get_options_id_attr_prefix()
 	{
-		return 'dms-option-';
+		return 'dm-option-';
 	}
 
 	private function get_current_edit_taxonomy()
@@ -148,7 +148,7 @@ final class _DMS_Component_Backend
 	public function _init()
 	{
 		if (is_admin()) {
-			$this->settings_form = new DMS_Settings_Form_Theme('theme-settings');
+			$this->settings_form = new DM_Settings_Form_Theme('theme-settings');
 		}
 
 		$this->add_actions();
@@ -192,9 +192,9 @@ final class _DMS_Component_Backend
 
 			// render and submit options from javascript
 			{
-				add_action('wp_ajax_dms_backend_options_render', array($this, '_action_ajax_options_render'));
-				add_action('wp_ajax_dms_backend_options_get_values', array($this, '_action_ajax_options_get_values'));
-				add_action('wp_ajax_dms_backend_options_get_values_json', array($this, '_action_ajax_options_get_values_json'));
+				add_action('wp_ajax_dm_backend_options_render', array($this, '_action_ajax_options_render'));
+				add_action('wp_ajax_dm_backend_options_get_values', array($this, '_action_ajax_options_get_values'));
+				add_action('wp_ajax_dm_backend_options_get_values_json', array($this, '_action_ajax_options_get_values_json'));
 			}
 		}
 
@@ -209,19 +209,19 @@ final class _DMS_Component_Backend
 	{
 
 		$parent_slug = 'index.php';
-		$menu_title  = esc_html__('New', 'dms');
+		$menu_title  = esc_html__('New', 'dm');
 
 		if (isset($GLOBALS['admin_page_hooks'])) {
-			$parent_slug = 'dms-extensions';
-			$menu_title  = esc_html__('New', 'dms');
+			$parent_slug = 'dm-extensions';
+			$menu_title  = esc_html__('New', 'dm');
 		}
 
 		add_submenu_page(
 			$parent_slug,
-			esc_html__('New', 'dms'),
+			esc_html__('New', 'dm'),
 			$menu_title,
 			'manage_options',
-			'dms-new',
+			'dm-new',
 			array($this, 'render_about_page')
 		);
 	}
@@ -241,7 +241,7 @@ final class _DMS_Component_Backend
 	}
 
 	/**
-	 * @param string|DMS_Option_Type $option_type_class
+	 * @param string|DM_Option_Type $option_type_class
 	 * @param string|null $type
 	 *
 	 * @internal
@@ -320,38 +320,38 @@ final class _DMS_Component_Backend
 		}
 
 		wp_register_script(
-			'dms-events',
-			dms_get_framework_directory_uri('/static/js/dms-events.js'),
+			'dm-events',
+			dms_get_framework_directory_uri('/static/js/dm-events.js'),
 			array(),
-			dms()->manifest->get_version(),
+			dm()->manifest->get_version(),
 			true
 		);
 
 		wp_register_script(
-			'dms-ie-fixes',
+			'dm-ie-fixes',
 			dms_get_framework_directory_uri('/static/js/ie-fixes.js'),
 			array(),
-			dms()->manifest->get_version(),
+			dm()->manifest->get_version(),
 			true
 		); {
 			wp_register_style(
 				'qtip',
 				dms_get_framework_directory_uri('/static/libs/qtip/css/jquery.qtip.min.css'),
 				array(),
-				dms()->manifest->get_version()
+				dm()->manifest->get_version()
 			);
 			wp_register_script(
 				'qtip',
 				dms_get_framework_directory_uri('/static/libs/qtip/jquery.qtip.min.js'),
 				array('jquery'),
-				dms()->manifest->get_version()
+				dm()->manifest->get_version()
 			);
 		} {
 			wp_register_style(
 				'dms',
 				dms_get_framework_directory_uri('/static/css/dms.css'),
 				array('qtip'),
-				dms()->manifest->get_version()
+				dm()->manifest->get_version()
 			);
 
 			wp_register_script(
@@ -359,7 +359,7 @@ final class _DMS_Component_Backend
 				dms_get_framework_directory_uri(
 					'/static/js/dms-reactive-options-registry.js'
 				),
-				array('dms', 'dms-events'),
+				array('dms', 'dm-events'),
 				false
 			);
 
@@ -368,7 +368,7 @@ final class _DMS_Component_Backend
 				dms_get_framework_directory_uri(
 					'/static/js/dms-reactive-options-simple-options.js'
 				),
-				array('dms', 'dms-events', 'dms-reactive-options-undefined-option'),
+				array('dms', 'dm-events', 'dms-reactive-options-undefined-option'),
 				false
 			);
 
@@ -378,7 +378,7 @@ final class _DMS_Component_Backend
 					'/static/js/dms-reactive-options-undefined-option.js'
 				),
 				array(
-					'dms', 'dms-events', 'dms-reactive-options-registry'
+					'dms', 'dm-events', 'dms-reactive-options-registry'
 				),
 				false
 			);
@@ -387,7 +387,7 @@ final class _DMS_Component_Backend
 				'dms-reactive-options',
 				dms_get_framework_directory_uri('/static/js/dms-reactive-options.js'),
 				array(
-					'dms', 'dms-events', 'dms-reactive-options-undefined-option',
+					'dms', 'dm-events', 'dms-reactive-options-undefined-option',
 					'dms-reactive-options-simple-options'
 				),
 				false
@@ -396,8 +396,8 @@ final class _DMS_Component_Backend
 			wp_register_script(
 				'dms',
 				dms_get_framework_directory_uri('/static/js/dms.js'),
-				array('jquery', 'dms-events', 'backbone', 'qtip'),
-				dms()->manifest->get_version(),
+				array('jquery', 'dm-events', 'backbone', 'qtip'),
+				dm()->manifest->get_version(),
 				false
 			);
 
@@ -428,32 +428,32 @@ final class _DMS_Component_Backend
 				'dms-backend-options',
 				dms_get_framework_directory_uri('/static/css/backend-options.css'),
 				array('dms'),
-				dms()->manifest->get_version()
+				dm()->manifest->get_version()
 			);
 
 			wp_register_script(
 				'dms-backend-options',
 				dms_get_framework_directory_uri('/static/js/backend-options.js'),
-				array('dms', 'dms-events', 'dms-reactive-options', 'postbox', 'jquery-ui-tabs'),
-				dms()->manifest->get_version(),
+				array('dms', 'dm-events', 'dms-reactive-options', 'postbox', 'jquery-ui-tabs'),
+				dm()->manifest->get_version(),
 				true
 			);
 
 			wp_localize_script('dms', '_dms_backend_options_localized', array(
-				'lazy_tabs' => dms()->theme->get_config('lazy_tabs')
+				'lazy_tabs' => dm()->theme->get_config('lazy_tabs')
 			));
 		} {
 			wp_register_style(
 				'dms-selectize',
 				dms_get_framework_directory_uri('/static/libs/selectize/selectize.css'),
 				array(),
-				dms()->manifest->get_version()
+				dm()->manifest->get_version()
 			);
 			wp_register_script(
 				'dms-selectize',
 				dms_get_framework_directory_uri('/static/libs/selectize/selectize.min.js'),
-				array('jquery', 'dms-ie-fixes'),
-				dms()->manifest->get_version(),
+				array('jquery', 'dm-ie-fixes'),
+				dm()->manifest->get_version(),
 				true
 			);
 		} {
@@ -461,7 +461,7 @@ final class _DMS_Component_Backend
 				'dms-mousewheel',
 				dms_get_framework_directory_uri('/static/libs/mousewheel/jquery.mousewheel.min.js'),
 				array('jquery'),
-				dms()->manifest->get_version(),
+				dm()->manifest->get_version(),
 				true
 			);
 		} {
@@ -469,13 +469,13 @@ final class _DMS_Component_Backend
 				'dms-jscrollpane',
 				dms_get_framework_directory_uri('/static/libs/jscrollpane/jquery.jscrollpane.css'),
 				array(),
-				dms()->manifest->get_version()
+				dm()->manifest->get_version()
 			);
 			wp_register_script(
 				'dms-jscrollpane',
 				dms_get_framework_directory_uri('/static/libs/jscrollpane/jquery.jscrollpane.min.js'),
 				array('jquery', 'dms-mousewheel'),
-				dms()->manifest->get_version(),
+				dm()->manifest->get_version(),
 				true
 			);
 		}
@@ -484,7 +484,7 @@ final class _DMS_Component_Backend
 			'font-awesome',
 			dms_get_framework_directory_uri('/static/libs/font-awesome/css/font-awesome.min.css'),
 			array(),
-			dms()->manifest->get_version()
+			dm()->manifest->get_version()
 		);
 
 		wp_register_style('dms-font-awesome', dms_get_framework_directory_uri('/static/libs/font-awesome/css/font-awesome.min.css'));
@@ -493,7 +493,7 @@ final class _DMS_Component_Backend
 			'backbone-relational',
 			dms_get_framework_directory_uri('/static/libs/backbone-relational/backbone-relational.js'),
 			array('backbone'),
-			dms()->manifest->get_version(),
+			dm()->manifest->get_version(),
 			true
 		);
 
@@ -501,7 +501,7 @@ final class _DMS_Component_Backend
 			'dms-uri',
 			dms_get_framework_directory_uri('/static/libs/uri/URI.js'),
 			array(),
-			dms()->manifest->get_version(),
+			dm()->manifest->get_version(),
 			true
 		);
 
@@ -510,7 +510,7 @@ final class _DMS_Component_Backend
 
 			dms_get_framework_directory_uri('/static/libs/moment/moment-with-locales.min.js'),
 			array(),
-			dms()->manifest->get_version(),
+			dm()->manifest->get_version(),
 			true
 		);
 
@@ -518,7 +518,7 @@ final class _DMS_Component_Backend
 			'dms-form-helpers',
 			dms_get_framework_directory_uri('/static/js/dms-form-helpers.js'),
 			array('jquery'),
-			dms()->manifest->get_version(),
+			dm()->manifest->get_version(),
 			true
 		);
 
@@ -526,7 +526,7 @@ final class _DMS_Component_Backend
 			'dms-unycon',
 			dms_get_framework_directory_uri('/static/libs/unycon/unycon.css'),
 			array(),
-			dms()->manifest->get_version()
+			dm()->manifest->get_version()
 		);
 
 		$this->static_registered = true;
@@ -564,7 +564,7 @@ final class _DMS_Component_Backend
 			return;
 		}
 
-		$options = dms()->theme->get_post_options($post_type);
+		$options = dm()->theme->get_post_options($post_type);
 
 		if (empty($options)) {
 			return;
@@ -631,7 +631,7 @@ final class _DMS_Component_Backend
 	 */
 	public function _action_create_taxonomy_options($term)
 	{
-		$options = dms()->theme->get_taxonomy_options($term->taxonomy);
+		$options = dm()->theme->get_taxonomy_options($term->taxonomy);
 
 		if (empty($options)) {
 			return;
@@ -664,7 +664,7 @@ final class _DMS_Component_Backend
 	 */
 	public function _action_create_add_taxonomy_options($taxonomy)
 	{
-		$options = dms()->theme->get_taxonomy_options($taxonomy);
+		$options = dm()->theme->get_taxonomy_options($taxonomy);
 
 		if (empty($options)) {
 			return;
@@ -712,7 +712,7 @@ final class _DMS_Component_Backend
 				array($this, '_action_create_taxonomy_options')
 			);
 
-			if (dms()->theme->get_config('taxonomy_create_has_devmonsta_options', true)) {
+			if (dm()->theme->get_config('taxonomy_create_has_devmonsta_options', true)) {
 				add_action(
 					$current_edit_taxonomy['taxonomy'] . '_add_form_fields',
 					array($this, '_action_create_add_taxonomy_options')
@@ -772,7 +772,7 @@ final class _DMS_Component_Backend
 				$post_id,
 				null,
 				dms_get_options_values_from_input(
-					dms()->theme->get_post_options($post->post_type)
+					dm()->theme->get_post_options($post->post_type)
 				)
 			);
 
@@ -804,7 +804,7 @@ final class _DMS_Component_Backend
 					$post->ID,
 					null,
 					dms_get_options_values_from_input(
-						dms()->theme->get_post_options($parent->post_type)
+						dm()->theme->get_post_options($parent->post_type)
 					)
 				);
 			} while (false);
@@ -867,7 +867,7 @@ final class _DMS_Component_Backend
 		}
 
 		$meta_prefix = 'dms_option:';
-		$only_options = dms_extract_only_options(dms()->theme->get_post_options($post_type));
+		$only_options = dms_extract_only_options(dm()->theme->get_post_options($post_type));
 		$separate_meta_options = array(); {
 			$options_values = dms_get_db_post_option($post_id);
 
@@ -964,7 +964,7 @@ final class _DMS_Component_Backend
 			return;
 		}
 
-		$options = dms()->theme->get_taxonomy_options($taxonomy->name);
+		$options = dm()->theme->get_taxonomy_options($taxonomy->name);
 		if (empty($options)) {
 			return;
 		}
@@ -1001,7 +1001,7 @@ final class _DMS_Component_Backend
 			return;
 		}
 
-		$options = dms()->theme->get_taxonomy_options($taxonomy->name);
+		$options = dm()->theme->get_taxonomy_options($taxonomy->name);
 		if (empty($options)) {
 			return;
 		}
@@ -1034,8 +1034,8 @@ final class _DMS_Component_Backend
 		 * Enqueue post options static in <head>
 		 */ {
 			if ('post' === get_current_screen()->base && get_the_ID()) {
-				dms()->backend->enqueue_options_static(
-					dms()->theme->get_post_options(get_post_type())
+				dm()->backend->enqueue_options_static(
+					dm()->theme->get_post_options(get_post_type())
 				);
 
 				do_action('dms_admin_enqueue_scripts:post', get_post());
@@ -1050,8 +1050,8 @@ final class _DMS_Component_Backend
 				&&
 				get_current_screen()->taxonomy
 			) {
-				dms()->backend->enqueue_options_static(
-					dms()->theme->get_taxonomy_options(get_current_screen()->taxonomy)
+				dm()->backend->enqueue_options_static(
+					dm()->theme->get_taxonomy_options(get_current_screen()->taxonomy)
 				);
 
 				do_action('dms_admin_enqueue_scripts:term', get_current_screen()->taxonomy);
@@ -1121,7 +1121,7 @@ final class _DMS_Component_Backend
 		}
 
 		wp_send_json_success(array(
-			'html' => dms()->backend->render_options($options, $values, $data),
+			'html' => dm()->backend->render_options($options, $values, $data),
 			/** @since 2.6.1 */
 			'default_values' => dms_get_options_values_from_input($options, array()),
 		));
@@ -1413,16 +1413,16 @@ final class _DMS_Component_Backend
 	public static function _callback_dms_collect_options_enqueue_static($data)
 	{
 		if ($data['group'] === 'option') {
-			dms()->backend->option_type($data['option']['type'])->enqueue_static($data['id'], $data['option']);
+			dm()->backend->option_type($data['option']['type'])->enqueue_static($data['id'], $data['option']);
 		} elseif ($data['group'] === 'container') {
-			dms()->backend->container_type($data['option']['type'])->enqueue_static($data['id'], $data['option']);
+			dm()->backend->container_type($data['option']['type'])->enqueue_static($data['id'], $data['option']);
 		}
 	}
 
 	public function render_option($id, $option, $data = array(), $design = null)
 	{
 
-		$maybe_forced_design = dms()->backend->option_type($option['type'])->get_forced_render_design();
+		$maybe_forced_design = dm()->backend->option_type($option['type'])->get_forced_render_design();
 
 		if (empty($design)) {
 			$design = $this->default_render_design;
@@ -1710,7 +1710,7 @@ final class _DMS_Component_Backend
 
 		$this->customizer_register_options(
 			$wp_customize,
-			dms()->theme->get_customizer_options()
+			dm()->theme->get_customizer_options()
 		);
 	}
 
@@ -1720,7 +1720,7 @@ final class _DMS_Component_Backend
 	public function _action_enqueue_customizer_static()
 	{ {
 			$options_for_enqueue = array();
-			$customizer_options = dms()->theme->get_customizer_options();
+			$customizer_options = dm()->theme->get_customizer_options();
 
 			dms_collect_options($options_for_enqueue, $customizer_options, array(
 				'callback' => array(__CLASS__, '_callback_dms_collect_options_enqueue_static'),
@@ -1732,8 +1732,8 @@ final class _DMS_Component_Backend
 		wp_enqueue_script(
 			'dms-backend-customizer',
 			dms_get_framework_directory_uri('/static/js/backend-customizer.js'),
-			array('jquery', 'dms-events', 'backbone', 'dms-backend-options'),
-			dms()->manifest->get_version(),
+			array('jquery', 'dm-events', 'backbone', 'dms-backend-options'),
+			dm()->manifest->get_version(),
 			true
 		);
 		wp_localize_script(
@@ -1867,7 +1867,7 @@ final class _DMS_Component_Backend
 						}
 					} {
 						$args_setting = array(
-							'default' => dms()->backend->option_type($opt['option']['type'])->get_value_from_input($opt['option'], null),
+							'default' => dm()->backend->option_type($opt['option']['type'])->get_value_from_input($opt['option'], null),
 							'dms_option' => $opt['option'],
 							'dms_option_id' => $opt['id'],
 						);

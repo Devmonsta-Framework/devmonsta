@@ -36,8 +36,8 @@ final class _Dm
 
 		// components
 		{
-			$this->backend = new _DMS_Component_Backend();
-			$this->theme = new _DMS_Component_Theme();
+			$this->backend = new _DM_Component_Backend();
+			$this->theme = new _DM_Component_Theme();
 		}
 
 		
