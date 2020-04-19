@@ -29,7 +29,7 @@ final class _Dm
 			require $dm_dir .'/manifest.php';
 			/** @var array $manifest */
 
-			$this->manifest = new DMS_Framework_Manifest($manifest);
+			$this->manifest = new DM_Framework_Manifest($manifest);
 
 			add_action('dm_init', array($this, '_check_requirements'), 1);
 		}
