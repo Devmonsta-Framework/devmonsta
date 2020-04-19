@@ -42,7 +42,17 @@ class Radio extends Structure {
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         ?>
-        <div <?php echo esc_attr( $attrs ); ?>>
+        <div  <?php
+
+                if ( is_array( $attrs ) ) {
+
+                    foreach ( $attrs as $key => $val ) {
+                        echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                    }
+
+                }
+
+                ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <?php

@@ -18,6 +18,17 @@ class DatetimePicker extends Structure {
      */
     public function enqueue() {
 
+        wp_enqueue_script( 'dm-date-time-picker', plugins_url( 'datetime-picker/assets/js/script.js', dirname( __FILE__ ) ) );
+
+        $date_time_picker_config = $this->content['datetime-picker'];
+        $data['min_date'] = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : date( 'd-m-Y' );
+        $data['max_date'] = isset( $date_time_picker_config['maxDate'] ) ? $date_time_picker_config['maxDate'] : '';
+        $data['format'] = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
+        $data['datepicker'] = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : false;
+        $data['timepicker'] = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : false;
+        $data['default_time'] = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
+
+        wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $data );
     }
 
     /**
@@ -40,16 +51,24 @@ class DatetimePicker extends Structure {
         $name = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $min = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
-        $max = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         ?>
-        <div <?php echo esc_attr( $attrs ); ?>>
+       <div  <?php
+
+                if ( is_array( $attrs ) ) {
+
+                    foreach ( $attrs as $key => $val ) {
+                        echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                    }
+
+                }
+
+                ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="datetime-local"
+            <input type="text"
+                    id="dm-datetime-picker"
                     name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( 'Y-m-d', $this->value ); ?>"
-                    min="2018-06-07T00:00" max="2018-06-14T00:00">
+                    value="<?php echo esc_html( date( 'Y-m-d H:i', $this->value ) ); ?>">
         </div<>
     <?php
 }
