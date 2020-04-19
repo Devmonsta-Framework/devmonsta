@@ -186,11 +186,6 @@ class Posts {
         foreach ( $_POST as $key => $value ) {
 
             if ( strpos( $key, $prefix ) !== false ) {
-
-// if($input_type == 'checkbox'){
-
-//     $_POST[$key] = $_POST['checkbox_field_name'] ? true : false;
-                // }
                 update_post_meta(
                     $post_id,
                     $key,
