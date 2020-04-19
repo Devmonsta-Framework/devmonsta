@@ -21,16 +21,16 @@ final class Bootstrap
     {
         define('DM', true);
         //Make all the helper functions available
-        require_once dirname(__FILE__) . '/helpers/class-dm-dumper.php';
-        require_once dirname(__FILE__) . '/helpers/general.php';
+        // require_once dirname(__FILE__) . '/helpers/class-dm-dumper.php';
+        // require_once dirname(__FILE__) . '/helpers/general.php';
         
         
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
         // Load helper functions
-		foreach (array('general', 'meta','database') as $file) {
-			require $dir . '/helpers/' . $file . '.php';
-		}
+		// foreach (array('general', 'meta','database') as $file) {
+		// 	require $dir . '/helpers/' . $file . '.php';
+		// }
     }
 
 }
