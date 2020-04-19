@@ -46,29 +46,30 @@ class Select extends Structure {
      * @internal
      */
     public function output() {
-        $lable = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $lable   = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name    = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         ?>
         <div  <?php
 
-                if ( is_array( $attrs ) ) {
+        if ( is_array( $attrs ) ) {
 
-                    foreach ( $attrs as $key => $val ) {
-                        echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
-                    }
+            foreach ( $attrs as $key => $val ) {
+                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+            }
 
-                }
+        }
 
-                ?>>
+        ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <select name="<?php echo esc_html( $this->prefix . $name ); ?>">
                     <?php
 
         if ( isset( $choices ) ) {
+
             foreach ( $choices as $key => $val ) {
                 $is_selected = ( $key == $this->value ) ? 'selected' : '';
                 ?>
@@ -76,7 +77,8 @@ class Select extends Structure {
                             <?php echo esc_html( $is_selected ); ?>>
                             <?php echo esc_html( $val ); ?>
                 <?php
-            }
+}
+
         }
 
         ?>
