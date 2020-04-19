@@ -18,7 +18,7 @@ class DatetimePicker extends Structure {
      */
     public function enqueue() {
 
-        wp_enqueue_script( 'date-time-picker', plugins_url( 'datetime-picker/assets/js/script.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'dm-date-time-picker', plugins_url( 'datetime-picker/assets/js/script.js', dirname( __FILE__ ) ) );
 
         $date_time_picker_config = $this->content['datetime-picker'];
         $data['min_date'] = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : date( 'd-m-Y' );
@@ -28,7 +28,7 @@ class DatetimePicker extends Structure {
         $data['timepicker'] = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : false;
         $data['default_time'] = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
 
-        wp_localize_script( 'date-time-picker', 'date_time_picker_config', $data );
+        wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $data );
     }
 
     /**

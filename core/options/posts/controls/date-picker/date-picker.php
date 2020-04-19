@@ -24,13 +24,13 @@ class DatePicker extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-        wp_enqueue_script( 'date-picker', plugins_url( 'date-picker/assets/js/script.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'dm-date-picker', plugins_url( 'date-picker/assets/js/script.js', dirname( __FILE__ ) ) );
 
         $data['monday_first'] = ( isset( $this->content['monday-first'] ) && ( $this->content['monday-first'] == true ) ) ? 1 : 0;
         $data['min_date'] = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
         $data['max_date'] = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
 
-        wp_localize_script( 'date-picker', 'date_picker_config', $data );
+        wp_localize_script( 'dm-date-picker', 'date_picker_config', $data );
     }
 
     /**
