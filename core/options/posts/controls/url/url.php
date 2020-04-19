@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Text;
+namespace Devmonsta\Options\Posts\Controls\Url;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Text extends Structure {
+class Url extends Structure {
 
     protected $value;
 
@@ -26,7 +26,7 @@ class Text extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-        wp_enqueue_script( 'dm-text-js', plugins_url( 'text/assets/js/script.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'dm-url-js', plugins_url( 'url/assets/js/script.js', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -37,8 +37,8 @@ class Text extends Structure {
         global $post;
 
         $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $content['value'];
         $this->output();
     }
 
@@ -60,11 +60,10 @@ class Text extends Structure {
                     }
 
                 }
-
                 ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text" name="<?php echo esc_html( $this->prefix . $name ); ?>" value="<?php echo esc_html( $this->value ); ?>" >
+            <input type="url" name="<?php echo esc_html( $this->prefix . $name ); ?>" value="<?php echo esc_html( $this->value ); ?>" >
         </div>
     <?php
 }
