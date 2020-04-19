@@ -2,7 +2,7 @@
 
 /**
  * Lets you create easy functions for get/set database option values
- * it will handle all clever logic with default values, multikeys and processing options dm-storage parameter
+ * it will handle all clever logic with default values, multikeys and processing options dms-storage parameter
  * @since 2.5.9
  */
 abstract class DM_Db_Options_Model {
@@ -170,7 +170,7 @@ abstract class DM_Db_Options_Model {
 			$options = DM_Cache::get( $cache_key = $this->get_cache_key( 'options', $item_id, $extra_data ) );
 		} catch ( DM_Cache_Not_Found_Exception $e ) {
 			DM_Cache::set( $cache_key, array() ); // prevent recursion
-			DM_Cache::set( $cache_key, $options = dm_extract_only_options( $this->get_options( $item_id, $extra_data ) ) );
+			DM_Cache::set( $cache_key, $options = dms_extract_only_options( $this->get_options( $item_id, $extra_data ) ) );
 		}
 
 		if ( $options ) {
@@ -200,18 +200,18 @@ abstract class DM_Db_Options_Model {
 							? (
 							isset( $option['value'] )
 								? $option['value']
-								: dm()->backend->option_type( $option['type'] )->get_defaults( 'value' )
+								: dms()->backend->option_type( $option['type'] )->get_defaults( 'value' )
 							)
-							: dm()->backend->option_type( $option['type'] )->get_value_from_input( $option, null );
+							: dms()->backend->option_type( $option['type'] )->get_value_from_input( $option, null );
 					}
 				}
 
 				foreach ( $options as $id => $option ) {
-					$values[ $id ] = dm()->backend->option_type( $option['type'] )->storage_load(
+					$values[ $id ] = dms()->backend->option_type( $option['type'] )->storage_load(
 						$id,
 						$option,
 						isset( $values[ $id ] ) ? $values[ $id ] : null,
-						$this->get_dm_storage_params( $item_id, $extra_data )
+						$this->get_dms_storage_params( $item_id, $extra_data )
 					);
 				}
 
@@ -220,7 +220,7 @@ abstract class DM_Db_Options_Model {
 		}
 
 		if ( empty( $option_id ) ) {
-			return ( empty( $values ) && ( is_array( $default_value ) || dm_is_callback( $default_value ) ) )
+			return ( empty( $values ) && ( is_array( $default_value ) || dms_is_callback( $default_value ) ) )
 				? dm_call( $default_value )
 				: $values;
 		} else {
@@ -244,7 +244,7 @@ abstract class DM_Db_Options_Model {
 			$options = DM_Cache::get($cache_key = $this->get_cache_key('options', $item_id, $extra_data));
 		} catch (DM_Cache_Not_Found_Exception $e) {
 			DM_Cache::set($cache_key, array()); // prevent recursion
-			DM_Cache::set($cache_key, $options = dm_extract_only_options($this->get_options($item_id, $extra_data)));
+			DM_Cache::set($cache_key, $options = dms_extract_only_options($this->get_options($item_id, $extra_data)));
 		}
 
 		$sub_keys = null;
@@ -261,7 +261,7 @@ abstract class DM_Db_Options_Model {
 
 			if ($sub_keys) { // update sub_key in old_value and use the entire value
 				$new_value = $old_value;
-				dm_aks($sub_keys, $value, $new_value);
+				dms_aks($sub_keys, $value, $new_value);
 				$value = $new_value;
 				unset($new_value);
 
@@ -269,11 +269,11 @@ abstract class DM_Db_Options_Model {
 			}
 
 			if (isset($options[$option_id])) {
-				$value = dm()->backend->option_type($options[$option_id]['type'])->storage_save(
+				$value = dms()->backend->option_type($options[$option_id]['type'])->storage_save(
 					$option_id,
 					$options[$option_id],
 					$value,
-					$this->get_dm_storage_params($item_id, $extra_data)
+					$this->get_dms_storage_params($item_id, $extra_data)
 				);
 			}
 
@@ -293,21 +293,21 @@ abstract class DM_Db_Options_Model {
 				
 				
 				foreach ($options as $_option_id => $_option) {
-					dm()->backend->option_type($options[$_option_id]['type'])->storage_save(
+					dms()->backend->option_type($options[$_option_id]['type'])->storage_save(
 						$_option_id,
 						$_option,
-						dm()->backend->option_type($options[$_option_id]['type'])->get_defaults('value'),
-						$this->get_dm_storage_params($item_id, $extra_data)
+						dms()->backend->option_type($options[$_option_id]['type'])->get_defaults('value'),
+						$this->get_dms_storage_params($item_id, $extra_data)
 					);
 				}
 			} else {
 				foreach ($value as $_option_id => $_option_value) {
 					if (isset($options[$_option_id])) {
-						$value[$_option_id] = dm()->backend->option_type($options[$_option_id]['type'])->storage_save(
+						$value[$_option_id] = dms()->backend->option_type($options[$_option_id]['type'])->storage_save(
 							$_option_id,
 							$options[$_option_id],
 							$_option_value,
-							$this->get_dm_storage_params($item_id, $extra_data)
+							$this->get_dms_storage_params($item_id, $extra_data)
 						);
 					}
 				}
