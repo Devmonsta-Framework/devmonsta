@@ -4,8 +4,7 @@ namespace Devmonsta;
 
 use Devmonsta\Traits\Singleton;
 
-final class Bootstrap
-{
+final class Bootstrap {
 
     use Singleton;
 
@@ -17,20 +16,21 @@ final class Bootstrap
      * =============================================
      */
 
-    public function init()
-    {
-        define('DM', true);
+    public function init() {
+        define( 'DM', true );
         //Make all the helper functions available
-        require_once dirname(__FILE__) . '/helpers/class-dm-dumper.php';
-        require_once dirname(__FILE__) . '/helpers/general.php';
-        
-        
+        $helper_files = [ 'general',
+            'class-dm-dumper',
+            'meta',
+            // 'database',
+        ];
+
+        foreach ( $helper_files as $file ) {
+            require dirname( __FILE__ ) . '/helpers/' . $file . '.php';
+        }
+
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
-        // Load helper functions
-		foreach (array('general', 'meta','database') as $file) {
-			require $dir . '/helpers/' . $file . '.php';
-		}
     }
 
 }

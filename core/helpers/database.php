@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'DMS' ) ) {
+<?php if ( ! defined( 'DM' ) ) {
 	die( 'Forbidden' );
 }
 // Post Options
