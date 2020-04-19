@@ -112,7 +112,7 @@ class Posts {
                 $class_name = implode( '', $class_name );
                 $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
 
-                // dm_print($control_class);
+                //  dm_print($control_class);
                 if ( class_exists( $control_class ) ) {
                     // dm_print($control_class);
                     $control = new $control_class( $control_content );
