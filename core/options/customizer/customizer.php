@@ -71,10 +71,10 @@ class Customizer
             }
 
             /**
-             * Get all controls defined in the theme
+             * Get all panels defined in the theme
              */
 
-            $all_controls = $customizer->all_controls();
+            $all_panels = $customizer->all_panels();
 
             /**
              * Get all sections defined in the theme
@@ -83,19 +83,17 @@ class Customizer
             $all_sections = $customizer->all_sections();
 
             /**
-             * Get all panels defined in the theme
+             * Get all controls defined in the theme
              */
 
-            $all_panels = $customizer->all_panels();
+            $all_controls = $customizer->all_controls();
 
+            
             /**
-             * Set all section defined in the theme
-             * @since 1.0.1
+             * Build the panel , sections and controls
              */
 
-            foreach ($all_panels as $panel) {
-                Panel::instance()->add_panel($panel);
-            }
+             
 
             /**
              * Set all controls defined in the theme
@@ -159,7 +157,5 @@ class Customizer
         }
 
     }
-
-
 
 }

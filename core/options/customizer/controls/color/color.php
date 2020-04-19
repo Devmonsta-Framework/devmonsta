@@ -36,8 +36,11 @@ class Color extends Control
             );
 
         });
-        
+
     }
 
-    
+    public function build($panels,$sections,$controls){
+
+    }
+
 }
