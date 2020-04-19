@@ -49,6 +49,7 @@ class Radio extends Structure{
             <lable><?php echo esc_html($lable); ?> </lable>
             <div><small><?php echo esc_html($desc); ?> </small></div>
             <?php 
+            if(isset($choices)){
             foreach($choices as $key => $val){
                 $is_checked = ($key == $this->value) ? 'checked' : '';
                 ?>
@@ -59,6 +60,7 @@ class Radio extends Structure{
                         <?php echo esc_html($val);?>
                 <?php
             }
+        }
             ?>
             
         </div<>
