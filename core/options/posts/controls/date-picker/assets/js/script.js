@@ -6,8 +6,11 @@ jQuery(document).ready(function($) {
     if ($("#dm-date-picker").length) {
 
         $('#dm-date-picker').datepicker({
-            firstDay: start_day,
+            firstDay: date_picker_config.start_day,
             dateFormat: "yy-mm-dd",
+            changeMonth: true,
+            minDate: date_picker_config.min_date,
+            maxDate: date_picker_config.max_date,
             onSelect: function() {
                 $(this).val();
             }
