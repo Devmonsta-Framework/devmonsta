@@ -4,8 +4,7 @@ namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Traits\Singleton;
 
-class View
-{
+class View {
 
     use Singleton;
 
@@ -16,14 +15,14 @@ class View
      * @return      void
      */
 
-    public function build($box_id, $controls)
-    {
-        
-        foreach ($controls as $control) {
+    public function build( $box_id, $controls ) {
 
-            if (Validator::instance()->check($control)) {
-                if ($control['box_id'] == $box_id) {
-                    $this->render($control);
+        foreach ( $controls as $control ) {
+
+            if ( Validator::instance()->check( $control ) ) {
+
+                if ( $control['box_id'] == $box_id ) {
+                    $this->render( $control );
                 }
 
             }
@@ -40,25 +39,22 @@ class View
      * @access      public
      * @return      void
      */
-    public function render($control_content)
-    {
-        
-        if (isset($control_content['type'])) {
-            $class_name = ucwords($control_content['type']);
-            $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
-            if (class_exists($control_class)) {
+    public function render( $control_content ) {
 
-                $control = new $control_class($control_content);
+        if ( isset( $control_content['type'] ) ) {
+            $class_name = ucwords( $control_content['type'] );
+            $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+
+            if ( class_exists( $control_class ) ) {
+
+                $control = new $control_class( $control_content );
                 $control->init();
                 $control->enqueue();
                 $control->render();
 
-
             }
 
         }
-
-        
 
     }
 
