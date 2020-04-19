@@ -24,7 +24,12 @@ class DatePicker extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-        wp_enqueue_script( 'date-picker-js', plugins_url( 'date-picker/assets/js/script.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'date-picker', plugins_url( 'date-picker/assets/js/script.js', dirname( __FILE__ ) ) );
+        
+        $monday_first = (isset( $this->content['monday-first'] ) && $this->content['monday-first'] == true ) 
+                        ? 1 : 0;
+        
+        wp_localize_script('date-picker', 'start_day', $monday_first);
     }
 
     /**
@@ -47,14 +52,13 @@ class DatePicker extends Structure {
         $name = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $monday_first = isset( $this->content['monday-first'] ) ? $this->content['monday-first'] : false;
         $min_date = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
         $max_date = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         ?>
         <div <?php echo esc_attr( $attrs ); ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text"
+            <input type="date"
                     id="dm-date-picker"
                     data-monday_first = "<?php echo esc_html( $monday_first ); ?>"
                     name="<?php echo esc_html( $this->prefix . $name ); ?>"
