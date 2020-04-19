@@ -15,12 +15,12 @@ class Customizer
 
     public function add_panel($panel)
     {
-        self::$panel = $panel;
+        self::$panel[] = $panel;
     }
 
     public function add_section($section)
     {
-        self::$section = $section;
+        self::$section[] = $section;
     }
 
     public function all_controls()

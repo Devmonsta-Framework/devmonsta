@@ -43,10 +43,16 @@ class Checkbox extends Structure {
         $name = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $is_checked = ( $this->value ) ? 'checked' : '';
+        $is_checked = ( $this->value == 'true' ) ? 'checked' : '';
         ?>
         <div <?php echo esc_attr( $attrs ); ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
+
+            <input type="text"
+                       value="false"
+                       name="<?php echo esc_html( $this->prefix . $name ); ?>"
+                       style="display: none">
+
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
                 <input type="checkbox"
                         name="<?php echo esc_html( $this->prefix . $name ); ?>"

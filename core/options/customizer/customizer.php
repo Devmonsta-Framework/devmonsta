@@ -2,10 +2,9 @@
 
 namespace Devmonsta\Options\Customizer;
 
+use Devmonsta;
 use Devmonsta\Libs\Customizer as LibsCustomizer;
-use Devmonsta\Options\Customizer\Controls\Color;
-use Devmonsta\Options\Customizer\Controls\Panel;
-use Devmonsta\Options\Customizer\Controls\Section;
+use Devmonsta\Options\Customizer\Panel;
 use Devmonsta\Traits\Singleton;
 
 class Customizer
@@ -13,6 +12,16 @@ class Customizer
 
     use Singleton;
 
+    /**
+     * ==========================================
+     *
+     * Initial method of the customizer
+     *
+     * @access  public
+     * @return  void
+     * @since   1.0.0
+     * ==========================================
+     */
     public function init()
     {
 
@@ -32,8 +41,18 @@ class Customizer
             require_once $customizer_file;
 
             $childrens = array();
+
+            /**
+             *================================================
+             * Fetch all the class extended to Customer class
+             * @Devmonsta\Libs\Customizer
+             *================================================
+             */
             foreach (get_declared_classes() as $class) {
                 if (is_subclass_of($class, 'Devmonsta\Libs\Customizer')) {
+
+                    /** Store all control class to @var array $childrens */
+
                     $childrens[] = $class;
                 }
 
@@ -52,10 +71,10 @@ class Customizer
             }
 
             /**
-             * Get all controls defined in the theme
+             * Get all panels defined in the theme
              */
 
-            $all_controls = $customizer->all_controls();
+            $all_panels = $customizer->all_panels();
 
             /**
              * Get all sections defined in the theme
@@ -64,48 +83,79 @@ class Customizer
             $all_sections = $customizer->all_sections();
 
             /**
-             * Get all panels defined in the theme
+             * Get all controls defined in the theme
              */
 
-            $all_panels = $customizer->all_panels();
+            $all_controls = $customizer->all_controls();
+
+            
+            /**
+             * Build the panel , sections and controls
+             */
+
+             
 
             /**
              * Set all controls defined in the theme
              */
 
-            foreach ($all_controls as $ctrl) {
+            foreach ($all_controls as $args) {
 
-                $args = $ctrl;
+                $this->build_controls($args);
 
-                if ($ctrl['type'] == 'color') {
-
-                    Color::instance()->add_color($args);
-
-                }
-
-                if ($ctrl['section'] == 'text') {
-
-                    Section::instance()->add_section($args);
-
-                }
-
-            }
-
-            /**
-             * Set all section defined in the theme
-             * @since 1.0.1
-             */
-
-            foreach ($all_panels as $panel) {
-                Panel::instance()->add_panel($panel);
             }
 
         }
     }
 
+    /**
+     * ======================================
+     * Get the active theme location
+     * and the customzer file of the theme
+     *
+     * @access  public
+     * @return  string
+     * ======================================
+     */
+
     public function get_customizer_file()
     {
+        /**
+         * Return the customizer file
+         *
+         * @link https://developer.wordpress.org/reference/functions/get_template_directory
+         */
         return get_template_directory() . '/devmonsta/options/customizer.php';
+    }
+
+    /**
+     *=================================
+     * Build options for customizer
+     * @access  public
+     * @return  void
+     *=================================
+     */
+
+    public function build_controls($args)
+    {
+
+        /**
+         * =====================================================
+         *      Check if the @type of control is set or not
+         *      Create a dynamic object of class and add the
+         *      data to control
+         * =====================================================
+         */
+
+        if (isset($args['type'])) {
+            $type = $args['type'];
+            $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $type . '\\' . $type;
+            if (class_exists($control_class)) {
+                $control_class::instance()->add_control($args);
+            }
+
+        }
+
     }
 
 }
