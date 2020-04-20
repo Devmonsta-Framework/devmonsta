@@ -28,6 +28,7 @@ class Multiselect extends Structure {
     public function load_scripts( $hook ) {
         // wp_enqueue_script( 'select2-js', plugins_url( 'multiselect/assets/js/select2.min.js', dirname( __FILE__ ) ) );
         // wp_enqueue_script( 'dm-multiselect-js', plugins_url( 'multiselect/assets/js/script.js', dirname( __FILE__ ) ), ['jquery', 'select2-js'], time(), true );
+
     }
 
     /**
@@ -41,8 +42,6 @@ class Multiselect extends Structure {
             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
             $this->value = maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) );
         }
-
-        // var_dump( $this->value );
         $this->output();
     }
 
