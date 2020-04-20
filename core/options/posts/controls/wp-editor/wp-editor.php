@@ -51,16 +51,19 @@ class WpEditor extends Structure {
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
-        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
-        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? $this->content['editor_height'] : 425;
-        $size                      = ( isset( $this->content['size'] ) && ( $this->content['size'] == "small" ) ) ? "75%" : "100%";
-        ?>
-        <div style='width:<?php echo esc_attr($size);?>;'>
-           <lable><?php echo esc_html( $lable ); ?> </lable>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <?php wp_editor( $this->value, $this->prefix . $name, $settings );?>
-        </div>
-    <?php
-}
+        $settings                  = [];
+        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
+
+        ob_start();
+        wp_editor( $this->value, $this->prefix . $name, $settings );
+        $editor_html = ob_get_contents();
+        ob_end_clean();
+
+        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
+        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+
+        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
+    }
 
 }

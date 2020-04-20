@@ -905,3 +905,29 @@ function dm_callback($callback, array $args = array(), $cache = true)
 {
 	return new Dm_Callback($callback, $args, $cache);
 }
+
+
+/**
+ * Generate html tag
+ *
+ * @param string $tag Tag name
+ * @param array $attr Tag attributes
+ * @param bool|string $end Append closing tag. Also accepts body content
+ *
+ * @return string The tag's html
+ */
+function dm_html_tag( $tag, $attr = [], $end = false ) {
+	$html = '<' . $tag . ' ' . dm_attr_to_html( $attr );
+
+	if ( $end === true ) {
+		$html .= '></' . $tag . '>';
+	} else
+
+	if ( $end === false ) {
+		$html .= '/>';
+	} else {
+		$html .= '>' . $end . '</' . $tag . '>';
+	}
+
+	return $html;
+}
