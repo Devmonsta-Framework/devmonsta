@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Select;
+namespace Devmonsta\Options\Posts\Controls\Multiselect;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Select extends Structure {
+class Multiselect extends Structure {
 
     protected $value;
 
@@ -26,7 +26,8 @@ class Select extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-
+        // wp_enqueue_script( 'select2-js', plugins_url( 'multiselect/assets/js/select2.min.js', dirname( __FILE__ ) ) );
+        // wp_enqueue_script( 'dm-multiselect-js', plugins_url( 'multiselect/assets/js/script.js', dirname( __FILE__ ) ), ['jquery', 'select2-js'], time(), true );
     }
 
     /**
@@ -36,9 +37,12 @@ class Select extends Structure {
         $content = $this->content;
         global $post;
 
-        $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        if ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
+            $this->value = maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) );
+        }
+
+        // var_dump( $this->value );
         $this->output();
     }
 
@@ -52,35 +56,26 @@ class Select extends Structure {
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         ?>
-        <div  <?php
-
-        if ( is_array( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
-            }
-
-        }
-
-        ?>>
+        <div >
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <select name="<?php echo esc_html( $this->prefix . $name ); ?>">
-                    <?php
+            <select id="dm_multi_select" multiple="multiple" name="<?php echo esc_html( $this->prefix . $name ); ?>[]">
+        <?php
 
         if ( isset( $choices ) ) {
-
             foreach ( $choices as $key => $val ) {
-                $is_selected = ( $key == $this->value ) ? 'selected' : '';
-                ?>
+                if ( is_array( $this->value ) && in_array( $key, $this->value ) ) {
+                    $selected = 'selected';
+                } else {
+                    $selected = null;
+                }
+        ?>
                     <option value="<?php echo esc_html( $key ); ?>"
-                            <?php echo esc_html( $is_selected ); ?>>
+                            <?php echo esc_html( $selected ); ?>>
                             <?php echo esc_html( $val ); ?>
-                <?php
-}
-
+        <?php
+            }
         }
-
         ?>
             </select>
         </div>
