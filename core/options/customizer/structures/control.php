@@ -5,6 +5,6 @@ abstract class Control
 {
 
     abstract public function add_control($args);
-    // abstract public function enqueue();
+  
 
 }

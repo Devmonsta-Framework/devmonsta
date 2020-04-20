@@ -88,22 +88,29 @@ class Customizer
 
             $all_controls = $customizer->all_controls();
 
-            
+            /**
+             * Get all settings for the customizer defined in theme
+             */
+
+            $all_settings = $customizer->all_settings();
+
             /**
              * Build the panel , sections and controls
              */
 
-             
+            $this->build_panels($all_panels);
+            $this->build_sections($all_sections);
+            $this->build_controls($all_controls);
 
             /**
              * Set all controls defined in the theme
              */
 
-            foreach ($all_controls as $args) {
+            // foreach ($all_controls as $args) {
 
-                $this->build_controls($args);
+            //     $this->build_controls($args);
 
-            }
+            // }
 
         }
     }
@@ -146,16 +153,46 @@ class Customizer
          *      data to control
          * =====================================================
          */
-
-        if (isset($args['type'])) {
-            $type = $args['type'];
-            $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $type . '\\' . $type;
-            if (class_exists($control_class)) {
-                $control_class::instance()->add_control($args);
+        foreach($args as $control){
+            if (isset($control['type'])) {
+                $type = $control['type'];
+                $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $type . '\\' . $type;
+                if (class_exists($control_class)) {
+                    $control_class::instance()->add_control($control);
+                }
+    
             }
+        }
+        
 
+    }
+
+    public function build_panels($panels)
+    {
+
+        foreach ($panels as $panel) {
+            add_action('customize_register', function ($wp_customize) use ($panel) {
+                $panel_id = $panel['id'];
+                unset($panel['id']);
+                $wp_customize->add_panel($panel_id, $panel);
+            });
         }
 
     }
+
+    public function build_sections($sections)
+    {
+        foreach ($sections as $section) {
+
+            add_action('customize_register', function ($wp_customize) use ($section) {
+                $section_id = $section['id'];
+                unset($section['id']);
+                $wp_customize->add_section($section_id, $section);
+            });
+
+        }
+    }
+
+
 
 }
