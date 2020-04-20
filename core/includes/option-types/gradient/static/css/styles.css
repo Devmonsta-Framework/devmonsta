@@ -1,0 +1,21 @@
+.dms-backend-option-input-type-gradient .dms-option-help-in-input {
+	top: 4px !important;
+}
+
+.dms-option-type-gradient .primary-color {
+	display: inline-block;
+}
+
+.dms-option-type-gradient .secondary-color {
+	display: inline-block;
+}
+
+.dms-option-type-gradient .delimiter {
+	display: inline-block;
+	padding: 0 4px;
+}
+
+#side-sortables .dms-option-type-gradient .secondary-color,
+#side-sortables .dms-option-type-gradient .primary-color {
+	width: inherit !important;
+}

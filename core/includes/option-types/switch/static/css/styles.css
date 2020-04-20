@@ -1,0 +1,27 @@
+.dms-option-type-switch .adaptive-switch,
+.dms-option-type-switch .adaptive-switch label {
+	font-size: 11px;
+}
+
+.dms-backend-option-input-type-switch .dms-option-help-in-input {
+	top: 3px !important;
+}
+
+.dms-option-type-switch .adaptive-switch label.switch-label span {
+	text-transform: uppercase;
+	padding: 0 0.8em;
+}
+
+@media (max-width: 782px) {
+	.dms-option-type-switch .adaptive-switch {
+		font-size: 14px;
+	}
+}
+
+body.rtl .adaptive-switch {
+	direction: ltr;
+}
+
+.dms-backend-option-design-customizer.dms-backend-option-type-switch .adaptive-switch .switch-switcher label.switch-label {
+	line-height: inherit;
+}

@@ -1,0 +1,10 @@
+.dms_xdsoft_datetimepicker.dms_xdsoft_noselect {
+	z-index: 560100; /* bigger than dms.OptionsModal's z-index */
+}
+
+.dms-backend-option-input-type-datetime-picker .dms-option-help-in-input {
+	top: 4px !important;
+}
+.dms-option-type-datetime-picker input[readonly] {
+	background-color: #fff;
+}

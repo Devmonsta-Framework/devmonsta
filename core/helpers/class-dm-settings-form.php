@@ -1,4 +1,4 @@
-<?php if (!defined('DMS')) die('Forbidden');
+<?php if (!defined('dm')) die('Forbidden');
 
 /**
  * Helps you create settings forms
@@ -43,9 +43,9 @@ abstract class DM_Settings_Form {
 	private $is_ajax_submit = false;
 
 	/**
-	 * @var DMS_Form
+	 * @var dm_Form
 	 */
-	private $dms_form;
+	private $dm_form;
 
 	/**
 	 * Translated text ( initialized in __construct() )
@@ -53,8 +53,8 @@ abstract class DM_Settings_Form {
 	 */
 	private $strings;
 
-	private static $input_name_reset = '_dms_reset_options';
-	private static $input_name_save = '_dms_save_options';
+	private static $input_name_reset = '_dm_reset_options';
+	private static $input_name_save = '_dm_save_options';
 
 	final public function __construct($id) {
 		if (isset(self::$ids[$id])) {
@@ -64,16 +64,16 @@ abstract class DM_Settings_Form {
 		}
 
 		$this->id = $id;
-		$this->dms_form = new DMS_Form('dms-settings-form:'. $this->get_id(), array(
+		$this->dm_form = new DM_Form('dm-settings-form:'. $this->get_id(), array(
 			'render' => array($this, '_form_render'),
 			'validate' => array($this, '_form_validate'),
 			'save' => array($this, '_form_save'),
 		));
 		$this->strings = array(
-			'title' => __('Settings', 'dms'),
-			'save_button' => __('Save Changes', 'dms'),
-			'reset_button' => __('Reset Options', 'dms'),
-			'reset_warning' => __("Click OK to reset.\nAll settings will be lost and replaced with default settings!", 'dms'),
+			'title' => __('Settings', 'dm'),
+			'save_button' => __('Save Changes', 'dm'),
+			'reset_button' => __('Reset Options', 'dm'),
+			'reset_warning' => __("Click OK to reset.\nAll settings will be lost and replaced with default settings!", 'dm'),
 		);
 
 		$this->_init();
@@ -149,10 +149,10 @@ abstract class DM_Settings_Form {
 	}
 
 	public function enqueue_static() {
-		dms()->backend->enqueue_options_static($this->get_options());
+		dm()->backend->enqueue_options_static($this->get_options());
 
 		if ($this->get_is_ajax_submit()) {
-			wp_enqueue_script('dms-form-helpers');
+			wp_enqueue_script('dm-form-helpers');
 		}
 	}
 
@@ -161,12 +161,12 @@ abstract class DM_Settings_Form {
 
 		if ( $this->get_is_side_tabs() ) {
 			// this is needed for flash messages (admin notices) to be displayed properly
-			echo '<h2 class="dms-hidden"></h2>';
+			echo '<h2 class="dm-hidden"></h2>';
 		} else {
 			echo '<h2>'. esc_html( $this->get_string('title') ) .'</h2><br/>';
 		}
 
-		$this->dms_form->render();
+		$this->dm_form->render();
 
 		echo '</div>';
 
@@ -184,7 +184,7 @@ abstract class DM_Settings_Form {
 	}
 
 	/**
-	 * Previously the functionality from this class was hardcoded in dms()->backend for Theme Settings
+	 * Previously the functionality from this class was hardcoded in dm()->backend for Theme Settings
 	 * and there were hooks that developers use now, so we should use old hooks for Theme Settings form
 	 * Backwards Compatibility
 	 * @return bool
@@ -202,20 +202,20 @@ abstract class DM_Settings_Form {
 		$options = $this->get_options();
 
 		if ( empty( $options ) ) {
-			echo '<p><em>', esc_html__('No options to display.', 'dms'), '</em></p>';
+			echo '<p><em>', esc_html__('No options to display.', 'dm'), '</em></p>';
 			return $data;
 		}
 
 		if ($this->is_theme_settings()) {
-			do_action('dms_settings_form_render', array(
+			do_action('dm_settings_form_render', array(
 				'ajax_submit' => $this->get_is_ajax_submit(),
 				'side_tabs' => $this->get_is_side_tabs()
 			));
 
 			{
-				$texts = apply_filters('dms_settings_form_texts', array(
-					'save_button' => __('Save Changes', 'dms'),
-					'reset_button' => __('Reset Options', 'dms'),
+				$texts = apply_filters('dm_settings_form_texts', array(
+					'save_button' => __('Save Changes', 'dm'),
+					'reset_button' => __('Reset Options', 'dm'),
 				));
 
 				$this->set_string('save_button', $texts['save_button']);
@@ -224,28 +224,28 @@ abstract class DM_Settings_Form {
 		}
 
 		{
-			$data['attr']['class'] = 'dms-settings-form';
+			$data['attr']['class'] = 'dm-settings-form';
 
 			if ( $this->get_is_side_tabs() ) {
-				$data['attr']['class'] .= ' dms-backend-side-tabs';
+				$data['attr']['class'] .= ' dm-backend-side-tabs';
 			}
 		}
 
 		$data['submit']['html'] = '<!-- -->'; // it's generated in view
 
-		dms_render_view( dms_get_framework_directory( '/views/backend-settings-form.php' ), array(
+		dm_render_view( dm_get_framework_directory( '/views/backend-settings-form.php' ), array(
 			'form' => $this,
 			'values' => (
-				($values = DMS_Request::POST( dms()->backend->get_options_name_attr_prefix() ))
+				($values = dm_Request::POST( dm()->backend->get_options_name_attr_prefix() ))
 				// This is form submit, extract values from $_POST
-				? ($values = dms_get_options_values_from_input( $options, $values ))
+				? ($values = dm_get_options_values_from_input( $options, $values ))
 				// Use saved values
 				: ($values = $this->get_values())
 			),
 			'is_theme_settings' => $this->is_theme_settings(),
 			'input_name_reset' => self::$input_name_reset,
 			'input_name_save' => self::$input_name_save,
-			'js_form_selector' => 'form[data-dms-form-id="'. esc_js($this->dms_form->get_id()) .'"]',
+			'js_form_selector' => 'form[data-dm-form-id="'. esc_js($this->dm_form->get_id()) .'"]',
 		), false );
 
 		return $data;
@@ -258,7 +258,7 @@ abstract class DM_Settings_Form {
 	 */
 	public function _form_validate( $errors ) {
 		if ( ! current_user_can($this->form_capability()) ) {
-			$errors['_no_permission'] = __( 'You have no permissions to change settings options', 'dms' );
+			$errors['_no_permission'] = __( 'You have no permissions to change settings options', 'dm' );
 		}
 
 		return $errors;
@@ -270,7 +270,7 @@ abstract class DM_Settings_Form {
 	 * @internal
 	 */
 	public function _form_save( $data ) {
-		$flash_id   = 'dms-settings-form:save:'. $this->get_id();
+		$flash_id   = 'dm-settings-form:save:'. $this->get_id();
 		$old_values = (array)$this->get_values();
 
 		if ( ! empty( $_POST[ self::$input_name_reset ] ) ) { // The "Reset" button was pressed
@@ -279,50 +279,50 @@ abstract class DM_Settings_Form {
 			 *
 			 * Usage:
 			 *
-			 * add_filter('dms_settings_form_reset:values', '_filter_add_persisted_option', 10, 2);
+			 * add_filter('dm_settings_form_reset:values', '_filter_add_persisted_option', 10, 2);
 			 * function _filter_add_persisted_option ($current_persisted, $old_values) {
-			 *   $value_to_persist = dms_akg('my/multi/key', $old_values);
-			 *   dms_aks('my/multi/key', $value_to_persist, $current_persisted);
+			 *   $value_to_persist = dm_akg('my/multi/key', $old_values);
+			 *   dm_aks('my/multi/key', $value_to_persist, $current_persisted);
 			 *
 			 *   return $current_persisted;
 			 * }
 			 */
 			$new_values = $this->is_theme_settings()
-				? apply_filters( 'dms_settings_form_reset:values', array(), $old_values )
-				: apply_filters( 'dms:settings-form:' . $this->get_id() . ':reset:values', array(), $old_values );
+				? apply_filters( 'dm_settings_form_reset:values', array(), $old_values )
+				: apply_filters( 'dm:settings-form:' . $this->get_id() . ':reset:values', array(), $old_values );
 
 			$this->set_values( $new_values );
 
-			DMS_Flash_Messages::add(
+			dm_Flash_Messages::add(
 				$flash_id,
-				__( 'The options were successfully reset', 'dms' ),
+				__( 'The options were successfully reset', 'dm' ),
 				'success'
 			);
 
 			if ( $this->is_theme_settings() ) {
-				do_action( 'dms_settings_form_reset', $old_values, $new_values );
+				do_action( 'dm_settings_form_reset', $old_values, $new_values );
 			} else {
-				do_action( 'dms:settings-form:' . $this->get_id() . ':reset', $old_values, $new_values );
+				do_action( 'dm:settings-form:' . $this->get_id() . ':reset', $old_values, $new_values );
 			}
 		} else { // The "Save" button was pressed
-			$new_values = dms_get_options_values_from_input( $this->get_options() );
+			$new_values = dm_get_options_values_from_input( $this->get_options() );
 
 			$this->set_values( $new_values );
 
-			DMS_Flash_Messages::add(
+			dm_Flash_Messages::add(
 				$flash_id,
-				__( 'The options were successfully saved', 'dms' ),
+				__( 'The options were successfully saved', 'dm' ),
 				'success'
 			);
 
 			if ($this->is_theme_settings()) {
-				do_action('dms_settings_form_saved', $old_values, $new_values);
+				do_action('dm_settings_form_saved', $old_values, $new_values);
 			} else {
-				do_action('dms:settings-form:'. $this->get_id() .':saved', $old_values, $new_values);
+				do_action('dm:settings-form:'. $this->get_id() .':saved', $old_values, $new_values);
 			}
 		}
 
-		$data['redirect'] = dms_current_url();
+		$data['redirect'] = dm_current_url();
 
 		return $data;
 	}
@@ -334,26 +334,26 @@ abstract class DM_Settings_Form {
 		?>
 		<script type="text/javascript">
 			(function ($) {
-				var dmsLoadingId = 'dms-settings-form:<?php echo esc_js($this->get_id()); ?>';
+				var dmLoadingId = 'dm-settings-form:<?php echo esc_js($this->get_id()); ?>';
 
-				<?php if (wp_script_is('dms-option-types')): ?>
+				<?php if (wp_script_is('dm-option-types')): ?>
 				// there are options on the page. show loading now and hide it after the options were initialized
 				{
-					dms.loading.show(dmsLoadingId);
+					dm.loading.show(dmLoadingId);
 
-					dmsEvents.one('dms:options:init', function (data) {
-						dms.loading.hide(dmsLoadingId);
+					dmEvents.one('dm:options:init', function (data) {
+						dm.loading.hide(dmLoadingId);
 					});
 				}
 				<?php endif; ?>
 
 				$(function ($) {
 					$(document.body).on({
-						'dms:settings-form:before-html-reset': function () {
-							dms.loading.show(dmsLoadingId);
+						'dm:settings-form:before-html-reset': function () {
+							dm.loading.show(dmLoadingId);
 						},
-						'dms:settings-form:reset': function () {
-							dms.loading.hide(dmsLoadingId);
+						'dm:settings-form:reset': function () {
+							dm.loading.hide(dmLoadingId);
 						}
 					});
 				});

@@ -1,0 +1,307 @@
+.dms-option.dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	display: inline-block;
+	text-align: left;
+	float: inherit;
+}
+.dms-backend-option-input-type-typography-v2 .dms-option-help-in-input {
+	top: 4px !important;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	padding-right: 5px;
+	width: 167px;
+}
+body.rtl .dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	padding-right: 0;
+	padding-left: 5px;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option:last-child,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	padding-right: 0;
+}
+body.rtl .dms-option-type-typography-v2 .dms-option-typography-v2-option:last-child,
+body.rtl .dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	padding-left: 0;
+}
+
+@media (max-width: 782px) {
+	.dms-backend-option-input-type-typography-v2 {
+		width: 100%;
+	}
+
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option {
+		padding-top: 5px;
+		padding-right: 0;
+	}
+	body.rtl .dms-option-type-typography-v2 .dms-option-typography-v2-option {
+		padding-left: 0;
+	}
+
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option:first-child {
+		padding-top: 0;
+	}
+
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option.dms-option-typography-v2-option-size {
+		width: 100%;
+	}
+}
+.dms-force-xs .dms-backend-option-input-type-typography-v2 {
+	width: 100%;
+}
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	padding-top: 5px;
+	padding-right: 0;
+}
+body.rtl .dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option {
+	padding-left: 0;
+}
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option:first-child {
+	padding-top: 0;
+}
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option.dms-option-typography-v2-option-size {
+	width: 100%;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option input,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option select {
+	display: inline-block;
+	margin: 0;
+	width: 100%;
+	padding: 5px 4px;
+}
+
+
+/* Color */
+
+@media (min-width: 783px) {
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-color input {
+		height: 28px;
+	}
+}
+
+/* Family */
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input {
+	background: #fff;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input .selectize-input {
+	height: 32px;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input .selectize-input.dropdown-active::before {
+	background: none;
+	height: 0;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-family .selectize-control.single .selectize-input:after {
+	right: 8px;
+	margin-top: -2px;
+	border-width: 6px 3px 0 3px;
+	border-color: #000000 transparent transparent transparent;
+}
+body.rtl .dms-option-type-typography-v2 .dms-option-typography-v2-option-family .selectize-control.single .selectize-input:after {
+	right: auto;
+	left: 8px;
+}
+
+@media (max-width: 782px) {
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-family .selectize-control.single .selectize-input:after {
+		right: 6px;
+	}
+
+	.dms-option-typography-v2-option.dms-option-typography-v2-option-family,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input {
+		width: 100%;
+		margin-right: 0;
+	}
+}
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-family .selectize-control.single .selectize-input:after {
+	right: 6px;
+}
+.dms-force-xs .dms-option-typography-v2-option.dms-option-typography-v2-option-family,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input {
+	width: 100%;
+	margin-right: 0;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input:focus,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-family-input.single .selectize-input.focus {
+	/*border: 1px solid #5b9dd9;
+
+	-webkit-box-shadow: 0 0 2px rgba(30,140,190,.8);
+	box-shadow: 0 0 2px rgba(30,140,190,.8);*/
+
+	-webkit-transition: .05s border-color ease-in-out;
+	transition: .05s border-color ease-in-out;
+}
+
+/*.dms-option-type-typography-v2 .selectize-dropdown.dms-option-typography-v2-option-family-input {
+	width: 335px !important;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+	border: 1px solid #ddd;
+}*/
+
+.dms-option-type-typography-v2 .selectize-dropdown .selectize-dropdown-content div {
+	height: 30px;
+	background-color: #fff;
+	cursor: pointer;
+	border-bottom: 1px solid #ddd;
+	line-height: 30px;
+}
+
+.dms-option-type-typography-v2 .selectize-dropdown .selectize-dropdown-content div.option span {
+	border: none;
+	background: none;
+	color: red;
+}
+
+.dms-option-type-typography-v2 .selectize-dropdown .selectize-dropdown-content div:hover{
+	background-color: #f0f0f0;
+}
+
+.dms-option-type-typography-v2 .selectize-dropdown.single {
+	border: 1px solid #ddd;
+}
+
+.dms-option-type-typography-v2 .selectize-control.single .selectize-input {
+	background: none;
+	margin: 0;
+	vertical-align: middle;
+	border: 1px solid #dddddd;
+	color: #333333;
+	height: 28px;
+	line-height: 27px;
+	font-size: 14px;
+	padding: 0 6px;
+
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+}
+
+@media (max-width: 782px) {
+	.dms-option-type-typography-v2 .selectize-dropdown.dms-option-typography-v2-option-family-input {
+		width: 100% !important;
+	}
+
+	.dms-option-type-typography-v2 .selectize-control.single .selectize-input {
+		font-size: 16px;
+		height: 36px;
+		line-height: 36px;
+	}
+
+	#edittag .dms-option-type-typography-v2 .selectize-control.single .selectize-input {
+		padding: 0 14px;
+	}
+}
+.dms-force-xs .dms-option-type-typography-v2 .selectize-dropdown.dms-option-typography-v2-option-family-input {
+	width: 100%!important;
+}
+.dms-force-xs .dms-option-type-typography-v2 .selectize-control.single .selectize-input {
+	font-size: 16px;
+}
+#edittag .dms-force-xs .dms-option-type-typography-v2 .selectize-control.single .selectize-input {
+	padding: 0 14px;
+}
+
+.dms-option-type-typography-v2 div.selectize-input.items.full.has-options.has-items {
+	background: none;
+}
+
+.dms-option-type-typography-v2 .selectize-dropdown .selectize-dropdown-content {
+	border: 1px solid #ddd;
+}
+
+.dms-option-type-typography-v2 .selectize-control .selectize-dropdown {
+	border: none;
+	top: 33px !important;
+}
+@media (max-width: 782px) {
+	.dms-option-type-typography-v2 .selectize-control .selectize-dropdown {
+		top: 42px !important;
+	}
+}
+
+@media (max-width: 782px) {
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-style,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-subset,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-variation,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-weight,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-size,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-line-height,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-letter-spacing,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-color,
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-color .dms-option-type-color-picker {
+		width: 100% !important;
+	}
+}
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-subset,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-variation,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-weight,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-style,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-size,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-line-height,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-letter-spacing,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-color,
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-color .dms-option-type-color-picker {
+	width: 100% !important;
+}
+
+/*
+Fix: for color picker width too small or too big
+Solution: Set color fixed size, and font-style to calculate its width
+
+font-style: dms-col-sm-3 = 25%
+color:      dms-col-sm-2 = 16.66666667%
+
+25% + 16.66666667% = 41.66666667%
+*/
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-color {
+	width: 70px; /* should be same width as option type color-picker */
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-style,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-weight,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-variation,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-subset {
+	width: 120px;
+}
+
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-size,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-line-height,
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-letter-spacing {
+	width: 86px;
+}
+
+.dms-option-type-typography-v2 .dms-option-typography-v2-option-letter-spacing {
+	width: 86px;
+}
+
+@media (max-width: 782px) {
+	.dms-option-type-typography-v2 .dms-option-typography-v2-option-size {
+		width: 100%;
+	}
+}
+.dms-force-xs .dms-option-type-typography-v2 .dms-option-typography-v2-option-size {
+	width: 100%;
+}
+
+.dms-option-type-typography-v2 .dms-inner {
+	font-size: 1em;
+	padding-top: 7px;
+	padding-left: 1px;
+	padding-bottom: 10px;
+	font-style: italic;
+	color: #666;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}

@@ -1,4 +1,4 @@
-<?php if (!defined('DMS')) {
+<?php if (!defined('dm')) {
 	die('Forbidden');
 }
 
@@ -165,7 +165,7 @@ final class _DM_Component_Backend
 	private function get_access_key()
 	{
 		if (!$this->access_key) {
-			$this->access_key = new DMS_Access_Key('dms_backend');
+			$this->access_key = new DM_Access_Key('dm_backend');
 		}
 
 		return $this->access_key;
@@ -251,8 +251,8 @@ final class _DM_Component_Backend
 		if ($type == null) {
 			try {
 				$type = $this->get_instance($option_type_class)->get_type();
-			} catch (DMS_Option_Type_Exception_Invalid_Class $exception) {
-				if (!is_subclass_of($option_type_class, 'DMS_Option_Type')) {
+			} catch (DM_Option_Type_Exception_Invalid_Class $exception) {
+				if (!is_subclass_of($option_type_class, 'DM_Option_Type')) {
 					trigger_error('Invalid option type class ' . get_class($option_type_class), E_USER_WARNING);
 
 					return;
@@ -270,7 +270,7 @@ final class _DM_Component_Backend
 	}
 
 	/**
-	 * @param string|DMS_Container_Type $container_type_class
+	 * @param string|DM_Container_Type $container_type_class
 	 * @param string|null $type
 	 *
 	 * @internal
@@ -280,8 +280,8 @@ final class _DM_Component_Backend
 		if ($type == null) {
 			try {
 				$type = $this->get_instance($container_type_class)->get_type();
-			} catch (DMS_Option_Type_Exception_Invalid_Class $exception) {
-				if (!is_subclass_of($container_type_class, 'DMS_Container_Type')) {
+			} catch (DM_Option_Type_Exception_Invalid_Class $exception) {
+				if (!is_subclass_of($container_type_class, 'DM_Container_Type')) {
 					trigger_error('Invalid container type class ' . get_class($container_type_class), E_USER_WARNING);
 
 					return;
@@ -321,7 +321,7 @@ final class _DM_Component_Backend
 
 		wp_register_script(
 			'dm-events',
-			dms_get_framework_directory_uri('/static/js/dm-events.js'),
+			dm_get_framework_directory_uri('/static/js/dm-events.js'),
 			array(),
 			dm()->manifest->get_version(),
 			true
@@ -329,152 +329,152 @@ final class _DM_Component_Backend
 
 		wp_register_script(
 			'dm-ie-fixes',
-			dms_get_framework_directory_uri('/static/js/ie-fixes.js'),
+			dm_get_framework_directory_uri('/static/js/ie-fixes.js'),
 			array(),
 			dm()->manifest->get_version(),
 			true
 		); {
 			wp_register_style(
 				'qtip',
-				dms_get_framework_directory_uri('/static/libs/qtip/css/jquery.qtip.min.css'),
+				dm_get_framework_directory_uri('/static/libs/qtip/css/jquery.qtip.min.css'),
 				array(),
 				dm()->manifest->get_version()
 			);
 			wp_register_script(
 				'qtip',
-				dms_get_framework_directory_uri('/static/libs/qtip/jquery.qtip.min.js'),
+				dm_get_framework_directory_uri('/static/libs/qtip/jquery.qtip.min.js'),
 				array('jquery'),
 				dm()->manifest->get_version()
 			);
 		} {
 			wp_register_style(
-				'dms',
-				dms_get_framework_directory_uri('/static/css/dms.css'),
+				'dm',
+				dm_get_framework_directory_uri('/static/css/dm.css'),
 				array('qtip'),
 				dm()->manifest->get_version()
 			);
 
 			wp_register_script(
-				'dms-reactive-options-registry',
-				dms_get_framework_directory_uri(
-					'/static/js/dms-reactive-options-registry.js'
+				'dm-reactive-options-registry',
+				dm_get_framework_directory_uri(
+					'/static/js/dm-reactive-options-registry.js'
 				),
-				array('dms', 'dm-events'),
+				array('dm', 'dm-events'),
 				false
 			);
 
 			wp_register_script(
-				'dms-reactive-options-simple-options',
-				dms_get_framework_directory_uri(
-					'/static/js/dms-reactive-options-simple-options.js'
+				'dm-reactive-options-simple-options',
+				dm_get_framework_directory_uri(
+					'/static/js/dm-reactive-options-simple-options.js'
 				),
-				array('dms', 'dm-events', 'dms-reactive-options-undefined-option'),
+				array('dm', 'dm-events', 'dm-reactive-options-undefined-option'),
 				false
 			);
 
 			wp_register_script(
-				'dms-reactive-options-undefined-option',
-				dms_get_framework_directory_uri(
-					'/static/js/dms-reactive-options-undefined-option.js'
+				'dm-reactive-options-undefined-option',
+				dm_get_framework_directory_uri(
+					'/static/js/dm-reactive-options-undefined-option.js'
 				),
 				array(
-					'dms', 'dm-events', 'dms-reactive-options-registry'
+					'dm', 'dm-events', 'dm-reactive-options-registry'
 				),
 				false
 			);
 
 			wp_register_script(
-				'dms-reactive-options',
-				dms_get_framework_directory_uri('/static/js/dms-reactive-options.js'),
+				'dm-reactive-options',
+				dm_get_framework_directory_uri('/static/js/dm-reactive-options.js'),
 				array(
-					'dms', 'dm-events', 'dms-reactive-options-undefined-option',
-					'dms-reactive-options-simple-options'
+					'dm', 'dm-events', 'dm-reactive-options-undefined-option',
+					'dm-reactive-options-simple-options'
 				),
 				false
 			);
 
 			wp_register_script(
-				'dms',
-				dms_get_framework_directory_uri('/static/js/dms.js'),
+				'dm',
+				dm_get_framework_directory_uri('/static/js/dm.js'),
 				array('jquery', 'dm-events', 'backbone', 'qtip'),
 				dm()->manifest->get_version(),
 				false
 			);
 
-			wp_localize_script('dms', '_dms_localized', array(
-				'DMS_URI'     => dms_get_framework_directory_uri(),
+			wp_localize_script('dm', '_dm_localized', array(
+				'DM_URI'     => dm_get_framework_directory_uri(),
 				'SITE_URI'   => site_url(),
-				'LOADER_URI' => apply_filters('dms_loader_image', dms_get_framework_directory_uri() . '/static/img/logo.svg'),
+				'LOADER_URI' => apply_filters('dm_loader_image', dm_get_framework_directory_uri() . '/static/img/logo.svg'),
 				'l10n'       => array_merge(
 					$l10n = array(
-						'modal_save_btn' => __('Save', 'dms'),
-						'done'     => __('Done', 'dms'),
-						'ah_sorry' => __('Ah, Sorry', 'dms'),
-						'reset'    => __('Reset', 'dms'),
-						'apply'    => __('Apply', 'dms'),
-						'cancel'   => __('Cancel', 'dms'),
-						'ok'       => __('Ok', 'dms')
+						'modal_save_btn' => __('Save', 'dm'),
+						'done'     => __('Done', 'dm'),
+						'ah_sorry' => __('Ah, Sorry', 'dm'),
+						'reset'    => __('Reset', 'dm'),
+						'apply'    => __('Apply', 'dm'),
+						'cancel'   => __('Cancel', 'dm'),
+						'ok'       => __('Ok', 'dm')
 					),
 
-					apply_filters('dms_js_l10n', $l10n)
+					apply_filters('dm_js_l10n', $l10n)
 				),
 				'options_modal' => array(
 					/** @since 2.6.13 */
-					'default_reset_bnt_disabled' => apply_filters('dms:option-modal:default:reset-btn-disabled', false)
+					'default_reset_bnt_disabled' => apply_filters('dm:option-modal:default:reset-btn-disabled', false)
 				),
 			));
 		} {
 			wp_register_style(
-				'dms-backend-options',
-				dms_get_framework_directory_uri('/static/css/backend-options.css'),
-				array('dms'),
+				'dm-backend-options',
+				dm_get_framework_directory_uri('/static/css/backend-options.css'),
+				array('dm'),
 				dm()->manifest->get_version()
 			);
 
 			wp_register_script(
-				'dms-backend-options',
-				dms_get_framework_directory_uri('/static/js/backend-options.js'),
-				array('dms', 'dm-events', 'dms-reactive-options', 'postbox', 'jquery-ui-tabs'),
+				'dm-backend-options',
+				dm_get_framework_directory_uri('/static/js/backend-options.js'),
+				array('dm', 'dm-events', 'dm-reactive-options', 'postbox', 'jquery-ui-tabs'),
 				dm()->manifest->get_version(),
 				true
 			);
 
-			wp_localize_script('dms', '_dms_backend_options_localized', array(
+			wp_localize_script('dm', '_dm_backend_options_localized', array(
 				'lazy_tabs' => dm()->theme->get_config('lazy_tabs')
 			));
 		} {
 			wp_register_style(
-				'dms-selectize',
-				dms_get_framework_directory_uri('/static/libs/selectize/selectize.css'),
+				'dm-selectize',
+				dm_get_framework_directory_uri('/static/libs/selectize/selectize.css'),
 				array(),
 				dm()->manifest->get_version()
 			);
 			wp_register_script(
-				'dms-selectize',
-				dms_get_framework_directory_uri('/static/libs/selectize/selectize.min.js'),
+				'dm-selectize',
+				dm_get_framework_directory_uri('/static/libs/selectize/selectize.min.js'),
 				array('jquery', 'dm-ie-fixes'),
 				dm()->manifest->get_version(),
 				true
 			);
 		} {
 			wp_register_script(
-				'dms-mousewheel',
-				dms_get_framework_directory_uri('/static/libs/mousewheel/jquery.mousewheel.min.js'),
+				'dm-mousewheel',
+				dm_get_framework_directory_uri('/static/libs/mousewheel/jquery.mousewheel.min.js'),
 				array('jquery'),
 				dm()->manifest->get_version(),
 				true
 			);
 		} {
 			wp_register_style(
-				'dms-jscrollpane',
-				dms_get_framework_directory_uri('/static/libs/jscrollpane/jquery.jscrollpane.css'),
+				'dm-jscrollpane',
+				dm_get_framework_directory_uri('/static/libs/jscrollpane/jquery.jscrollpane.css'),
 				array(),
 				dm()->manifest->get_version()
 			);
 			wp_register_script(
-				'dms-jscrollpane',
-				dms_get_framework_directory_uri('/static/libs/jscrollpane/jquery.jscrollpane.min.js'),
-				array('jquery', 'dms-mousewheel'),
+				'dm-jscrollpane',
+				dm_get_framework_directory_uri('/static/libs/jscrollpane/jquery.jscrollpane.min.js'),
+				array('jquery', 'dm-mousewheel'),
 				dm()->manifest->get_version(),
 				true
 			);
@@ -482,49 +482,49 @@ final class _DM_Component_Backend
 
 		wp_register_style(
 			'font-awesome',
-			dms_get_framework_directory_uri('/static/libs/font-awesome/css/font-awesome.min.css'),
+			dm_get_framework_directory_uri('/static/libs/font-awesome/css/font-awesome.min.css'),
 			array(),
 			dm()->manifest->get_version()
 		);
 
-		wp_register_style('dms-font-awesome', dms_get_framework_directory_uri('/static/libs/font-awesome/css/font-awesome.min.css'));
+		wp_register_style('dm-font-awesome', dm_get_framework_directory_uri('/static/libs/font-awesome/css/font-awesome.min.css'));
 
 		wp_register_script(
 			'backbone-relational',
-			dms_get_framework_directory_uri('/static/libs/backbone-relational/backbone-relational.js'),
+			dm_get_framework_directory_uri('/static/libs/backbone-relational/backbone-relational.js'),
 			array('backbone'),
 			dm()->manifest->get_version(),
 			true
 		);
 
 		wp_register_script(
-			'dms-uri',
-			dms_get_framework_directory_uri('/static/libs/uri/URI.js'),
+			'dm-uri',
+			dm_get_framework_directory_uri('/static/libs/uri/URI.js'),
 			array(),
 			dm()->manifest->get_version(),
 			true
 		);
 
 		wp_register_script(
-			'dms-moment',
+			'dm-moment',
 
-			dms_get_framework_directory_uri('/static/libs/moment/moment-with-locales.min.js'),
+			dm_get_framework_directory_uri('/static/libs/moment/moment-with-locales.min.js'),
 			array(),
 			dm()->manifest->get_version(),
 			true
 		);
 
 		wp_register_script(
-			'dms-form-helpers',
-			dms_get_framework_directory_uri('/static/js/dms-form-helpers.js'),
+			'dm-form-helpers',
+			dm_get_framework_directory_uri('/static/js/dm-form-helpers.js'),
 			array('jquery'),
 			dm()->manifest->get_version(),
 			true
 		);
 
 		wp_register_style(
-			'dms-unycon',
-			dms_get_framework_directory_uri('/static/libs/unycon/unycon.css'),
+			'dm-unycon',
+			dm_get_framework_directory_uri('/static/libs/unycon/unycon.css'),
 			array(),
 			dm()->manifest->get_version()
 		);
@@ -535,18 +535,18 @@ final class _DM_Component_Backend
 	/**
 	 * @param $class
 	 *
-	 * @return DMS_Option_Type
-	 * @throws DMS_Option_Type_Exception_Invalid_Class
+	 * @return DM_Option_Type
+	 * @throws DM_Option_Type_Exception_Invalid_Class
 	 */
 	protected function get_instance($class)
 	{
 		if (
 			!class_exists($class)
-			|| (!is_subclass_of($class, 'DMS_Option_Type')
+			|| (!is_subclass_of($class, 'DM_Option_Type')
 				&&
-				!is_subclass_of($class, 'DMS_Container_Type'))
+				!is_subclass_of($class, 'DM_Container_Type'))
 		) {
-			throw new DMS_Option_Type_Exception_Invalid_Class($class);
+			throw new DM_Option_Type_Exception_Invalid_Class($class);
 		}
 
 		return new $class;
@@ -572,7 +572,7 @@ final class _DM_Component_Backend
 
 		$collected = array();
 
-		dms_collect_options($collected, $options, array(
+		dm_collect_options($collected, $options, array(
 			'limit_option_types'    => false,
 			'limit_container_types' => false,
 			'limit_level'           => 1,
@@ -582,7 +582,7 @@ final class _DM_Component_Backend
 			return;
 		}
 
-		$values = dms_get_db_post_option($post->ID);
+		$values = dm_get_db_post_option($post->ID);
 
 		foreach ($collected as $id => &$option) {
 
@@ -591,17 +591,17 @@ final class _DM_Component_Backend
 				$priority = isset($option['priority']) ? $option['priority'] : 'default';
 
 				add_meta_box(
-					"dms-options-box-{$id}",
+					"dm-options-box-{$id}",
 					empty($option['title']) ? ' ' : $option['title'],
 					array($this, 'render_meta_box'),
 					$post_type,
 					$context,
 					$priority,
-					array('dms_box_html' => $this->render_options($option['options'], $values))
+					array('dm_box_html' => $this->render_options($option['options'], $values))
 				);
 			} else { // this is not a box, wrap it in auto-generated box
 				add_meta_box(
-					'dms-options-box:auto-generated:' . time() . ':' . dms_unique_increment(),
+					'dm-options-box:auto-generated:' . time() . ':' . dm_unique_increment(),
 					' ',
 					array($this, 'render_meta_box'),
 					$post_type,
@@ -619,10 +619,10 @@ final class _DM_Component_Backend
 			return;
 		}
 
-		if (isset($args['args']['dms_box_html'])) {
-			echo DMS_Helpers::render($args['args']['dms_box_html']);
+		if (isset($args['args']['dm_box_html'])) {
+			echo render($args['args']['dm_box_html']);
 		} elseif (!is_array($args['args'])) {
-			echo DMS_Helpers::render($args['args']);
+			echo render($args['args']);
 		}
 	}
 
@@ -639,7 +639,7 @@ final class _DM_Component_Backend
 
 		$collected = array();
 
-		dms_collect_options($collected, $options, array(
+		dm_collect_options($collected, $options, array(
 			'limit_option_types' => false,
 			'limit_container_types' => false,
 			'limit_level' => 1,
@@ -649,14 +649,14 @@ final class _DM_Component_Backend
 			return;
 		}
 
-		$values = dms_get_db_term_option($term->term_id, $term->taxonomy);
+		$values = dm_get_db_term_option($term->term_id, $term->taxonomy);
 
 		// fixes word_press style: .form-field input { width: 95% }
-		echo '<style type="text/css">.dms-option-type-radio input, .dms-option-type-checkbox input { width: auto; }</style>';
+		echo '<style type="text/css">.dm-option-type-radio input, .dm-option-type-checkbox input { width: auto; }</style>';
 
-		do_action('dms_backend_options_render:taxonomy:before');
-		echo DMS_Helpers::render($this->render_options($collected, $values, array(), 'taxonomy'));
-		do_action('dms_backend_options_render:taxonomy:after');
+		do_action('dm_backend_options_render:taxonomy:before');
+		echo render($this->render_options($collected, $values, array(), 'taxonomy'));
+		do_action('dm_backend_options_render:taxonomy:after');
 	}
 
 	/**
@@ -672,7 +672,7 @@ final class _DM_Component_Backend
 
 		$collected = array();
 
-		dms_collect_options($collected, $options, array(
+		dm_collect_options($collected, $options, array(
 			'limit_option_types'    => false,
 			'limit_container_types' => false,
 			'limit_level'           => 1,
@@ -683,15 +683,15 @@ final class _DM_Component_Backend
 		}
 
 		// fixes word_press style: .form-field input { width: 95% }
-		echo '<style type="text/css">.dms-option-type-radio input, .dms-option-type-checkbox input { width: auto; }</style>';
+		echo '<style type="text/css">.dm-option-type-radio input, .dm-option-type-checkbox input { width: auto; }</style>';
 
-		do_action('dms_backend_options_render:taxonomy:before');
+		do_action('dm_backend_options_render:taxonomy:before');
 
-		echo '<div class="dms-force-xs">';
+		echo '<div class="dm-force-xs">';
 		echo $this->render_options($collected, array(), array(), 'taxonomy');
 		echo '</div>';
 
-		do_action('dms_backend_options_render:taxonomy:after');
+		do_action('dm_backend_options_render:taxonomy:after');
 
 		echo '<script type="text/javascript">'
 			. 'jQuery(function($){'
@@ -734,7 +734,7 @@ final class _DM_Component_Backend
 	}
 
 	/**
-	 * Save meta from $_POST to dms options (post meta)
+	 * Save meta from $_POST to dm options (post meta)
 	 * @param int $post_id
 	 * @param WP_Post $post
 	 * @param bool $update
@@ -766,21 +766,21 @@ final class _DM_Component_Backend
 				$post_options_save_happened = true;
 			}
 
-			$old_values = (array) dms_get_db_post_option($post_id);
+			$old_values = (array) dm_get_db_post_option($post_id);
 
-			dms_set_db_post_option(
+			dm_set_db_post_option(
 				$post_id,
 				null,
-				dms_get_options_values_from_input(
+				dm_get_options_values_from_input(
 					dm()->theme->get_post_options($post->post_type)
 				)
 			);
 
 			/**
 			 * @deprecated
-			 * Use the 'dms_post_options_update' action
+			 * Use the 'dm_post_options_update' action
 			 */
-			do_action('dms_save_post_options', $post_id, $post, $old_values);
+			do_action('dm_save_post_options', $post_id, $post, $old_values);
 		} elseif ($original_post_id = wp_is_post_autosave($post_id)) {
 
 			do {
@@ -800,10 +800,10 @@ final class _DM_Component_Backend
 					break;
 				}
 
-				dms_set_db_post_option(
+				dm_set_db_post_option(
 					$post->ID,
 					null,
-					dms_get_options_values_from_input(
+					dm_get_options_values_from_input(
 						dm()->theme->get_post_options($parent->post_type)
 					)
 				);
@@ -833,10 +833,10 @@ final class _DM_Component_Backend
 		/**
 		 * Copy options meta from post to revision
 		 */
-		dms_set_db_post_option(
+		dm_set_db_post_option(
 			$revision_id,
 			null,
-			(array) dms_get_db_post_option(
+			(array) dm_get_db_post_option(
 				wp_is_post_revision($revision_id),
 				null,
 				array()
@@ -853,10 +853,10 @@ final class _DM_Component_Backend
 		/**
 		 * Copy options meta from revision to post
 		 */
-		dms_set_db_post_option(
+		dm_set_db_post_option(
 			$post_id,
 			null,
-			(array) dms_get_db_post_option($revision_id, null, array())
+			(array) dm_get_db_post_option($revision_id, null, array())
 		);
 	}
 
@@ -866,10 +866,10 @@ final class _DM_Component_Backend
 			return false;
 		}
 
-		$meta_prefix = 'dms_option:';
-		$only_options = dms_extract_only_options(dm()->theme->get_post_options($post_type));
+		$meta_prefix = 'dm_option:';
+		$only_options = dm_extract_only_options(dm()->theme->get_post_options($post_type));
 		$separate_meta_options = array(); {
-			$options_values = dms_get_db_post_option($post_id);
+			$options_values = dm_get_db_post_option($post_id);
 
 			foreach ($only_options as $option_id => $option) {
 				if (
@@ -880,18 +880,18 @@ final class _DM_Component_Backend
 					array_key_exists($option_id, $options_values)
 				) {
 					if (defined('WP_DEBUG') && WP_DEBUG) {
-						DMS_Flash_Messages::add(
+						dm_Flash_Messages::add(
 							'save-in-separate-meta:deprecated',
 							'<p>The <code>save-in-separate-meta</code> option parameter is <strong>deprecated</strong>.</p>'
 								. '<p>Please replace</p>'
 								. '<pre>\'save-in-separate-meta\' => true</pre>'
 								. '<p>with</p>'
-								. '<pre>\'dms-storage\' => array('
+								. '<pre>\'dm-storage\' => array('
 								. "\n	'type' => 'post-meta',"
-								. "\n	'post-meta' => 'dms_option:{your-option-id}',"
+								. "\n	'post-meta' => 'dm_option:{your-option-id}',"
 								. "\n)</pre>"
-								. '<p>in <code>{theme}' . dms_get_framework_customizations_dir_rel_path('/theme/options/posts/' . $post_type . '.php') . '</code></p>'
-								. '<p><a href="' . esc_url('http://manual.devmonsta.io/en/latest/options/storage.html#content') . '" target="_blank">' . esc_html__('Info about dms-storage', 'dms') . '</a></p>',
+								. '<p>in <code>{theme}' . dm_get_framework_customizations_dir_rel_path('/theme/options/posts/' . $post_type . '.php') . '</code></p>'
+								. '<p><a href="' . esc_url('http://manual.devmonsta.io/en/latest/options/storage.html#content') . '" target="_blank">' . esc_html__('Info about dm-storage', 'dm') . '</a></p>',
 							'warning'
 						);
 					}
@@ -920,10 +920,10 @@ final class _DM_Component_Backend
 				if (
 					array_key_exists($row->meta_key, $separate_meta_options)
 					||
-					( // skip options containing 'dms-storage'
+					( // skip options containing 'dm-storage'
 						($option_id = substr($row->meta_key, 10))
 						&&
-						isset($only_options[$option_id]['dms-storage']))
+						isset($only_options[$option_id]['dm-storage']))
 				) {
 					/**
 					 * This meta exists and will be updated below.
@@ -938,7 +938,7 @@ final class _DM_Component_Backend
 		}
 
 		foreach ($separate_meta_options as $meta_key => $option_value) {
-			dms_update_post_meta($post_id, $meta_key, $option_value);
+			dm_update_post_meta($post_id, $meta_key, $option_value);
 		}
 
 		return true;
@@ -969,14 +969,14 @@ final class _DM_Component_Backend
 			return;
 		}
 
-		dms_set_db_term_option(
+		dm_set_db_term_option(
 			$term_id,
 			$taxonomy->name,
 			null,
-			dms_get_options_values_from_input($options)
+			dm_get_options_values_from_input($options)
 		);
 
-		do_action('dms_save_term_options', $term_id, $taxonomy->name, array());
+		do_action('dm_save_term_options', $term_id, $taxonomy->name, array());
 	}
 
 	public function _action_term_edit($term_id, $tt_id, $taxonomy)
@@ -996,7 +996,7 @@ final class _DM_Component_Backend
 			return;
 		}
 
-		if (intval(DMS_Request::POST('tag_ID')) != $term_id) {
+		if (intval(DM_Request::POST('tag_ID')) != $term_id) {
 			// the $_POST values belongs to another term, do not save them into this one
 			return;
 		}
@@ -1006,16 +1006,16 @@ final class _DM_Component_Backend
 			return;
 		}
 
-		$old_values = (array) dms_get_db_term_option($term_id, $taxonomy->name);
+		$old_values = (array) dm_get_db_term_option($term_id, $taxonomy->name);
 
-		dms_set_db_term_option(
+		dm_set_db_term_option(
 			$term_id,
 			$taxonomy->name,
 			null,
-			dms_get_options_values_from_input($options)
+			dm_get_options_values_from_input($options)
 		);
 
-		do_action('dms_save_term_options', $term_id, $taxonomy->name, $old_values);
+		do_action('dm_save_term_options', $term_id, $taxonomy->name, $old_values);
 	}
 
 	public function _action_admin_register_scripts()
@@ -1027,7 +1027,7 @@ final class _DM_Component_Backend
 	{
 		/**
 		 * Enqueue settings options static in <head>
-		 * @see DMS_Settings_Form_Theme::_action_admin_enqueue_scripts()
+		 * @see dm_Settings_Form_Theme::_action_admin_enqueue_scripts()
 		 */
 
 		/**
@@ -1038,7 +1038,7 @@ final class _DM_Component_Backend
 					dm()->theme->get_post_options(get_post_type())
 				);
 
-				do_action('dms_admin_enqueue_scripts:post', get_post());
+				do_action('dm_admin_enqueue_scripts:post', get_post());
 			}
 		}
 
@@ -1054,7 +1054,7 @@ final class _DM_Component_Backend
 					dm()->theme->get_taxonomy_options(get_current_screen()->taxonomy)
 				);
 
-				do_action('dms_admin_enqueue_scripts:term', get_current_screen()->taxonomy);
+				do_action('dm_admin_enqueue_scripts:term', get_current_screen()->taxonomy);
 			}
 		}
 	}
@@ -1065,7 +1065,7 @@ final class _DM_Component_Backend
 	 * POST vars:
 	 * - options: '[{option_id: {...}}, {option_id: {...}}, ...]'                  // Required // String JSON
 	 * - values:  {option_id: value, option_id: {...}, ...}                        // Optional // Object
-	 * - data:    {id_prefix: 'dms_options-a-b-', name_prefix: 'dms_options[a][b]'}  // Optional // Object
+	 * - data:    {id_prefix: 'dm_options-a-b-', name_prefix: 'dm_options[a][b]'}  // Optional // Object
 	 */
 	public function _action_ajax_options_render()
 	{
@@ -1077,7 +1077,7 @@ final class _DM_Component_Backend
 				));
 			}
 
-			$options = json_decode(DMS_Request::POST('options'), true);
+			$options = json_decode(DM_Request::POST('options'), true);
 
 			if (!$options) {
 				wp_send_json_error(array(
@@ -1089,7 +1089,7 @@ final class _DM_Component_Backend
 		// values
 		{
 			if (isset($_POST['values'])) {
-				$values = DMS_Request::POST('values');
+				$values = DM_Request::POST('values');
 
 				if (is_string($values)) {
 					$values = json_decode($values, true);
@@ -1099,7 +1099,7 @@ final class _DM_Component_Backend
 			}
 
 			$filtered_values = apply_filters(
-				'dms:ajax_options_render:values',
+				'dm:ajax_options_render:values',
 				null,
 				$options,
 				$values
@@ -1107,14 +1107,14 @@ final class _DM_Component_Backend
 
 			$values = $filtered_values ? $filtered_values : array_intersect_key(
 				$values,
-				dms_extract_only_options($options)
+				dm_extract_only_options($options)
 			);
 		}
 
 		// data
 		{
 			if (isset($_POST['data'])) {
-				$data = DMS_Request::POST('data');
+				$data = DM_Request::POST('data');
 			} else {
 				$data = array();
 			}
@@ -1123,16 +1123,16 @@ final class _DM_Component_Backend
 		wp_send_json_success(array(
 			'html' => dm()->backend->render_options($options, $values, $data),
 			/** @since 2.6.1 */
-			'default_values' => dms_get_options_values_from_input($options, array()),
+			'default_values' => dm_get_options_values_from_input($options, array()),
 		));
 	}
 
 	/**
-	 * Get options values from html generated with 'dms_backend_options_render' ajax action
+	 * Get options values from html generated with 'dm_backend_options_render' ajax action
 	 *
 	 * POST vars:
 	 * - options: '[{option_id: {...}}, {option_id: {...}}, ...]' // Required // String JSON
-	 * - dms_options... // Use a jQuery "ajax form submit" to emulate real form submit
+	 * - dm_options... // Use a jQuery "ajax form submit" to emulate real form submit
 	 *
 	 * Tip: Inside form html, add: <input type="hidden" name="options" value="[...json...]">
 	 */
@@ -1146,10 +1146,10 @@ final class _DM_Component_Backend
 				));
 			}
 
-			$options = DMS_Request::POST('options');
+			$options = DM_Request::POST('options');
 
 			if (is_string($options)) {
-				$options = json_decode(DMS_Request::POST('options'), true);
+				$options = json_decode(DM_Request::POST('options'), true);
 			}
 
 			if (!$options) {
@@ -1162,22 +1162,22 @@ final class _DM_Component_Backend
 		// name_prefix
 		{
 			if (isset($_POST['name_prefix'])) {
-				$name_prefix = DMS_Request::POST('name_prefix');
+				$name_prefix = DM_Request::POST('name_prefix');
 			} else {
 				$name_prefix = $this->get_options_name_attr_prefix();
 			}
 		}
 
 		wp_send_json_success(array(
-			'values' => dms_get_options_values_from_input(
+			'values' => dm_get_options_values_from_input(
 				$options,
-				DMS_Request::POST(dms_html_attr_name_to_array_multi_key($name_prefix), array())
+				DM_Request::POST(dm_html_attr_name_to_array_multi_key($name_prefix), array())
 			)
 		));
 	}
 
 	/**
-	 * Get options values from html generated with 'dms_backend_options_render' ajax action
+	 * Get options values from html generated with 'dm_backend_options_render' ajax action
 	 *
 	 * POST vars:
 	 * - options: '[{option_id: {...}}, {option_id: {...}}, ...]' // Required // String JSON
@@ -1195,10 +1195,10 @@ final class _DM_Component_Backend
 				));
 			}
 
-			$options = DMS_Request::POST('options');
+			$options = DM_Request::POST('options');
 
 			if (is_string($options)) {
-				$options = json_decode(DMS_Request::POST('options'), true);
+				$options = json_decode(DM_Request::POST('options'), true);
 			}
 
 			if (!$options) {
@@ -1216,10 +1216,10 @@ final class _DM_Component_Backend
 				));
 			}
 
-			$values = DMS_Request::POST('values');
+			$values = DM_Request::POST('values');
 
 			if (is_string($values)) {
-				$values = json_decode(DMS_Request::POST('values'), true);
+				$values = json_decode(DM_Request::POST('values'), true);
 			}
 
 			if (!is_array($values)) {
@@ -1232,7 +1232,7 @@ final class _DM_Component_Backend
 		}
 
 		wp_send_json_success(array(
-			'values' => dms_get_options_values_from_input(
+			'values' => dm_get_options_values_from_input(
 				$options,
 				$values
 			)
@@ -1255,13 +1255,13 @@ final class _DM_Component_Backend
 			$this->register_static();
 
 			wp_enqueue_media();
-			wp_enqueue_style('dms-backend-options');
-			wp_enqueue_script('dms-backend-options');
+			wp_enqueue_style('dm-backend-options');
+			wp_enqueue_script('dm-backend-options');
 		}
 
 		$collected = array();
 
-		dms_collect_options($collected, $options, array(
+		dm_collect_options($collected, $options, array(
 			'limit_option_types' => false,
 			'limit_container_types' => false,
 			'limit_level' => 1,
@@ -1301,8 +1301,8 @@ final class _DM_Component_Backend
 			switch ($collected_type['group']) {
 				case 'container':
 					if ($design === 'taxonomy') {
-						$html .= dms_render_view(
-							dms_get_framework_directory('/views/backend-container-design-' . $design . '.php'),
+						$html .= dm_render_view(
+							dm_get_framework_directory('/views/backend-container-design-' . $design . '.php'),
 							array(
 								'type' => $collected_type['type'],
 								'html' => $this->container_type($collected_type['type'])->render(
@@ -1325,7 +1325,7 @@ final class _DM_Component_Backend
 						$data = $options_data; // do not change directly to not affect next loops
 
 						$maybe_future_value = apply_filters(
-							'dms:render_options:option_value',
+							'dm:render_options:option_value',
 							null,
 							$values,
 							$_option,
@@ -1348,7 +1348,7 @@ final class _DM_Component_Backend
 					unset($_option);
 					break;
 				default:
-					$html .= '<p><em>' . __('Unknown collected group', 'dms') . ': ' . $collected_type['group'] . '</em></p>';
+					$html .= '<p><em>' . __('Unknown collected group', 'dm') . ': ' . $collected_type['group'] . '</em></p>';
 			}
 
 			unset($collected_type, $collected_type_options);
@@ -1387,8 +1387,8 @@ final class _DM_Component_Backend
 				$this->register_static();
 
 				wp_enqueue_media();
-				wp_enqueue_style('dms-backend-options');
-				wp_enqueue_script('dms-backend-options');
+				wp_enqueue_style('dm-backend-options');
+				wp_enqueue_script('dm-backend-options');
 
 				$static_enqueue = false;
 			}
@@ -1396,11 +1396,11 @@ final class _DM_Component_Backend
 
 		$collected = array();
 
-		dms_collect_options($collected, $options, array(
+		dm_collect_options($collected, $options, array(
 			'limit_option_types' => false,
 			'limit_container_types' => false,
 			'limit_level' => 0,
-			'callback' => array(__CLASS__, '_callback_dms_collect_options_enqueue_static'),
+			'callback' => array(__CLASS__, '_callback_dm_collect_options_enqueue_static'),
 		));
 
 		unset($collected);
@@ -1410,7 +1410,7 @@ final class _DM_Component_Backend
 	 * @internal
 	 * @param array $data
 	 */
-	public static function _callback_dms_collect_options_enqueue_static($data)
+	public static function _callback_dm_collect_options_enqueue_static($data)
 	{
 		if ($data['group'] === 'option') {
 			dm()->backend->option_type($data['option']['type'])->enqueue_static($data['id'], $data['option']);
@@ -1452,11 +1452,11 @@ final class _DM_Component_Backend
 		}
 
 		$data = apply_filters(
-			'dms:backend:option-render:data',
+			'dm:backend:option-render:data',
 			$data
 		);
 
-		return dms_render_view(dms_get_framework_directory('/views/backend-option-design-' . $design . '.php'), array(
+		return dm_render_view(dm_get_framework_directory('/views/backend-option-design-' . $design . '.php'), array(
 			'id'     => $id,
 			'option' => $option,
 			'data'   => $data,
@@ -1495,12 +1495,12 @@ final class _DM_Component_Backend
 			}
 		}
 
-		$cache_key = 'dms_meta_box_template';
+		$cache_key = 'dm_meta_box_template';
 
 		try {
-			$meta_box_template = DMS_Cache::get($cache_key);
-		} catch (DMS_Cache_Not_Found_Exception $e) {
-			$temp_screen_id = 'dms-temp-meta-box-screen-id-' . dms_unique_increment();
+			$meta_box_template = dm_Cache::get($cache_key);
+		} catch (dm_Cache_Not_Found_Exception $e) {
+			$temp_screen_id = 'dm-temp-meta-box-screen-id-' . dm_unique_increment();
 			$context        = 'normal';
 
 			add_meta_box(
@@ -1540,10 +1540,10 @@ final class _DM_Component_Backend
 				}
 			}
 
-			// add 'dms-postbox' class and some attr related placeholders
+			// add 'dm-postbox' class and some attr related placeholders
 			$meta_box_template = str_replace(
 				'class="postbox',
-				$placeholders['attr'] . ' class="postbox dms-postbox' . $placeholders['attr_class'],
+				$placeholders['attr'] . ' class="postbox dm-postbox' . $placeholders['attr_class'],
 				$meta_box_template
 			);
 
@@ -1553,15 +1553,15 @@ final class _DM_Component_Backend
 					'<span>' . $placeholders['title'] . '</span>',
 
 
-					'<small class="dms-html-before-title">' . $placeholders['html_before_title'] . '</small>' .
+					'<small class="dm-html-before-title">' . $placeholders['html_before_title'] . '</small>' .
 						'<span>' . $placeholders['title'] . '</span>' .
-						'<small class="dms-html-after-title">' . $placeholders['html_after_title'] . '</small>',
+						'<small class="dm-html-after-title">' . $placeholders['html_after_title'] . '</small>',
 
 					$meta_box_template
 				);
 			}
 
-			DMS_Cache::set($cache_key, $meta_box_template);
+			dm_Cache::set($cache_key, $meta_box_template);
 		}
 
 		// prepare attributes
@@ -1593,25 +1593,25 @@ final class _DM_Component_Backend
 				$content,
 				$other['html_before_title'],
 				$other['html_after_title'],
-				dms_attr_to_html($other['attr']),
+				dm_attr_to_html($other['attr']),
 				esc_attr($attr_class)
 			),
 			$meta_box_template
 		);
 	}
 
-	public function _register_option_type(DMS_Access_Key $access_key, $option_type_class, $type = null)
+	public function _register_option_type(dm_Access_Key $access_key, $option_type_class, $type = null)
 	{
-		if ($access_key->get_key() !== 'dms_option_type') {
+		if ($access_key->get_key() !== 'DM_Option_Type') {
 			trigger_error('Call denied', E_USER_ERROR);
 		}
 
 		$this->register_option_type($option_type_class, $type);
 	}
 
-	public function _register_container_type(DMS_Access_Key $access_key, $container_type_class)
+	public function _register_container_type(dm_Access_Key $access_key, $container_type_class)
 	{
-		if ($access_key->get_key() !== 'dms_container_type') {
+		if ($access_key->get_key() !== 'DM_Container_Type') {
 			trigger_error('Call denied', E_USER_ERROR);
 		}
 
@@ -1623,7 +1623,7 @@ final class _DM_Component_Backend
 		static $did_options_init = false;
 		if (!$did_options_init) {
 			$did_options_init = true;
-			do_action('dms_option_types_init');
+			do_action('DM_Option_Types_init');
 		}
 
 		if (isset($this->option_types[$type])) {
@@ -1634,16 +1634,16 @@ final class _DM_Component_Backend
 
 			return $this->option_types[$type];
 		} else {
-			if (is_admin() && apply_filters('dms_backend_undefined_option_type_warn_user', true, $type)) {
-				DMS_Flash_Messages::add(
-					'dms-get-option-type-undefined-' . $type,
-					sprintf(__('Undefined option type: %s', 'dms'), $type),
+			if (is_admin() && apply_filters('dm_backend_undefined_option_type_warn_user', true, $type)) {
+				dm_Flash_Messages::add(
+					'dm-get-option-type-undefined-' . $type,
+					sprintf(__('Undefined option type: %s', 'dm'), $type),
 					'warning'
 				);
 			}
 
 			if (!$this->undefined_option_type) {
-				$this->undefined_option_type = new DMS_Option_Type_Undefined();
+				$this->undefined_option_type = new DM_Option_Type_Undefined();
 			}
 
 			return $this->undefined_option_type;
@@ -1664,14 +1664,14 @@ final class _DM_Component_Backend
 
 	/**
 	 * @param string $type
-	 * @return DMS_Container_Type
+	 * @return DM_Container_Type
 	 */
 	public function container_type($type)
 	{
 		static $did_containers_init = false;
 		if (!$did_containers_init) {
 			$did_containers_init = true;
-			do_action('dms_container_types_init');
+			do_action('DM_Container_Types_init');
 		}
 
 		if (isset($this->container_types[$type])) {
@@ -1683,15 +1683,15 @@ final class _DM_Component_Backend
 			return $this->container_types[$type];
 		} else {
 			if (is_admin()) {
-				DMS_Flash_Messages::add(
-					'dms-get-container-type-undefined-' . $type,
-					sprintf(__('Undefined container type: %s', 'dms'), $type),
+				dm_Flash_Messages::add(
+					'dm-get-container-type-undefined-' . $type,
+					sprintf(__('Undefined container type: %s', 'dm'), $type),
 					'warning'
 				);
 			}
 
 			if (!$this->undefined_container_type) {
-				$this->undefined_container_type = new DMS_Container_Type_Undefined();
+				$this->undefined_container_type = new DM_Container_Type_Undefined();
 			}
 
 			return $this->undefined_container_type;
@@ -1722,29 +1722,29 @@ final class _DM_Component_Backend
 			$options_for_enqueue = array();
 			$customizer_options = dm()->theme->get_customizer_options();
 
-			dms_collect_options($options_for_enqueue, $customizer_options, array(
-				'callback' => array(__CLASS__, '_callback_dms_collect_options_enqueue_static'),
+			dm_collect_options($options_for_enqueue, $customizer_options, array(
+				'callback' => array(__CLASS__, '_callback_dm_collect_options_enqueue_static'),
 			));
 
 			unset($options_for_enqueue, $customizer_options);
 		}
 
 		wp_enqueue_script(
-			'dms-backend-customizer',
-			dms_get_framework_directory_uri('/static/js/backend-customizer.js'),
-			array('jquery', 'dm-events', 'backbone', 'dms-backend-options'),
+			'dm-backend-customizer',
+			dm_get_framework_directory_uri('/static/js/backend-customizer.js'),
+			array('jquery', 'dm-events', 'backbone', 'dm-backend-options'),
 			dm()->manifest->get_version(),
 			true
 		);
 		wp_localize_script(
-			'dms-backend-customizer',
-			'_dms_backend_customizer_localized',
+			'dm-backend-customizer',
+			'_dm_backend_customizer_localized',
 			array(
-				'change_timeout' => apply_filters('dms_customizer_option_change_timeout', 333),
+				'change_timeout' => apply_filters('dm_customizer_option_change_timeout', 333),
 			)
 		);
 
-		do_action('dms_admin_enqueue_scripts:customizer');
+		do_action('dm_admin_enqueue_scripts:customizer');
 	}
 
 
@@ -1752,7 +1752,7 @@ final class _DM_Component_Backend
 	{
 		$collected = array();
 
-		dms_collect_options($collected, $options, array(
+		dm_collect_options($collected, $options, array(
 			'limit_option_types' => false,
 			'limit_container_types' => false,
 			'limit_level' => 1,
@@ -1770,7 +1770,7 @@ final class _DM_Component_Backend
 					{
 						$_collected = array();
 
-						dms_collect_options($_collected, $opt['option']['options'], array(
+						dm_collect_options($_collected, $opt['option']['options'], array(
 							'limit_option_types' => array(),
 							'limit_container_types' => false,
 							'limit_level' => 1,
@@ -1790,7 +1790,7 @@ final class _DM_Component_Backend
 
 					$args = array(
 						'title' => empty($opt['option']['title'])
-							? dms_id_to_title($opt['id'])
+							? dm_id_to_title($opt['id'])
 							: $opt['option']['title'],
 						'description' => empty($opt['option']['desc'])
 							? ''
@@ -1837,7 +1837,7 @@ final class _DM_Component_Backend
 					$setting_id = $this->get_options_name_attr_prefix() . '[' . $opt['id'] . ']'; {
 						$args_control = array(
 							'label' => empty($opt['option']['label'])
-								? dms_id_to_title($opt['id'])
+								? dm_id_to_title($opt['id'])
 								: $opt['option']['label'],
 							'description' => empty($opt['option']['desc'])
 								? ''
@@ -1857,19 +1857,19 @@ final class _DM_Component_Backend
 								break;
 							}
 						} else { // the option is not placed in a section, create a section automatically
-							$args_control['section'] = 'dms_option_auto_section_' . $opt['id'];
+							$args_control['section'] = 'dm_option_auto_section_' . $opt['id'];
 
 							$wp_customize->add_section($args_control['section'], array(
 								'title' => empty($opt['option']['label'])
-									? dms_id_to_title($opt['id'])
+									? dm_id_to_title($opt['id'])
 									: $opt['option']['label'],
 							));
 						}
 					} {
 						$args_setting = array(
 							'default' => dm()->backend->option_type($opt['option']['type'])->get_value_from_input($opt['option'], null),
-							'dms_option' => $opt['option'],
-							'dms_option_id' => $opt['id'],
+							'dm_option' => $opt['option'],
+							'dm_option_id' => $opt['id'],
 						);
 
 						if (isset($opt['option']['wp-customizer-setting-args']) && is_array($opt['option']['wp-customizer-setting-args'])) {
@@ -1877,7 +1877,7 @@ final class _DM_Component_Backend
 						}
 
 						$wp_customize->add_setting(
-							new _DMS_Customizer_Setting_Option(
+							new _DM_Customizer_Setting_Option(
 								$wp_customize,
 								$setting_id,
 								$args_setting
@@ -1889,7 +1889,7 @@ final class _DM_Component_Backend
 
 					// control must be registered after setting
 					$wp_customize->add_control(
-						new _DMS_Customizer_Control_Option_Wrapper(
+						new _DM_Customizer_Control_Option_Wrapper(
 							$wp_customize,
 							$opt['id'],
 							$args_control

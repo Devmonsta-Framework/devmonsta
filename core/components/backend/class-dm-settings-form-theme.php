@@ -27,13 +27,13 @@ class DM_Settings_Form_Theme extends DM_Settings_Form {
 	}
 
 	public function set_values($values) {
-		dms_set_db_settings_option(null, $values);
+		dm_set_db_settings_option(null, $values);
 
 		return $this;
 	}
 
 	public function get_values() {
-		return dms_get_db_settings_option();
+		return dm_get_db_settings_option();
 	}
 
 	

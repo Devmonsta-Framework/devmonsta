@@ -1,0 +1,77 @@
+.dms-option-type-addable-box {
+	max-width: 100%;
+}
+
+.dms-option-type-addable-box.has-boxes.width-type-full {
+	width: 9999px;
+}
+
+.dms-option-type-addable-box.has-boxes.width-type-fixed {
+	width: 428px; /* same as .dms-backend-option-fixed-width */
+}
+
+.dms-option-type-addable-box > .dms-option-boxes.ui-sortable > .dms-option-box > .dms-postbox {
+	min-width: 100%;
+}
+
+.dms-option-type-addable-box > .dms-option-boxes.ui-sortable > .dms-option-box > .dms-postbox > .hndle {
+	cursor: move !important; /* to rewrite .dms-postbox h3.hndle */
+	word-break: break-all; /* if box text is too long, do not move controls outside box */
+	position: relative;
+}
+
+.dms-option-type-addable-box > .dms-option-boxes.ui-sortable > .dms-option-box > .dms-postbox > .hndle > span {
+	overflow: hidden;
+	white-space: nowrap;
+	max-width: 100%;
+	display: block;
+}
+
+#wpbody-content .dms-option-type-addable-box .metabox-holder {
+	padding: 0;
+	margin: 0;
+}
+
+.dms-option-type-addable-box > .dms-option-boxes > .dms-option-box {
+	margin-bottom: 20px;
+}
+
+.dms-option-type-addable-box > .dms-option-boxes.ui-sortable > .dms-option-box > .dms-postbox > .hndle span:after {
+	content: '\00a0'; /* &nbsp; - when title is empty, box has too small (broken) height */
+}
+
+.dms-option-type-addable-box > .dms-option-boxes.ui-sortable > .dms-option-box > .dms-postbox > .hndle img {
+	vertical-align: middle;
+}
+
+.dms-option-type-addable-box .dms-backend-option-design-customizer {
+	padding: 15px;
+}
+
+
+/* Controls */
+
+
+.dms-option-type-addable-box > .dms-option-boxes > .dms-option-box .hndle .dms-html-after-title {
+	position: absolute;
+	top: 0;
+	right: 27px;
+	display: block;
+	height: 100%;
+	background-color: #FFF;
+	box-sizing: border-box;
+	padding: 0 3px;
+	padding-top: inherit;
+}
+
+.dms-option-type-addable-box > .dms-option-boxes > .dms-option-box .hndle .dms-html-after-title .dms-option-box-controls .dms-option-box-control {
+	text-decoration: none;
+}
+
+.dms-option-type-addable-box > .dms-option-boxes > .dms-option-box .hndle .dms-html-after-title .dms-option-box-controls .dms-option-box-control-wrapper {
+	color: #cccccc;
+}
+
+/* end: Controls */
+
+

@@ -1,167 +1,6 @@
 <?php if ( ! defined( 'DM' ) ) {
 	die( 'Forbidden' );
 }
-// Post Options
-class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
-	protected function get_id() {
-		return 'post';
-	}
-
-	private function get_cache_key($key, $item_id = null, array $extra_data = array()) {
-		return 'dm-options-model:'. $this->get_id() .'/'. $key;
-	}
-
-	private function get_post_id($post_id) {
-		$post_id = intval($post_id);
-
-		try {
-			// Prevent too often execution of wp_get_post_autosave() because it does WP Query
-			return DM_Cache::get($cache_key = $this->get_cache_key('id/'. $post_id));
-		} catch (DM_Cache_Not_Found_Exception $e) {
-			if ( ! $post_id ) {
-				/** @var WP_Post $post */
-				global $post;
-
-				if ( ! $post ) {
-					return null;
-				} else {
-					$post_id = $post->ID;
-				}
-
-				/**
-				 * Check if is Preview and use the preview post_id instead of real/current post id
-				 *
-				 * Note: WordPress changes the global $post content on preview:
-				 * 1. https://github.com/WordPress/WordPress/blob/2096b451c704715db3c4faf699a1184260deade9/wp-includes/query.php#L3573-L3583
-				 * 2. https://github.com/WordPress/WordPress/blob/4a31dd6fe8b774d56f901a29e72dcf9523e9ce85/wp-includes/revision.php#L485-L528
-				 */
-				if ( is_preview() && is_object($preview = wp_get_post_autosave($post->ID)) ) {
-					$post_id = $preview->ID;
-				}
-			}
-
-			DM_Cache::set($cache_key, $post_id);
-
-			return $post_id;
-		}
-	}
-
-	private function get_post_type($post_id) {
-		$post_id = $this->get_post_id($post_id);
-
-		try {
-			return DM_Cache::get($cache_key = $this->get_cache_key('type/'. $post_id));
-		} catch (DM_Cache_Not_Found_Exception $e) {
-			DM_Cache::set(
-				$cache_key,
-				$post_type = get_post_type(
-					($post_revision_id = wp_is_post_revision($post_id)) ? $post_revision_id : $post_id
-				)
-			);
-
-			return $post_type;
-		}
-	}
-
-	protected function get_options($item_id, array $extra_data = array()) {
-		$post_type = $this->get_post_type($item_id);
-
-		if (apply_filters('dm_get_db_post_option:dm-storage-enabled',
-			/**
-			 * Slider extension has too many dm_get_db_post_option()
-			 * inside post options altering filter and it creates recursive mess.
-			 * add_filter() was added in Slider extension
-			 * but this hardcode can be replaced with `true`
-			 * only after all users will install new version 1.1.15.
-			 */
-			$post_type !== 'dm-slider',
-			$post_type
-		)) {
-			return dm()->theme->get_post_options( $post_type );
-		} else {
-			return array();
-		}
-	}
-
-	protected function get_values($item_id, array $extra_data = array()) {
-		return DM_WP_Meta::get( 'post', $this->get_post_id($item_id), 'dm_options', array() );
-	}
-
-	protected function set_values($item_id, $values, array $extra_data = array()) {
-		DM_WP_Meta::set( 'post', $this->get_post_id($item_id), 'dm_options', $values );
-	}
-
-	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
-		return array( 'post-id' => $this->get_post_id($item_id) );
-	}
-
-	protected function _get_cache_key($key, $item_id, array $extra_data = array()) {
-		if ($key === 'options') {
-			// Cache options grouped by post-type, not by post id
-			return ($post_type = $this->get_post_type($item_id)) ? $post_type : '?';
-		} else {
-			return $this->get_post_id($item_id);
-		}
-	}
-
-	protected function _after_set($post_id, $option_id, $sub_keys, $old_value, array $extra_data = array()) {
-		/**
-		 * @deprecated
-		 */
-		dm()->backend->_sync_post_separate_meta($post_id);
-
-		/**
-		 * @since 2.2.8
-		 */
-		do_action('dm_post_options_update',
-			$post_id,
-			/**
-			 * Option id
-			 * First level multi-key
-			 * For e.g. if $option_id is 'hello/world/7' this will be 'hello'
-			 */
-			$option_id,
-			/**
-			 * The remaining sub-keys
-			 * For e.g.
-			 * if $option_id is 'hello/world/7' this will be array('world', '7')
-			 * if $option_id is 'hello' this will be array()
-			 */
-			explode('/', $sub_keys),
-			/**
-			 * Old post option(s) value
-			 * @since 2.3.3
-			 */
-			$old_value
-		);
-	}
-    /**
-     * Set and get post option value
-     *
-     * @return void
-     */
-	protected function _init() {
-		
-		function dm_post_option($post_id = null, $option_id = null, $default_value = null) {
-			return DM_Db_Options_Model::_get_instance('post')->get(intval($post_id), $option_id, $default_value);
-		}
-
-		/**
-		 * Set post option value in database
-		 *
-		 * @param null|int $post_id
-		 * @param string|null $option_id Specific option id (accepts multikey). null - all options
-		 * @param $value
-		 */
-		function dm_set_post_option( $post_id = null, $option_id = null, $value ) {
-			DM_Db_Options_Model::_get_instance('post')->set(intval($post_id), $option_id, $value);
-		}
-
-		// todo: add_action() to clear the DM_Cache
-	}
-}
-
-new DM_Db_Options_Model_Post();
 
 // Term Options
 class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
@@ -316,14 +155,10 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 			'old_value' => $old_value
 		));
 	}
-    /**
-     * Set and get term option
-     *
-     * @return void
-     */
+
 	protected function _init() {
 		
-		function dm_term_option( $term_id, $taxonomy, $option_id = null, $default_value = null, $get_original_value = null ) {
+		function dm_get_db_term_option( $term_id, $taxonomy, $option_id = null, $default_value = null, $get_original_value = null ) {
 			if ( ! taxonomy_exists( $taxonomy ) ) {
 				return null;
 			}
@@ -343,7 +178,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 		 *
 		 * @return null
 		 */
-		function dm_set_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
+		function dm_set_db_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
 			if ( ! taxonomy_exists( $taxonomy ) ) {
 				return null;
 			}
@@ -445,3 +280,222 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 	}
 }
 new DM_Db_Options_Model_Customizer();
+
+// Post Options
+class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
+	protected function get_id() {
+		return 'post';
+	}
+
+	private function get_cache_key($key, $item_id = null, array $extra_data = array()) {
+		return 'dm-options-model:'. $this->get_id() .'/'. $key;
+	}
+
+	private function get_post_id($post_id) {
+		$post_id = intval($post_id);
+
+		try {
+			// Prevent too often execution of wp_get_post_autosave() because it does WP Query
+			return DM_Cache::get($cache_key = $this->get_cache_key('id/'. $post_id));
+		} catch (DM_Cache_Not_Found_Exception $e) {
+			if ( ! $post_id ) {
+				/** @var WP_Post $post */
+				global $post;
+
+				if ( ! $post ) {
+					return null;
+				} else {
+					$post_id = $post->ID;
+				}
+
+				/**
+				 * Check if is Preview and use the preview post_id instead of real/current post id
+				 *
+				 * Note: WordPress changes the global $post content on preview:
+				 * 1. https://github.com/WordPress/WordPress/blob/2096b451c704715db3c4faf699a1184260deade9/wp-includes/query.php#L3573-L3583
+				 * 2. https://github.com/WordPress/WordPress/blob/4a31dd6fe8b774d56f901a29e72dcf9523e9ce85/wp-includes/revision.php#L485-L528
+				 */
+				if ( is_preview() && is_object($preview = wp_get_post_autosave($post->ID)) ) {
+					$post_id = $preview->ID;
+				}
+			}
+
+			DM_Cache::set($cache_key, $post_id);
+
+			return $post_id;
+		}
+	}
+
+	private function get_post_type($post_id) {
+		$post_id = $this->get_post_id($post_id);
+
+		try {
+			return DM_Cache::get($cache_key = $this->get_cache_key('type/'. $post_id));
+		} catch (DM_Cache_Not_Found_Exception $e) {
+			DM_Cache::set(
+				$cache_key,
+				$post_type = get_post_type(
+					($post_revision_id = wp_is_post_revision($post_id)) ? $post_revision_id : $post_id
+				)
+			);
+
+			return $post_type;
+		}
+	}
+
+	protected function get_options($item_id, array $extra_data = array()) {
+		$post_type = $this->get_post_type($item_id);
+
+		if (apply_filters('dm_get_db_post_option:dm-storage-enabled',
+			/**
+			 * Slider extension has too many dm_get_db_post_option()
+			 * inside post options altering filter and it creates recursive mess.
+			 * add_filter() was added in Slider extension
+			 * but this hardcode can be replaced with `true`
+			 * only after all users will install new version 1.1.15.
+			 */
+			$post_type !== 'dm-slider',
+			$post_type
+		)) {
+			return dm()->theme->get_post_options( $post_type );
+		} else {
+			return array();
+		}
+	}
+
+	protected function get_values($item_id, array $extra_data = array()) {
+		return dm_WP_Meta::get( 'post', $this->get_post_id($item_id), 'dm_options', array() );
+	}
+
+	protected function set_values($item_id, $values, array $extra_data = array()) {
+		dm_WP_Meta::set( 'post', $this->get_post_id($item_id), 'dm_options', $values );
+	}
+
+	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
+		return array( 'post-id' => $this->get_post_id($item_id) );
+	}
+
+	protected function _get_cache_key($key, $item_id, array $extra_data = array()) {
+		if ($key === 'options') {
+			// Cache options grouped by post-type, not by post id
+			return ($post_type = $this->get_post_type($item_id)) ? $post_type : '?';
+		} else {
+			return $this->get_post_id($item_id);
+		}
+	}
+
+	protected function _after_set($post_id, $option_id, $sub_keys, $old_value, array $extra_data = array()) {
+		/**
+		 * @deprecated
+		 */
+		dm()->backend->_sync_post_separate_meta($post_id);
+
+		/**
+		 * @since 2.2.8
+		 */
+		do_action('dm_post_options_update',
+			$post_id,
+			/**
+			 * Option id
+			 * First level multi-key
+			 * For e.g. if $option_id is 'hello/world/7' this will be 'hello'
+			 */
+			$option_id,
+			/**
+			 * The remaining sub-keys
+			 * For e.g.
+			 * if $option_id is 'hello/world/7' this will be array('world', '7')
+			 * if $option_id is 'hello' this will be array()
+			 */
+			explode('/', $sub_keys),
+			/**
+			 * Old post option(s) value
+			 * @since 2.3.3
+			 */
+			$old_value
+		);
+	}
+
+	protected function _init() {
+		
+		function dm_get_db_post_option($post_id = null, $option_id = null, $default_value = null, $get_original_value = null) {
+			return DM_Db_Options_Model::_get_instance('post')->get(intval($post_id), $option_id, $default_value);
+		}
+
+		/**
+		 * Set post option value in database
+		 *
+		 * @param null|int $post_id
+		 * @param string|null $option_id Specific option id (accepts multikey). null - all options
+		 * @param $value
+		 */
+		function dm_set_db_post_option( $post_id = null, $option_id = null, $value ) {
+			DM_Db_Options_Model::_get_instance('post')->set(intval($post_id), $option_id, $value);
+		}
+
+		// todo: add_action() to clear the DM_Cache
+	}
+}
+new DM_Db_Options_Model_Post();
+
+// Theme Settings Options
+class DM_Db_Options_Model_Settings extends DM_Db_Options_Model {
+	protected function get_id() {
+		return 'settings';
+	}
+
+	protected function get_options($item_id, array $extra_data = array()) {
+		return dm()->theme->get_settings_options();
+	}
+
+	protected function get_values($item_id, array $extra_data = array()) {
+		return DM_WP_Option::get('dm_theme_settings_options:'. dm()->theme->manifest->get_id(), null, array());
+	}
+
+	protected function set_values($item_id, $values, array $extra_data = array()) {
+		DM_WP_Option::set('dm_theme_settings_options:' . dm()->theme->manifest->get_id(), null, $values);
+	}
+
+	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
+		return array(
+			'settings' => true
+		);
+	}
+
+	protected function _after_set($item_id, $option_id, $sub_keys, $old_value, array $extra_data = array()) {
+		/**
+		 * @since 2.6.0
+		 */
+		do_action('dm_settings_options_update', array(
+			/**
+			 * Option id
+			 * First level multi-key
+			 * For e.g. if $option_id is 'hello/world/7' this will be 'hello'
+			 */
+			'option_id' => $option_id,
+			/**
+			 * The remaining sub-keys
+			 * For e.g.
+			 * if $option_id is 'hello/world/7' this will be array('world', '7')
+			 * if $option_id is 'hello' this will be array()
+			 */
+			'sub_keys' => explode('/', $sub_keys),
+			/**
+			 * Old option(s) value
+			 */
+			'old_value' => $old_value
+		));
+	}
+
+	protected function _init() {
+		
+		function dm_get_db_settings_option( $option_id = null, $default_value = null, $get_original_value = null ) {
+			return DM_Db_Options_Model_Settings::_get_instance('settings')->get(null, $option_id, $default_value);
+		}
+	
+		function dm_set_db_settings_option( $option_id = null, $value ) {
+			DM_Db_Options_Model_Settings::_get_instance('settings')->set(null, $option_id, $value);
+		}
+	}
+}
+new DM_Db_Options_Model_Settings();

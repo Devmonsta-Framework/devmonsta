@@ -1,0 +1,20 @@
+.dms-option-type-datetime-picker .delimiter,
+.dms-backend-option-input-type-datetime-range .delimiter {
+	margin: 0 10px;
+}
+
+.dms-option-type-datetime-range .dms-backend-option-descriptor[data-dms-option-id=from],
+.dms-option-type-datetime-range .dms-backend-option-descriptor[data-dms-option-id=to],
+.dms-option-type-datetime-range .delimiter {
+	display: inline-block;
+}
+
+.dms-option-type-datetime-range .dms-option-type-datetime-picker,
+.dms-backend-option-input-type-datetime-range .dms-option-type-datetime-picker {
+	width: 150px;
+}
+
+
+.dms-backend-option-input-type-datetime-range .dms-option-help-in-input {
+	top: 4px !important;
+}

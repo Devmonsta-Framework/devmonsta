@@ -44,7 +44,7 @@ final class _dm_Component_Theme {
 	}
 	
 	public function locate_path( $rel_path ) {
-		if ( is_child_theme() && file_exists( dms_get_stylesheet_customizations_directory( '/theme' . $rel_path ) ) ) {
+		if ( is_child_theme() && file_exists( dm_get_stylesheet_customizations_directory( '/theme' . $rel_path ) ) ) {
 			return dm_get_stylesheet_customizations_directory( '/theme' . $rel_path );
 		} elseif ( file_exists( dm_get_template_customizations_directory( '/theme' . $rel_path ) ) ) {
 			return dm_get_template_customizations_directory( '/theme' . $rel_path );

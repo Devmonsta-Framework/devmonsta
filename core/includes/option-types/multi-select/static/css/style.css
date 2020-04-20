@@ -1,0 +1,31 @@
+.dms-option-type-multi-select .selectize-input {
+	padding: 4px 6px;
+}
+
+.dms-option-type-multi-select .selectize-input.focus.input-active.dropdown-active:before,
+.dms-option-type-multi-select .selectize-input.focus.input-active.dropdown-active:before {
+	display: none;
+}
+
+.dms-backend-option-input-type-multi-select .dms-option-help-in-input {
+	top: 4px !important;
+}
+
+.dms-backend-option-type-multi-select .selectize-control .selectize-dropdown .selectize-dropdown-content div > .type:before,
+.dms-backend-option-type-multi-select .selectize-control .selectize-input > div > .type:before {
+	content: "(";
+	margin-right: 1px;
+}
+
+.dms-backend-option-type-multi-select .selectize-control .selectize-dropdown .selectize-dropdown-content div > .type:after,
+.dms-backend-option-type-multi-select .selectize-control .selectize-input > div > .type:after {
+	content: ")";
+	margin-left: 1px;
+}
+
+.dms-backend-option-type-multi-select .selectize-control .selectize-dropdown .selectize-dropdown-content div > .type,
+.dms-backend-option-type-multi-select .selectize-control .selectize-input > div > .type {
+	opacity: .5;
+	font-size: 80%;
+	margin-left: 5px;
+}
