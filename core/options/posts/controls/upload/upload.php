@@ -64,14 +64,15 @@ class Upload extends Structure {
             $image   = '"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
             $display = 'inline-block';
         }
-
         ?>      <div>
-                  <div class='dm-label'> <label> <?php echo $lable; ?> </label></div>
+                    <div class='dm-label'> <label> <?php echo $lable; ?> </label></div>
+                    <div><small><?php echo esc_html( $desc ); ?> </small></div>
                     <div class='dm-meta'>
-                    <a data-multiple='<?php echo $multiple; ?>' class="dm_upload_image_button<?php echo $image;?> </a>
-                    <input type='hidden' name='<?php echo $this->prefix . $name ; ?>' id='<?php echo esc_attr( $this->prefix . $name ) ;?>' value='<?php echo esc_attr($this->value) ;?>' />
-                    <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo $display;?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' );?></a>
-                </div></div>
+                        <a data-multiple='<?php echo $multiple; ?>' class="dm_upload_image_button<?php echo $image;?> </a>
+                        <input type='hidden' name='<?php echo $this->prefix . $name ; ?>' id='<?php echo esc_attr( $this->prefix . $name ) ;?>' value='<?php echo esc_attr($this->value) ;?>' />
+                        <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo $display;?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' );?></a>
+                    </div>
+                </div>
         <?php
             }
 
