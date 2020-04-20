@@ -56,6 +56,11 @@ class WpEditor extends Structure {
         $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
 
         ob_start();
+        ?>
+        <div>
+            <lable><?php echo esc_html( $lable ); ?> </lable>
+            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+<?php
         wp_editor( $this->value, $this->prefix . $name, $settings );
         $editor_html = ob_get_contents();
         ob_end_clean();
@@ -64,6 +69,9 @@ class WpEditor extends Structure {
         $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
 
         echo dm_html_tag( 'div', $settings["attr"], $editor_html );
-    }
+        ?>
+        </div<>
+<?php
+}
 
 }
