@@ -58,7 +58,6 @@ class Checkbox extends Structure {
 
         ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input type="text"
                        value="false"
                        name="<?php echo esc_html( $this->prefix . $name ); ?>"

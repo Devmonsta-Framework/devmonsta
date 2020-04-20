@@ -39,12 +39,12 @@ class Checkboxes extends Structure {
             }
 
         }
+
         // var_dump( maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )  );
         $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
         : $default_value_array;
-        // var_dump( $this->value);
         $this->output();
     }
 
@@ -73,13 +73,9 @@ class Checkboxes extends Structure {
                 <lable><?php echo esc_html( $lable ); ?> </lable>
                 <div><small><?php echo esc_html( $desc ); ?> </small></div>
         <?php
-// Loop through array and make a checkbox for each element
 
         foreach ( $choices as $id => $element ) {
 
-// If the postmeta for checkboxes exist and
-
-// this element is part of saved meta check it.
             if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
                 $checked = 'checked="checked"';
             } else {
