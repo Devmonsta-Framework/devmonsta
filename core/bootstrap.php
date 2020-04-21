@@ -31,6 +31,7 @@ final class Bootstrap {
 
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
+        \Devmonsta\Options\Taxonomies\Taxonomies::instance()->init();
     }
 
 }
