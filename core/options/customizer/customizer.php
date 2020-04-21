@@ -153,46 +153,49 @@ class Customizer
          *      data to control
          * =====================================================
          */
-        foreach($args as $control){
-            if (isset($control['type'])) {
-                $type = $control['type'];
-                $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $type . '\\' . $type;
-                if (class_exists($control_class)) {
-                    $control_class::instance()->add_control($control);
+        if (!empty($args)) {
+            foreach ($args as $control) {
+                if (isset($control['type'])) {
+                    $type = $control['type'];
+                    $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $type . '\\' . $type;
+                    if (class_exists($control_class)) {
+                        $control_class::instance()->add_control($control);
+                    }
+
                 }
-    
             }
         }
-        
 
     }
 
     public function build_panels($panels)
     {
-
-        foreach ($panels as $panel) {
-            add_action('customize_register', function ($wp_customize) use ($panel) {
-                $panel_id = $panel['id'];
-                unset($panel['id']);
-                $wp_customize->add_panel($panel_id, $panel);
-            });
+        if (!empty($panels)) {
+            foreach ($panels as $panel) {
+                add_action('customize_register', function ($wp_customize) use ($panel) {
+                    $panel_id = $panel['id'];
+                    unset($panel['id']);
+                    $wp_customize->add_panel($panel_id, $panel);
+                });
+            }
         }
 
     }
 
     public function build_sections($sections)
     {
-        foreach ($sections as $section) {
+        if (!empty($sections)) {
+            foreach ($sections as $section) {
 
-            add_action('customize_register', function ($wp_customize) use ($section) {
-                $section_id = $section['id'];
-                unset($section['id']);
-                $wp_customize->add_section($section_id, $section);
-            });
+                add_action('customize_register', function ($wp_customize) use ($section) {
+                    $section_id = $section['id'];
+                    unset($section['id']);
+                    $wp_customize->add_section($section_id, $section);
+                });
 
+            }
         }
+
     }
-
-
 
 }
