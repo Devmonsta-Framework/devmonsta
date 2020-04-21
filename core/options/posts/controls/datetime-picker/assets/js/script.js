@@ -3,13 +3,28 @@ jQuery(document).ready(function($) {
     //Initialize the datepicker and set the first day of the week as Monday
     if ($("#dm-datetime-picker").length) {
 
+        if(date_time_picker_config.min_date == ""){
+                min_date = false;
+        }else{
+            min_date = date_time_picker_config.min_date;
+        }
+        
+        if(date_time_picker_config.max_date == ""){
+                max_date = false;
+        }else{
+            max_date = date_time_picker_config.max_date;
+        }
+
+
         $('#dm-datetime-picker').datetimepicker({
+
             timepicker: date_time_picker_config.timepicker,
             datepicker: date_time_picker_config.datepicker,
             dateFormat: date_time_picker_config.format,
-            // minDate: date_time_picker_config.min_date,
-            // maxDate: date_time_picker_config.max_date,
+            minDate: min_date,
+            maxDate: max_date,
             defaultTime: date_time_picker_config.default_time,
+            defaultDate: new Date(),
             onSelect: function() {
                 $(this).val();
             }

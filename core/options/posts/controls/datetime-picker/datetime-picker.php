@@ -22,8 +22,8 @@ class DatetimePicker extends Structure {
         wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', array('jquery', 'date-time-picker') );
 
         $date_time_picker_config = $this->content['datetime-picker'];
-        $data['min_date']        = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : date( 'd-m-Y' );
-        $data['max_date']        = isset( $date_time_picker_config['maxDate'] ) ? $date_time_picker_config['maxDate'] : '';
+        $data['min_date']        = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : "";
+        $data['max_date']        = isset( $date_time_picker_config['maxDate'] ) ? $date_time_picker_config['maxDate'] : "";
         $data['format']          = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
         $data['datepicker']      = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : false;
         $data['timepicker']      = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : false;
