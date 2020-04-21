@@ -26,6 +26,9 @@ class Select extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
+        wp_enqueue_style( 'select2-css', plugins_url( 'select/assets/css/select2.min.css', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'select2-js', plugins_url( 'select/assets/js/select2.min.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'dm-select-js', plugins_url( 'select/assets/js/script.js', dirname( __FILE__ ) ), ['jquery', 'select2-js'], time(), true );
 
     }
 
@@ -65,7 +68,7 @@ class Select extends Structure {
         ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <select name="<?php echo esc_html( $this->prefix . $name ); ?>">
+            <select id="dm_select" name="<?php echo esc_html( $this->prefix . $name ); ?>">
                     <?php
 
         if ( isset( $choices ) ) {
