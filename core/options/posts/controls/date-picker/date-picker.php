@@ -47,7 +47,7 @@ class DatePicker extends Structure {
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input type="date" name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( 'Y-m-d', $this->value ); ?>"
+                    value="<?php echo esc_html( date('Y-m-d', strtotime($this->value)) ); ?>"
                     min="<?php echo esc_html( $min_date ) ?>" max="<?php echo esc_html( $max_date ) ?>">
         </div<>
     <?php

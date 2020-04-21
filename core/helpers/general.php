@@ -978,3 +978,25 @@ function dm_html_tag( $tag, $attr = [], $end = false ) {
 
 	return $html;
 }
+
+/**
+ * Generate attributes string for html tag
+ *
+ * @param array $attr_array array('href' => '/', 'title' => 'Test')
+ *
+ * @return string 'href="/" title="Test"'
+ */
+function dm_attr_to_html(array $attr_array)
+{
+	$html_attr = '';
+
+	foreach ($attr_array as $attr_name => $attr_val) {
+		if ($attr_val === false) {
+			continue;
+		}
+
+		$html_attr .= $attr_name . '="' . dm_htmlspecialchars($attr_val) . '" ';
+	}
+
+	return $html_attr;
+}
