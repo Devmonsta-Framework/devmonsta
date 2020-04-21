@@ -26,8 +26,9 @@ class Multiselect extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-        // wp_enqueue_script( 'select2-js', plugins_url( 'multiselect/assets/js/select2.min.js', dirname( __FILE__ ) ) );
-        // wp_enqueue_script( 'dm-multiselect-js', plugins_url( 'multiselect/assets/js/script.js', dirname( __FILE__ ) ), ['jquery', 'select2-js'], time(), true );
+        wp_enqueue_style('select2-css', plugins_url( 'multiselect/assets/css/select2.min.css', dirname( __FILE__ ) ));
+        wp_enqueue_script( 'select2-js', plugins_url( 'multiselect/assets/js/select2.min.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'dm-multiselect-js', plugins_url( 'multiselect/assets/js/script.js', dirname( __FILE__ ) ), ['jquery', 'select2-js'], time(), true );
 
     }
 
