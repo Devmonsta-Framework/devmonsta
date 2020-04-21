@@ -1,10 +1,12 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Date_Picker;
+namespace Devmonsta\Options\Posts\Controls\WpEditor;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Date_Picker extends Structure {
+class WpEditor extends Structure {
+
+    protected $value;
 
     /**
      * @internal
@@ -24,13 +26,7 @@ class Date_Picker extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-        wp_enqueue_script( 'dm-date-picker', plugins_url( 'date-picker/assets/js/script.js', dirname( __FILE__ ) ) );
-
-        $data['monday_first'] = ( isset( $this->content['monday-first'] ) && ( $this->content['monday-first'] == true ) ) ? 1 : 0;
-        $data['min_date']     = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
-        $data['max_date']     = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
-
-        wp_localize_script( 'dm-date-picker', 'date_picker_config', $data );
+        wp_enqueue_script( 'dm-wpeditor-js', plugins_url( 'wp-editor/assets/js/script.js', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -39,6 +35,7 @@ class Date_Picker extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
+
         $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $content['value'];
@@ -53,26 +50,28 @@ class Date_Picker extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+
+        $settings                  = [];
+        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
+
+        ob_start();
         ?>
-        <div  <?php
-
-        if ( is_array( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
-            }
-
-        }
-
-        ?>>
+        <div>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text"
-                    id="dm-date-picker"
-                    name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( date( 'Y-m-d', $this->value ) ); ?>">
+<?php
+        wp_editor( $this->value, $this->prefix . $name, $settings );
+        $editor_html = ob_get_contents();
+        ob_end_clean();
+
+        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
+        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+
+        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
+        ?>
         </div<>
-    <?php
+<?php
 }
 
 }
