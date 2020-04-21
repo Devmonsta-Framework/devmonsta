@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Text;
+namespace Devmonsta\Options\Posts\Controls\WpEditor;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Text extends Structure {
+class WpEditor extends Structure {
 
     protected $value;
 
@@ -26,7 +26,7 @@ class Text extends Structure {
      * @internal
      */
     public function load_scripts( $hook ) {
-        wp_enqueue_script( 'dm-text-js', plugins_url( 'text/assets/js/script.js', dirname( __FILE__ ) ) );
+        wp_enqueue_script( 'dm-wpeditor-js', plugins_url( 'wp-editor/assets/js/script.js', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -50,23 +50,28 @@ class Text extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+
+        $settings                  = [];
+        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
+
+        ob_start();
         ?>
-        <div  <?php
-
-        if ( is_array( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
-            }
-
-        }
-
-        ?>>
+        <div>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text" name="<?php echo esc_html( $this->prefix . $name ); ?>" value="<?php echo esc_html( $this->value ); ?>" >
-        </div>
-    <?php
+<?php
+        wp_editor( $this->value, $this->prefix . $name, $settings );
+        $editor_html = ob_get_contents();
+        ob_end_clean();
+
+        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
+        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+
+        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
+        ?>
+        </div<>
+<?php
 }
 
 }

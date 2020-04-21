@@ -1,10 +1,12 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Textarea;
+namespace Devmonsta\Options\Posts\Controls\Url;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Textarea extends Structure {
+class Url extends Structure {
+
+    protected $value;
 
     /**
      * @internal
@@ -17,7 +19,14 @@ class Textarea extends Structure {
      * @internal
      */
     public function enqueue() {
+        add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
+    }
 
+    /**
+     * @internal
+     */
+    public function load_scripts( $hook ) {
+        wp_enqueue_script( 'dm-url-js', plugins_url( 'url/assets/js/script.js', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -26,6 +35,7 @@ class Textarea extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
+
         $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $content['value'];
@@ -52,10 +62,10 @@ class Textarea extends Structure {
         }
 
         ?>>
-            <lable><?php echo esc_html( $lable ); ?> </lable>
+           <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <textarea name="<?php echo esc_html( $this->prefix . $name ); ?>"><?php echo esc_html( $this->value ); ?></textarea>
-        </div<>
+             <input class="form-control" type="url" name="<?php echo esc_html( $this->prefix . $name ); ?>" value="<?php echo esc_html( $this->value ); ?>" >
+        </div>
     <?php
 }
 
