@@ -17,12 +17,13 @@ class DatetimePicker extends Structure {
      * @internal
      */
     public function enqueue() {
-
-        wp_enqueue_script( 'dm-date-time-picker', plugins_url( 'datetime-picker/assets/js/script.js', dirname( __FILE__ ) ) );
+        wp_enqueue_style( 'date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/jquery.datetimepicker.min.css' );
+        wp_enqueue_script( 'date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/jquery.datetimepicker.full.min.js', array('jquery') );
+        wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', array('jquery', 'date-time-picker') );
 
         $date_time_picker_config = $this->content['datetime-picker'];
-        $data['min_date']        = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : date( 'd-m-Y' );
-        $data['max_date']        = isset( $date_time_picker_config['maxDate'] ) ? $date_time_picker_config['maxDate'] : '';
+        $data['min_date']        = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : "";
+        $data['max_date']        = isset( $date_time_picker_config['maxDate'] ) ? $date_time_picker_config['maxDate'] : "";
         $data['format']          = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
         $data['datepicker']      = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : false;
         $data['timepicker']      = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : false;
@@ -68,7 +69,7 @@ class DatetimePicker extends Structure {
             <input type="text"
                     id="dm-datetime-picker"
                     name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( date( 'Y-m-d H:i', $this->value ) ); ?>">
+                    value="<?php echo esc_html( date( 'Y-m-d H:i', strtotime($this->value)  ) ); ?>">
         </div<>
     <?php
 }
