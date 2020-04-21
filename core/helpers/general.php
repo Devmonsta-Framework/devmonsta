@@ -764,8 +764,55 @@
 		   return $alt;
 		}
 	}
+/**
+ * Unset specified key in some array level
+ *
+ * @param string $keys 'a/b/c' -> unset($arr['a']['b']['c']);
+ * @param array|object $array_or_object
+ * @param string $keys_delimiter
+ *
+ * @return array|object
+ */
+function dm_aku($keys, &$array_or_object, $keys_delimiter = '/')
+{
+	if (!is_array($keys)) {
+		$keys = explode($keys_delimiter, (string) $keys);
+	}
 
-	/**
+	$key_or_property = array_shift($keys);
+	if ($key_or_property === null || $key_or_property === '') {
+		return $array_or_object;
+	}
+
+	$is_object = is_object($array_or_object);
+
+	if ($is_object) {
+		if (!property_exists($array_or_object, $key_or_property)) {
+			return $array_or_object;
+		}
+	} else {
+		if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
+			return $array_or_object;
+		}
+	}
+
+	if (isset($keys[0])) { // not used count() for performance reasons
+		if ($is_object) {
+			dm_aku($keys, $array_or_object->{$key_or_property});
+		} else {
+			dm_aku($keys, $array_or_object[$key_or_property]);
+		}
+	} else {
+		if ($is_object) {
+			unset($array_or_object->{$key_or_property});
+		} else {
+			unset($array_or_object[$key_or_property]);
+		}
+	}
+
+	return $array_or_object;
+}
+/**
  * Set (or create if not exists) value for specified key in some array level
  *
  * @param string $keys 'a/b/c', or 'a/b/c/' equivalent to: $arr['a']['b']['c'][] = $val;

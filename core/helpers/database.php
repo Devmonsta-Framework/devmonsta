@@ -77,18 +77,18 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
 			$post_type !== 'dm-slider',
 			$post_type
 		)) {
-			return dms()->theme->get_post_options( $post_type );
+			return dm()->theme->get_post_options( $post_type );
 		} else {
 			return array();
 		}
 	}
 
 	protected function get_values($item_id, array $extra_data = array()) {
-		return DM_WP_Meta::get( 'post', $this->get_post_id($item_id), 'dms_options', array() );
+		return DM_WP_Meta::get( 'post', $this->get_post_id($item_id), 'dm_options', array() );
 	}
 
 	protected function set_values($item_id, $values, array $extra_data = array()) {
-		DM_WP_Meta::set( 'post', $this->get_post_id($item_id), 'dms_options', $values );
+		DM_WP_Meta::set( 'post', $this->get_post_id($item_id), 'dm_options', $values );
 	}
 
 	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
@@ -108,7 +108,7 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
 		/**
 		 * @deprecated
 		 */
-		dms()->backend->_sync_post_separate_meta($post_id);
+		dm()->backend->_sync_post_separate_meta($post_id);
 
 		/**
 		 * @since 2.2.8
@@ -172,20 +172,20 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 	protected function get_values($item_id, array $extra_data = array()) {
 		self::migrate($item_id);
 
-		return (array)get_term_meta( $item_id, 'dms_options', true);
+		return (array)get_term_meta( $item_id, 'dm_options', true);
 	}
 
 	protected function set_values($item_id, $values, array $extra_data = array()) {
 		self::migrate($item_id);
 
-		update_term_meta($item_id, 'dms_options', $values);
+		update_term_meta($item_id, 'dm_options', $values);
 	}
 
 	protected function get_options($item_id, array $extra_data = array()) {
-		return dms()->theme->get_taxonomy_options($extra_data['taxonomy']);
+		return dm()->theme->get_taxonomy_options($extra_data['taxonomy']);
 	}
 
-	protected function get_dms_storage_params($item_id, array $extra_data = array()) {
+	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
 		return array(
 			'term-id' => $item_id,
 			'taxonomy' => $extra_data['taxonomy'],
@@ -214,7 +214,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 			/** @var WPDB $wpdb */
 			global $wpdb;
 
-			$table_name = $wpdb->get_results( "show tables like '{$wpdb->prefix}dms_termmeta'", ARRAY_A );
+			$table_name = $wpdb->get_results( "show tables like '{$wpdb->prefix}dm_termmeta'", ARRAY_A );
 			$table_name = $table_name ? array_pop($table_name[0]) : false;
 
 			if ( $table_name && ! $wpdb->get_results( "SELECT 1 FROM `{$table_name}` LIMIT 1" ) ) {
@@ -237,14 +237,14 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 	}
 
 	/**
-	 * When a term is deleted, delete its meta from old dms_termmeta table
+	 * When a term is deleted, delete its meta from old dm_termmeta table
 	 *
 	 * @param mixed $term_id
 	 *
 	 * @return void
 	 * @internal
 	 */
-	public static function _action_dms_delete_term( $term_id ) {
+	public static function _action_dm_delete_term( $term_id ) {
 		if ( ! ( $table_name = self::get_old_table_name() ) ) {
 			return;
 		}
@@ -258,7 +258,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 		/** @var WPDB $wpdb */
 		global $wpdb;
 
-		$wpdb->delete( $table_name, array( 'dms_term_id' => $term_id ), array( '%d' ) );
+		$wpdb->delete( $table_name, array( 'dm_term_id' => $term_id ), array( '%d' ) );
 	}
 
 	/**
@@ -274,15 +274,15 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 			( $old_table_name = self::get_old_table_name() )
 			&&
 			( $value = $wpdb->get_col( $wpdb->prepare(
-				"SELECT meta_value FROM `{$old_table_name}` WHERE dms_term_id = %d AND meta_key = 'dms_options' LIMIT 1",
+				"SELECT meta_value FROM `{$old_table_name}` WHERE dm_term_id = %d AND meta_key = 'dm_options' LIMIT 1",
 				$term_id
 			) ) )
 			&&
 			( $value = unserialize( $value[0] ) )
 		) {
-			$wpdb->delete( $old_table_name, array( 'dms_term_id' => $term_id ), array( '%d' ) );
+			$wpdb->delete( $old_table_name, array( 'dm_term_id' => $term_id ), array( '%d' ) );
 
-			update_term_meta( $term_id, 'dms_options', $value );
+			update_term_meta( $term_id, 'dm_options', $value );
 
 			return true;
 		} else {
@@ -294,7 +294,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 		/**
 		 * @since 2.6.0
 		 */
-		do_action('dms_term_options_update', array(
+		do_action('dm_term_options_update', array(
 			'term_id' => $item_id,
 			'taxonomy' => $extra_data['taxonomy'],
 			/**
@@ -328,7 +328,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 				return null;
 			}
 
-			return DMS_Db_Options_Model::_get_instance('term')->get(intval($term_id), $option_id, $default_value, array(
+			return DM_Db_Options_Model::_get_instance('term')->get(intval($term_id), $option_id, $default_value, array(
 				'taxonomy' => $taxonomy
 			));
 		}
@@ -348,13 +348,13 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 				return null;
 			}
 
-			DMS_Db_Options_Model::_get_instance('term')->set(intval($term_id), $option_id, $value, array(
+			DM_Db_Options_Model::_get_instance('term')->set(intval($term_id), $option_id, $value, array(
 				'taxonomy' => $taxonomy
 			));
 		}
 
 		add_action( 'switch_blog', array( __CLASS__, '_action_switch_blog' ) );
-		add_action( 'delete_term', array( __CLASS__, '_action_dms_delete_term' ) );
+		add_action( 'delete_term', array( __CLASS__, '_action_dm_delete_term' ) );
 	}
 }
 new DM_Db_Options_Model_Term();
@@ -366,18 +366,18 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 	}
 
 	protected function get_values($item_id, array $extra_data = array()) {
-		return get_theme_mod('dms_options', array());
+		return get_theme_mod('dm_options', array());
 	}
 
 	protected function set_values($item_id, $values, array $extra_data = array()) {
-		set_theme_mod('dms_options', $values);
+		set_theme_mod('dm_options', $values);
 	}
 
 	protected function get_options($item_id, array $extra_data = array()) {
-		return dms()->theme->get_customizer_options();
+		return dm()->theme->get_customizer_options();
 	}
 
-	protected function get_dms_storage_params($item_id, array $extra_data = array()) {
+	protected function get_dm_storage_params($item_id, array $extra_data = array()) {
 		return array(
 			'customizer' => true
 		);
@@ -387,7 +387,7 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 		/**
 		 * @since 2.6.0
 		 */
-		do_action('dms_customizer_options_update', array(
+		do_action('dm_customizer_options_update', array(
 			/**
 			 * Option id
 			 * First level multi-key
@@ -425,7 +425,7 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 		 * @return mixed|null
 		 */
 		function dm_customizer_option( $option_id = null, $default_value = null ) {
-			return DMS_Db_Options_Model::_get_instance('customizer')->get(null, $option_id, $default_value);
+			return DM_Db_Options_Model::_get_instance('customizer')->get(null, $option_id, $default_value);
 		}
 
 		/**
@@ -435,7 +435,7 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 		 * @param mixed $value
 		 */
 		function dm_set_customizer_option( $option_id = null, $value ) {
-			DMS_Db_Options_Model::_get_instance('customizer')->set(null, $option_id, $value);
+			DM_Db_Options_Model::_get_instance('customizer')->set(null, $option_id, $value);
 		}
 
 	
