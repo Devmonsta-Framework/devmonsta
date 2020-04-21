@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Date_Picker;
+namespace Devmonsta\Options\Posts\Controls\DatePicker;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Date_Picker extends Structure {
+class DatePicker extends Structure {
 
     /**
      * @internal
