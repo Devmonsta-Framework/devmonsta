@@ -67,6 +67,13 @@ class Gradient extends Structure {
             '1.0.0',
 			true
         );
+
+        wp_enqueue_script(
+			'dm-option-gradient',
+			plugins_url('gradient/assets/js/scripts.js'),
+			array('jquery', 'dms-events'),
+			dms()->manifest->get_version()
+		);
     }
 
     /**
