@@ -26,28 +26,33 @@ class Gradient extends Structure {
     /**
      * @internal
      */
-    public function dm_enqueue_gradient_picker(  ) {
+    public function dm_enqueue_gradient_picker() {
 
-        // first check that $hook_suffix is appropriate for your admin page
-        wp_enqueue_style( 'wp-color-picker' );
-        wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+            wp_enqueue_style( 'wp-color-picker' );
+        }
+
+        if ( !wp_script_is( 'dm-gradient-handle', 'enqueued' ) ) {
+            wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+
+        }
 
         global $post;
-        $data             = [];
+        $data                = [];
         $default_value_array = [];
 
         if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
             foreach ( $this->content['value'] as $default_key => $default_value ) {
                 $default_value_array[$default_key] = $default_value;
             }
-
         }
+
         $data['defaults'] = ( !empty( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
                                 ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
                                 : $default_value_array;
-        $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
-        wp_localize_script( 'dm-gradient-handle', 'color_picker_config', $data );
+
+        wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
     }
 
     /**
@@ -56,13 +61,12 @@ class Gradient extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value_array = [];
 
+        $default_value_array = [];
         if ( is_array( $content['value'] ) && !empty( $content['value'] ) ) {
             foreach ( $content['value'] as $default_key => $default_value ) {
                 $default_value_array[$default_key] = $default_value;
             }
-
         }
 
         $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
@@ -89,13 +93,16 @@ class Gradient extends Structure {
 
         foreach ( $this->value as $id => $value ) {
             ?>
-                            <?php echo $id;?><input type="text" class="dm-color-field"
+                            <?php 
+                            echo esc_html($id); ?>
+                            <input type="text" class="dm-gradient-field-<?php echo esc_attr($id); ?>"
                                 name="<?php echo esc_html( $this->prefix . $name . "[" . $id . "]" ); ?>"
-                                value="<?php echo $value; ?>"
+                                value="<?php echo esc_html($value); ?>"
                                 data-default-color="<?php echo esc_attr( $value ); ?>"
                                  />
 <?php
 }
+
         ?>
         </div>
     <?php

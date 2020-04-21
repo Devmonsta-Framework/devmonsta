@@ -1,9 +1,14 @@
 jQuery(document).ready(function($){
-    var dmOptions = {
-        defaultColor: color_picker_config.default,
-        hide: true,
-        palettes: color_picker_config.palettes
-    };
-     
-    $('.dm-color-field').wpColorPicker(dmOptions);
+
+    // console.log(gradient_picker_config.defaults);
+    
+     for(color_id in gradient_picker_config.defaults){
+        let single_color = '.dm-gradient-field-' + color_id ;
+        let dmOptions = {
+            defaultColor: gradient_picker_config.defaults[color_id],
+            hide: true,
+        };
+        $(single_color).wpColorPicker(dmOptions);
+     }
+    
 });

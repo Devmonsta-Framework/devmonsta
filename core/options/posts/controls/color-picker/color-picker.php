@@ -16,21 +16,21 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function enqueue() {
-        //  add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_color_picker'] );
         $this->dm_enqueue_color_picker();
     }
 
     function dm_enqueue_color_picker() {
-        // first check that $hook_suffix is appropriate for your admin page
-        wp_enqueue_style( 'wp-color-picker' );
-        wp_enqueue_script( 'wp-color-picker' );
+        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+            wp_enqueue_style( 'wp-color-picker' );
+        }
+
         wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
         global $post;
-        $data             = [];
-        $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) ) ?
-                                get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                                : $this->content['palettes'];
+        $data            = [];
+        $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) ) 
+                            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                            : $this->content['value'];
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
     }
