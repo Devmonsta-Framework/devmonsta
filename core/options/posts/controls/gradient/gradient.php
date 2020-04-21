@@ -19,61 +19,35 @@ class Gradient extends Structure {
      * @internal
      */
     public function enqueue() {
-        add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
+        // add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_gradient_picker'] );
+        $this->dm_enqueue_gradient_picker();
     }
 
     /**
      * @internal
      */
-    public function load_scripts( $hook ) {
-        
-		wp_enqueue_style(
-			'dm-option-gradient',
-            plugins_url( 'gradient/assets/css/styles.css'),
-            array(),
-			'1.0.0'
-        );
+    public function dm_enqueue_gradient_picker(  ) {
 
-        wp_enqueue_style(
-			'dm-option-color-picker',
-			plugins_url('color-picker/assets/css/styles.css'),
-			array(),
-			'1.0.0'
-		);
+        // first check that $hook_suffix is appropriate for your admin page
+        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
-		wp_enqueue_script(
-			'dm-option-color-picker',
-			plugins_url('color-picker/assets/js/scripts.js'),
-			array('jquery', 'dm-events', 'wp-color-picker'),
-			'1.0.0',
-			true
-		);
+        global $post;
+        $data             = [];
+        $default_value_array = [];
 
-		wp_localize_script(
-			'dm-option-color-picker',
-			'_dm_option_type_'. str_replace('-', '_', 'color-picker') . '_localized',
-			array(
-				'dm10n' => array(
-					'reset_to_default' => __('Reset', 'devmonsta'),
-					'reset_to_initial' => __('Reset', 'devmonsta'),
-				),
-			)
-		);
+        if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
+            foreach ( $this->content['value'] as $default_key => $default_value ) {
+                $default_value_array[$default_key] = $default_value;
+            }
 
-		wp_register_script(
-			'dm-events',
-            plugins_url( 'gradient/assets/js/dm-events.js'),
-            array(),
-            '1.0.0',
-			true
-        );
-
-        wp_enqueue_script(
-			'dm-option-gradient',
-			plugins_url('gradient/assets/js/scripts.js'),
-			array('jquery', 'dms-events'),
-			dms()->manifest->get_version()
-		);
+        }
+        $data['defaults'] = ( !empty( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+                                ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                                : $default_value_array;
+        $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
+        wp_localize_script( 'dm-gradient-handle', 'color_picker_config', $data );
     }
 
     /**
@@ -82,10 +56,19 @@ class Gradient extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
+        $default_value_array = [];
 
-        $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $content['value'];
+        if ( is_array( $content['value'] ) && !empty( $content['value'] ) ) {
+            foreach ( $content['value'] as $default_key => $default_value ) {
+                $default_value_array[$default_key] = $default_value;
+            }
+
+        }
+
+        $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        : $default_value_array;
 
         $this->output();
     }
@@ -102,7 +85,18 @@ class Gradient extends Structure {
         <div>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text" name="<?php echo esc_html( $this->prefix . $name ); ?>" value="<?php echo esc_html( $this->value ); ?>" >
+<?php
+
+        foreach ( $this->value as $id => $value ) {
+            ?>
+                            <?php echo $id;?><input type="text" class="dm-color-field"
+                                name="<?php echo esc_html( $this->prefix . $name . "[" . $id . "]" ); ?>"
+                                value="<?php echo $value; ?>"
+                                data-default-color="<?php echo esc_attr( $value ); ?>"
+                                 />
+<?php
+}
+        ?>
         </div>
     <?php
 }

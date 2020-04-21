@@ -1,21 +1,52 @@
-.dm-backend-option-input-type-gradient .dm-option-help-in-input {
+input.dm-option-type-color-picker {
+	width: 70px !important;
+}
+
+@media (max-width: 782px) {
+	input.dm-option-type-color-picker {
+		width: 100px !important;
+	}
+}
+
+input.dm-option-type-color-picker.iris-error {
+	background-color: #ffebe8;
+	border-color: #c00;
+	color: #000;
+}
+
+.dm-option-type-color-picker-with-reset-default > .iris-palette-container {
+	bottom: 27px !important;
+}
+
+.dm-option-type-color-picker-iris,
+.dm-option-type-color-picker-iris.iris-picker {
+	z-index: 999;
+	position: absolute;
+}
+
+.dm-option-type-color-picker-iris .dm-option-type-color-picker-reset-default {
+	width: 139px;
+	margin-top: 2px;
+	cursor: pointer;
+}
+
+.dm-option-type-color-picker-iris .dm-option-type-color-picker-reset-default span {
+	line-height: 16px;
+	padding-left: 2px;
+	float: left;
+}
+
+.dm-backend-option-input-type-color-picker .dm-option-help-in-input {
 	top: 4px !important;
 }
 
-.dm-option-type-gradient .primary-color {
-	display: inline-block;
+#customize-controls .customize-pane-child > .customize-control:last-child > .dm-backend-customizer-option > div > .dm-backend-option-type-color-picker {
+	padding-bottom: 170px;
 }
 
-.dm-option-type-gradient .secondary-color {
-	display: inline-block;
+#customize-theme-controls > ul.customize-pane-child {
+	height: 100% !important;
 }
-
-.dm-option-type-gradient .delimiter {
-	display: inline-block;
-	padding: 0 4px;
-}
-
-#side-sortables .dm-option-type-gradient .secondary-color,
-#side-sortables .dm-option-type-gradient .primary-color {
-	width: inherit !important;
+#customize-controls .customize-pane-child .customize-control:last-child .dm-backend-customizer-option .dm-backend-option-type-gradient {
+ padding-bottom: 170px;
 }
