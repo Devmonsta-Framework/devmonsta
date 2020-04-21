@@ -122,15 +122,6 @@ class Posts
 
                     $control->enqueue();
 
-                } else {
-                    $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
-                    include_once $file;
-                    if (class_exists($control_class)) {
-                        $control = new $control_class($control_content);
-
-                        $control->enqueue();
-                    }
-
                 }
 
             }
