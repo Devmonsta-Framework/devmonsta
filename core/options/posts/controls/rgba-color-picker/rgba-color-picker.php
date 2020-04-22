@@ -78,7 +78,7 @@ class RgbaColorPicker extends Structure {
             <input  type="text"
                     name="<?php echo esc_attr( $this->prefix . $name ); ?>"
                     value="<?php echo esc_attr( $this->value ); ?>"
-                    class="dm-color-field color-picker"
+                    class="dm-color-field color-picker-rgb"
                     data-alpha="true"
                     data-default-color="<?php echo esc_attr( $this->value ); ?>" />
         </div<>

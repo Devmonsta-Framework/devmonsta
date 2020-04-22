@@ -6,7 +6,6 @@
 
 		// Variable for some backgrounds ( grid )
 	var image   = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAAHnlligAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHJJREFUeNpi+P///4EDBxiAGMgCCCAGFB5AADGCRBgYDh48CCRZIJS9vT2QBAggFBkmBiSAogxFBiCAoHogAKIKAlBUYTELAiAmEtABEECk20G6BOmuIl0CIMBQ/IEMkO0myiSSraaaBhZcbkUOs0HuBwDplz5uFJ3Z4gAAAABJRU5ErkJggg==',
-		// html stuff for wpColorPicker copy of the original color-picker.js
 		_after = '<div class="wp-picker-holder" />',
 		_wrap = '<div class="wp-picker-container" />',
 		_button = '<input type="button" class="button button-small" />',
@@ -484,10 +483,10 @@
 
 // Auto Call plugin is class is color-picker
 jQuery( document ).ready( function( $ ) {
-	var dmOptions = {
+	var dmRgbaOptions = {
         defaultColor: rgba_color_picker_config.default,
         hide: true,
         palettes: rgba_color_picker_config.palettes
     };
-	$( '.color-picker' ).wpColorPicker(dmOptions);
+	$( '.color-picker-rgb' ).wpColorPicker(dmRgbaOptions);
 } );
