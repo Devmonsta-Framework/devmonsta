@@ -20,6 +20,10 @@ class Gradient extends Structure {
      */
     public function enqueue() {
         // add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_gradient_picker'] );
+        add_action( 'init', [$this, 'dm_gradient'] );
+    }
+
+    public function dm_gradient() {
         $this->dm_enqueue_gradient_picker();
     }
 
@@ -42,15 +46,14 @@ class Gradient extends Structure {
         $default_value_array = [];
 
         if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
+
             foreach ( $this->content['value'] as $default_key => $default_value ) {
                 $default_value_array[$default_key] = $default_value;
             }
+
         }
 
-        $data['defaults'] = ( !empty( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-                            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-                                ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-                                : $default_value_array;
+        $data['defaults'] = $default_value_array;
 
         wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
     }
@@ -63,10 +66,13 @@ class Gradient extends Structure {
         global $post;
 
         $default_value_array = [];
+
         if ( is_array( $content['value'] ) && !empty( $content['value'] ) ) {
+
             foreach ( $content['value'] as $default_key => $default_value ) {
                 $default_value_array[$default_key] = $default_value;
             }
+
         }
 
         $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
@@ -85,6 +91,9 @@ class Gradient extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+
+// $data['defaults'] = $this->value;
+        // wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
         ?>
         <div>
             <lable><?php echo esc_html( $lable ); ?> </lable>
@@ -93,11 +102,10 @@ class Gradient extends Structure {
 
         foreach ( $this->value as $id => $value ) {
             ?>
-                            <?php 
-                            echo esc_html($id); ?>
-                            <input type="text" class="dm-gradient-field-<?php echo esc_attr($id); ?>"
+                            <?php echo esc_html( $id ); ?>
+                            <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                                 name="<?php echo esc_html( $this->prefix . $name . "[" . $id . "]" ); ?>"
-                                value="<?php echo esc_html($value); ?>"
+                                value="<?php echo esc_html( $value ); ?>"
                                 data-default-color="<?php echo esc_attr( $value ); ?>"
                                  />
 <?php
