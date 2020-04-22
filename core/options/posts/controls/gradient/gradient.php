@@ -20,7 +20,7 @@ class Gradient extends Structure {
      */
     public function enqueue() {
         // add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_gradient_picker'] );
-        $this->dm_enqueue_gradient_picker();
+        // $this->dm_enqueue_gradient_picker();
     }
 
     /**

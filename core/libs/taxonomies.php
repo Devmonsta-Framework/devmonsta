@@ -6,12 +6,12 @@ class Taxonomies
 {
     protected static $data;
 
-    public function add_taxonomy($data)
+    public function add_control($data)
     {
         self::$data[] = $data;
     }
 
-    public function all_taxonomies()
+    public function all_controls()
     {
         return self::$data;
     }
