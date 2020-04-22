@@ -62,6 +62,7 @@ final class Devmonsta {
         define( 'DM_PATH', plugin_dir_url( __FILE__ ) );
         define( 'DM_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
         define( 'DM_CORE', DM_PATH . 'core/' );
+        define( 'DM_OPTIONS', DM_CORE . 'options/' );
     }
 
     /**
