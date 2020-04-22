@@ -54,21 +54,22 @@ class Select extends Structure {
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
-        ?>
-        <div  <?php
+        $default_attributes = "";
 
-        if ( is_array( $attrs ) ) {
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                $default_attributes .= $key . "='" . $val . "' ";
             }
 
         }
 
-        ?>>
+        ?>
+
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <select id="dm_select" name="<?php echo esc_html( $this->prefix . $name ); ?>">
+            <select id="dm_select" name="<?php echo esc_attr( $this->prefix . $name ); ?>">
                     <?php
 
         if ( isset( $choices ) ) {

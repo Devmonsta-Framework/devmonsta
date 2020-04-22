@@ -31,7 +31,6 @@ class Checkbox extends Structure {
             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $default_value;
-        // var_dump( $this->value );
         $this->output();
     }
 
@@ -45,28 +44,31 @@ class Checkbox extends Structure {
         $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $text       = isset( $this->content['text'] ) ? $this->content['text'] : '';
         $is_checked = ( $this->value == 'true' ) ? 'checked' : '';
-        ?>
-        <div <?php
+        
 
-        if ( is_array( $attrs ) ) {
+        $default_attributes = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                $default_attributes .= $key . "='" . $val . "' ";
             }
 
         }
 
-        ?>>
+        ?>
+
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <input type="text"
                        value="false"
-                       name="<?php echo esc_html( $this->prefix . $name ); ?>"
+                       name="<?php echo esc_attr( $this->prefix . $name ); ?>"
                        style="display: none">
 
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
                 <input type="checkbox"
-                        name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                        value="true" <?php echo esc_html( $is_checked ); ?>>
+                        name="<?php echo esc_attr( $this->prefix . $name ); ?>"
+                        value="true" <?php echo esc_attr( $is_checked ); ?>>
                         <?php echo esc_html( $text ); ?>
         </div<>
     <?php

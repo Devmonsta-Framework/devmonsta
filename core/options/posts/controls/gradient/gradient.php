@@ -87,15 +87,23 @@ class Gradient extends Structure {
      * @internal
      */
     public function output() {
-        $lable = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $lable              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default_attributes = "";
 
-// $data['defaults'] = $this->value;
-        // wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+                $default_attributes .= $key . "='" . $val . "' ";
+            }
+
+        }
+
         ?>
-        <div>
+
+        <div <?php echo esc_attr( $default_attributes ); ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
 <?php
@@ -105,7 +113,7 @@ class Gradient extends Structure {
                             <?php echo esc_html( $id ); ?>
                             <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                                 name="<?php echo esc_html( $this->prefix . $name . "[" . $id . "]" ); ?>"
-                                value="<?php echo esc_html( $value ); ?>"
+                                value="<?php echo esc_attr( $value ); ?>"
                                 data-default-color="<?php echo esc_attr( $value ); ?>"
                                  />
 <?php

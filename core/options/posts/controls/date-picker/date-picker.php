@@ -42,13 +42,24 @@ class DatePicker extends Structure {
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $min_date = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
         $max_date = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
+        $default_attributes = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+                $default_attributes .= $key . "='" . $val . "' ";
+            }
+
+        }
+
         ?>
-        <div <?php echo esc_attr( $attrs ); ?>>
+
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="date" name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( date('Y-m-d', strtotime($this->value)) ); ?>"
-                    min="<?php echo esc_html( $min_date ) ?>" max="<?php echo esc_html( $max_date ) ?>">
+            <input type="date" name="<?php echo esc_attr( $this->prefix . $name ); ?>"
+                    value="<?php echo esc_attr( date('Y-m-d', strtotime($this->value)) ); ?>"
+                    min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
         </div<>
     <?php
 }
