@@ -13,6 +13,10 @@ class Taxonomies
     public function init()
     {
         global $pagenow;
+        $t = get_option('dm_taxonomy'); // T for taxonomy
+
+        add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
+        add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
 
         if ($pagenow == 'edit-tags.php') {
 
@@ -31,13 +35,13 @@ class Taxonomies
                  * Save term meta
                  */
 
-                add_action('created_' . $taxonomy, [$this, 'save_meta'], 10, 2);
+                update_option('dm_taxonomy', $taxonomy);
+
+                // add_action('created_' . $taxonomy, [$this, 'save_meta'], 10, 2);
 
                 /**
                  * Edit term meta
                  */
-
-                add_action($taxonomy . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
 
                 $class_name = $this->make_class_structure($file);
 
@@ -122,8 +126,10 @@ class Taxonomies
 
     public function save_meta($term_id, $tt_id)
     {
+        $taxonomy = get_option('dm_taxonomy');
+        error_log('save meta fired , taxonomy ' . $taxonomy . ' and term id ' . $term_id . ' and tt is ' . $tt_id);
         $prefix = 'devmonsta_';
-        add_term_meta($term_id, 'devmonsta_test_key', 'devmonsta_test_value');
+
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
@@ -137,11 +143,14 @@ class Taxonomies
 
     public function edit_meta($term, $taxonomy)
     {
-        global $feature_groups;
-        echo 'ok';
-        // get current group
-        // $feature_group = get_term_meta($term->term_id, 'feature-group', true);
-        print_r($feature_groups);
+
+        ?>
+        <tr class="form-field term-group-wrap">
+            <th scope="row"><label for="feature-group"><?php _e('Feature Group', 'my_plugin');?></label></th>
+            <td></td>
+        </tr>
+
+    <?php
 
     }
 

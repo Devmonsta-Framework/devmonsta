@@ -7,7 +7,9 @@ class Text extends Structure
 {
     public function init()
     {
+
         $this->columns();
+
     }
 
     public function enqueue()
@@ -25,13 +27,18 @@ class Text extends Structure
         $prefix = 'devmonsta_';
         $name = $prefix . $this->content['name'];
 
-    ?>
+        ?>
 
-            <lable><?php echo esc_html($this->content['label']); ?></lable>
-            <input name="<?php echo $name; ?>"  type="text">
+            <div class="form-field form-required term-name-wrap">
+                <label for="tag-name"><?php echo esc_html($this->content['label']); ?></label>
+                <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="" size="40" aria-required="true">
+                <p>Devmonsta custom control</p>
+            </div>
+
+
 
     <?php
-    }
+}
 
     public function columns()
     {
@@ -42,6 +49,33 @@ class Text extends Structure
 
             return $columns;
         });
+
+        $cc = $content;
+        add_filter('manage_' . $this->taxonomy . '_custom_column', function ($content, $column_name, $term_id) use ($cc) {
+
+            if ($column_name == $cc['name']) {
+                print_r(get_term_meta($term_id, 'devmonsta_' . $column_name, true));
+
+            }
+            return $content;
+
+        }, 10, 3);
+
     }
+
+    public function edit()
+    {
+
+        $prefix = 'devmonsta_';
+        $name = $prefix . $this->content['name'];
+
+        ?>
+        <div class="form-field form-required term-name-wrap">
+                <label for="tag-name"><?php echo esc_html($this->content['label']); ?></label>
+                <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="" size="40" aria-required="true">
+                <p>Devmonsta custom control</p>
+            </div>
+        <?php
+}
 
 }
