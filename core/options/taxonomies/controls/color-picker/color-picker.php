@@ -31,4 +31,8 @@ class ColorPicker extends Structure
      public function columns(){
          
      }
+
+     public function edit_fields($term, $taxonomy){
+       
+     }
 }

@@ -17,5 +17,5 @@ abstract class Structure
     abstract public function render();
     abstract public function output();
     abstract public function enqueue();
-
+    abstract public function edit_fields($term, $taxonomy);
 }

@@ -63,18 +63,20 @@ class Text extends Structure
 
     }
 
-    public function edit()
+    public function edit_fields($term, $taxonomy)
     {
 
         $prefix = 'devmonsta_';
         $name = $prefix . $this->content['name'];
-
+        $value = get_term_meta($term->term_id,$name,true);
         ?>
-        <div class="form-field form-required term-name-wrap">
-                <label for="tag-name"><?php echo esc_html($this->content['label']); ?></label>
-                <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="" size="40" aria-required="true">
-                <p>Devmonsta custom control</p>
-            </div>
+
+        <tr class="form-field term-group-wrap">
+            <th scope="row"><label for="feature-group"><?php echo esc_html($this->content['label']); ?></label></th>
+            <td> <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="<?php echo $value;?>" size="40" aria-required="true"></td>
+        </tr>
+
+
         <?php
 }
 
