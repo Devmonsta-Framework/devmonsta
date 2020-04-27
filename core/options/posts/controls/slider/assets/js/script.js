@@ -1,14 +1,12 @@
 jQuery(document).ready(function($) {
 
-    if ($(".dm-slider").length) {
 
-        
+    if ($(".dm-slider").length) {
+        console.log(dm_slider_config);
         $('.dm-slider').asRange({
-            max: 100,
-            min: 0,
-            step: 10,
-            value: null,
-            step: 10,
+            max: dm_slider_config.max,
+            min: dm_slider_config.min,
+            step: dm_slider_config.step,
             limit: true,
             range: false,
             direction: 'h', // 'v' or 'h'

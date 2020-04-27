@@ -19,16 +19,18 @@ class Slider extends Structure {
      * @internal
      */
     public function enqueue() {
-        add_action( 'init', [$this, 'enqueue_all_scripts'] );
+        add_action( 'init', [$this, 'enqueue_slider_scripts'] );
     }
 
     /**
      * @internal
      */
-    public function enqueue_all_scripts() {
+    public function enqueue_slider_scripts() {
         wp_enqueue_style( 'dm-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
         wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
-        wp_enqueue_script( 'dm-slider-script', DM_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange', 'dm-slider-asrange-css'], time(), true );
+        wp_enqueue_script( 'dm-slider-script', DM_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
+        
+        //get slider settings from theme
         $dm_slider_data_config  = $this->content['properties'];
         $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
         $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
@@ -55,9 +57,9 @@ class Slider extends Structure {
      */
     public function output() {
 
-        $lable   = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name    = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $lable              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
 
@@ -71,15 +73,15 @@ class Slider extends Structure {
 
         ?>
 
-        <div <?php echo esc_attr($default_attributes);?>>
+        <div <?php echo esc_attr( $default_attributes ); ?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input class="dm-slider" 
-            type="range" min="0" max="10" step="0.01" 
-            name="<?php echo esc_attr( $this->prefix . $name ); ?>" 
-            value="<?php echo esc_attr( $this->value ); ?>"/>
+            <input class="dm-slider"
+                    type="range" 
+                    name="<?php echo esc_attr( $this->prefix . $name ); ?>"
+                    value="<?php echo esc_attr( $this->value ); ?>"/>
         </div>
-        
+
     <?php
 }
 
