@@ -28,7 +28,7 @@ class DatetimePicker extends Structure {
         $data['datepicker']      = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : false;
         $data['timepicker']      = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : false;
         $data['default_time']    = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
-
+        
         wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $data );
     }
 

@@ -29,7 +29,6 @@ class DatetimeRange extends Structure {
         $data['datepicker']     = ( $date_time_range_config['datepicker'] ) ? "true" : "";
         $data['timepicker']     = ( $date_time_range_config['timepicker'] ) ? "true" : "";
         $data['time24hours']     = ( $date_time_range_config['time24hours'] ) ? "true" : "";
-
         wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $data );
     }
 
@@ -71,7 +70,7 @@ class DatetimeRange extends Structure {
             <input type="text"
                     id="dm-datetime-range"
                     name="<?php echo esc_attr( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_attr( date( 'Y-m-d H:i', strtotime( $this->value ) ) ); ?>">
+                    value="<?php echo esc_attr($this->value ); ?>">
         </div<>
     <?php
 }

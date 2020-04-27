@@ -2,12 +2,13 @@ jQuery(document).ready(function($) {
 
     if ($("#dm-datetime-picker").length) {
 
-        time_picker = (date_time_range_config.timepicker == "") ? false : true;
-        date_picker = (date_time_range_config.datepicker == "") ? false : true;
-        time_picker_24hour = (date_time_range_config.time24hours == "") ? false : true;
-        min_date = (date_time_range_config.min_date == "") ? false :date_time_range_config.min_date;
-        max_date = (date_time_range_config.max_date == "") ? false :date_time_range_config.max_date;
+        var time_picker = (date_time_range_config.timepicker == "") ? false : true;
+        var date_picker = (date_time_range_config.datepicker == "") ? false : true;
+        var time_picker_24hour = (date_time_range_config.time24hours == "") ? false : true;
+        var min_date = (date_time_range_config.min_date == "") ? false :date_time_range_config.min_date;
+        var max_date = (date_time_range_config.max_date == "") ? false :date_time_range_config.max_date;
         
+        console.log(time_picker);
         $('#dm-datetime-range').daterangepicker({
             timePicker: time_picker,
             datePicker: date_picker,
@@ -17,9 +18,6 @@ jQuery(document).ready(function($) {
             locale: {
                 format: date_time_range_config.format
               },
-              onSelect: function() {
-                $(this).val();
-            }
           });
 
 
