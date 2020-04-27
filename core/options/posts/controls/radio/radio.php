@@ -27,8 +27,8 @@ class Radio extends Structure {
         $content = $this->content;
         global $post;
         $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $content['value'];
         $this->output();
     }
 

@@ -1,6 +1,5 @@
 jQuery(document).ready(function($) {
 
-    // console.log(start_day);
 
     //Initialize the datepicker and set the first day of the week as Monday
     if ($("#dm-date-picker").length) {

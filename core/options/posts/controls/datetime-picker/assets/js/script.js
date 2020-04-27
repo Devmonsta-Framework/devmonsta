@@ -23,7 +23,6 @@ jQuery(document).ready(function($) {
         var today = new Date();
         var defaultDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
-        console.log(date_time_picker_config);
         $('#dm-datetime-picker').datetimepicker({
 
             timepicker: time_picker,
