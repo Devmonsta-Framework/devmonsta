@@ -17,20 +17,7 @@ class DatePicker extends Structure {
      * @internal
      */
     public function enqueue() {
-        add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
-    }
 
-    /**
-     * @internal
-     */
-    public function load_scripts( $hook ) {
-        wp_enqueue_script( 'dm-date-picker', plugins_url( 'date-picker/assets/js/script.js', dirname( __FILE__ ) ) );
-
-        $data['monday_first'] = ( isset( $this->content['monday-first'] ) && ( $this->content['monday-first'] == true ) ) ? 1 : 0;
-        $data['min_date'] = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
-        $data['max_date'] = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
-
-        wp_localize_script( 'dm-date-picker', 'date_picker_config', $data );
     }
 
     /**
@@ -53,24 +40,26 @@ class DatePicker extends Structure {
         $name = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $min_date = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
+        $max_date = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
+        $default_attributes = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+                $default_attributes .= $key . "='" . $val . "' ";
+            }
+
+        }
+
         ?>
-        <div  <?php
 
-                if ( is_array( $attrs ) ) {
-
-                    foreach ( $attrs as $key => $val ) {
-                        echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
-                    }
-
-                }
-
-                ?>>
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text"
-                    id="dm-date-picker"
-                    name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( date( 'Y-m-d', $this->value ) ); ?>">
+            <input type="date" name="<?php echo esc_attr( $this->prefix . $name ); ?>"
+                    value="<?php echo esc_attr( $this->value ); ?>"
+                    min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
         </div<>
     <?php
 }

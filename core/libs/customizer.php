@@ -23,6 +23,10 @@ class Customizer
         self::$section[] = $section;
     }
 
+    public function add_setting($setting){
+        self::$settings[] = $setting;
+    }
+
     public function all_controls()
     {
         return self::$control;
@@ -38,4 +42,7 @@ class Customizer
         return self::$section;
     }
 
+    public function all_settings(){
+        return self::$settings;
+    }
 }

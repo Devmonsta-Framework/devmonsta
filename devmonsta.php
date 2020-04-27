@@ -12,14 +12,13 @@
 
 use Devmonsta\Bootstrap;
 
-if (!defined('ABSPATH')) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-final class Devmonsta
-{
+final class Devmonsta {
 
     /**
      * Plugin version
@@ -29,13 +28,12 @@ final class Devmonsta
     /**
      * Construcotr of the class
      */
-    private function __construct()
-    {
+    private function __construct() {
         $this->define_constants();
 
-        register_activation_hook(__FILE__, [$this, 'activate']);
+        register_activation_hook( __FILE__, [$this, 'activate'] );
 
-        add_action('plugins_loaded', [$this, 'init_plugin']);
+        add_action( 'plugins_loaded', [$this, 'init_plugin'] );
     }
 
     /**
@@ -43,11 +41,10 @@ final class Devmonsta
      *
      */
 
-    public static function init()
-    {
+    public static function init() {
         static $instance = false;
 
-        if (!$instance) {
+        if ( !$instance ) {
             $instance = new self();
         }
 
@@ -58,17 +55,20 @@ final class Devmonsta
      * Define the required plugin constants
      */
 
-    public function define_constants()
-    {
-        define('DEVMONSTA', true);
-        define('DEVMONSTA_VERSION', self::version);
+    public function define_constants() {
+        define( 'DEVMONSTA', true );
+        define( 'DEVMONSTA_VERSION', self::version );
+
+        define( 'DM_PATH', plugin_dir_url( __FILE__ ) );
+        define( 'DM_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+        define( 'DM_CORE', DM_PATH . 'core/' );
+        define( 'DM_OPTIONS', DM_CORE . 'options/' );
     }
 
     /**
      * Initialize the plugin
      */
-    public function init_plugin()
-    {
+    public function init_plugin() {
 
         Bootstrap::instance()->init();
 
@@ -77,12 +77,10 @@ final class Devmonsta
     /**
      * Plugin activation
      */
-    public function activate()
-    {
+    public function activate() {
 
     }
 
-    
 }
 
 Devmonsta::init();

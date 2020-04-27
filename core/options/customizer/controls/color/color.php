@@ -20,26 +20,21 @@ class Color extends Control
     {
         add_action('customize_register', function ($wp_customize) use ($args) {
 
-            $wp_customize->add_setting(
-                $args['settings'],
-                [
-                    'default' => isset($args['default']) ? $args['default'] : '#000000',
-                ]
-            );
+            $id = $args['id'];
+            $args['settings'] = $id;
+            $wp_customize->add_setting($id, [
+                'default' => isset($args['default']) ? $args['default'] : '#000000',
+            ]);
 
             $wp_customize->add_control(
                 new \WP_Customize_Color_Control(
                     $wp_customize,
-                    $args['name'],
+                    $id,
                     $args
                 )
             );
 
         });
-
-    }
-
-    public function build($panels,$sections,$controls){
 
     }
 
