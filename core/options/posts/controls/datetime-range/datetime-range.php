@@ -23,9 +23,9 @@ class DatetimeRange extends Structure {
         wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery', 'date-time-range'] );
 
         $date_time_range_config = $this->content['datetime-pickers'];
-        $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime($date_time_range_config['minDate']) ) : "";
+        $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime($date_time_range_config['minDate']) ) : date( "YYYY-MM-DD");
         $data['max_date']       = isset( $date_time_range_config['maxDate'] ) ? date( "YYYY-MM-DD", strtotime($date_time_range_config['maxDate']) ) : "";
-        $data['format']         = isset( $date_time_range_config['format'] ) ? $date_time_range_config['format'] : 'YYYY-MM-DD H:i';
+        $data['format']         = isset( $date_time_range_config['format'] ) ? $date_time_range_config['format'] : 'YYYY-MM-DD hh:mm a';
         $data['datepicker']     = ( $date_time_range_config['datepicker'] ) ? "true" : "";
         $data['timepicker']     = ( $date_time_range_config['timepicker'] ) ? "true" : "";
         $data['time24hours']     = ( $date_time_range_config['time24hours'] ) ? "true" : "";
