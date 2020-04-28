@@ -40,21 +40,22 @@ class Textarea extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        ?>
-        <div  <?php
+        $default_attributes = "";
 
-        if ( is_array( $attrs ) ) {
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                $default_attributes .= $key . "='" . $val . "' ";
             }
 
         }
 
-        ?>>
+        ?>
+
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <textarea name="<?php echo esc_html( $this->prefix . $name ); ?>"><?php echo esc_html( $this->value ); ?></textarea>
+            <textarea name="<?php echo esc_attr( $this->prefix . $name ); ?>"><?php echo esc_html( $this->value ); ?></textarea>
         </div<>
     <?php
 }

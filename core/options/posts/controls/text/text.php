@@ -51,20 +51,10 @@ class Text extends Structure {
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         ?>
-        <div  <?php
-
-        if ( is_array( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
-            }
-
-        }
-
-        ?>>
+        <div>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text" name="<?php echo esc_html( $this->prefix . $name ); ?>" value="<?php echo esc_html( $this->value ); ?>" >
+            <input type="text" name="<?php echo esc_attr( $this->prefix . $name ); ?>" value="<?php echo esc_attr( $this->value ); ?>" >
         </div>
     <?php
 }

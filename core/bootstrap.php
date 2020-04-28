@@ -19,10 +19,12 @@ final class Bootstrap {
     public function init() {
         define( 'DM', true );
         //Make all the helper functions available
-        $helper_files = [ 'general',
+        $helper_files = [
+            'class-dm-db-options-model',
             'class-dm-dumper',
             'meta',
-            // 'database',
+            'database',
+            'general',
         ];
 
         foreach ( $helper_files as $file ) {

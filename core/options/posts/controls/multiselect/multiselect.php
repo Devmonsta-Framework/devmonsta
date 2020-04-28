@@ -55,11 +55,22 @@ class Multiselect extends Structure {
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $default_attributes = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+                $default_attributes .= $key . "='" . $val . "' ";
+            }
+
+        }
+
         ?>
-        <div >
+
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <select id="dm_multi_select" multiple="multiple" name="<?php echo esc_html( $this->prefix . $name ); ?>[]">
+            <select id="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $this->prefix . $name ); ?>[]">
         <?php
 
         if ( isset( $choices ) ) {
@@ -70,7 +81,7 @@ class Multiselect extends Structure {
                     $selected = null;
                 }
         ?>
-                    <option value="<?php echo esc_html( $key ); ?>"
+                    <option value="<?php echo esc_attr( $key ); ?>"
                             <?php echo esc_html( $selected ); ?>>
                             <?php echo esc_html( $val ); ?>
         <?php

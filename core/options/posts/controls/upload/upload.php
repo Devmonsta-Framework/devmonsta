@@ -64,7 +64,19 @@ class Upload extends Structure {
             $image   = '"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
             $display = 'inline-block';
         }
-        ?>      <div>
+        $default_attributes = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+                $default_attributes .= $key . "='" . $val . "' ";
+            }
+
+        }
+
+        ?>
+
+        <div <?php echo esc_attr($default_attributes);?>>
                     <div class='dm-label'> <label> <?php echo $lable; ?> </label></div>
                     <div><small><?php echo esc_html( $desc ); ?> </small></div>
                     <div class='dm-meta'>

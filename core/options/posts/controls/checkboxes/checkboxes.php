@@ -58,18 +58,19 @@ class Checkboxes extends Structure {
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
 
-        ?>
-        <div <?php
+        $default_attributes = "";
 
-        if ( is_array( $attrs ) ) {
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                $default_attributes .= $key . "='" . $val . "' ";
             }
 
         }
 
-        ?>>
+        ?>
+
+        <div <?php echo esc_attr($default_attributes);?>>
                 <lable><?php echo esc_html( $lable ); ?> </lable>
                 <div><small><?php echo esc_html( $desc ); ?> </small></div>
         <?php
@@ -84,14 +85,14 @@ class Checkboxes extends Structure {
 
             ?>
                     <input  type="checkbox"
-                    name="<?php echo esc_html( $this->prefix . $name ); ?>[]"
-                     value="<?php echo $id; ?>" <?php echo $checked; ?> />
-                    <?php echo $element; ?>
+                    name="<?php echo esc_attr( $this->prefix . $name ); ?>[]"
+                     value="<?php echo esc_attr($id); ?>" <?php echo esc_attr($checked); ?> />
+                    <?php echo esc_html($element); ?>
             <?php
 }
 
         ?>
-        <input type="text" value="default" name="<?php echo esc_html( $this->prefix . $name ); ?>[]" style="display: none">
+        <input type="text" value="default" name="<?php echo esc_attr( $this->prefix . $name ); ?>[]" style="display: none">
 
 </div>
 <?php

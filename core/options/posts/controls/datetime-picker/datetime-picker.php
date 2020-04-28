@@ -21,15 +21,17 @@ class DatetimePicker extends Structure {
         wp_enqueue_script( 'date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/jquery.datetimepicker.full.min.js', array('jquery') );
         wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', array('jquery', 'date-time-picker') );
 
-        $date_time_picker_config = $this->content['datetime-picker'];
-        $data['min_date']        = isset( $date_time_picker_config['minDate'] ) ? $date_time_picker_config['minDate'] : "";
-        $data['max_date']        = isset( $date_time_picker_config['maxDate'] ) ? $date_time_picker_config['maxDate'] : "";
-        $data['format']          = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
-        $data['datepicker']      = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : false;
-        $data['timepicker']      = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : false;
-        $data['default_time']    = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
+        $date_time_picker_config                  = $this->content['datetime-picker'];
+        $date_time_picker_data['format']          = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
+        $date_time_picker_data['min_date']        = ( $date_time_picker_config['minDate'] ) ? date($date_time_picker_data['format'], strtotime($date_time_picker_config['minDate'])) : date($date_time_picker_data['format']);
+        $date_time_picker_data['max_date']        = ( $date_time_picker_config['maxDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['maxDate'])) : "";
+        $date_time_picker_data['datepicker']      = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : "";
+        $date_time_picker_data['timepicker']      = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : "";
+        $date_time_picker_data['default_time']    = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
+        
 
-        wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $data );
+        // var_dump($date_time_picker_data['min_date']);
+        wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
     }
 
     /**
@@ -52,24 +54,25 @@ class DatetimePicker extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        ?>
-       <div  <?php
+        $default_attributes = "";
 
-        if ( is_array( $attrs ) ) {
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                echo esc_html( $key ) . "='" . esc_attr( $val ) . "' ";
+                $default_attributes .= $key . "='" . $val . "' ";
             }
 
         }
 
-        ?>>
+        ?>
+
+        <div <?php echo esc_attr($default_attributes);?>>
             <lable><?php echo esc_html( $lable ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input type="text"
                     id="dm-datetime-picker"
-                    name="<?php echo esc_html( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_html( date( 'Y-m-d H:i', strtotime($this->value)  ) ); ?>">
+                    name="<?php echo esc_attr( $this->prefix . $name ); ?>"
+                    value="<?php echo esc_attr( $this->value ); ?>">
         </div<>
     <?php
 }
