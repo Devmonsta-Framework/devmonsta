@@ -59,6 +59,7 @@ class View
 
             } else {
                 $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
+                if(file_exists($file)){
                 include_once $file;
                 
                 if (class_exists($control_class)) {
@@ -68,6 +69,7 @@ class View
                     $control->enqueue();
                     $control->render();
                 }
+            }
 
             }
 
