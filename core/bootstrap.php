@@ -24,8 +24,13 @@ final class Bootstrap {
             'class-dm-dumper',
             'meta',
             'class-dm-cache',
+            'class-dm-callback',
+            'class-dm-wp-meta',
             'database',
             'general',
+            'class-dm-resize',
+            'class-dm-session',
+            'class-dm-flash-messages'
         ];
 
         foreach ( $helper_files as $file ) {
