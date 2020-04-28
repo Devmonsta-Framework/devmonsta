@@ -26,6 +26,7 @@ final class Bootstrap {
             'class-dm-cache',
             'database',
             'general',
+            'repeater',
         ];
 
         foreach ( $helper_files as $file ) {

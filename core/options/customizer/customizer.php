@@ -25,6 +25,7 @@ class Customizer
     public function init()
     {
 
+        $this->repeater();
         /**
          * Get Customizer file from the
          * current active theme
@@ -168,6 +169,14 @@ class Customizer
 
     }
 
+    /**
+     * ==================================
+     * Build Panels for customizer
+     *
+     * @access  public
+     * @return  void
+     * ==================================
+     */
     public function build_panels($panels)
     {
         if (!empty($panels)) {
@@ -182,6 +191,14 @@ class Customizer
 
     }
 
+    /**
+     * ========================
+     * Build sections in panel
+     *
+     * @access  public
+     * @return  void
+     * ========================
+     */
     public function build_sections($sections)
     {
         if (!empty($sections)) {
@@ -195,6 +212,41 @@ class Customizer
 
             }
         }
+
+    }
+
+    /**
+     * ======================================
+     * Repeater functionality for customizer
+     *
+     * @access  public
+     * @return  void
+     * ======================================
+     */
+
+    public function repeater()
+    {
+        add_action('customize_register', [$this, 'customizer_repeater_register']);
+
+    }
+
+    public function customizer_repeater_register($wp_customize)
+    {
+
+        require_once 'repeater.php';
+
+        $wp_customize->add_setting('customizer_repeater_example', array(
+            'sanitize_callback' => 'customizer_repeater_sanitize',
+        ));
+        $wp_customize->add_control(new Repeater($wp_customize, 'customizer_repeater_example', array(
+            'label' => esc_html__('Movie info', 'customizer-repeater'),
+            'section' => 'devmonsta_text_settings_section',
+            'priority' => 1,
+            'item_name' => 'movie',
+            'customizer_repeater_title_control' => true,
+            'customizer_repeater_subtitle_control' => true,
+
+        )));
 
     }
 
