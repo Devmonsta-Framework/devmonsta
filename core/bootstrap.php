@@ -23,6 +23,7 @@ final class Bootstrap {
             'class-dm-db-options-model',
             'class-dm-dumper',
             'meta',
+            'class-dm-cache',
             'database',
             'general',
         ];
