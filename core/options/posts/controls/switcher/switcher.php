@@ -27,9 +27,9 @@ class Switcher extends Structure {
      */
     public function load_scripts( $hook ) {
         // js
-        wp_enqueue_script( 'dm-switcher-js', plugins_url( 'switcher/assets/js/dm-switcher.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
+        wp_enqueue_script( 'dm-switcher', plugins_url( 'switcher/assets/js/dm-switcher.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
         //css
-        wp_enqueue_style( 'dm-switcher-css', plugins_url( 'switcher/assets/css/dm-switcher.css', dirname( __FILE__ ) ) );
+        wp_enqueue_style( 'dm-switcher', plugins_url( 'switcher/assets/css/dm-switcher.css', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -55,8 +55,8 @@ class Switcher extends Structure {
         $attrs        = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $left_choice  = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
         $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
-        
-        $checked = $this->value == $value ? 'checked' : '';
+        $checked_value = $this->value == '' ? $value : $this->value ;
+        $checked = $checked_value == $value ? 'checked' : '';
         $left_key ='';$right_key =''; 
         
         foreach ($left_choice as $key => $value) {
@@ -69,7 +69,7 @@ class Switcher extends Structure {
         $style = '';
         $style .='
         .dm_switcher_item label.dm_switcher_label:before {
-            content: "'.esc_attr( $left_key ).'";
+            content: "'.esc_attr( $left_choice[$left_key] ).'";
             position: absolute;
             right: 10px;
             top: 50%;
@@ -81,12 +81,12 @@ class Switcher extends Structure {
             font-weight: 600;
         }
         .dm_switcher_item input.dm-control-input:checked + label.dm_switcher_label:before {
-            content: "'.esc_attr( $right_key ).'";
+            content: "'.esc_attr( $right_choice[$right_key] ).'";
             right: inherit;
             left: 10px;
         }
         ';
-        wp_register_style( 'dm-switcher-inline-css',false, array( 'dm-switcher-css' ));
+        wp_register_style( 'dm-switcher-inline-css',false, array( 'dm-switcher' ));
         wp_enqueue_style( 'dm-switcher-inline-css' );
         wp_add_inline_style('dm-switcher-inline-css',$style);
         $default_attributes = "";
