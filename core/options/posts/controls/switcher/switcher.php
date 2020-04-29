@@ -61,12 +61,14 @@ class Switcher extends Structure {
         foreach ($left_choice as $key => $value) {
             $left_key .= $key ;
         }
-        var_dump($left_key);
+        foreach ($right_choice as $key => $value) {
+            $right_key .= $key ;
+        }
         // add inline css for dynamic value
         $style = '';
         $style .='
         .dm_switcher_item label.dm_switcher_label:before {
-            content: "'.esc_attr( $left_choice['goodbye'] ).'";
+            content: "'.esc_attr( $left_key ).'";
             position: absolute;
             right: 10px;
             top: 50%;
@@ -78,7 +80,7 @@ class Switcher extends Structure {
             font-weight: 600;
         }
         .dm_switcher_item input.dm-control-input:checked + label.dm_switcher_label:before {
-            content: "'.esc_attr( $right_choice['hello'] ).'";
+            content: "'.esc_attr( $right_key ).'";
             right: inherit;
             left: 10px;
         }
@@ -91,10 +93,10 @@ class Switcher extends Structure {
         echo "<div><small>".esc_html( $desc )."</small></div>";
         echo "<div class='dm_switcher_main_block'>";
                 echo "<div class='dm_switcher_item'>";
-                    echo "<input id='dm_switcher_right' type='checkbox' value='". esc_attr($right_choice['hello']) ."' class='dm-control-input' name='".esc_attr( $this->prefix . $name )."' ".$checked." />";
+                    echo "<input id='dm_switcher_right' type='checkbox' value='". esc_attr($right_key) ."' class='dm-control-input' name='".esc_attr( $this->prefix . $name )."' ".$checked." />";
                     echo "<label  class='dm_switcher_label'></label>";
                 echo "</div>";
-            echo "<input id='dm_switcher_left' type='checkbox' value='". esc_attr($left_choice['goodbye']) ."' class='' name='".esc_attr( $this->prefix . $name )."' checked />";
+            echo "<input id='dm_switcher_left' type='checkbox' value='". esc_attr($left_key) ."' class='' name='".esc_attr( $this->prefix . $name )."' checked />";
         echo "</div>";
     }
 
