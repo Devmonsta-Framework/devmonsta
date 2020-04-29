@@ -167,7 +167,7 @@ class TypographyV2 extends Structure {
                             ?>
                             <div class="google_fonts_select_control">
                                 <div class="google-fonts">
-                                    <select class="google-fonts-list">
+                                    <select class="google-fonts-list" name="<?php echo esc_attr($this->prefix . "typograhy_family") ?>">
                                         <?php
                                             foreach( $font_list as $key => $item ) {
                                                     echo '<option value="' . $key . '" '  . '>' . $item . '</option>';
