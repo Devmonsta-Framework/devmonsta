@@ -45,7 +45,7 @@ class Upload extends Structure {
      * @internal
      */
     public function output() {
-        $lable = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
@@ -77,7 +77,7 @@ class Upload extends Structure {
         ?>
 
         <div <?php echo esc_attr($default_attributes);?>>
-                    <div class='dm-label'> <label> <?php echo $lable; ?> </label></div>
+                    <div class='dm-label'> <label> <?php echo $label; ?> </label></div>
                     <div><small><?php echo esc_html( $desc ); ?> </small></div>
                     <div class='dm-meta'>
                         <a data-multiple='<?php echo $multiple; ?>' class="dm_upload_image_button<?php echo $image;?> </a>

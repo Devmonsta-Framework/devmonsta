@@ -2,7 +2,6 @@ jQuery(document).ready(function($) {
 
 
     if ($(".dm-slider").length) {
-        console.log(dm_slider_config);
         $('.dm-slider').asRange({
             max: dm_slider_config.max,
             min: dm_slider_config.min,

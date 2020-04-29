@@ -1000,3 +1000,65 @@ function dm_attr_to_html(array $attr_array)
 
 	return $html_attr;
 }
+
+
+/**
+ * Strip slashes from values, and from keys if magic_quotes_gpc = On
+ */
+function dm_stripslashes_deep_keys($value)
+{
+	static $magic_quotes = null;
+	if ($magic_quotes === null) {
+		$magic_quotes = get_magic_quotes_gpc();
+	}
+
+	if (is_array($value)) {
+		if ($magic_quotes) {
+			$new_value = array();
+			foreach ($value as $key => $val) {
+				$new_value[is_string($key) ? stripslashes($key) : $key] = dm_stripslashes_deep_keys($val);
+			}
+			$value = $new_value;
+			unset($new_value);
+		} else {
+			$value = array_map('dm_stripslashes_deep_keys', $value);
+		}
+	} elseif (is_object($value)) {
+		$vars = get_object_vars($value);
+		foreach ($vars as $key => $data) {
+			$value->{$key} = dm_stripslashes_deep_keys($data);
+		}
+	} elseif (is_string($value)) {
+		$value = stripslashes($value);
+	}
+
+	return $value;
+}
+
+/**
+ * This function is a wrapper function that set correct width and height for iframes from wp_oembed_get() function
+ *
+ * @param $url
+ * @param array $args
+ *
+ * @return bool|string
+ */
+function dm_oembed_get($url, $args = array())
+{
+	$html = wp_oembed_get($url, $args);
+
+	if (!empty($args['width']) and !empty($args['height']) and class_exists('DOMDocument') and !empty($html)) {
+		$dom_element = new DOMDocument();
+		@$dom_element->loadHTML($html);
+
+		if ($obj = $dom_element->getElementsByTagName('iframe')->item(0)) {
+			$obj->setAttribute('width', $args['width']);
+			$obj->setAttribute('height', $args['height']);
+			//saveXml instead of SaveHTML for php version compatibility
+			$html = $dom_element->saveXML($obj, LIBXML_NOEMPTYTAG);
+		}
+	}
+
+	return $html;
+}
+

@@ -18,6 +18,7 @@ final class Bootstrap {
 
     public function init() {
         define( 'DM', true );
+
         //Make all the helper functions available
         $helper_files = [
             'class-dm-db-options-model',
@@ -28,6 +29,7 @@ final class Bootstrap {
             'class-dm-wp-meta',
             'database',
             'class-dm-resize',
+            'class-dm-request',
             'class-dm-session',
             'class-dm-flash-messages',
             'general',
@@ -42,5 +44,4 @@ final class Bootstrap {
         \Devmonsta\Options\Posts\Posts::instance()->init();
         \Devmonsta\Options\Taxonomies\Taxonomies::instance()->init();
     }
-
 }
