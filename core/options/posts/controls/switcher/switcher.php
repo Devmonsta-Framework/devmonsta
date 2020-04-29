@@ -56,7 +56,12 @@ class Switcher extends Structure {
         $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
         
         $checked = $this->value == $value ? 'checked' : '';
-
+        $left_key ='';$right_key =''; 
+        
+        foreach ($left_choice as $key => $value) {
+            $left_key.= $key ;
+            $left_key.= $key ;
+        }
         // add inline css for dynamic value
         $style = '';
         $style .='
