@@ -47,11 +47,24 @@ class Html extends Structure {
         $label        = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name         = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs        = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $html         = isset( $this->content['html'] ) ? $this->content['html'] : '';
-        echo "<div>".esc_html( $label )."</div>";
-        echo "<div><small>".esc_html( $desc )."</small></div>";
-        echo "<div class='dm_html_block'>";
-              echo htmlspecialchars_decode(esc_html( $html ));
+        
+        $default_attributes = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+                $default_attributes .= $key . "='" . $val . "' ";
+            }
+
+        }
+        echo "<div ".esc_attr($default_attributes).">";
+            echo "<div>".esc_html( $label )."</div>";
+            echo "<div><small>".esc_html( $desc )."</small></div>";
+            echo "<div class='dm_html_block'>";
+                echo htmlspecialchars_decode(esc_html( $html ));
+            echo "</div>";
         echo "</div>";
     }
 
