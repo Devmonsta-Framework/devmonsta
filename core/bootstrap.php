@@ -27,10 +27,11 @@ final class Bootstrap {
             'class-dm-callback',
             'class-dm-wp-meta',
             'database',
-            'general',
             'class-dm-resize',
             'class-dm-session',
-            'class-dm-flash-messages'
+            'class-dm-flash-messages',
+            'general',
+            'repeater'
         ];
 
         foreach ( $helper_files as $file ) {
