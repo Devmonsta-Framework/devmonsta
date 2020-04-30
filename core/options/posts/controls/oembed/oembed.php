@@ -21,7 +21,7 @@ class Oembed extends Structure {
     }
 
     public function enqueue_oembed_scripts() {
-        wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', [], time(), true );
+        wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
         wp_localize_script( 'dm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
         wp_enqueue_script( 'dm-oembed' );
     }
