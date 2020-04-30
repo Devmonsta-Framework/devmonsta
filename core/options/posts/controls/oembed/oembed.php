@@ -65,13 +65,13 @@ class Oembed extends Structure {
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
         </div>
-        <div class="dms-oembed-input">
+        <div class="dm-oembed-input">
             <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
                     type="url" name="<?php echo esc_attr( $this->prefix . $name ); ?>"
                     value="<?php echo esc_html( $this->value ); ?>"
                     class="dm-oembed-url-input"/>
         </div>
-        <div class="dms-oembed-preview">
+        <div class="dm-oembed-preview">
         </div<>
     <?php
 }

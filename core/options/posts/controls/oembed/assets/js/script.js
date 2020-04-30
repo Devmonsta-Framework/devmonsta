@@ -12,7 +12,7 @@ jQuery(document).ready(function($){
             var wrapper = $(this);
             
             var url_input = $(this).val();
-            var iframeWrapper = wrapper.parent(".dms-oembed-input").siblings(".dms-oembed-preview");
+            var iframeWrapper = wrapper.parent(".dm-oembed-input").siblings(".dm-oembed-preview");
             if( url_input && is_url( url_input ) ) {
                 var data = {
                     action : 'get_oembed_response', 
