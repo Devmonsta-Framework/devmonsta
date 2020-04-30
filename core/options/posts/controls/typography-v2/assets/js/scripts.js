@@ -1,18 +1,17 @@
 jQuery(document).ready(function($){
     // for color
     var dmOptions = {
-        defaultColor: color_picker_config.default,
+        defaultColor: typo_config.default,
         hide: true,
     };
-     
     $('.dm-typography-color-field').wpColorPicker(dmOptions);
     // for select2 
     $('.google-fonts-list').select2();
-    
 });
 
 //slider
 ( function( $ ) {
+    // slide ranger
     $(document).ready(function(){
         $(document).on('change','.range-slider-font-size',function(){
             document.getElementById('size_value').value=$(this).val(); 
@@ -25,4 +24,10 @@ jQuery(document).ready(function($){
         });
     });
 
+    // select 2 on change style and weight
+    $('.google-fonts-list').on("select2:selecting", function(e) { 
+        console.log($(this).val());
+        console.log(typo_config);
+
+    });
  } )( jQuery );

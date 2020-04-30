@@ -14,10 +14,10 @@ class TypographyV2 extends Structure {
     {
 
     }
-		/**
-		 * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
-		 */
-		public function customizer_getGoogleFonts( $count = 30 ) {
+    /**
+     * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
+     */
+    public function customizer_getGoogleFonts( $count = 30 ) {
             $transient = "_newseqo_customizer_google_fonts";
             $key = 'AIzaSyAP_KwRh1HX7tNAbLDSGhZ8K4tfu4MW4kA';
             if(get_transient($transient)==false){
@@ -34,11 +34,11 @@ class TypographyV2 extends Structure {
             }else{
                 $content =get_transient($transient); 
             }
-            
-               if( $count == 'all' ) {
-                   return $content->items;
-               } else {
-                   return array_slice( $content->items, 0, $count );
+            dm_print(array_slice( $content->items, 0, $count ));
+            if( $count == 'all' ) {
+                return $content->items;
+            } else {
+                return array_slice( $content->items, 0, $count );
             }
            }
     /**
@@ -121,8 +121,9 @@ class TypographyV2 extends Structure {
         $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . 'typograhy_color' , true ) ) ) 
                             ? get_post_meta( $post->ID, $this->prefix . 'typograhy_color' , true )
                             : $this->content['value']['color'];
-        $data['google_fonts'] =  $google_fonts;                  
-        wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
+        $data['google_fonts'] =  $google_fonts;  
+        $data['google_selected_style'] =  $this->value['style'];                  
+        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
     }
 
     /**
@@ -183,6 +184,7 @@ class TypographyV2 extends Structure {
      * @internal
      */
     public function output() {
+        $this->customizer_getGoogleFonts();
         $font_list     = $this->dm_getGoogleFonts();
         $label        = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
