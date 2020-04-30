@@ -34,7 +34,9 @@ class TypographyV2 extends Structure {
             }else{
                 $content =get_transient($transient); 
             }
-            dm_print(array_slice( $content->items, 0, $count ));
+            // i get data but not return
+            // dm_print(array_slice( $content->items, 0, $count ));
+
             if( $count == 'all' ) {
                 return $content->items;
             } else {
@@ -184,8 +186,8 @@ class TypographyV2 extends Structure {
      * @internal
      */
     public function output() {
-        $this->customizer_getGoogleFonts();
-        $font_list     = $this->dm_getGoogleFonts();
+        // $this->customizer_getGoogleFonts();
+        $font_list     = $this->customizer_getGoogleFonts();
         $label        = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value        = isset( $this->content['value'] ) ? $this->content['value'] : [];
