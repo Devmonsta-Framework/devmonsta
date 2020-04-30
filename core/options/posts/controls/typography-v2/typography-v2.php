@@ -17,12 +17,9 @@ class TypographyV2 extends Structure {
     /**
      * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
      */
-    public function customizer_getGoogleFonts( $count = 30 ) {
+    public function dm_getGoogleFonts( $count = 30 ) {
             $transient = "_newseqo_customizer_google_fonts";
-            $key = 'AIzaSyAP_KwRh1HX7tNAbLDSGhZ8K4tfu4MW4kA';
-            if(get_transient($transient)==false){
-               $google_api= 'https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key='.$key.'';
-                  
+            if(get_transient($transient)==false){                  
                $request = wp_remote_get( DM_OPTIONS.'/posts/controls/typography-v2/google-fonts-popularity.json' );
               
                if( is_wp_error( $request ) ) {
@@ -34,8 +31,6 @@ class TypographyV2 extends Structure {
             }else{
                 $content =get_transient($transient); 
             }
-            // i get data but not return
-            // dm_print(array_slice( $content->items, 0, $count ));
 
             if( $count == 'all' ) {
                 return $content->items;
@@ -68,46 +63,6 @@ class TypographyV2 extends Structure {
     }
 
     /**
-     * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
-     */
-    public function dm_getGoogleFonts() {
-        // Google Font Defaults
-        $google_faces = array(
-    
-            'Arvo, serif' => 'Arvo',
-    
-            'Copse, sans-serif' => 'Copse',
-    
-            'Droid Sans, sans-serif' => 'Droid Sans',
-    
-            'Droid Serif, serif' => 'Droid Serif',
-    
-            'Lobster, cursive' => 'Lobster',
-    
-            'Nobile, sans-serif' => 'Nobile',
-    
-            'Open Sans, sans-serif' => 'Open Sans',
-    
-            'Oswald, sans-serif' => 'Oswald',
-    
-            'Pacifico, cursive' => 'Pacifico',
-    
-            'Rokkitt, serif' => 'Rokkit',
-    
-            'PT Sans, sans-serif' => 'PT Sans',
-    
-            'Quattrocento, serif' => 'Quattrocento',
-
-            'Raleway, cursive' => 'Raleway',
-    
-            'Ubuntu, sans-serif' => 'Ubuntu',
-    
-            'Yanone Kaffeesatz, sans-serif' => 'Yanone Kaffeesatz'
-    
-        );
-        return $google_faces;               
-    }
-    /**
      * @internal
      */
     function dm_enqueue_color_picker() {
@@ -117,15 +72,11 @@ class TypographyV2 extends Structure {
         }
 
         wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography-v2/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
-        $google_fonts = $this->dm_getGoogleFonts();
         global $post;
         $data            = [];
         $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . 'typograhy_color' , true ) ) ) 
                             ? get_post_meta( $post->ID, $this->prefix . 'typograhy_color' , true )
                             : $this->content['value']['color'];
-        $data['google_fonts'] =  $google_fonts;  
-        $data['google_selected_style'] =  $this->value['style'];                  
-        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
     }
 
     /**
@@ -185,9 +136,12 @@ class TypographyV2 extends Structure {
     /**
      * @internal
      */
-    public function output() {
-        // $this->customizer_getGoogleFonts();
-        $font_list     = $this->customizer_getGoogleFonts();
+    public function output() {        
+        $font_list = $this->dm_getGoogleFonts();
+        $data['font_list'] =  $font_list; 
+        $data['selected_data'] =  $this->value; 
+        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
+
         $label        = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value        = isset( $this->content['value'] ) ? $this->content['value'] : [];
@@ -196,11 +150,9 @@ class TypographyV2 extends Structure {
         $default_attributes = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
                 $default_attributes .= $key . "='" . $val . "' ";
             }
-
         }
         echo "<div ".esc_attr($default_attributes).">";
         echo "<div>".esc_html( $label )."</div>";
@@ -218,15 +170,20 @@ class TypographyV2 extends Structure {
                                     <select class="google-fonts-list" name="<?php echo esc_attr($this->prefix . "typograhy_family") ?>">
                                         <?php
                                             foreach( $font_list as $key => $item ) {
-                                                    $selected = $key == esc_html($value['family']) ? 'selected' : '';
-                                                    echo '<option value="' . $key . '" '. $selected . '>' . $item . '</option>';
+                                                    $selected = $item->family == esc_html($value['family']) ? 'selected' : '';
+                                                    echo '<option value="' . $item->family . '" '. $selected . '>' . $item->family . '</option>';
                                                 }
                                         ?>
                                     </select>
                                 </div>
-                                <div class="style-weight">
-                                    <select class="google-styel-list">
-
+                                <div class="weight">
+                                    <label>Weight</label>
+                                    <select name="<?php echo esc_attr($this->prefix . "typograhy_weight") ?>" class="google-weight-list">
+                                    </select>
+                                </div>
+                                <div class="style">
+                                    <label>Style</label>
+                                    <select name="<?php echo esc_attr($this->prefix . "typograhy_style") ?>" class="google-style-list">
                                     </select>
                                 </div>
                             </div>
