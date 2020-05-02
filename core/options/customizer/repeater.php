@@ -160,9 +160,13 @@ class Repeater extends \WP_Customize_Control
                     'type' => apply_filters('customizer_repeater_input_types_filter', '', $this->id, 'customizer_repeater_title_control'),
                 ), $title);
 
-                
+                print_r($data);
 
                 ?>
+
+
+
+                <input type="text" class="customizer-repeater-details-control" value="ok">
 
                  <input type="hidden" class="social-repeater-box-id" value="<?php if (!empty($id)) {
                     echo esc_attr($id);
