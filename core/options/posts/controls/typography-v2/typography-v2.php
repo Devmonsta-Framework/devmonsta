@@ -55,11 +55,8 @@ class TypographyV2 extends Structure {
      */
     public function load_scripts($hook)
     {
-        // js 
-        wp_enqueue_script( 'dm-select2', DM_OPTIONS . 'posts/controls/typography-v2/assets/js/select2.min.js', ['jquery'], true );
         //css
         wp_enqueue_style( 'dm-slide-ranger-css', plugins_url( 'typography-v2/assets/css/ranger-slider.css', dirname( __FILE__ ) ) );
-        wp_enqueue_style( 'dm-select2', plugins_url( 'typography-v2/assets/css/select2.min.css', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -146,15 +143,7 @@ class TypographyV2 extends Structure {
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value        = isset( $this->content['value'] ) ? $this->content['value'] : [];
         $components   = isset( $this->content['components'] ) ? $this->content['components'] : [];
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-            foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
-            }
-        }
-        echo "<div ".esc_attr($default_attributes).">";
         echo "<div>".esc_html( $label )."</div>";
         echo "<div><small>".esc_html( $desc )."</small></div>";
         $value = $this->value;
@@ -228,7 +217,6 @@ class TypographyV2 extends Structure {
                 }
             }
         }
-        echo "</div>";
     }
 
 }

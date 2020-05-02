@@ -12,34 +12,30 @@ class ImagePicker extends Structure {
      * @internal
      */
     public function init() {
-
     }
 
     /**
      * @internal
      */
     public function enqueue() {
-        add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
-    }
+        // js
+        wp_enqueue_script( 'dm-image-picker-js', plugins_url( 'image-picker/assets/js/image-picker.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
+        // css
+        wp_enqueue_style( 'dm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) ); 
+   }
 
-    /**
-     * @internal
-     */
-    public function load_scripts( $hook ) {
-      
-    }
+
 
     /**
      * @internal
      */
     public function render() {
-        $content = $this->content;
         global $post;
 
-        // if ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        //     && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
-        //     $this->value = maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) );
-        // }
+        if ( !empty( get_post_meta( $post->ID, $this->prefix . 'image_picker' , true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . 'image_picker' , true ) ) ) {
+            $this->value = get_post_meta( $post->ID, $this->prefix . 'image_picker', true );
+        }
         $this->output();
     }
 
@@ -51,38 +47,67 @@ class ImagePicker extends Structure {
         $help    = isset( $this->content['help'] ) ? $this->content['help'] : '';
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $value   = isset( $this->content['value'] ) ? $this->content['value'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         $default_attributes = "";
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
+                $default_attributes .= $key . "=" . $val . " ";
             }
         }
         ?>
-        <div <?php echo esc_attr($default_attributes);?>>
+        <div class="">
             <lable><?php echo esc_html( $label ); ?> </lable>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>         
+            <div><small><?php echo esc_html( $desc ); ?> </small></div>  
+            <select <?php echo esc_attr($default_attributes);?> name="<?php echo esc_attr($this->prefix . 'image_picker') ;?>" 
+            value="<?php echo esc_attr($value);?>" id="dm_image_picker">   
+                <?php
+                    foreach ($choices as $key => $item) {
+                        $selected = $key == $this->value ? 'selected' : '';
+                        echo '<option value="'.$key.'" '.$selected.'></option>';
+                    }
+                ?>
+            </select> 
+            <ul class="thumbnails image_picker_selector">
             <?php
-                foreach ($choices as $key => $item) {
-                   if ($key == 'value-1') {
-                       ?>
-                        <input type="checkbox" name=""/>
-                        <img src="<?php echo esc_attr($item) ;?>" alt="not found">
-                       <?php
-                   }
-                   elseif ($key == 'value-2') {
-                       if (is_array($item)) {
-                            ?>
-                                <input type="checkbox" name=""/>
-                                <img src="<?php echo esc_attr( $item['small'] ) ;?>" alt="not found"/>
-                                <input type="checkbox" name=""/>
-                                <img src="<?php echo esc_attr( $item['large'] ) ;?>" alt="not found"/>
-                            <?php
-                       }
-                   }
+                
+                foreach ($choices as $item_key => $item) {
+                    $selected = $item_key == $this->value ? 'selected' : '';
+                    if (is_array($item)) {
+                        $small_image = ''; $large_image = '';
+                        foreach ($item as $key => $item_size) {
+                            if ($key == "small") { 
+                                $small_image .= $item_size;
+                            }else{
+                                $large_image .= $item_size;
+                            }
+                        }
+                    ?>      
+                    <div class="tooltip">
+                        <span class="tooltiptext"><img src="<?php echo esc_attr( $large_image ) ;?>"/></span>
+                        <li data-image_name='<?php echo esc_attr($item_key);?>' class='<?php echo esc_attr($selected);?>'> 
+                            <div class="thumbnail">
+                                <img src="<?php echo esc_attr( $small_image ) ;?>"/>
+                            </div>
+                        </li>
+                    </div>
+                    <?php   
+                    }else{
+                        ?>
+                        <li data-image_name='<?php echo esc_attr($item_key);?>' class='<?php echo esc_attr($selected);?>' >
+                            <div class="thumbnail">
+                                <img src="<?php echo esc_attr($item) ;?>">
+                            </div>
+                        </li>
+                    <?php
+                    }
                 }
-                echo '<div>'.esc_html( $help ).'</div>';
+                echo '<div class="tooltip"> 
+                        <span class="tooltiptext">'.esc_html( $help ).'</span>
+                        <span class="dashicons dashicons-warning"></span>
+                     </div>';
             ?>
+            </ul>
         </div>
     <?php
 }
