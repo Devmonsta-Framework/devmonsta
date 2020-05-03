@@ -19,7 +19,7 @@ class Text extends Structure {
 
     public function output() {
         $prefix             = 'devmonsta_';
-         $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -84,12 +84,33 @@ class Text extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix = 'devmonsta_';
-        $name   = $prefix . $this->content['name'];
-        $value  = get_term_meta( $term->term_id, $name, true );
+        $prefix             = 'devmonsta_';
+        $name               = $prefix . $this->content['name'];
+        $value              = get_term_meta( $term->term_id, $name, true );
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
         ?>
 
-        <tr class="form-field term-group-wrap">
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
             <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
             <td> <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="<?php echo $value; ?>" size="40" aria-required="true"></td>
         </tr>

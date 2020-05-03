@@ -132,7 +132,7 @@ class Url extends Structure {
         $value = get_term_meta( $term->term_id, $name, true );
         ?>
 
-    <tr class="form-field term-group-wrap">
+    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row"><label for="feature-group"><?php echo esc_html( $label ); ?></label></th>
         <td> <input name="<?php echo $name; ?>" id="<?php echo $name; ?>"  type="url"  value="<?php echo $value; ?>" size="40" aria-required="true"></td>
     </tr>
