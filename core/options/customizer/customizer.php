@@ -25,7 +25,6 @@ class Customizer
     public function init()
     {
 
-        $this->repeater();
         /**
          * Get Customizer file from the
          * current active theme
@@ -169,10 +168,7 @@ class Customizer
 
                             $wp_customize->register_control_type('Theme_Customize_Repeater_Control');
 
-                            $wp_customize->add_setting('mytheme_value_xyz', array(
-                                'default' => 'Hello World!',
-
-                            ));
+                            
 
                             $fields = $control['fields'];
 
@@ -222,8 +218,11 @@ class Customizer
 
                             $wp_customize->add_control(new \Theme_Customize_Repeater_Control($wp_customize, $control['id'], array(
                                 'label' => __($control['label'], 'devmonsta'),
+                                'description_a' => 'This is description',
                                 'section' => $control['section'],
                                 'fields' => $field_controls,
+                                'add_button_text' => isset($control['add_button_text']) ? $control['add_button_text'] : 'Add new Item',
+                                'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title'
                             )));
 
                             $wp_customize->add_setting('mytheme_value_xyz', array(
@@ -437,31 +436,7 @@ class Customizer
      * ======================================
      */
 
-    public function repeater()
-    {
-        // add_action('customize_register', [$this, 'customizer_repeater_register']);
-
-    }
-
-    public function customizer_repeater_register($wp_customize)
-    {
-
-        require_once 'repeater.php';
-
-        $wp_customize->add_setting('customizer_repeater_example', array(
-            'sanitize_callback' => 'customizer_repeater_sanitize',
-        ));
-        $wp_customize->add_control(new Repeater($wp_customize, 'customizer_repeater_example', array(
-            'label' => esc_html__('Movie info', 'customizer-repeater'),
-            'section' => 'devmonsta_text_settings_section',
-            'priority' => 1,
-            'item_name' => 'movie',
-            'customizer_repeater_title_control' => true,
-            'customizer_repeater_subtitle_control' => true,
-
-        )));
-
-    }
+   
 
     protected $default_controls;
     protected $control_file;
