@@ -40,11 +40,10 @@ class Checkboxes extends Structure {
 
         }
 
-        // var_dump( maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )  );
         $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $default_value_array;
+                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                            : $default_value_array;
         $this->output();
     }
 
@@ -59,18 +58,24 @@ class Checkboxes extends Structure {
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
 
         $default_attributes = "";
-
+        $dynamic_classes = "";
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
+                if($key == "class"){
+                    $dynamic_classes .= $val . " ";
+                }else{
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+               
             }
 
         }
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
 
         ?>
-
-        <div <?php echo esc_attr($default_attributes);?>>
+        <div <?php echo dm_render_markup($default_attributes);?> >
                 <label><?php echo esc_html( $label ); ?> </label>
                 <div><small><?php echo esc_html( $desc ); ?> </small></div>
         <?php

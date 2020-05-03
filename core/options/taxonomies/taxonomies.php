@@ -17,46 +17,50 @@ class Taxonomies
 
         if ($pagenow == 'edit-tags.php') {
 
-            $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
+            if(isset($_GET['taxonomy'])){
+                $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
 
-            if (file_exists($taxonomy_file)) {
-
-                require_once $taxonomy_file;
-                $path = $taxonomy_file;
-                $file = basename($path);
-                $file = basename($path, ".php");
-
-                $taxonomy = $file;
-
-                /**
-                 * Save term meta
-                 */
-
-                update_option('dm_taxonomy', $taxonomy);
-
-                // add_action('created_' . $taxonomy, [$this, 'save_meta'], 10, 2);
-
-                /**
-                 * Edit term meta
-                 */
-
-                $class_name = $this->make_class_structure($file);
-
-                $taxonomy_lib = new LibsTaxonomies;
-                if (class_exists($class_name)) {
-                    $taxonomy_class = new $class_name;
-
-                    if (method_exists($taxonomy_class, 'register_controls')) {
-                        $taxonomy_class->register_controls();
+                if (file_exists($taxonomy_file)) {
+    
+                    require_once $taxonomy_file;
+                    $path = $taxonomy_file;
+                    $file = basename($path);
+                    $file = basename($path, ".php");
+    
+                    $taxonomy = $file;
+    
+                    /**
+                     * Save term meta
+                     */
+    
+                    update_option('dm_taxonomy', $taxonomy);
+    
+                    // add_action('created_' . $taxonomy, [$this, 'save_meta'], 10, 2);
+    
+                    /**
+                     * Edit term meta
+                     */
+    
+                    $class_name = $this->make_class_structure($file);
+    
+                    $taxonomy_lib = new LibsTaxonomies;
+                    if (class_exists($class_name)) {
+                        $taxonomy_class = new $class_name;
+    
+                        if (method_exists($taxonomy_class, 'register_controls')) {
+                            $taxonomy_class->register_controls();
+                        }
+                        $controls = $taxonomy_lib->all_controls();
+    
+                        // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
+    
+                        $this->build_taxonomoy($taxonomy, $controls);
+    
                     }
-                    $controls = $taxonomy_lib->all_controls();
-
-                    // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
-
-                    $this->build_taxonomoy($taxonomy, $controls);
-
                 }
             }
+
+            
 
         }
 

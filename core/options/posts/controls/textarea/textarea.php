@@ -41,18 +41,24 @@ class Textarea extends Structure {
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-
+        $dynamic_classes = "";
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
+                if($key == "class"){
+                    $dynamic_classes .= $val . " ";
+                }else{
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+               
             }
 
         }
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
 
         ?>
-
-        <div <?php echo esc_attr($default_attributes);?>>
+        <div <?php echo dm_render_markup($default_attributes);?> >
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <textarea name="<?php echo esc_attr( $this->prefix . $name ); ?>"><?php echo esc_html( $this->value ); ?></textarea>

@@ -18,7 +18,6 @@ jQuery(document).ready(function($){
         // update values of all inputs on clickng isLinked button
         if(current_div.hasClass('clicked')){
             let fixed_value = parseInt(current_div.siblings(".input-top").val());
-            console.log(current_div.siblings(".input-top").val());
             current_div.siblings(".input-top").val(fixed_value);
             current_div.siblings(".input-right").val(fixed_value);
             current_div.siblings(".input-bottom").val(fixed_value);
