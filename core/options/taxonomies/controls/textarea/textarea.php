@@ -1,25 +1,41 @@
 <?php
-namespace Devmonsta\Options\Taxonomies\Controls\Text;
+
+namespace Devmonsta\Options\Taxonomies\Controls\Textarea;
 
 use Devmonsta\Options\Taxonomies\Structure;
 
-class Text extends Structure {
+class Textarea extends Structure {
 
+    /**
+     * @internal
+     */
     public function init() {
 
     }
 
+    /**
+     * @internal
+     */
     public function enqueue() {
 
     }
 
+    /**
+     * @internal
+     */
     public function render() {
         $this->output();
     }
 
+    /**
+     * @internal
+     */
     public function output() {
-        $prefix             = 'devmonsta_';
-         $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $prefix = 'devmonsta_';
+        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -43,9 +59,10 @@ class Text extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <label for="tag-name"><?php echo esc_html( $this->content['label'] ); ?></label>
-                <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="" size="40" aria-required="true">
-            </div>
+            <label><?php echo esc_html( $label ); ?> </label>
+            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <textarea name="<?php echo esc_attr( $name ); ?>"></textarea>
+        </div<>
     <?php
 }
 
@@ -85,15 +102,38 @@ class Text extends Structure {
 
     public function edit_fields( $term, $taxonomy ) {
         $prefix = 'devmonsta_';
-        $name   = $prefix . $this->content['name'];
-        $value  = get_term_meta( $term->term_id, $name, true );
+        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+        $value = get_term_meta( $term->term_id, $name, true );
         ?>
 
-        <tr class="form-field term-group-wrap">
-            <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
-            <td> <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="<?php echo $value; ?>" size="40" aria-required="true"></td>
-        </tr>
-        <?php
+    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <th scope="row"><label for="feature-group"><?php echo esc_html( $label ); ?></label></th>
+        <td> <textarea name="<?php echo esc_attr( $name ); ?>"><?php echo $value; ?></textarea>
+    </tr>
+    <?php
 }
 
 }
