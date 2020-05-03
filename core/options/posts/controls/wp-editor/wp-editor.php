@@ -46,7 +46,7 @@ class WpEditor extends Structure {
      * @internal
      */
     public function output() {
-        $lable = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
@@ -58,7 +58,7 @@ class WpEditor extends Structure {
         ob_start();
         ?>
         <div>
-            <lable><?php echo esc_html( $lable ); ?> </lable>
+            <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
 <?php
         wp_editor( $this->value, $this->prefix . $name, $settings );

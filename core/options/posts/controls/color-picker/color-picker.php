@@ -56,7 +56,7 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function output() {
-        $lable = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
@@ -73,7 +73,7 @@ class ColorPicker extends Structure {
         ?>
 
         <div <?php echo esc_attr($default_attributes);?>>
-            <lable><?php echo esc_html( $lable ); ?> </lable>
+            <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input  type="text"
                     name="<?php echo esc_attr( $this->prefix . $name ); ?>"
