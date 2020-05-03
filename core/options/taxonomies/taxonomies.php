@@ -97,6 +97,7 @@ class Taxonomies
 
                     $control_object->init();
                     $control_object->enqueue();
+                    $control_object->columns();
 
                     add_action($taxonomy . '_add_form_fields', function () use ($control_object) {
                         $control_object->render();
@@ -112,6 +113,7 @@ class Taxonomies
                         $control = new $control_class($taxonomy, $control);
                         $control->init();
                         $control->enqueue();
+                        $control->columns();
 
                         add_action($taxonomy . '_add_form_fields', function () use ($control) {
                             $control->render();
@@ -159,7 +161,7 @@ class Taxonomies
                         $control = new $control_class($taxonomy, $control);
                         $control->init();
                         $control->enqueue();
-
+                        $control->columns();
                         $control->edit_fields($term, $taxonomy);
 
                     }

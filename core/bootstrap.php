@@ -33,7 +33,7 @@ final class Bootstrap {
             'class-dm-session',
             'class-dm-flash-messages',
             'general',
-            'repeater'
+            'repeater',
         ];
 
         foreach ( $helper_files as $file ) {
