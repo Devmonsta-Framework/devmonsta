@@ -57,16 +57,13 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control {
 
 		$fields = $this->fields;
 
-		if(class_exists('Devmonsta\Options\Customizer\Controls\TestControl\TestControl')){
-			error_log('Exists : '.'Devmonsta\Options\Customizer\Controls\TestControl\TestControl');
-		}else{
-			error_log('ops');
-		}
+		
 
 		foreach ($fields as $key => &$field) {
 			$Control = new $field['control']($this->manager, $this->_settings, $field['args']);
 
 			$field['control'] = str_replace(array('WP_Customize', '_'), '', $field['control']);
+			error_log(serialize($Control->json()));
 			$field['args'] = $Control->json();
 
 			if ('image' === $Control->type) {
@@ -137,6 +134,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control {
 	*/
 	public function content_template () {
 		?>
+		<# console.log(data) #>
 		<# if (data.label) { #>
 			<span class="customize-control-title">{{{ data.label }}}</span>
 		<# } #>

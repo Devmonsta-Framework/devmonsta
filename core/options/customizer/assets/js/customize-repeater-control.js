@@ -98,6 +98,9 @@
 					fieldLabel.html( label )
 				}
 
+				
+				console.log(Control);
+
 				// Add field to row
 				row.find( '.customize-control-repeater-field-settings' ).append( Control.container );
 			} );
