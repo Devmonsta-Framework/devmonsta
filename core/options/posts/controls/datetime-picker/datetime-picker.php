@@ -29,8 +29,6 @@ class DatetimePicker extends Structure {
         $date_time_picker_data['timepicker']      = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : "";
         $date_time_picker_data['default_time']    = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
         
-
-        // var_dump($date_time_picker_data['min_date']);
         wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
     }
 
@@ -55,18 +53,24 @@ class DatetimePicker extends Structure {
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-
+        $dynamic_classes = "";
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
+                if($key == "class"){
+                    $dynamic_classes .= $val . " ";
+                }else{
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+               
             }
 
         }
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
 
         ?>
-
-        <div <?php echo esc_attr($default_attributes);?>>
+        <div <?php echo dm_render_markup($default_attributes);?> >
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input type="text"

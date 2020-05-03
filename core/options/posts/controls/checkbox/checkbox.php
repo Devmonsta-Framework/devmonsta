@@ -45,20 +45,25 @@ class Checkbox extends Structure {
         $text       = isset( $this->content['text'] ) ? $this->content['text'] : '';
         $is_checked = ( $this->value == 'true' ) ? 'checked' : '';
         
-
         $default_attributes = "";
-
+        $dynamic_classes = "";
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
+                if($key == "class"){
+                    $dynamic_classes .= $val . " ";
+                }else{
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+               
             }
 
         }
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
 
         ?>
-
-        <div <?php echo esc_attr($default_attributes);?>>
+        <div <?php echo dm_render_markup($default_attributes);?> >
             <label><?php echo esc_html( $label ); ?> </label>
             <input type="text"
                        value="false"
