@@ -8,7 +8,7 @@ class Text extends Structure
     public function init()
     {
 
-        $this->columns();
+      
 
     }
 
