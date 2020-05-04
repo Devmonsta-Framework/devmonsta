@@ -1,6 +1,8 @@
 (function( api, wp, $ ) {
 	'use strict';
 
+	
+
 	api.RepeaterControl = api.RepeaterControl || {};
 
 	api.RepeaterControl = api.Control.extend({
@@ -99,10 +101,12 @@
 				}
 
 				
-				console.log(Control);
+				// console.log(Control);
 
 				// Add field to row
 				row.find( '.customize-control-repeater-field-settings' ).append( Control.container );
+			
+				
 			} );
 		},
 
@@ -165,4 +169,6 @@
 	$.extend( api.controlConstructor, {
 		repeater: api.RepeaterControl
 	} );
+
+	$('.customize-control-repeater-field-settings').sortable();
 })( wp.customize, wp, jQuery );

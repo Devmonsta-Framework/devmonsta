@@ -43,15 +43,9 @@ class TestControl extends \WP_Customize_Control {
 		parent::__construct( $manager, $id, $args );
 	}
 
-	/**
-	 * Render the control's content.
-	 * 
-	 * Allows the content to be overriden without having to rewrite the wrapper.
-	 * 
-	 * @since   10/16/2012
-	 * @return  void
-	 */
-	public function render_content() {
+	
+	
+	public function content_template(){
 		?>
 		<div>
 		<label>

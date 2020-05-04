@@ -168,8 +168,6 @@ class Customizer
 
                             $wp_customize->register_control_type('Theme_Customize_Repeater_Control');
 
-                            
-
                             $fields = $control['fields'];
 
                             $field_controls = [];
@@ -235,6 +233,8 @@ class Customizer
 
                     } else {
 
+                        /** If control type is default */
+
                         if (in_array($type, $this->default_controls)) {
                             add_action('customize_register', function ($wp_customize) use ($control) {
                                 $args = $control;
@@ -272,20 +272,23 @@ class Customizer
                             $class_name = implode('', $class_name);
                             $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
-                            add_action('customize_register', function ($wp_customize) use ($control_file, $control_class) {
+                            add_action('customize_register', function ($wp_customize) use ($control_file, $control_class,$control) {
                                 if (file_exists($control_file)) {
                                     require_once $control_file;
 
                                     if (class_exists($control_class)) {
 
-                                        $wp_customize->add_setting('cool_xyz_settings', array(
-                                            'default' => 'Nope',
+                                        error_log('Trying to create '. $control_class);
+
+                                        $wp_customize->add_setting($control['id'], array(
+                                            'default' => isset($control['default']) ? $control['default'] : '' ,
 
                                         ));
 
-                                        $wp_customize->add_control(new $control_class($wp_customize, 'cool_xyz_settings', [
+                                        $wp_customize->add_control(new $control_class($wp_customize, $control['id'], [
 
-                                            'section' => 'devmonsta_text_settings_section',
+                                            'section' => $control['section'],
+                                            
                                         ]));
 
                                     }
