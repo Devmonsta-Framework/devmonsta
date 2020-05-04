@@ -5,21 +5,50 @@ use Devmonsta\Options\Taxonomies\Structure;
 
 class Text extends Structure {
 
+    protected $current_screen;
+
+    /**
+     * @internal
+     */
     public function init() {
 
     }
 
+    /**
+     * @internal
+     */
     public function enqueue() {
 
     }
 
+    /**
+     * @internal
+     */
     public function render() {
+        global $wpdocs_admin_page;
+        $screen               = get_current_screen();
+        $this->current_screen = $screen->base;
+
+        if ( $this->current_screen == "post" ) {
+            $content = $this->content;
+            global $post;
+
+            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
+            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+            : $content['value'];
+        }
+
         $this->output();
     }
 
+    /**
+     * @internal
+     */
     public function output() {
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $prefix             = 'devmonsta_';
         $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -43,24 +72,23 @@ class Text extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <label for="tag-name"><?php echo esc_html( $this->content['label'] ); ?></label>
-                <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="" size="40" aria-required="true">
-            </div>
+            <label for="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?> </label>
+            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <input type="text"
+                    id="<?php echo $name; ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
+                    >
+        </div>
     <?php
 }
 
     public function columns() {
-        $visible = true;
+        $visible = false;
         $content = $this->content;
         add_filter( 'manage_edit-' . $this->taxonomy . '_columns', function ( $columns ) use ( $content, $visible ) {
 
-            if ( isset( $content['show_in_table'] ) ) {
-
-                if ( $content['show_in_table'] == false ) {
-                    $visible = false;
-                }
-
-            }
+            $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
             if ( $visible ) {
                 $columns[$content['name']] = __( $content['label'], 'devmonsta' );
@@ -73,8 +101,7 @@ class Text extends Structure {
         add_filter( 'manage_' . $this->taxonomy . '_custom_column', function ( $content, $column_name, $term_id ) use ( $cc ) {
 
             if ( $column_name == $cc['name'] ) {
-                print_r( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
-
+                echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
             }
 
             return $content;
@@ -110,11 +137,11 @@ class Text extends Structure {
 
         ?>
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
-            <td> <input name="<?php echo $name; ?>" id="<?php echo $name; ?>" type="text" value="<?php echo $value; ?>" size="40" aria-required="true"></td>
-        </tr>
-        <?php
+    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
+        <td> <input name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true"></td>
+    </tr>
+    <?php
 }
 
 }
