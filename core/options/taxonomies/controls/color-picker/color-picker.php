@@ -19,31 +19,37 @@ class ColorPicker extends Structure {
      * @internal
      */
     function dm_enqueue_color_picker() {
-
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
         if ( !wp_script_is( 'dm-script-handle', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+            wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], time(), true );
         }
 
-        $data             = [];
-        $data['default']  = $this->content['value'];
+        $data            = [];
+        $data['default'] = $this->content['value'];
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
     }
 
+    /**
+     * @internal
+     */
     public function render() {
         $this->output();
     }
 
+    /**
+     * @internal
+     */
     public function output() {
         $prefix             = 'devmonsta_';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default            = isset( $this->content['value'] ) ? $this->content['value'] : '#000000';
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -71,11 +77,14 @@ class ColorPicker extends Structure {
             <input  type="text"
                     name="<?php echo esc_attr( $name ); ?>"
                     class="dm-color-field"
-                    data-default-color="<?php echo esc_attr( $this->content['value'] ); ?>" />
-        </div<>
+                    data-default-color="<?php echo esc_attr( $default ); ?>" />
+        </div>
     <?php
 }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = true;
         $content = $this->content;
@@ -109,8 +118,48 @@ class ColorPicker extends Structure {
         }, 10, 3 );
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
+        //enqueue scripts and styles for color picker
+        $this->dm_enqueue_color_picker();
+        $prefix             = 'devmonsta_';
+        $name               = $prefix . $this->content['name'];
+        $value              = get_term_meta( $term->term_id, $name, true );
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default_attributes = "";
+        $dynamic_classes    = "";
 
-    }
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+            <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
+            <td> <input  type="text"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo esc_attr( $value ); ?>"
+                    class="dm-color-field"
+                    data-default-color="#FF0000" />
+            </td>
+        </tr>
+        <?php
+}
 
 }

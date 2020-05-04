@@ -23,6 +23,7 @@ class ColorPicker extends Structure {
      * @internal
      */
     function dm_enqueue_color_picker() {
+
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
@@ -31,9 +32,10 @@ class ColorPicker extends Structure {
 
         global $post;
         $data            = [];
-        $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) ) 
+        $data['default'] = (  ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
                             ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
                             : $this->content['value'];
+        // var_dump( $data['default'] );
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
     }
@@ -56,29 +58,32 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function output() {
-        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-        $dynamic_classes = "";
+        $dynamic_classes    = "";
+
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                if($key == "class"){
+
+                if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
-                }else{
+                } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-               
+
             }
 
         }
+
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup($default_attributes);?> >
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input  type="text"

@@ -1,12 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Taxonomies\Controls\Radio;
+namespace Devmonsta\Options\Taxonomies\Controls\Checkbox;
 
 use Devmonsta\Options\Taxonomies\Structure;
 
-class Radio extends Structure {
-
-    protected $choices;
+class Checkbox extends Structure {
 
     /**
      * @internal
@@ -33,12 +31,13 @@ class Radio extends Structure {
      * @internal
      */
     public function output() {
-        $prefix  = 'devmonsta_';
-        $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name    = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $this->choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $prefix     = 'devmonsta_';
+        $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name       = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $text       = isset( $this->content['text'] ) ? $this->content['text'] : '';
+        $is_checked = ( $this->content['value'] == 'true' ) ? 'checked' : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -63,26 +62,17 @@ class Radio extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label><?php echo esc_html( $label ); ?> </label>
-            <div>
-                <small><?php echo esc_html( $desc ); ?> </small>
-            </div>
-            <?php
+            <input type="text"
+                       value="false"
+                       name="<?php echo esc_attr( $name ); ?>"
+                       style="display: none">
 
-        if ( isset( $this->choices ) ) {
-
-            foreach ( $this->choices as $key => $val ) {
-                ?>
-                <input type="radio"
+            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+                <input type="checkbox"
                         name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_attr( $key ); ?>"
-                        ><?php echo $val; ?>
-                <?php
-}
-
-        }
-
-        ?>
-        </div>
+                        value="true" <?php echo esc_attr( $is_checked ); ?>>
+                        <?php echo esc_html( $text ); ?>
+    </div>
     <?php
 }
 
@@ -110,12 +100,7 @@ class Radio extends Structure {
         add_filter( 'manage_' . $this->taxonomy . '_custom_column', function ( $content, $column_name, $term_id ) use ( $cc ) {
 
             if ( $column_name == $cc['name'] ) {
-                $saved_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ;
-                foreach($this->choices as $key => $value){
-                    if($saved_value == $key){
-                        echo $value;
-                    }
-                }
+                print_r( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
 
             }
 
@@ -131,10 +116,11 @@ class Radio extends Structure {
         $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $text               = isset( $this->content['text'] ) ? $this->content['text'] : '';
         $value              = get_term_meta( $term->term_id, $name, true );
         $default_attributes = "";
         $dynamic_classes    = "";
+        $is_checked         = ( $value == 'true' ) ? 'checked' : '';
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
@@ -155,34 +141,23 @@ class Radio extends Structure {
 
         ?>
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row">
-                <label for="feature-group"><?php echo esc_html( $label ); ?></label>
-            </th>
-            <td>
-                <?php
-
-        if ( isset( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-                $is_checked = ( $key == $value ) ? 'checked' : '';
-                ?>
-                        <input type="radio"
-                                name="<?php echo esc_attr( $name ); ?>"
-                                value="<?php echo esc_attr( $key ); ?>"
-                                <?php echo esc_html( $is_checked ); ?>>
-                                <?php echo esc_html( $val ); ?>
-                        <?php
-}
-
-        }
-
-        ?>
-
-            <br>(<?php echo esc_html( $desc ); ?>)
-            </td>
-        </tr>
-        <?php
+    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <th scope="row">
+            <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+        </th>
+        <td>
+            <input type="text"
+                        value="false"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        style="display: none">
+            <input type="checkbox"
+                            name="<?php echo esc_attr( $name ); ?>"
+                            value="true" <?php echo esc_attr( $is_checked ); ?>>
+                            <?php echo esc_html( $text ); ?>
+            <br>(<?php echo esc_html( $desc ); ?> )
+        </td>
+    </tr>
+    <?php
 }
 
 }

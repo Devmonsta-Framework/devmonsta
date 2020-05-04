@@ -58,11 +58,11 @@ class Textarea extends Structure {
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+        <div <?php echo dm_render_markup( $default_attributes ); ?>>
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <textarea name="<?php echo esc_attr( $name ); ?>"></textarea>
-        </div<>
+        </div>
     <?php
 }
 
