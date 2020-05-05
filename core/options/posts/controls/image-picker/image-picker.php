@@ -115,10 +115,7 @@ class ImagePicker extends Structure {
 
         }
 
-        echo '<div class="tooltip">
-                        <span class="tooltiptext">' . esc_html( $help ) . '</span>
-                        <span class="dashicons dashicons-warning"></span>
-                     </div>';
+        echo '<div class="dm_help_tip">'.esc_html( $help ).' </div>';
         ?>
             </ul>
         </div>
