@@ -108,6 +108,8 @@ class Taxonomies {
                     $original_class_name . '\\' .
                     $original_class_name;
 
+                // var_dump( $control_class );
+
                 if ( class_exists( $control_class ) ) {
 
                     $control_object = new $control_class( $control, $taxonomy );
@@ -243,7 +245,6 @@ class Taxonomies {
         }
 
     }
-
 
     /**
      * Get controls array from theme and prepare them
