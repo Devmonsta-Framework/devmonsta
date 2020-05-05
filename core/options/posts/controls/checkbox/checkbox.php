@@ -75,7 +75,7 @@ class Checkbox extends Structure {
                         name="<?php echo esc_attr( $this->prefix . $name ); ?>"
                         value="true" <?php echo esc_attr( $is_checked ); ?>>
                         <?php echo esc_html( $text ); ?>
-        </div<>
+        </div>
     <?php
 }
 

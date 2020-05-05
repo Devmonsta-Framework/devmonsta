@@ -29,7 +29,7 @@ class Slider extends Structure {
         wp_enqueue_style( 'dm-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
         wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
         wp_enqueue_script( 'dm-slider-script', DM_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
-        
+
         //get slider settings from theme
         $dm_slider_data_config  = $this->content['properties'];
         $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
@@ -62,28 +62,31 @@ class Slider extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-        $dynamic_classes = "";
+        $dynamic_classes    = "";
+
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                if($key == "class"){
+
+                if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
-                }else{
+                } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-               
+
             }
 
         }
+
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup($default_attributes);?> >
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input class="dm-slider"
-                    type="range" 
+                    type="range"
                     name="<?php echo esc_attr( $this->prefix . $name ); ?>"
                     value="<?php echo esc_attr( $this->value ); ?>"/>
         </div>

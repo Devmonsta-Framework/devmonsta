@@ -1,9 +1,16 @@
 <?php
-namespace Devmonsta\Options\Taxonomies\Controls\ColorPicker;
+
+namespace Devmonsta\Options\Taxonomies\Controls\Radio;
 
 use Devmonsta\Options\Taxonomies\Structure;
 
-class ColorPicker extends Structure {
+class Radio extends Structure {
+
+    protected $choices;
+
+    /**
+     * @internal
+     */
     public function init() {
 
     }
@@ -12,25 +19,7 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function enqueue() {
-        add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
-    }
 
-    /**
-     * @internal
-     */
-    function dm_enqueue_color_picker() {
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
-
-        if ( !wp_script_is( 'dm-script-handle', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], time(), true );
-        }
-
-        $data            = [];
-        $data['default'] = $this->content['value'];
-        $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
-        wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
     }
 
     /**
@@ -44,12 +33,13 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function output() {
-        $prefix             = 'devmonsta_';
-        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default            = isset( $this->content['value'] ) ? $this->content['value'] : '#000000';
+        $prefix  = 'devmonsta_';
+        $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name    = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $this->choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -73,18 +63,29 @@ class ColorPicker extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label><?php echo esc_html( $label ); ?> </label>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input  type="text"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    class="dm-color-field"
-                    data-default-color="<?php echo esc_attr( $default ); ?>" />
+            <div>
+                <small><?php echo esc_html( $desc ); ?> </small>
+            </div>
+            <?php
+
+        if ( isset( $this->choices ) ) {
+
+            foreach ( $this->choices as $key => $val ) {
+                ?>
+                <input type="radio"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_attr( $key ); ?>"
+                        ><?php echo $val; ?>
+                <?php
+}
+
+        }
+
+        ?>
         </div>
     <?php
 }
 
-    /**
-     * @internal
-     */
     public function columns() {
         $visible = true;
         $content = $this->content;
@@ -109,25 +110,29 @@ class ColorPicker extends Structure {
         add_filter( 'manage_' . $this->taxonomy . '_custom_column', function ( $content, $column_name, $term_id ) use ( $cc ) {
 
             if ( $column_name == $cc['name'] ) {
-                print_r( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
+                $saved_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ;
+                foreach($this->choices as $key => $value){
+                    if($saved_value == $key){
+                        echo $value;
+                    }
+                }
 
             }
 
             return $content;
 
         }, 10, 3 );
+
     }
 
-    /**
-     * @internal
-     */
     public function edit_fields( $term, $taxonomy ) {
-        //enqueue scripts and styles for color picker
-        $this->dm_enqueue_color_picker();
         $prefix             = 'devmonsta_';
-        $name               = $prefix . $this->content['name'];
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $value              = get_term_meta( $term->term_id, $name, true );
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -151,12 +156,30 @@ class ColorPicker extends Structure {
         ?>
 
         <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
-            <td> <input  type="text"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_attr( $value ); ?>"
-                    class="dm-color-field"
-                    data-default-color="#FF0000" />
+            <th scope="row">
+                <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+            </th>
+            <td>
+                <?php
+
+        if ( isset( $choices ) ) {
+
+            foreach ( $choices as $key => $val ) {
+                $is_checked = ( $key == $value ) ? 'checked' : '';
+                ?>
+                        <input type="radio"
+                                name="<?php echo esc_attr( $name ); ?>"
+                                value="<?php echo esc_attr( $key ); ?>"
+                                <?php echo esc_html( $is_checked ); ?>>
+                                <?php echo esc_html( $val ); ?>
+                        <?php
+}
+
+        }
+
+        ?>
+
+            <br>(<?php echo esc_html( $desc ); ?>)
             </td>
         </tr>
         <?php

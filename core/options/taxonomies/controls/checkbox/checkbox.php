@@ -1,12 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Taxonomies\Controls\Url;
+namespace Devmonsta\Options\Taxonomies\Controls\Checkbox;
 
 use Devmonsta\Options\Taxonomies\Structure;
 
-class Url extends Structure {
-
-    protected $value;
+class Checkbox extends Structure {
 
     /**
      * @internal
@@ -33,12 +31,13 @@ class Url extends Structure {
      * @internal
      */
     public function output() {
-
-        $prefix = 'devmonsta_';
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $prefix     = 'devmonsta_';
+        $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name       = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $text       = isset( $this->content['text'] ) ? $this->content['text'] : '';
+        $is_checked = ( $this->content['value'] == 'true' ) ? 'checked' : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -62,10 +61,18 @@ class Url extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-           <label><?php echo esc_html( $label ); ?> </label>
+            <label><?php echo esc_html( $label ); ?> </label>
+            <input type="text"
+                       value="false"
+                       name="<?php echo esc_attr( $name ); ?>"
+                       style="display: none">
+
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="url" name="<?php echo esc_attr( $name ); ?>" >
-        </div>
+                <input type="checkbox"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        value="true" <?php echo esc_attr( $is_checked ); ?>>
+                        <?php echo esc_html( $text ); ?>
+    </div>
     <?php
 }
 
@@ -104,14 +111,16 @@ class Url extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix = 'devmonsta_';
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-
+        $prefix             = 'devmonsta_';
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $text               = isset( $this->content['text'] ) ? $this->content['text'] : '';
+        $value              = get_term_meta( $term->term_id, $name, true );
         $default_attributes = "";
         $dynamic_classes    = "";
+        $is_checked         = ( $value == 'true' ) ? 'checked' : '';
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
@@ -127,14 +136,26 @@ class Url extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $value = get_term_meta( $term->term_id, $name, true );
+
         ?>
 
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row"><label for="feature-group"><?php echo esc_html( $label ); ?></label></th>
-        <td> <input name="<?php echo $name; ?>" id="<?php echo $name; ?>"  type="url"  value="<?php echo $value; ?>" size="40" aria-required="true"></td>
+        <th scope="row">
+            <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+        </th>
+        <td>
+            <input type="text"
+                        value="false"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        style="display: none">
+            <input type="checkbox"
+                            name="<?php echo esc_attr( $name ); ?>"
+                            value="true" <?php echo esc_attr( $is_checked ); ?>>
+                            <?php echo esc_html( $text ); ?>
+            <br>(<?php echo esc_html( $desc ); ?> )
+        </td>
     </tr>
     <?php
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\TypographyV2;
+namespace Devmonsta\Options\Posts\Controls\Typography;
 
 use Devmonsta\Options\Posts\Structure;
 
-class TypographyV2 extends Structure {
+class Typography extends Structure {
 
     protected $value;
     /**
@@ -20,7 +20,7 @@ class TypographyV2 extends Structure {
     public function dm_getGoogleFonts( $count = 30 ) {
             $transient = "_newseqo_customizer_google_fonts";
             if(get_transient($transient)==false){                  
-               $request = wp_remote_get( DM_OPTIONS.'/posts/controls/typography-v2/google-fonts-popularity.json' );
+               $request = wp_remote_get( DM_OPTIONS.'/posts/controls/typography/google-fonts-popularity.json' );
               
                if( is_wp_error( $request ) ) {
                   return "";
@@ -56,7 +56,7 @@ class TypographyV2 extends Structure {
     public function load_scripts($hook)
     {
         //css
-        wp_enqueue_style( 'dm-slide-ranger-css', plugins_url( 'typography-v2/assets/css/ranger-slider.css', dirname( __FILE__ ) ) );
+        wp_enqueue_style( 'dm-slide-ranger-css', plugins_url( 'typography/assets/css/ranger-slider.css', dirname( __FILE__ ) ) );
     }
 
     /**
@@ -68,7 +68,7 @@ class TypographyV2 extends Structure {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography-v2/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
         global $post;
         $data            = [];
         $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . 'typograhy_color' , true ) ) ) 
