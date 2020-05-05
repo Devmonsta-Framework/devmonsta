@@ -87,7 +87,8 @@ class Text extends Structure {
     public function columns() {
         $visible = false;
         $content = $this->content;
-        add_filter( 'manage_edit-' . $this->taxonomy . '_columns', function ( $columns ) use ( $content, $visible ) {
+        add_filter( 'manage_edit-' . $this->taxonomy . '_columns', 
+            function ( $columns ) use ( $content, $visible ) {
 
             $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
@@ -99,7 +100,8 @@ class Text extends Structure {
         } );
 
         $cc = $content;
-        add_filter( 'manage_' . $this->taxonomy . '_custom_column', function ( $content, $column_name, $term_id ) use ( $cc ) {
+        add_filter( 'manage_' . $this->taxonomy . '_custom_column', 
+            function ( $content, $column_name, $term_id ) use ( $cc ) {
 
             if ( $column_name == $cc['name'] ) {
                 echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
