@@ -6,7 +6,7 @@ use Devmonsta\Options\Taxonomies\Structure;
 
 class Radio extends Structure {
 
-    protected $choices;
+    protected $current_screen;
 
     /**
      * @internal
@@ -26,6 +26,18 @@ class Radio extends Structure {
      * @internal
      */
     public function render() {
+        global $wpdocs_admin_page;
+        $screen               = get_current_screen();
+        $this->current_screen = $screen->base;
+
+        if ( $this->current_screen == "post" ) {
+            $content = $this->content;
+            global $post;
+            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
+            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+            : $content['value'];
+        }
+
         $this->output();
     }
 
@@ -38,7 +50,7 @@ class Radio extends Structure {
         $name    = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $this->choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -63,41 +75,39 @@ class Radio extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label><?php echo esc_html( $label ); ?> </label>
-            <div>
-                <small><?php echo esc_html( $desc ); ?> </small>
-            </div>
+            <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <?php
 
-        if ( isset( $this->choices ) ) {
+        if ( isset( $choices ) ) {
 
-            foreach ( $this->choices as $key => $val ) {
+            foreach ( $choices as $key => $val ) {
+                $is_checked = ( $this->current_screen == "post" && $key == $this->value ) ? 'checked' : '';
+
                 ?>
                 <input type="radio"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $key ); ?>"
-                        ><?php echo $val; ?>
+                        <?php
+                            echo esc_html( $is_checked );
+                ?>>
+                        <?php echo esc_html( $val ); ?>
                 <?php
 }
 
         }
 
         ?>
+
         </div>
     <?php
 }
 
     public function columns() {
-        $visible = true;
+        $visible = false;
         $content = $this->content;
         add_filter( 'manage_edit-' . $this->taxonomy . '_columns', function ( $columns ) use ( $content, $visible ) {
 
-            if ( isset( $content['show_in_table'] ) ) {
-
-                if ( $content['show_in_table'] == false ) {
-                    $visible = false;
-                }
-
-            }
+            $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
             if ( $visible ) {
                 $columns[$content['name']] = __( $content['label'], 'devmonsta' );
@@ -110,13 +120,7 @@ class Radio extends Structure {
         add_filter( 'manage_' . $this->taxonomy . '_custom_column', function ( $content, $column_name, $term_id ) use ( $cc ) {
 
             if ( $column_name == $cc['name'] ) {
-                $saved_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ;
-                foreach($this->choices as $key => $value){
-                    if($saved_value == $key){
-                        echo $value;
-                    }
-                }
-
+                echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
             }
 
             return $content;
@@ -127,12 +131,11 @@ class Radio extends Structure {
 
     public function edit_fields( $term, $taxonomy ) {
         $prefix             = 'devmonsta_';
-        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = $prefix . $this->content['name'];
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $value              = get_term_meta( $term->term_id, $name, true );
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -155,34 +158,31 @@ class Radio extends Structure {
 
         ?>
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row">
-                <label for="feature-group"><?php echo esc_html( $label ); ?></label>
-            </th>
-            <td>
-                <?php
+    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
+        <td>
+        <?php
 
         if ( isset( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {
                 $is_checked = ( $key == $value ) ? 'checked' : '';
                 ?>
-                        <input type="radio"
-                                name="<?php echo esc_attr( $name ); ?>"
-                                value="<?php echo esc_attr( $key ); ?>"
-                                <?php echo esc_html( $is_checked ); ?>>
-                                <?php echo esc_html( $val ); ?>
-                        <?php
+                    <input type="radio"
+                            name="<?php echo esc_attr( $name ); ?>"
+                            value="<?php echo esc_attr( $key ); ?>"
+                            <?php echo esc_html( $is_checked ); ?>>
+                            <?php echo esc_html( $val ); ?>
+                    <?php
 }
 
         }
 
         ?>
-
-            <br>(<?php echo esc_html( $desc ); ?>)
-            </td>
-        </tr>
-        <?php
+        </td>
+        <br> <small><?php echo esc_html( $desc ); ?> </small>
+    </tr>
+<?php
 }
 
 }

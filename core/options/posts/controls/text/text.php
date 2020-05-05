@@ -114,6 +114,7 @@ class Text extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         $prefix             = 'devmonsta_';
         $name               = $prefix . $this->content['name'];
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = get_term_meta( $term->term_id, $name, true );
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -141,6 +142,7 @@ class Text extends Structure {
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
         <td> <input name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true"></td>
+        <br> <small><?php echo esc_html( $desc ); ?> </small>
     </tr>
     <?php
 }
