@@ -74,7 +74,7 @@ class Text extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
             <input type="text"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
@@ -144,7 +144,7 @@ class Text extends Structure {
         <th scope="row"><label  class="dm-option-label"><?php echo esc_html( $this->content['label'] ); ?></label></th>
         <td> 
             <input name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true">
-            <br> <small>(<?php echo esc_html( $desc ); ?> )</small>
+            <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
         </td>
         
     </tr>

@@ -93,7 +93,7 @@ class Switcher extends Structure {
         wp_add_inline_style( 'dm-switcher-inline-css', $style );
 
         echo "<div>" . esc_html( $label ) . "</div>";
-        echo "<div><small>" . esc_html( $desc ) . "</small></div>";
+        echo "<div><small class='dm-option-desc'>" . esc_html( $desc ) . "</small></div>";
         echo "<div class='dm_switcher_main_block'>";
         echo "<div class='dm_switcher_item'>";
         echo "<input id='dm_switcher_right' type='checkbox' value='" . esc_attr( $right_key ) . "' class='dm-control-input' name='" . esc_attr( $this->prefix . $name ) . "' " . $checked . " />";

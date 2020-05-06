@@ -71,7 +71,7 @@ class ImagePicker extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <lable class="dm-option-label"><?php echo esc_html( $label ); ?> </lable>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
             <select <?php echo esc_attr( $default_attributes ); ?> name="<?php echo esc_attr( $this->prefix . 'image_picker' ); ?>"
             value="<?php echo esc_attr( $value ); ?>" id="dm_image_picker">
                 <?php

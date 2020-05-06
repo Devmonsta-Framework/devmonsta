@@ -145,7 +145,7 @@ class Typography extends Structure {
         $components   = isset( $this->content['components'] ) ? $this->content['components'] : [];
 
         echo "<div>".esc_html( $label )."</div>";
-        echo "<div><small>".esc_html( $desc )."</small></div>";
+        echo "<div><small class='dm-option-desc'>".esc_html( $desc )."</small></div>";
         $value = $this->value;
         foreach ($components as $key => $item) {
             if ($key) {

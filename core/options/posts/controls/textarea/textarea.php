@@ -75,7 +75,7 @@ class Textarea extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <labe for="<?php echo esc_attr( $name ); ?>"l><?php echo esc_html( $label ); ?> </labe>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
             <textarea id="<?php echo $name; ?>"
                     name="<?php echo esc_attr( $name ); ?>"><?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?></textarea>
         </div>
@@ -141,7 +141,7 @@ class Textarea extends Structure {
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row"><label  class="dm-option-label"><?php echo esc_html( $label ); ?></label></th>
         <td> <textarea name="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $value ); ?></textarea>
-            <br> <small>(<?php echo esc_html( $desc ); ?> )</small>
+            <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
         </td>
     </tr>
     <?php

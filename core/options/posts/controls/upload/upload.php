@@ -88,7 +88,7 @@ class Upload extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
                     <div class='dm-label'> <label  class="dm-option-label"> <?php echo $label; ?> </label></div>
-                    <div><small><?php echo esc_html( $desc ); ?> </small></div>
+                    <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
                     <div class='dm-meta'>
                         <a data-multiple='<?php echo $multiple; ?>' class="dm_upload_image_button<?php echo $image; ?> </a>
                         <input type='hidden' name='<?php echo $this->prefix . $name; ?>' id='<?php echo esc_attr( $this->prefix . $name ); ?>' value='<?php echo esc_attr( $this->value ); ?>' />

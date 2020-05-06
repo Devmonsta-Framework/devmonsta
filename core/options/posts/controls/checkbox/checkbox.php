@@ -84,7 +84,7 @@ class Checkbox extends Structure {
                         name="<?php echo esc_attr( $name ); ?>"
                        style="display: none">
 
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
                 <input type="checkbox"
                         id="<?php echo $name; ?>"
                         name="<?php echo esc_attr( $name ); ?>"
@@ -167,7 +167,7 @@ class Checkbox extends Structure {
                                 name="<?php echo esc_attr( $name ); ?>"
                                 value="true" <?php echo esc_attr( $is_checked ); ?>>
                                 <?php echo esc_html( $text ); ?>
-                <br><small>(<?php echo esc_html( $desc ); ?> )</small>
+                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
             </td>
         </tr>
     <?php

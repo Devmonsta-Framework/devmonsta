@@ -65,7 +65,7 @@ class Dimensions extends Structure {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
             <div class="dm-dimensions-input">
                 <span>top</span><input class="dm-dimension-number-input input-top" style="width:50px; border: '1px solid slategray'" type="number" name="<?php echo esc_attr( $this->prefix . $name ); ?>[top]" value="<?php echo isset( $this->value["top"] ) ? esc_html( intval( $this->value["top"] ) ) : 0; ?>" min="0"/>
                 <span>right</span><input class="dm-dimension-number-input input-right"  style="width:50px; border: '1px solid slategray'" type="number" name="<?php echo esc_attr( $this->prefix . $name ); ?>[right]" value="<?php echo isset( $this->value["right"] ) ? esc_html( intval( $this->value["right"] ) ) : 0; ?>"  min="0"/>
