@@ -18,8 +18,8 @@ class Checkboxes extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
-
+    public function enqueue( $meta_owner ) {
+        $this->current_screen = $meta_owner;
     }
 
     /**

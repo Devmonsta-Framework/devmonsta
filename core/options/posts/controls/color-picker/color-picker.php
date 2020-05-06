@@ -18,9 +18,17 @@ class ColorPicker extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
-        // add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
-        $this->dm_enqueue_color_picker();
+    public function enqueue( $meta_owner ) {
+        $this->current_screen = $meta_owner;
+
+        if ( $this->current_screen == "post" ) {
+            $this->dm_enqueue_color_picker();
+        } else
+
+        if ( $this->current_screen == "taxonomy" ) {
+            add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+        }
+
     }
 
     /**
@@ -34,23 +42,27 @@ class ColorPicker extends Structure {
 
         wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
-        global $post;
-        $data            = [];
-        $data['default'] = (  ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-        : $this->content['value'];
-        // var_dump( $data['default'] );
+        $data = [];
+
+        if ( $this->current_screen == "post" ) {
+            global $post;
+            $data['default'] = (  ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+            : $this->content['value'];
+        } else {
+            $data['default'] = $this->content['value'];
+        }
+
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
+
     }
 
     /**
      * @internal
      */
     public function render() {
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
 
         if ( $this->current_screen == "post" ) {
             $content = $this->content;
@@ -103,8 +115,8 @@ class ColorPicker extends Structure {
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
                     class="dm-color-field"
-                    data-default-color="<?php echo esc_attr( $this->value ); ?>" />
-        </div<>
+                    data-default-color="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>" />
+        </div>
     <?php
 }
 

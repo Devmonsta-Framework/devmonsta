@@ -4,10 +4,11 @@ namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Traits\Singleton;
 
-class View
-{
+class View {
 
     use Singleton;
+
+    protected $meta_owner = "post";
 
     /**
      * Build the metbox for the post
@@ -16,15 +17,14 @@ class View
      * @return      void
      */
 
-    public function build($box_id, $controls)
-    {
+    public function build( $box_id, $controls ) {
 
-        foreach ($controls as $control) {
+        foreach ( $controls as $control ) {
 
-            if (Validator::instance()->check($control)) {
+            if ( Validator::instance()->check( $control ) ) {
 
-                if ($control['box_id'] == $box_id) {
-                    $this->render($control);
+                if ( $control['box_id'] == $box_id ) {
+                    $this->render( $control );
                 }
 
             }
@@ -41,35 +41,36 @@ class View
      * @access      public
      * @return      void
      */
-    public function render($control_content)
-    {
+    public function render( $control_content ) {
 
-        if (isset($control_content['type'])) {
-            $class_name = explode('-', $control_content['type']);
-            $class_name = array_map('ucfirst', $class_name);
-            $class_name = implode('', $class_name);
+        if ( isset( $control_content['type'] ) ) {
+            $class_name    = explode( '-', $control_content['type'] );
+            $class_name    = array_map( 'ucfirst', $class_name );
+            $class_name    = implode( '', $class_name );
             $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
 
-            if (class_exists($control_class)) {
+            if ( class_exists( $control_class ) ) {
 
-                $control = new $control_class($control_content);
+                $control = new $control_class( $control_content );
                 $control->init();
-                $control->enqueue();
+                $control->enqueue( $this->meta_owner );
                 $control->render();
 
             } else {
-                $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
-                if(file_exists($file)){
-                include_once $file;
-                
-                if (class_exists($control_class)) {
-              
-                    $control = new $control_class($control_content);
-                    $control->init();
-                    $control->enqueue();
-                    $control->render();
+                $file = plugin_dir_path( __FILE__ ) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
+
+                if ( file_exists( $file ) ) {
+                    include_once $file;
+
+                    if ( class_exists( $control_class ) ) {
+
+                        $control = new $control_class( $control_content );
+                        $control->init();
+                        $control->enqueue( $this->meta_owner );
+                        $control->render();
+                    }
+
                 }
-            }
 
             }
 

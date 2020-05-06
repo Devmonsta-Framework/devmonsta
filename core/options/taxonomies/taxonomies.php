@@ -7,6 +7,7 @@ use Devmonsta\Traits\Singleton;
 
 class Taxonomies {
 
+    protected $meta_owner = "taxonomy";
     use Singleton;
 
     /**
@@ -113,7 +114,7 @@ class Taxonomies {
                     $control_object = new $control_class( $control, $taxonomy );
 
                     $control_object->init();
-                    $control_object->enqueue();
+                    $control_object->enqueue( $this->meta_owner );
                     $control_object->columns();
 
                     add_action( $taxonomy . '_add_form_fields',
@@ -130,7 +131,7 @@ class Taxonomies {
 
                         $control = new $control_class( $control, $taxonomy );
                         $control->init();
-                        $control->enqueue();
+                        $control->enqueue( $this->meta_owner );
                         $control->columns();
 
                         add_action( $taxonomy . '_add_form_fields', function () use ( $control ) {
@@ -171,11 +172,10 @@ class Taxonomies {
 
                 if ( class_exists( $control_class ) ) {
 
+                    $meta_owner     = "taxonomy";
                     $control_object = new $control_class( $control, $taxonomy );
-
                     $control_object->init();
-                    $control_object->enqueue();
-
+                    $control_object->enqueue( $this->meta_owner );
                     $control_object->edit_fields( $term, $taxonomy );
 
                 } else {
@@ -184,10 +184,9 @@ class Taxonomies {
                     include_once $file;
 
                     if ( class_exists( $control_class ) ) {
-
                         $control = new $control_class( $control, $taxonomy );
                         $control->init();
-                        $control->enqueue();
+                        $control->enqueue( $this->meta_owner );
                         $control->columns();
                         $control->edit_fields( $term, $taxonomy );
                     }
@@ -243,7 +242,6 @@ class Taxonomies {
         }
 
     }
-
 
     /**
      * Get controls array from theme and prepare them
