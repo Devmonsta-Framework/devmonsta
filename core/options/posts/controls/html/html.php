@@ -51,21 +51,33 @@ class Html extends Structure {
         $html         = isset( $this->content['html'] ) ? $this->content['html'] : '';
         
         $default_attributes = "";
+        $dynamic_classes    = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "='" . $val . "' ";
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
             }
 
         }
-        echo "<div ".esc_attr($default_attributes).">";
-            echo "<div>".esc_html( $label )."</div>";
-            echo "<div><small>".esc_html( $desc )."</small></div>";
-            echo "<div class='dm_html_block'>";
-                echo htmlspecialchars_decode(esc_html( $html ));
-            echo "</div>";
-        echo "</div>";
+
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <lable class="dm-option-label"><?php echo esc_html( $label ); ?> </lable>
+            <div><small><?php echo esc_html( $desc ); ?></small></div>
+            <div class='dm_html_block'>
+                <?php echo htmlspecialchars_decode(esc_html( $html ));?>
+            </div>
+        </div>
     }
 
 }

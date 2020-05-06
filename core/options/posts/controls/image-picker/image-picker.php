@@ -49,18 +49,28 @@ class ImagePicker extends Structure {
         $value              = isset( $this->content['value'] ) ? $this->content['value'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         $default_attributes = "";
+        $dynamic_classes    = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                $default_attributes .= $key . "=" . $val . " ";
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
             }
 
         }
 
+        $class_attributes = "class='dm-option $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
         ?>
-        <div class="">
-            <lable><?php echo esc_html( $label ); ?> </lable>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <lable class="dm-option-label"><?php echo esc_html( $label ); ?> </lable>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <select <?php echo esc_attr( $default_attributes ); ?> name="<?php echo esc_attr( $this->prefix . 'image_picker' ); ?>"
             value="<?php echo esc_attr( $value ); ?>" id="dm_image_picker">
@@ -115,7 +125,7 @@ class ImagePicker extends Structure {
 
         }
 
-        echo '<div class="dm_help_tip">'.esc_html( $help ).' </div>';
+        echo '<div class="dm_help_tip">' . esc_html( $help ) . ' </div>';
         ?>
             </ul>
         </div>

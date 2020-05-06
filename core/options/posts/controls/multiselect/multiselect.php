@@ -86,7 +86,7 @@ class Multiselect extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+            <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <select id="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
         <?php
@@ -196,7 +196,7 @@ class Multiselect extends Structure {
 
 <tr <?php echo dm_render_markup( $default_attributes ); ?> >
     <th scope="row">
-        <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+        <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
     </th>
     <td>
 

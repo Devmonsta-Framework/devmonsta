@@ -76,7 +76,7 @@ class RangeSlider extends Structure {
 
         ?>
         <div <?php echo dm_render_markup($default_attributes);?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input class="dm-range-slider"
                     type="text" value="<?php echo esc_attr( $this->value ); ?>"

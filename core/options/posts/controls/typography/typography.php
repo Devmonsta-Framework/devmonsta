@@ -166,12 +166,12 @@ class Typography extends Structure {
                                     </select>
                                 </div>
                                 <div class="weight">
-                                    <label>Weight</label>
+                                    <label class="dm-option-label">Weight</label>
                                     <select name="<?php echo esc_attr($this->prefix . "typograhy_weight") ?>" class="google-weight-list">
                                     </select>
                                 </div>
                                 <div class="style">
-                                    <label>Style</label>
+                                    <label class="dm-option-label">Style</label>
                                     <select name="<?php echo esc_attr($this->prefix . "typograhy_style") ?>" class="google-style-list">
                                     </select>
                                 </div>

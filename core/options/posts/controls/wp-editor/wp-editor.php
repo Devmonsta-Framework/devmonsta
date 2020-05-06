@@ -49,7 +49,6 @@ class WpEditor extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
@@ -58,7 +57,7 @@ class WpEditor extends Structure {
         ob_start();
         ?>
         <div>
-            <label><?php echo esc_html( $label ); ?> </label>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
 <?php
         wp_editor( $this->value, $this->prefix . $name, $settings );

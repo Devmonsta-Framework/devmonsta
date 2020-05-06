@@ -77,7 +77,7 @@ class Checkbox extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <input type="text"
                        value="false"
                        id="<?php echo $name; ?>"
@@ -156,7 +156,7 @@ class Checkbox extends Structure {
 
         <tr <?php echo dm_render_markup( $default_attributes ); ?> >
             <th scope="row">
-                <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
             </th>
             <td>
                 <input type="text"

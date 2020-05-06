@@ -108,10 +108,9 @@ class ColorPicker extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <labelfor="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?> </labelfor=>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input  type="text"
-                    id="<?php echo $name; ?>"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
                     class="dm-color-field"
@@ -180,7 +179,7 @@ class ColorPicker extends Structure {
         ?>
 
         <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
+            <th scope="row"><label class="dm-option-label"><?php echo esc_html( $this->content['label'] ); ?></label></th>
             <td> <input  type="text"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $value ); ?>"

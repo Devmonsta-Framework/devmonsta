@@ -48,27 +48,30 @@ class Switcher extends Structure {
      * @internal
      */
     public function output() {
-        $label        = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name         = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $value        = isset( $this->content['value'] ) ? $this->content['value'] : '';
-        $left_choice  = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
-        $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
-        $checked_value = $this->value == '' ? $value : $this->value ;
-        $checked = $checked_value == $value ? 'checked' : '';
-        $left_key ='';$right_key =''; 
-        
-        foreach ($left_choice as $key => $value) {
-            $left_key .= $key ;
+        $label         = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name          = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $desc          = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $value         = isset( $this->content['value'] ) ? $this->content['value'] : '';
+        $left_choice   = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
+        $right_choice  = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
+        $checked_value = $this->value == '' ? $value : $this->value;
+        $checked       = $checked_value == $value ? 'checked' : '';
+        $left_key      = '';
+        $right_key     = '';
+
+        foreach ( $left_choice as $key => $value ) {
+            $left_key .= $key;
         }
-        foreach ($right_choice as $key => $value) {
-            $right_key .= $key ;
+
+        foreach ( $right_choice as $key => $value ) {
+            $right_key .= $key;
         }
+
         // add inline css for dynamic value
         $style = '';
-        $style .='
+        $style .= '
         .dm_switcher_item label.dm_switcher_label:before {
-            content: "'.esc_attr( $left_choice[$left_key] ).'";
+            content: "' . esc_attr( $left_choice[$left_key] ) . '";
             position: absolute;
             right: 10px;
             top: 50%;
@@ -80,23 +83,23 @@ class Switcher extends Structure {
             font-weight: 600;
         }
         .dm_switcher_item input.dm-control-input:checked + label.dm_switcher_label:before {
-            content: "'.esc_attr( $right_choice[$right_key] ).'";
+            content: "' . esc_attr( $right_choice[$right_key] ) . '";
             right: inherit;
             left: 10px;
         }
         ';
-        wp_register_style( 'dm-switcher-inline-css',false, array( 'dm-switcher' ));
+        wp_register_style( 'dm-switcher-inline-css', false, ['dm-switcher'] );
         wp_enqueue_style( 'dm-switcher-inline-css' );
-        wp_add_inline_style('dm-switcher-inline-css',$style);
+        wp_add_inline_style( 'dm-switcher-inline-css', $style );
 
-        echo "<div>".esc_html( $label )."</div>";
-        echo "<div><small>".esc_html( $desc )."</small></div>";
+        echo "<div>" . esc_html( $label ) . "</div>";
+        echo "<div><small>" . esc_html( $desc ) . "</small></div>";
         echo "<div class='dm_switcher_main_block'>";
-                echo "<div class='dm_switcher_item'>";
-                    echo "<input id='dm_switcher_right' type='checkbox' value='". esc_attr($right_key) ."' class='dm-control-input' name='".esc_attr( $this->prefix . $name )."' ".$checked." />";
-                    echo "<label  class='dm_switcher_label'></label>";
-                echo "</div>";
-            echo "<input id='dm_switcher_left' type='checkbox' value='". esc_attr($left_key) ."' class='' name='".esc_attr( $this->prefix . $name )."' checked />";
+        echo "<div class='dm_switcher_item'>";
+        echo "<input id='dm_switcher_right' type='checkbox' value='" . esc_attr( $right_key ) . "' class='dm-control-input' name='" . esc_attr( $this->prefix . $name ) . "' " . $checked . " />";
+        echo "<label  class='dm_switcher_label dm-option-label'></label>";
+        echo "</div>";
+        echo "<input id='dm_switcher_left' type='checkbox' value='" . esc_attr( $left_key ) . "' class='' name='" . esc_attr( $this->prefix . $name ) . "' checked />";
         echo "</div>";
     }
 

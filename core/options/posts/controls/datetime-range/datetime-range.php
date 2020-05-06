@@ -23,12 +23,12 @@ class DatetimeRange extends Structure {
         wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery', 'date-time-range'] );
 
         $date_time_range_config = $this->content['datetime-pickers'];
-        $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime($date_time_range_config['minDate']) ) : date( "YYYY-MM-DD");
-        $data['max_date']       = isset( $date_time_range_config['maxDate'] ) ? date( "YYYY-MM-DD", strtotime($date_time_range_config['maxDate']) ) : "";
+        $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime( $date_time_range_config['minDate'] ) ) : date( "YYYY-MM-DD" );
+        $data['max_date']       = isset( $date_time_range_config['maxDate'] ) ? date( "YYYY-MM-DD", strtotime( $date_time_range_config['maxDate'] ) ) : "";
         $data['format']         = isset( $date_time_range_config['format'] ) ? $date_time_range_config['format'] : 'YYYY-MM-DD hh:mm a';
         $data['datepicker']     = ( $date_time_range_config['datepicker'] ) ? "true" : "";
         $data['timepicker']     = ( $date_time_range_config['timepicker'] ) ? "true" : "";
-        $data['time24hours']     = ( $date_time_range_config['time24hours'] ) ? "true" : "";
+        $data['time24hours']    = ( $date_time_range_config['time24hours'] ) ? "true" : "";
         wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $data );
     }
 
@@ -53,30 +53,33 @@ class DatetimeRange extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-        $dynamic_classes = "";
+        $dynamic_classes    = "";
+
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                if($key == "class"){
+
+                if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
-                }else{
+                } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-               
+
             }
 
         }
+
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup($default_attributes);?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input type="text"
                     id="dm-datetime-range"
                     name="<?php echo esc_attr( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_attr($this->value ); ?>">
+                    value="<?php echo esc_attr( $this->value ); ?>">
         </div<>
     <?php
 }

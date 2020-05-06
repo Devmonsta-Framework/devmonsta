@@ -23,6 +23,7 @@ class RgbaColorPicker extends Structure {
      * @internal
      */
     function dm_enqueue_color_picker() {
+
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
@@ -31,9 +32,9 @@ class RgbaColorPicker extends Structure {
 
         global $post;
         $data            = [];
-        $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) ) 
-                            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                            : $this->content['value'];
+        $data['default'] = ( !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+        : $this->content['value'];
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-rgba-handle', 'rgba_color_picker_config', $data );
     }
@@ -46,9 +47,9 @@ class RgbaColorPicker extends Structure {
         global $post;
         $default_value = $content['value'];
         $this->value   = ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-                                get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                                : $default_value;
+            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
         $this->output();
     }
 
@@ -56,30 +57,33 @@ class RgbaColorPicker extends Structure {
      * @internal
      */
     public function output() {
-        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-        $dynamic_classes = "";
+        $dynamic_classes    = "";
+
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                if($key == "class"){
+
+                if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
-                }else{
+                } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-               
+
             }
 
         }
+
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup($default_attributes);?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input  type="text"
                     name="<?php echo esc_attr( $this->prefix . $name ); ?>"
