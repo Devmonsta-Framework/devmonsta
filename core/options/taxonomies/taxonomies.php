@@ -108,8 +108,6 @@ class Taxonomies {
                     $original_class_name . '\\' .
                     $original_class_name;
 
-                // var_dump( $control_class );
-
                 if ( class_exists( $control_class ) ) {
 
                     $control_object = new $control_class( $control, $taxonomy );
@@ -125,7 +123,7 @@ class Taxonomies {
 
                 } else {
 
-                    $file = DM_CORE . 'options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
+                    $file = DM_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
                     include_once $file;
 
                     if ( class_exists( $control_class ) ) {
@@ -182,7 +180,7 @@ class Taxonomies {
 
                 } else {
 
-                    $file = DM_CORE . 'options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
+                    $file = DM_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
                     include_once $file;
 
                     if ( class_exists( $control_class ) ) {
@@ -245,6 +243,7 @@ class Taxonomies {
         }
 
     }
+
 
     /**
      * Get controls array from theme and prepare them
