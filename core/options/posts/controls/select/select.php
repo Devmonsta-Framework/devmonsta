@@ -40,9 +40,9 @@ class Select extends Structure {
      */
     public function render() {
         $content = $this->content;
-        global $post;
 
         if ( $this->current_screen == "post" ) {
+            global $post;
             $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
             get_post_meta( $post->ID, $this->prefix . $content['name'], true )
             : $content['value'];
@@ -130,20 +130,20 @@ class Select extends Structure {
                 if ( $column_name == $cc['name'] ) {
                     $choices        = isset( $content['choices'] ) ? $content['choices'] : '';
                     $selected_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
-                    $selected_date  = "";
+                    $selected_data  = "";
 
                     if ( isset( $choices ) ) {
 
                         foreach ( $choices as $key => $val ) {
 
                             if ( $key == $selected_value ) {
-                                $selected_date = $val;
+                                $selected_data = $val;
                                 break;
                             }
 
                         }
 
-                        echo esc_html( $selected_date );
+                        echo esc_html( $selected_data );
                     }
 
                 }
