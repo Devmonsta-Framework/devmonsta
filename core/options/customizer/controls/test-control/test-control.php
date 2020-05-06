@@ -43,23 +43,21 @@ class TestControl extends \WP_Customize_Control {
 		parent::__construct( $manager, $id, $args );
 	}
 
-	/**
-	 * Render the control's content.
-	 * 
-	 * Allows the content to be overriden without having to rewrite the wrapper.
-	 * 
-	 * @since   10/16/2012
-	 * @return  void
-	 */
-	public function render_content() {
+	
+	
+	public function content_template(){
 		?>
+		<div>
 		<label>
 			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 			<textarea class="large-text" cols="20" rows="5" <?php $this->link(); ?>>
 				<?php echo esc_textarea( $this->value() ); ?>
 			</textarea>
 		</label>
+		</div>
 		<?php
 	}
+
+	
 
 }

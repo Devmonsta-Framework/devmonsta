@@ -168,8 +168,6 @@ class Customizer
 
                             $wp_customize->register_control_type('Theme_Customize_Repeater_Control');
 
-                            
-
                             $fields = $control['fields'];
 
                             $field_controls = [];
@@ -184,6 +182,8 @@ class Customizer
                                     ]);
 
                                 } else {
+                                   
+
 
                                     $control_file = __DIR__ . '/controls/' . $field['type'] . '/' . $field['type'] . '.php';
 
@@ -195,6 +195,9 @@ class Customizer
                                         $class_name = array_map('ucfirst', $class_name);
                                         $class_name = implode('', $class_name);
                                         $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
+                                        
+                                        $wp_customize->register_control_type($control_class);
+
 
                                         if (class_exists($control_class)) {
 
@@ -225,66 +228,12 @@ class Customizer
                                 'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title'
                             )));
 
-                            $wp_customize->add_setting('mytheme_value_xyz', array(
-                                'default' => 'Hello World!',
-
-                            ));
-
-                            $wp_customize->add_setting('my_color_settings', [
-                                'default' => '#000000',
-                            ]);
-
-                            $wp_customize->add_control(new \Theme_Customize_Repeater_Control($wp_customize, 'mytheme_value_xyz', array(
-                                'label' => __('Item', 'mytheme'),
-                                'section' => 'devmonsta_text_settings_section',
-
-                                'fields' => array(
-                                    array(
-                                        'key' => 'key',
-                                        'control' => 'WP_Customize_Control',
-                                        'args' => array(
-                                            'label' => __('Item key', 'mytheme'),
-                                        ),
-                                    ),
-                                    array(
-                                        'key' => 'value',
-                                        'control' => 'WP_Customize_Control',
-                                        'args' => array(
-                                            'label' => __('Item value', 'mytheme'),
-
-                                        ),
-                                    ),
-                                    [
-                                        'key' => 'my_color_kk',
-                                        'control' => 'Devmonsta\Options\Customizer\Controls\TestControl\TestControl',
-                                        'args' => [
-                                            'label' => 'My Color',
-                             
-                                        ],
-
-                                    ],
-
-                                    [
-                                        'key' => 'my_radio',
-                                        'control' => 'WP_Customize_Control',
-                                        'args' => [
-                                            'type' => 'radio',
-                                            'section' => 'devmonsta_text_settings_section', // Add a default or your own section
-                                            'label' => __('Custom Radio Selection'),
-                                            'description' => __('This is a custom radio input.'),
-                                            'choices' => array(
-                                                'red' => __('Red'),
-                                                'blue' => __('Blue'),
-                                                'green' => __('Green'),
-                                            ),
-                                        ],
-                                    ],
-                                ),
-                            )));
-
+                           
                         });
 
                     } else {
+
+                        /** If control type is default */
 
                         if (in_array($type, $this->default_controls)) {
                             add_action('customize_register', function ($wp_customize) use ($control) {
@@ -323,20 +272,23 @@ class Customizer
                             $class_name = implode('', $class_name);
                             $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
-                            add_action('customize_register', function ($wp_customize) use ($control_file, $control_class) {
+                            add_action('customize_register', function ($wp_customize) use ($control_file, $control_class,$control) {
                                 if (file_exists($control_file)) {
                                     require_once $control_file;
 
                                     if (class_exists($control_class)) {
 
-                                        $wp_customize->add_setting('cool_xyz_settings', array(
-                                            'default' => 'Nope',
+                                       
+
+                                        $wp_customize->add_setting($control['id'], array(
+                                            'default' => isset($control['default']) ? $control['default'] : '' ,
 
                                         ));
 
-                                        $wp_customize->add_control(new $control_class($wp_customize, 'cool_xyz_settings', [
+                                        $wp_customize->add_control(new $control_class($wp_customize, $control['id'], [
 
-                                            'section' => 'devmonsta_text_settings_section',
+                                            'section' => $control['section'],
+                                            
                                         ]));
 
                                     }
