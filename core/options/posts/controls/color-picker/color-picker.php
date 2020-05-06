@@ -19,7 +19,8 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function enqueue() {
-        add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+        // add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+        $this->dm_enqueue_color_picker();
     }
 
     /**
