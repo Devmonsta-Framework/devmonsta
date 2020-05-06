@@ -7,15 +7,17 @@ abstract class Structure {
     protected static $scripts;
     protected static $styles;
     public $prefix;
-    public function __construct($content) {
-        $this->prefix = 'devmonsta_';
+    public $taxonomy;
 
-        $this->content = $content;
-        $this->controls_url = plugin_dir_url(__FILE__) . 'controls/';
+    public function __construct( $content, $taxonomy = null ) {
+        $this->taxonomy     = $taxonomy;
+        $this->prefix       = 'devmonsta_';
+        $this->content      = $content;
+        $this->controls_url = plugin_dir_url( __FILE__ ) . 'controls/';
 
     }
 
-    public function add_script($script) {
+    public function add_script( $script ) {
         self::$scripts[] = $script;
 
     }
@@ -28,21 +30,22 @@ abstract class Structure {
         return self::$scripts;
     }
 
-    public function add_style($style) {
+    public function add_style( $style ) {
         self::$styles[] = $this->controls_url . $style;
     }
 
     public function save_eneque() {
-        update_option('devmonsta_scripts', self::$scripts);
-        update_option('devmonsta_styles', self::$styles);
+        update_option( 'devmonsta_scripts', self::$scripts );
+        update_option( 'devmonsta_styles', self::$styles );
     }
 
-    public function __call($method, $arguments) {
+    public function __call( $method, $arguments ) {
 
-        if (method_exists($this, $method)) {
+        if ( method_exists( $this, $method ) ) {
             $this->save_eneque();
-            return call_user_func(array($this, $method));
+            return call_user_func( [$this, $method] );
         }
+
     }
 
     public function __destruct() {
@@ -54,4 +57,5 @@ abstract class Structure {
     abstract public function render();
     abstract public function output();
     abstract public function enqueue();
+    abstract public function edit_fields( $term, $taxonomy );
 }
