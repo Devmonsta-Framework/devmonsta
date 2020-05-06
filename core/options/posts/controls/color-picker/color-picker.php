@@ -155,6 +155,7 @@ class ColorPicker extends Structure {
         $prefix             = 'devmonsta_';
         $name               = $prefix . $this->content['name'];
         $value              = get_term_meta( $term->term_id, $name, true );
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -184,7 +185,8 @@ class ColorPicker extends Structure {
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $value ); ?>"
                     class="dm-color-field"
-                    data-default-color="#FF0000" />
+                    data-default-color="<?php echo esc_attr( $value ); ?>" />
+                    <br><small>(<?php echo esc_html( $desc ); ?> )</small>
             </td>
         </tr>
         <?php

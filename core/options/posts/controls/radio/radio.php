@@ -179,8 +179,8 @@ echo esc_html( $is_checked );
         }
 
         ?>
+        <br> <small>(<?php echo esc_html( $desc ); ?> )</small>
         </td>
-        <br> <small><?php echo esc_html( $desc ); ?> </small>
     </tr>
 <?php
 }

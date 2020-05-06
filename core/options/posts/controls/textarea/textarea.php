@@ -141,7 +141,7 @@ class Textarea extends Structure {
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row"><label for="feature-group"><?php echo esc_html( $label ); ?></label></th>
         <td> <textarea name="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $value ); ?></textarea>
-            <br> <small><?php echo esc_html( $desc ); ?> </small>
+            <br> <small>(<?php echo esc_html( $desc ); ?> )</small>
         </td>
     </tr>
     <?php

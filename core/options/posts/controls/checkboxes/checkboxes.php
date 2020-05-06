@@ -205,7 +205,7 @@ class Checkboxes extends Structure {
                 <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
 
 
-                <br>(<?php echo esc_html( $desc ); ?> )
+                <br><small>(<?php echo esc_html( $desc ); ?> )</small>
             </td>
         </tr>
     <?php

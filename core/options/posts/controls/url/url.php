@@ -145,6 +145,8 @@ class Url extends Structure {
                 type="url"
                 value="<?php echo esc_html( $value ); ?>"
                 size="40" aria-required="true">
+                
+        <br> <small>(<?php echo esc_html( $desc ); ?> )</small>
     </td>
 </tr>
 <?php

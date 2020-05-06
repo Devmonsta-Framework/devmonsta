@@ -167,7 +167,7 @@ class Checkbox extends Structure {
                                 name="<?php echo esc_attr( $name ); ?>"
                                 value="true" <?php echo esc_attr( $is_checked ); ?>>
                                 <?php echo esc_html( $text ); ?>
-                <br>(<?php echo esc_html( $desc ); ?> )
+                <br><small>(<?php echo esc_html( $desc ); ?> )</small>
             </td>
         </tr>
     <?php
