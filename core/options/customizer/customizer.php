@@ -278,7 +278,7 @@ class Customizer
 
                                     if (class_exists($control_class)) {
 
-                                        error_log('Trying to create '. $control_class);
+                                       
 
                                         $wp_customize->add_setting($control['id'], array(
                                             'default' => isset($control['default']) ? $control['default'] : '' ,

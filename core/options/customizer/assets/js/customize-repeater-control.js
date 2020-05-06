@@ -2,11 +2,17 @@
 	'use strict';
 
 
+	
 
 	api.RepeaterControl = api.RepeaterControl || {};
 
 	api.RepeaterControl = api.Control.extend({
 		ready: function ready() {
+
+			// wp.customize.control.each( function ( control ) { 
+			// 	console.log(control);
+			//  } );
+
 			var control = this;
 
 			_.bindAll(this, 'addRepeaterRow', 'deleteRepeaterRow', 'createRowSetting', 'normalizeSaveRequestQuery');
@@ -37,6 +43,7 @@
 
 			$.each(rows, function (index, value) {
 				control.addRepeaterRow(rows);
+				
 			});
 		},
 
@@ -111,8 +118,10 @@
 				$('.customize-control-content').sortable({
 					axis: 'y',
 					update: function () {
-						
-						
+
+						wp.customize.trigger('change');
+
+						console.log(Control.container);
 					}
 				});
 
@@ -179,5 +188,5 @@
 		repeater: api.RepeaterControl
 	});
 
-	$('.customize-control-repeater-field-settings').sortable();
+	
 })(wp.customize, wp, jQuery);
