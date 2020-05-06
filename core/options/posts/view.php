@@ -19,6 +19,8 @@ class View {
 
     public function build( $box_id, $controls ) {
 
+        echo '<div class="dm-box">'; // This html for wrapper purpose
+
         foreach ( $controls as $control ) {
 
             if ( Validator::instance()->check( $control ) ) {
@@ -30,6 +32,8 @@ class View {
             }
 
         }
+
+        echo '</div>';
 
     }
 

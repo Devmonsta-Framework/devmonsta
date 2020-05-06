@@ -20,6 +20,8 @@ class Posts {
 
     public function init() {
 
+        add_action( 'wp_enqueue_scripts', [$this,'load_scripts'] );
+
         /** Check if post files exists in active theme directory */
 
         if ( !empty( $this->get_post_files() ) ) {
@@ -190,6 +192,17 @@ class Posts {
             }
 
         }
+
+    }
+
+    /**
+     * ===========================================
+     *      Load Styles & Scripts for controls
+     * ===========================================
+     */
+    public function load_scripts() {
+
+        wp_enqueue_style( 'devmonsta-controls-style', plugin_dir_url( __FILE__ ) . '/assets/css/controls.css' );
 
     }
 
