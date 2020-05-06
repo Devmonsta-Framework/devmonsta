@@ -5,6 +5,9 @@ namespace Devmonsta\Options\Posts\Controls\ColorPicker;
 use Devmonsta\Options\Posts\Structure;
 
 class ColorPicker extends Structure {
+
+    protected $current_screen;
+
     /**
      * @internal
      */
@@ -16,6 +19,7 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function enqueue() {
+        // add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
         $this->dm_enqueue_color_picker();
     }
 
@@ -33,8 +37,8 @@ class ColorPicker extends Structure {
         global $post;
         $data            = [];
         $data['default'] = (  ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-                            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                            : $this->content['value'];
+        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+        : $this->content['value'];
         // var_dump( $data['default'] );
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
@@ -44,13 +48,20 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function render() {
-        $content = $this->content;
-        global $post;
-        $default_value = $content['value'];
-        $this->value   = ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+        global $wpdocs_admin_page;
+        $screen               = get_current_screen();
+        $this->current_screen = $screen->base;
+
+        if ( $this->current_screen == "post" ) {
+            $content = $this->content;
+            global $post;
+            $default_value = $content['value'];
+            $this->value   = ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+            : $default_value;
+        }
+
         $this->output();
     }
 
@@ -59,7 +70,8 @@ class ColorPicker extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $prefix             = 'devmonsta_';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -84,15 +96,86 @@ class ColorPicker extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+            <labelfor="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?> </labelfor=>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input  type="text"
-                    name="<?php echo esc_attr( $this->prefix . $name ); ?>"
-                    value="<?php echo esc_attr( $this->value ); ?>"
+                    id="<?php echo $name; ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
                     class="dm-color-field"
                     data-default-color="<?php echo esc_attr( $this->value ); ?>" />
         </div<>
     <?php
+}
+
+    public function columns() {
+        $visible = false;
+        $content = $this->content;
+        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
+            function ( $columns ) use ( $content, $visible ) {
+
+                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
+
+                if ( $visible ) {
+                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                }
+
+                return $columns;
+            } );
+
+        $cc = $content;
+        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
+            function ( $content, $column_name, $term_id ) use ( $cc ) {
+
+                if ( $column_name == $cc['name'] ) {
+                    echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
+                }
+
+                return $content;
+
+            }, 10, 3 );
+
+    }
+
+    public function edit_fields( $term, $taxonomy ) {
+        //enqueue scripts and styles for color picker
+        $this->dm_enqueue_color_picker();
+        $prefix             = 'devmonsta_';
+        $name               = $prefix . $this->content['name'];
+        $value              = get_term_meta( $term->term_id, $name, true );
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+            <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
+            <td> <input  type="text"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo esc_attr( $value ); ?>"
+                    class="dm-color-field"
+                    data-default-color="#FF0000" />
+            </td>
+        </tr>
+        <?php
 }
 
 }
