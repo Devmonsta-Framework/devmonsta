@@ -6,6 +6,7 @@ use Devmonsta\Options\Posts\Structure;
 
 class Hidden extends Structure {
 
+    protected $current_screen;
     protected $value;
 
     /**
@@ -18,28 +19,24 @@ class Hidden extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
-        add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
-    }
-
-    /**
-     * @internal
-     */
-    public function load_scripts( $hook ) {
-        wp_enqueue_script( 'dm-hidden-js', plugins_url( 'hidden/assets/js/script.js', dirname( __FILE__ ) ) );
+    public function enqueue( $meta_owner ) {
+        $this->current_screen = $meta_owner;
     }
 
     /**
      * @internal
      */
     public function render() {
-        $content = $this->content;
-        global $post;
 
-        $this->value = ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) 
-                            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-                            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                            : $content['value'];
+        if ( $this->current_screen == "post" ) {
+            $content = $this->content;
+            global $post;
+            $this->value = ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+            : $content['value'];
+        }
+
         $this->output();
     }
 
@@ -47,31 +44,108 @@ class Hidden extends Structure {
      * @internal
      */
     public function output() {
-
-        $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $prefix             = 'devmonsta_';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
-        $dynamic_classes = "";
+        $dynamic_classes    = "";
+
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
-                if($key == "class"){
+
+                if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
-                }else{
+                } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-               
+
             }
 
         }
+
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup($default_attributes);?> >
-            <input style="display: none" type="text" name="<?php echo esc_attr( $this->prefix . $name ); ?>" value="<?php echo esc_attr( $this->value ); ?>" >
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <input style="display: none"
+                    type="text"
+                    id="<?php echo $name; ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>" >
         </div>
     <?php
+}
+
+    public function columns() {
+        $visible = false;
+        $content = $this->content;
+        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
+            function ( $columns ) use ( $content, $visible ) {
+
+                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
+
+                if ( $visible ) {
+                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                }
+
+                return $columns;
+            } );
+
+        $cc = $content;
+        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
+            function ( $content, $column_name, $term_id ) use ( $cc ) {
+
+                if ( $column_name == $cc['name'] ) {
+                    echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
+                }
+
+                return $content;
+
+            }, 10, 3 );
+
+    }
+
+    public function edit_fields( $term, $taxonomy ) {
+        $prefix             = 'devmonsta_';
+        $name               = $prefix . $this->content['name'];
+        $value              = get_term_meta( $term->term_id, $name, true );
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+
+<tr <?php echo dm_render_markup( $default_attributes ); ?> >
+    <th scope="row"><label for="feature-group"></label></th>
+    <td>
+    <input style="display: none"
+                    type="text"
+                    id="<?php echo $name; ?>"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo esc_attr( $value ); ?>" size="40" aria-required="true">
+    </td>
+
+</tr>
+<?php
 }
 
 }
