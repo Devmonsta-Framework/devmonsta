@@ -26,12 +26,6 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
      */
     protected $_settings;
 
-    /**
-     * Args passed by settings
-     */
-
-     public $args;
-
     /*
      ** Constructor
      */
@@ -40,7 +34,6 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
         parent::__construct($manager, $id, $args);
 
         $this->_settings = isset($args['settings']) ? $args['settings'] : $this->id;
-        $this->args = $args;
 
         if (is_array($this->fields) && !empty($this->fields)) {
             $this->prepareFields($this->fields);
@@ -171,11 +164,9 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 					<div class="menu-item-bar">
 						<div class="customize-control-repeater-field-handle menu-item-handle">
 							<span class="item-title" aria-hidden="true">
-                                <span class="menu-item-title"><?php _e('Key')?> </span> 
-                                
+								<span class="menu-item-title"><?php _e('Key')?> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg> </span>
 							</span>
-							<span class="item-controls ">
-                                <a href="#" class="button-link">Duplicate</a>
+							<span class="item-controls">
 								<button type="button" class="button-link item-edit" aria-expanded="false">
 									<span class="screen-reader-text"><?php _ex('Edit', 'widget')?></span>
 									<span class="toggle-indicator" aria-hidden="true"></span>
@@ -196,11 +187,11 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
             </div>
             
         
-         
+
 
 
 			<button type="button" class="button customize-add-repeater-field" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
-				<?php  _e('Add new Item')?>
+				<?php _e('Add Items')?>
 			</button>
 		</div>
 		<?php

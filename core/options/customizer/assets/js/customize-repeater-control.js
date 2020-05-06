@@ -2,7 +2,7 @@
 	'use strict';
 
 
-	
+
 
 	api.RepeaterControl = api.RepeaterControl || {};
 
@@ -30,8 +30,27 @@
 			this.btnNew.on('click', this.addRepeaterRow);
 			this.container.on('click', '.customize-control-repeater-field .menu-item-handle', this.toggleFieldSettings);
 			this.container.on('click', '.customize-control-repeater-field .item-delete', this.deleteRepeaterRow);
+
+			// on sortable change
+
+			$('.customize-control-content').sortable({
+				axis: 'y',
+				update: function () {
+
+					control.saveData();
+					
+				}
+			});
+
+			
 		},
 
+		saveData: function () {
+			
+			wp.customize.previewer.refresh();
+			console.log('data saved');
+		}
+		,
 		setupRepeaterRows: function () {
 			var control = this, rows;
 
@@ -43,7 +62,7 @@
 
 			$.each(rows, function (index, value) {
 				control.addRepeaterRow(rows);
-				
+
 			});
 		},
 
@@ -113,17 +132,7 @@
 				// Add field to row
 				row.find('.customize-control-repeater-field-settings').append(Control.container);
 
-				// on sortable change
 
-				$('.customize-control-content').sortable({
-					axis: 'y',
-					update: function () {
-
-						wp.customize.trigger('change');
-
-						console.log(Control.container);
-					}
-				});
 
 			});
 		},
@@ -188,5 +197,5 @@
 		repeater: api.RepeaterControl
 	});
 
-	
+
 })(wp.customize, wp, jQuery);
