@@ -43,16 +43,11 @@ class ColorPicker extends Structure {
         wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
         $data = [];
-
-        if ( $this->current_screen == "post" ) {
-            global $post;
-            $data['default'] = (  ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-                && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-            : $this->content['value'];
-        } else {
-            $data['default'] = $this->content['value'];
-        }
+        global $post;
+        $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+        : $this->content['value'];
 
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
@@ -64,15 +59,13 @@ class ColorPicker extends Structure {
      */
     public function render() {
 
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-            $default_value = $content['value'];
-            $this->value   = ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $default_value;
-        }
+        $content = $this->content;
+        global $post;
+        $default_value = $content['value'];
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }

@@ -41,14 +41,11 @@ class Multiselect extends Structure {
     public function render() {
         $content = $this->content;
 
-        if ( $this->current_screen == "post" ) {
-            global $post;
+        global $post;
 
-            if ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
-                $this->value = maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) );
-            }
-
+        if (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
+            $this->value = maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) );
         }
 
         $this->output();
@@ -95,7 +92,7 @@ class Multiselect extends Structure {
 
             foreach ( $choices as $key => $val ) {
 
-                if ( $this->current_screen == "post" && is_array( $this->value ) && in_array( $key, $this->value ) ) {
+                if ( is_array( $this->value ) && in_array( $key, $this->value ) ) {
                     $selected = 'selected';
                 } else {
                     $selected = null;

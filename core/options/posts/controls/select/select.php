@@ -41,12 +41,10 @@ class Select extends Structure {
     public function render() {
         $content = $this->content;
 
-        if ( $this->current_screen == "post" ) {
-            global $post;
-            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-        }
+        global $post;
+        $this->value = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $content['value'];
 
         $this->output();
     }
@@ -92,7 +90,7 @@ class Select extends Structure {
         if ( isset( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {
-                $is_selected = ( $this->current_screen == "post" && $key == $this->value ) ? 'selected' : '';
+                $is_selected = ( $key == $this->value ) ? 'selected' : '';
                 ?>
                     <option value="<?php echo esc_html( $key ); ?>"
                             <?php echo esc_html( $is_selected ); ?>>
