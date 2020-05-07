@@ -23,9 +23,7 @@ class ColorPicker extends Structure {
 
         if ( $this->current_screen == "post" ) {
             $this->dm_enqueue_color_picker();
-        } else
-
-        if ( $this->current_screen == "taxonomy" ) {
+        } elseif ( $this->current_screen == "taxonomy" ) {
             add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
         }
 
