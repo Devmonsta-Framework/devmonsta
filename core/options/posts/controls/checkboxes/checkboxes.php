@@ -26,32 +26,27 @@ class Checkboxes extends Structure {
      * @internal
      */
     public function render() {
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
 
-        if ( $this->current_screen == "post" ) {
-            global $post;
-            $content             = $this->content;
-            $default_value_array = [];
+        global $post;
+        $content             = $this->content;
+        $default_value_array = [];
 
-            if ( is_array( $content['value'] ) && !empty( $content['value'] ) ) {
+        if ( is_array( $content['value'] ) && !empty( $content['value'] ) ) {
 
-                foreach ( $content['value'] as $default_key => $default_value ) {
+            foreach ( $content['value'] as $default_key => $default_value ) {
 
-                    if ( $default_value == true ) {
-                        array_push( $default_value_array, $default_key );
-                    }
-
+                if ( $default_value == true ) {
+                    array_push( $default_value_array, $default_key );
                 }
 
             }
 
-            $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            : $default_value_array;
         }
+
+        $this->value = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                    ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                    : $default_value_array;
 
         $this->output();
     }
@@ -95,7 +90,7 @@ class Checkboxes extends Structure {
 
         foreach ( $choices as $id => $element ) {
 
-            if ( $this->current_screen == "post" && is_array( $this->value ) && in_array( $id, $this->value ) ) {
+            if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
                 $checked = 'checked="checked"';
             } else {
                 $checked = null;
@@ -103,7 +98,6 @@ class Checkboxes extends Structure {
 
             ?>
                 <input  type="checkbox"
-                        id="<?php echo $name; ?>"
                         name="<?php echo esc_attr( $name ); ?>[]"
                         value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                     <?php echo esc_html( $element ); ?>
@@ -194,7 +188,6 @@ class Checkboxes extends Structure {
 
             ?>
                 <input  type="checkbox"
-                        id="<?php echo $name; ?>"
                         name="<?php echo esc_attr( $name ); ?>[]"
                         value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                     <?php echo esc_html( $element ); ?>
