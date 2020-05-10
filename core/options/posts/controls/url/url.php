@@ -72,12 +72,19 @@ class Url extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-           <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-             <input type="url"
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+           </div>
+           <div class="dm-option-column right">
+                <input 
+                    type="url"
+                    class="dm-option-input"
                     id="<?php echo esc_attr( $name ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_html( $this->value ); ?>" >
+                    value="<?php echo esc_html( $this->value ); 
+                ?>" >
+                <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
+            </div>
         </div>
     <?php
 }

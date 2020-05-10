@@ -78,11 +78,13 @@ class Text extends Structure {
                 <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
             <div class="dm-option-column right">
-                <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-                <input type="text"
-                        name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
-                        >
+                <input 
+                    type="text"
+                    class="dm-option-input"
+                    name="<?php echo esc_attr( $name ); ?>"
+                    value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
+                >
+                <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
             </div>
 
         </div>
