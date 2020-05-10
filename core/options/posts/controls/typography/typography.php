@@ -145,7 +145,7 @@ class Typography extends Structure {
         $components   = isset( $this->content['components'] ) ? $this->content['components'] : [];
 
         echo "<div>".esc_html( $label )."</div>";
-        echo "<div><small>".esc_html( $desc )."</small></div>";
+        echo "<div><small class='dm-option-desc'>".esc_html( $desc )."</small></div>";
         $value = $this->value;
         foreach ($components as $key => $item) {
             if ($key) {
@@ -166,12 +166,12 @@ class Typography extends Structure {
                                     </select>
                                 </div>
                                 <div class="weight">
-                                    <label>Weight</label>
+                                    <label class="dm-option-label">Weight</label>
                                     <select name="<?php echo esc_attr($this->prefix . "typograhy_weight") ?>" class="google-weight-list">
                                     </select>
                                 </div>
                                 <div class="style">
-                                    <label>Style</label>
+                                    <label class="dm-option-label">Style</label>
                                     <select name="<?php echo esc_attr($this->prefix . "typograhy_style") ?>" class="google-style-list">
                                     </select>
                                 </div>

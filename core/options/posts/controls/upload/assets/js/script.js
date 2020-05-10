@@ -4,7 +4,6 @@ jQuery(document).ready(function($) {
 
         e.preventDefault();
         var multiple = false;
-
         if ($(this).data('multiple')) {
             multiple = Boolean($(this).data('multiple'));
         }
@@ -23,7 +22,6 @@ jQuery(document).ready(function($) {
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
 
                 $(button).removeClass('button').html('<img class="true_pre_image" src="' + attachment.url + '" style="max-width:95%;display:block;" />').next().val(attachment.id).next().show();
-
 
             })
             .open();

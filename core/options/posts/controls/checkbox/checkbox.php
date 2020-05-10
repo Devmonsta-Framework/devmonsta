@@ -26,19 +26,14 @@ class Checkbox extends Structure {
      * @internal
      */
     public function render() {
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
-
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-            $default_value = $content['value'];
-            $this->value   = ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $default_value;
-        }
+        $content = $this->content;
+        global $post;
+        $default_value = $content['value'];
+        $this->value   = (  ( $this->current_screen == "post" )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }
@@ -53,7 +48,7 @@ class Checkbox extends Structure {
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $text       = isset( $this->content['text'] ) ? $this->content['text'] : '';
-        $is_checked = ( $this->current_screen == "post" && $this->value == 'true' ) ? 'checked' : '';
+        $is_checked = ( $this->value == 'true' ) ? 'checked' : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -77,16 +72,14 @@ class Checkbox extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label><?php echo esc_html( $label ); ?> </label>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <input type="text"
                        value="false"
-                       id="<?php echo $name; ?>"
-                        name="<?php echo esc_attr( $name ); ?>"
+                       name="<?php echo esc_attr( $name ); ?>"
                        style="display: none">
 
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
                 <input type="checkbox"
-                        id="<?php echo $name; ?>"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="true" <?php echo esc_attr( $is_checked ); ?>>
                         <?php echo esc_html( $text ); ?>
@@ -156,7 +149,7 @@ class Checkbox extends Structure {
 
         <tr <?php echo dm_render_markup( $default_attributes ); ?> >
             <th scope="row">
-                <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
             </th>
             <td>
                 <input type="text"
@@ -167,7 +160,7 @@ class Checkbox extends Structure {
                                 name="<?php echo esc_attr( $name ); ?>"
                                 value="true" <?php echo esc_attr( $is_checked ); ?>>
                                 <?php echo esc_html( $text ); ?>
-                <br><small>(<?php echo esc_html( $desc ); ?> )</small>
+                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
             </td>
         </tr>
     <?php

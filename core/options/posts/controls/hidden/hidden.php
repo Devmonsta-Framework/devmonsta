@@ -135,7 +135,7 @@ class Hidden extends Structure {
         ?>
 
 <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row"><label for="feature-group"></label></th>
+    <th scope="row"><label class="dm-option-label"></label></th>
     <td>
     <input style="display: none"
                     type="text"

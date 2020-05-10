@@ -40,13 +40,11 @@ class Select extends Structure {
      */
     public function render() {
         $content = $this->content;
-        global $post;
 
-        if ( $this->current_screen == "post" ) {
-            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-        }
+        global $post;
+        $this->value = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $content['value'];
 
         $this->output();
     }
@@ -83,8 +81,8 @@ class Select extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label><?php echo esc_html( $label ); ?> </label>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
             <select id="dm_select"
                     name="<?php echo esc_attr( $name ); ?>">
                     <?php
@@ -92,7 +90,7 @@ class Select extends Structure {
         if ( isset( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {
-                $is_selected = ( $this->current_screen == "post" && $key == $this->value ) ? 'selected' : '';
+                $is_selected = ( $key == $this->value ) ? 'selected' : '';
                 ?>
                     <option value="<?php echo esc_html( $key ); ?>"
                             <?php echo esc_html( $is_selected ); ?>>
@@ -130,20 +128,20 @@ class Select extends Structure {
                 if ( $column_name == $cc['name'] ) {
                     $choices        = isset( $content['choices'] ) ? $content['choices'] : '';
                     $selected_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
-                    $selected_date  = "";
+                    $selected_data  = "";
 
                     if ( isset( $choices ) ) {
 
                         foreach ( $choices as $key => $val ) {
 
                             if ( $key == $selected_value ) {
-                                $selected_date = $val;
+                                $selected_data = $val;
                                 break;
                             }
 
                         }
 
-                        echo esc_html( $selected_date );
+                        echo esc_html( $selected_data );
                     }
 
                 }
@@ -186,7 +184,7 @@ class Select extends Structure {
 
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row">
-            <label for="feature-group"><?php echo esc_html( $label ); ?></label>
+            <label  class="dm-option-label"><?php echo esc_html( $label ); ?></label>
         </th>
         <td>
 
@@ -210,7 +208,7 @@ class Select extends Structure {
         ?>
                 </select>
 
-            <br><small>(<?php echo esc_html( $desc ); ?> )</small>
+            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
         </td>
     </tr>
 <?php

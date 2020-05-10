@@ -72,8 +72,8 @@ class Url extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-           <label for="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?> </label>
-            <div><small><?php echo esc_html( $desc ); ?> </small></div>
+           <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
              <input type="url"
                     id="<?php echo esc_attr( $name ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"
@@ -139,14 +139,14 @@ class Url extends Structure {
         ?>
 
 <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row"><label for="feature-group"><?php echo esc_html( $label ); ?></label></th>
+    <th scope="row"><label class="dm-option-label"><?php echo esc_html( $label ); ?></label></th>
     <td> <input name="<?php echo esc_attr( $name ); ?>"
                 id="<?php echo esc_attr( $name ); ?>"
                 type="url"
                 value="<?php echo esc_html( $value ); ?>"
                 size="40" aria-required="true">
-                
-        <br> <small>(<?php echo esc_html( $desc ); ?> )</small>
+
+        <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
     </td>
 </tr>
 <?php
