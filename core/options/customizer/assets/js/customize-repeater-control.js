@@ -3,15 +3,16 @@
 
 
 
-
 	api.RepeaterControl = api.RepeaterControl || {};
 
 	api.RepeaterControl = api.Control.extend({
 		ready: function ready() {
 
-			// wp.customize.control.each( function ( control ) { 
-			// 	console.log(control);
-			//  } );
+			wp.customize.control.each(function (control) {
+				// console.log(control);
+			});
+
+
 
 			var control = this;
 
@@ -38,17 +39,32 @@
 				update: function () {
 
 					control.saveData();
-					
+
 				}
 			});
 
-			
+
 		},
 
 		saveData: function () {
-			
-			wp.customize.previewer.refresh();
+
+			// wp.customize.previewer.refresh();
+			// person_name
+			var control = this, rows;
+
+			try {
+				rows = JSON.parse(control.setting.get());
+				console.log(rows);
+			} catch (e) {
+				return false;
+			}
+
+			$.each(rows, function (index, value) {
+				control.addRepeaterRow(rows);
+
+			});
 			console.log('data saved');
+	
 		}
 		,
 		setupRepeaterRows: function () {
@@ -56,6 +72,7 @@
 
 			try {
 				rows = JSON.parse(control.setting.get());
+				console.log(rows);
 			} catch (e) {
 				return false;
 			}
@@ -82,6 +99,9 @@
 
 			fieldLabel = row.find('.menu-item-title');
 
+			// console.log('Fields');
+			// console.log(control.params.fields);
+
 			$.each(control.params.fields, function (key, field) {
 				var id, defaultValue = '', label;
 
@@ -94,6 +114,7 @@
 
 				// Create new setting
 				setting = control.createRowSetting(id, defaultValue);
+
 				stateField[key] = setting.get();
 
 				// Watch setting
@@ -127,7 +148,7 @@
 				}
 
 
-				// console.log(Control);
+				// console.log(Control.container);
 
 				// Add field to row
 				row.find('.customize-control-repeater-field-settings').append(Control.container);
@@ -170,6 +191,7 @@
 
 			try {
 				changes = JSON.parse(changes);
+				// console.log(changes);
 			} catch (e) {
 				return;
 			}
@@ -198,4 +220,27 @@
 	});
 
 
+
+
+
+
 })(wp.customize, wp, jQuery);
+
+
+(function ($) {
+	var api = wp.customize;
+
+	api.SliderControl = api.Control.extend({
+		ready: function () {
+			
+			console.log('slider');
+		}
+	});
+
+	jQuery.extend(api.controlConstructor, {
+		'test-control': api.SliderControl
+	});
+
+	// api.controlConstructor['test-control'] = api.SliderControl;
+
+})(jQuery);

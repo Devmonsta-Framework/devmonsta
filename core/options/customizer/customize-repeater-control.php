@@ -30,17 +30,22 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
      * Args passed by settings
      */
 
-     public $args;
+    public $args;
 
     /*
      ** Constructor
      */
     public function __construct($manager, $id, $args = array())
     {
+
         parent::__construct($manager, $id, $args);
 
+        if (isset($args['add_button_text'])) {
+
+            update_option('dm_add_button_text', $args['add_button_text']);
+        }
+
         $this->_settings = isset($args['settings']) ? $args['settings'] : $this->id;
-        $this->args = $args;
 
         if (is_array($this->fields) && !empty($this->fields)) {
             $this->prepareFields($this->fields);
@@ -157,8 +162,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
     public function content_template()
     {
         ?>
-		<# console.log(data.content) #>
-		<# console.log(data.developer) #>
+	
 		<# if (data.label) { #>
 			<span class="customize-control-title">{{{ data.label }}}</span>
 		<# } #>
@@ -171,11 +175,10 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 					<div class="menu-item-bar">
 						<div class="customize-control-repeater-field-handle menu-item-handle">
 							<span class="item-title" aria-hidden="true">
-                                <span class="menu-item-title"><?php _e('Key')?> </span> 
-                                
+                                <span class="menu-item-title"><?php _e('Key')?> </span>
+
 							</span>
 							<span class="item-controls ">
-                                <a href="#" class="button-link">Duplicate</a>
 								<button type="button" class="button-link item-edit" aria-expanded="false">
 									<span class="screen-reader-text"><?php _ex('Edit', 'widget')?></span>
 									<span class="toggle-indicator" aria-hidden="true"></span>
@@ -187,20 +190,22 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 						<ul class="customize-control-repeater-field-settings">
 
                         </ul>
-                        
+                        <div class="menu-item-actions description-thin submitbox">
+							<button type="button" class="button-link  item-duplicate customize-duplicate-repeater-field"><?php _e('Duplicate')?></button>
+						</div>
 						<div class="menu-item-actions description-thin submitbox">
 							<button type="button" class="button-link button-link-delete item-delete submitdelete deletion"><?php _e('Delete')?></button>
 						</div>
 					</div>
 				</div>
             </div>
-            
-        
-         
+
+
+
 
 
 			<button type="button" class="button customize-add-repeater-field" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
-				<?php  _e('Add new Item')?>
+				<?php _e(get_option('dm_add_button_text'))?>
 			</button>
 		</div>
 		<?php

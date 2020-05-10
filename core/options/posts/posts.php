@@ -20,7 +20,7 @@ class Posts {
 
     public function init() {
 
-        add_action( 'wp_enqueue_scripts', [$this,'load_scripts'] );
+        add_action( 'admin_init', [$this,'load_scripts'] );
 
         /** Check if post files exists in active theme directory */
 
