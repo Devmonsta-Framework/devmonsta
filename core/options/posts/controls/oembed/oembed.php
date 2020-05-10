@@ -19,13 +19,7 @@ class Oembed extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        if ( $this->current_screen == "post" ) {
-            add_action( 'init', [$this, 'enqueue_oembed_scripts'] );
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'enqueue_oembed_scripts'] );
-        }
-
+        add_action( 'init', [$this, 'enqueue_oembed_scripts'] );
     }
 
     public function enqueue_oembed_scripts() {

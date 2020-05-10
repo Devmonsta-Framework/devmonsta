@@ -24,7 +24,6 @@ class Gradient extends Structure {
         $this->current_screen = $meta_owner;
 
         add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
-        
 
     }
 
