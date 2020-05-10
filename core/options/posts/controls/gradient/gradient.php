@@ -6,6 +6,8 @@ use Devmonsta\Options\Posts\Structure;
 
 class Gradient extends Structure {
 
+    protected $current_screen;
+
     protected $value;
 
     /**
@@ -18,13 +20,16 @@ class Gradient extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
-        // add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_gradient_picker'] );
-        add_action( 'init', [$this, 'dm_gradient'] );
-    }
+    public function enqueue( $meta_owner ) {
+        $this->current_screen = $meta_owner;
 
-    public function dm_gradient() {
-        $this->dm_enqueue_gradient_picker();
+        if ( $this->current_screen == "post" ) {
+            add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
+
+        } elseif ( $this->current_screen == "taxonomy" ) {
+            add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
+        }
+
     }
 
     /**
@@ -75,8 +80,9 @@ class Gradient extends Structure {
 
         }
 
-        $this->value = ( !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        $this->value = (  ( $this->current_screen == "post" )
+            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
         : $default_value_array;
 
@@ -88,7 +94,8 @@ class Gradient extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $prefix             = 'devmonsta_';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -121,7 +128,7 @@ class Gradient extends Structure {
             ?>
                             <?php echo esc_html( $id ); ?>
                             <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
-                                name="<?php echo esc_html( $this->prefix . $name . "[" . $id . "]" ); ?>"
+                                name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                                 value="<?php echo esc_attr( $value ); ?>"
                                 data-default-color="<?php echo esc_attr( $value ); ?>"
                                  />
@@ -131,6 +138,96 @@ class Gradient extends Structure {
         ?>
         </div>
     <?php
+}
+
+    public function columns() {
+        $visible = false;
+        $content = $this->content;
+        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
+            function ( $columns ) use ( $content, $visible ) {
+
+                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
+
+                if ( $visible ) {
+                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                }
+
+                return $columns;
+            } );
+
+        $cc = $content;
+        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
+            function ( $content, $column_name, $term_id ) use ( $cc ) {
+
+                if ( $column_name == $cc['name'] ) {
+                    $color_values = maybe_unserialize( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
+
+                    foreach ( $color_values as $key => $value ) {
+                        echo $key . ": " . $value . "<br>";
+                    }
+
+                }
+
+                return $content;
+
+            }, 10, 3 );
+
+    }
+
+    public function edit_fields( $term, $taxonomy ) {
+        $this->dm_enqueue_gradient_picker();
+
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $prefix             = 'devmonsta_';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $value              = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <th scope="row">
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+        </th>
+        <td>
+        <?php
+
+        foreach ( $value as $id => $val ) {
+            ?>
+                    <?php echo esc_html( $id ); ?>
+                    <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
+                        name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
+                        value="<?php echo esc_attr( $val ); ?>"
+                        data-default-color="<?php echo esc_attr( $val ); ?>"
+                         />
+            <?php
+}
+
+        ?>
+            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
+        </td>
+        </tr>
+<?php
 }
 
 }
