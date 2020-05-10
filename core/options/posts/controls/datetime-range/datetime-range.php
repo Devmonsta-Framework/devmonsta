@@ -63,7 +63,6 @@ class DatetimeRange extends Structure {
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $default_time;
 
-        var_dump( $this->value );
         $this->output();
     }
 

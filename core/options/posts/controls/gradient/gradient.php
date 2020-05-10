@@ -23,12 +23,8 @@ class Gradient extends Structure {
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
 
-        if ( $this->current_screen == "post" ) {
-            add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
-
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
-        }
+        add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
+        
 
     }
 
