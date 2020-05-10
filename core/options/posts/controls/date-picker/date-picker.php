@@ -6,6 +6,8 @@ use Devmonsta\Options\Posts\Structure;
 
 class DatePicker extends Structure {
 
+    protected $current_screen;
+
     /**
      * @internal
      */

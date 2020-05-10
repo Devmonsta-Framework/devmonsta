@@ -219,14 +219,14 @@ class Customizer
                                 'default' => '',
                             ]);
 
-                            $wp_customize->add_control(new \Theme_Customize_Repeater_Control($wp_customize, $control['id'], array(
+                            $wp_customize->add_control(new \Theme_Customize_Repeater_Control($wp_customize, $control['id'], [
                                 'label' => __($control['label'], 'devmonsta'),
                                 'description_a' => 'This is description',
                                 'section' => $control['section'],
                                 'fields' => $field_controls,
                                 'add_button_text' => isset($control['add_button_text']) ? $control['add_button_text'] : 'Add new Item',
                                 'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title'
-                            )));
+                            ]));
 
                            
                         });
@@ -396,8 +396,17 @@ class Customizer
     public function __construct()
     {
         $this->default_controls = [
-            'text', 'checkbox', 'radio', 'select', 'textarea',
-            'dropdown-pages', 'email', 'url', 'number', 'hidden', 'date',
+            'text', 
+            'checkbox',
+            'radio', 
+            'select', 
+            'textarea',
+            'dropdown-pages', 
+            'email', 
+            'url', 
+            'number', 
+            'hidden', 
+            'date',
         ];
     }
 
