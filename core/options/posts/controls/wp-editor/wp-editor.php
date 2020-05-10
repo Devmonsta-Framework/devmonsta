@@ -6,7 +6,7 @@ use Devmonsta\Options\Posts\Structure;
 
 class WpEditor extends Structure {
 
-    protected $value;
+    protected $current_screen;
 
     /**
      * @internal
@@ -18,15 +18,16 @@ class WpEditor extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
-        add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
+    public function enqueue( $meta_owner ) {
+        $this->current_screen = $meta_owner;
+        add_action( 'admin_enqueue_scripts', [$this, 'load_wpeditor_scripts'] );
     }
 
     /**
      * @internal
      */
-    public function load_scripts( $hook ) {
-        wp_enqueue_script( 'dm-wpeditor-js', plugins_url( 'wp-editor/assets/js/script.js', dirname( __FILE__ ) ) );
+    public function load_wpeditor_scripts() {
+        wp_enqueue_script( 'dm-wpeditor-js', DM_CORE . 'options/posts/controls/wp-editor/assets/js/script.js', ['jquery'] );
     }
 
     /**
@@ -36,8 +37,10 @@ class WpEditor extends Structure {
         $content = $this->content;
         global $post;
 
-        $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        $this->value = (  ( $this->current_screen == "post" )
+            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $content['value'];
         $this->output();
     }
@@ -46,9 +49,10 @@ class WpEditor extends Structure {
      * @internal
      */
     public function output() {
-        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $prefix = 'devmonsta_';
+        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
 
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
@@ -59,8 +63,8 @@ class WpEditor extends Structure {
         <div>
             <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-<?php
-        wp_editor( $this->value, $this->prefix . $name, $settings );
+    <?php
+wp_editor( $this->value, $name, $settings );
         $editor_html = ob_get_contents();
         ob_end_clean();
 
@@ -69,7 +73,98 @@ class WpEditor extends Structure {
 
         echo dm_html_tag( 'div', $settings["attr"], $editor_html );
         ?>
-        </div<>
+        </div>
+<?php
+}
+
+    public function columns() {
+        $visible = false;
+        $content = $this->content;
+        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
+            function ( $columns ) use ( $content, $visible ) {
+
+                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
+
+                if ( $visible ) {
+                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                }
+
+                return $columns;
+            } );
+
+        $cc = $content;
+        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
+            function ( $content, $column_name, $term_id ) use ( $cc ) {
+
+                if ( $column_name == $cc['name'] ) {
+                    echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
+                }
+
+                return $content;
+
+            }, 10, 3 );
+
+    }
+
+    public function edit_fields( $term, $taxonomy ) {
+        $this->load_wpeditor_scripts();
+        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $prefix = 'devmonsta_';
+        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $value  = get_term_meta( $term->term_id, $name, true );
+
+        $settings                  = [];
+        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
+
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+
+<tr <?php echo dm_render_markup( $default_attributes ); ?> >
+<th scope="row">
+    <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+</th>
+<td>
+        <?php
+ob_start();
+        ?>
+        <div>
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
+    <?php
+wp_editor( $value, $name, $settings );
+        $editor_html = ob_get_contents();
+        ob_end_clean();
+
+        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
+        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+
+        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
+        ?>
+    <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
+</td>
+</tr>
 <?php
 }
 
