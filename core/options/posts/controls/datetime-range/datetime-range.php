@@ -35,7 +35,7 @@ class DatetimeRange extends Structure {
         wp_enqueue_style( 'date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/css/daterangepicker.css' );
         wp_enqueue_script( 'date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/daterangepicker.js', ['jquery', 'date-time-range-moment'] );
         wp_enqueue_script( 'date-time-range-moment', DM_CORE . 'options/posts/controls/datetime-range/assets/js/moment.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery', 'date-time-range-moment','date-time-range'] );
+        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery', 'date-time-range-moment', 'date-time-range'] );
 
         $date_time_range_config = $this->content['datetime-pickers'];
         $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime( $date_time_range_config['minDate'] ) ) : date( "YYYY-MM-DD" );
@@ -53,7 +53,9 @@ class DatetimeRange extends Structure {
      */
     public function render() {
         $content      = $this->content;
-        $default_time = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) ) ? ( date( "Y-m-d h:m a", strtotime( $content['value']['from'] ) ) . " - " . date( "Y-m-d h:m a", strtotime( $content['value']['to'] ) ) ) : "";
+        $default_time = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
+        ? ( date( "Y-m-d h:m a", strtotime( $content['value']['from'] ) ) . " - " . date( "Y-m-d h:m a", strtotime( $content['value']['to'] ) ) )
+        : ( date( "Y-m-d h:m a" ) . " - " . date( "Y-m-d h:m a" ) );
         global $post;
 
         // var_dump($default_time);
@@ -62,6 +64,8 @@ class DatetimeRange extends Structure {
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $default_time;
+
+        var_dump( $this->value );
         $this->output();
     }
 

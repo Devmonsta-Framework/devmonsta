@@ -140,7 +140,7 @@ class Taxonomies {
 
                     }
 
-                    error_log( $control_class . ' does not exists' );
+                    // error_log( $control_class . ' does not exists' );
                 }
 
             }
