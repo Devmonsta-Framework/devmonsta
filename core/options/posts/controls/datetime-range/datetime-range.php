@@ -104,6 +104,7 @@ class DatetimeRange extends Structure {
             <div class="dm-option-column right">
                 <input type="text"
                         id="dm-datetime-range"
+                        class="dm-option-input"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

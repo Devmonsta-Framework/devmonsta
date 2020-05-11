@@ -79,8 +79,9 @@ class Textarea extends Structure {
             </div>
             <div class="dm-option-column right">
                 <textarea 
+                    rows="6"
                     id="<?php echo $name; ?>"
-                    class="dm-option-input"
+                    class="dm-option-input dm-option-textarea"
                     name="<?php echo esc_attr( $name ); ?>"><?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?></textarea>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>

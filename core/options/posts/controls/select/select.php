@@ -88,6 +88,7 @@ class Select extends Structure {
             <div class="dm-option-column right">
                 <select 
                     id="dm_select"
+                    class="dm-option-input"
                     name="<?php echo esc_attr( $name ); ?>">
                     <?php
                         if ( isset( $choices ) ) {
