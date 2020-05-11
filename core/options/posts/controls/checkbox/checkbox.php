@@ -67,22 +67,31 @@ class Checkbox extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <input type="text"
-                       value="false"
-                       name="<?php echo esc_attr( $name ); ?>"
-                       style="display: none">
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-                <input type="checkbox"
+            <div class="dm-option-column right">
+                <input type="text"
+                        value="false"
                         name="<?php echo esc_attr( $name ); ?>"
-                        value="true" <?php echo esc_attr( $is_checked ); ?>>
-                        <?php echo esc_html( $text ); ?>
+                        style="display: none">
+
+                <label class="dm-option-label-list">
+                    <input 
+                        type="checkbox"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        value="true" <?php echo esc_attr( $is_checked ); 
+                    ?>>
+                    <?php echo esc_html( $text ); ?>
+                </label>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
         </div>
     <?php
 }

@@ -79,7 +79,7 @@ class Oembed extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
+return false;
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>

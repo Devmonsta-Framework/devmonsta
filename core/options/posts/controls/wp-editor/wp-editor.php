@@ -60,19 +60,24 @@ class WpEditor extends Structure {
 
         ob_start();
         ?>
-        <div>
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-    <?php
-wp_editor( $this->value, $name, $settings );
-        $editor_html = ob_get_contents();
-        ob_end_clean();
+        <div class="dm-option form-field">
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
-        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
-        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+            <div class="dm-option-column right">
+                <?php
+                    wp_editor( $this->value, $name, $settings );
+                    $editor_html = ob_get_contents();
+                    ob_end_clean();
 
-        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
-        ?>
+                    $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
+                    $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+
+                    echo dm_html_tag( 'div', $settings["attr"], $editor_html );
+                ?>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
         </div>
 <?php
 }

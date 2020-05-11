@@ -69,34 +69,38 @@ class Radio extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-            <?php
-
-        if ( isset( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-                $is_checked = ( $this->current_screen == "post" && $key == $this->value ) ? 'checked' : '';
-
-                ?>
-                <input type="radio"
-                        name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_attr( $key ); ?>"
-                        <?php
-echo esc_html( $is_checked );
-                ?>>
-                        <?php echo esc_html( $val ); ?>
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+            
+            <div class="dm-option-column right">
                 <?php
-}
+                    if ( isset( $choices ) ) {
+                        foreach ( $choices as $key => $val ) {
+                            $is_checked = ( $this->current_screen == "post" && $key == $this->value ) ? 'checked' : '';
 
-        }
-
-        ?>
+                            ?>
+                            <label class="dm-option-label-list">
+                                <input 
+                                    type="radio"
+                                    name="<?php echo esc_attr( $name ); ?>"
+                                    value="<?php echo esc_attr( $key ); ?>"
+                                    <?php
+                                    echo esc_html( $is_checked );
+                                ?>>
+                                <?php echo esc_html( $val ); ?>
+                            </label>
+                            <?php
+                        }
+                    }
+                ?>
+                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
 
         </div>
     <?php

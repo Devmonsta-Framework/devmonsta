@@ -89,17 +89,22 @@ class DatetimePicker extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-            <input type="text"
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+
+            <div class="dm-option-column right">
+                <input type="text"
                     id="dm-datetime-picker"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $this->value ); ?>">
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
         </div>
     <?php
 }

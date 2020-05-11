@@ -39,6 +39,17 @@
             font-style: italic;
             color: #666;
             display: block;
+            margin: 0;
+        }
+        &-label-list {
+            display: block;
+            color: rgb(68, 68, 68);
+            font-size: 13px;
+            line-height: 18px;
+            margin-top: 6px;
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
         &:last-child{
             border-bottom: 0;

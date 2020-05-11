@@ -68,7 +68,7 @@ class Text extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
@@ -84,7 +84,7 @@ class Text extends Structure {
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
                 >
-                <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
 
         </div>

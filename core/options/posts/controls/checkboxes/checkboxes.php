@@ -79,36 +79,42 @@ class Checkboxes extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-                <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-        <?php
+            </div>
 
-        foreach ( $choices as $id => $element ) {
+            <div class="dm-option-column right">
+                <?php
 
-            if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = null;
-            }
+                foreach ( $choices as $id => $element ) {
 
-            ?>
-                <input  type="checkbox"
-                        name="<?php echo esc_attr( $name ); ?>[]"
-                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                    <?php echo esc_html( $element ); ?>
-            <?php
-}
+                    if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
+                        $checked = 'checked="checked"';
+                    } else {
+                        $checked = null;
+                    }
 
-        ?>
-        <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
-</div>
-<?php
+                    ?>
+                        <label class="dm-option-label-list">
+                            <input  type="checkbox"
+                                name="<?php echo esc_attr( $name ); ?>[]"
+                                value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
+                            <?php echo esc_html( $element ); ?>
+                        </label>
+                    <?php
+                }
 
+                ?>
+                <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+    <?php
     }
 
     public function columns() {

@@ -76,32 +76,34 @@ class Select extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-            <select id="dm_select"
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+
+            <div class="dm-option-column right">
+                <select 
+                    id="dm_select"
                     name="<?php echo esc_attr( $name ); ?>">
                     <?php
-
-        if ( isset( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-                $is_selected = ( $key == $this->value ) ? 'selected' : '';
-                ?>
-                    <option value="<?php echo esc_html( $key ); ?>"
-                            <?php echo esc_html( $is_selected ); ?>>
-                            <?php echo esc_html( $val ); ?>
-                <?php
-}
-
-        }
-
-        ?>
-            </select>
+                        if ( isset( $choices ) ) {
+                            foreach ( $choices as $key => $val ) {
+                                $is_selected = ( $key == $this->value ) ? 'selected' : '';
+                                ?>
+                                    <option value="<?php echo esc_html( $key ); ?>"
+                                            <?php echo esc_html( $is_selected ); ?>>
+                                            <?php echo esc_html( $val ); ?>
+                                <?php
+                            }
+                        }
+                    ?>
+                </select>
+                <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
+            </div>
         </div>
     <?php
 }

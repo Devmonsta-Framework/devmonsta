@@ -61,15 +61,20 @@ class Html extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <lable class="dm-option-label"><?php echo esc_html( $label ); ?> </lable>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?></small></div>
-            <div class='dm_html_block'>
-                <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+
+            <div class="dm-option-column right">
+                <div class='dm_html_block'>
+                    <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
+                </div>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>
             </div>
         </div>
         <?php
