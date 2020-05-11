@@ -43,7 +43,6 @@ class Typography extends Structure {
         }
 
         wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
-
     }
 
     /**
@@ -158,68 +157,74 @@ class Typography extends Structure {
 
                     if ( count( $font_list ) > 0 ) {
                         ?>
-                            <div class="google_fonts_select_control">
-                                <div class="google-fonts">
-                                    <select class="google-fonts-list" name="<?php echo esc_attr( $this->prefix . "typograhy_family" ) ?>">
-                                        <?php
-
-                        foreach ( $font_list as $key => $item ) {
-                            $selected = $item->family == esc_html( $value['family'] ) ? 'selected' : '';
-                            echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
-                        }
-
-                        ?>
-                                    </select>
-                                </div>
-                                <div class="weight">
-                                    <label class="dm-option-label">Weight</label>
-                                    <select name="<?php echo esc_attr( $this->prefix . "typograhy_weight" ) ?>" class="google-weight-list">
-                                    </select>
-                                </div>
-                                <div class="style">
-                                    <label class="dm-option-label">Style</label>
-                                    <select name="<?php echo esc_attr( $this->prefix . "typograhy_style" ) ?>" class="google-style-list">
-                                    </select>
-                                </div>
+                        <div class="google_fonts_select_control">
+                            <div class="google-fonts">
+                                <select class="google-fonts-list" name="<?php echo esc_attr( $this->prefix . "typograhy_family" ) ?>">
+                                <?php
+                                    foreach ( $font_list as $key => $item ) {
+                                        $selected = $item->family == esc_html( $value['family'] ) ? 'selected' : '';
+                                        echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                                    }
+                                ?>
+                                </select>
                             </div>
-                            <?php
-}
+                            <div class="weight">
+                                <label class="dm-option-label">Weight</label>
+                                <select name="<?php echo esc_attr( $this->prefix . "typograhy_weight" ) ?>" class="google-weight-list">
+                                </select>
+                            </div>
+                            <div class="style">
+                                <label class="dm-option-label">Style</label>
+                                <select name="<?php echo esc_attr( $this->prefix . "typograhy_style" ) ?>" class="google-style-list">
+                                </select>
+                            </div>
+                        </div>
+                    <?php
+                    }
 
                     break;
+
+
                 case 'size':
                     echo "<div>" . esc_html( 'Size :' ) . "</div>";
                     ?>
-                        <input class="range-slider-font-size dm_group_typhography_range_font_size" type="range" min="0" max="100"   value="<?php echo (float) $value['size']; ?>">
-                        <input type="text" name="<?php echo esc_attr( $this->prefix . "typograhy_size" ) ?>" value=" <?php echo esc_html( trim( $value['size'] ) ); ?> "  id="size_value" />
-                        <?php
-break;
+                    <input class="range-slider-font-size dm_group_typhography_range_font_size" type="range" min="0" max="100"
+                        value="<?php echo (float) $value['size']; ?>">
+                    <input type="text" name="<?php echo esc_attr( $this->prefix . "typograhy_size" ) ?>"
+                        value=" <?php echo esc_html( trim( $value['size'] ) ); ?> " id="size_value" />
+                    <?php
+                    break;
+
                 case 'line-height':
                     echo "<div>" . esc_html( 'Line height:' ) . "</div>";
                     ?>
-                        <input class="range-slider-line-height dm_group_typhography_line_height" type="range" min="0" max="100"  value="<?php echo (float) $this->value["line-height"]; ?>">
-                        <input type="text" name="<?php echo esc_attr( $this->prefix . "typograhy_line_height" ) ?>" value=" <?php echo esc_html( trim( $value["line-height"] ) ); ?> "  id="line_height_value" />
-                        <?php
-break;
+                    <input class="range-slider-line-height dm_group_typhography_line_height" type="range" min="0" max="100"
+                        value="<?php echo (float) $this->value["line-height"]; ?>">
+                    <input type="text" name="<?php echo esc_attr( $this->prefix . "typograhy_line_height" ) ?>"
+                        value=" <?php echo esc_html( trim( $value["line-height"] ) ); ?> " id="line_height_value" />
+                    <?php
+                    break;
+
                 case 'letter-spacing':
                     echo "<div>" . esc_html( 'Later space:' ) . "</div>";
                     ?>
-                           <input class="range-slide-letter-space dm_group_typhography_letterspace" type="range" min="-10" max="10"  value="<?php echo (float) $this->value["letter-spacing"]; ?>">
-                           <input type="text" name="<?php echo esc_attr( $this->prefix . "typograhy_letter_spacing" ) ?>" value="<?php echo esc_html( trim( $value["letter-spacing"] ) ); ?>" id="latter_spacing_value" />
-                        <?php
-break;
+                    <input class="range-slide-letter-space dm_group_typhography_letterspace" type="range" min="-10" max="10"
+                        value="<?php echo (float) $this->value["letter-spacing"]; ?>">
+                    <input type="text" name="<?php echo esc_attr( $this->prefix . "typograhy_letter_spacing" ) ?>"
+                        value="<?php echo esc_html( trim( $value["letter-spacing"] ) ); ?>" id="latter_spacing_value" />
+                    <?php
+                    break;
+                
                 case 'color':
                     echo "<div>" . esc_html( 'Color:' ) . "</div>";
                     ?>
-                        <input  type="text"
-                        name="<?php echo esc_attr( $this->prefix . 'typograhy_color' ); ?>"
-                        value="<?php echo esc_attr( $value['color'] ); ?>"
-                        class="dm-typography-color-field"
+                    <input type="text" name="<?php echo esc_attr( $this->prefix . 'typograhy_color' ); ?>"
+                        value="<?php echo esc_attr( $value['color'] ); ?>" class="dm-typography-color-field"
                         data-default-color="<?php echo esc_attr( $value['color'] ); ?>" />
-                        <?php
-break;
+                    <?php
+                    break;
 
                 default:
-                    # code...
                     break;
                 }
 
@@ -293,22 +298,24 @@ break;
 
         ?>
 
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+<tr <?php echo dm_render_markup( $default_attributes ); ?>>
     <th scope="row">
         <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
     </th>
     <td>
-            <div class='dm_switcher_main_block'>
-                <div class='dm_switcher_item'>
-                    <input id='dm_switcher_right' type='checkbox' value='<?php echo esc_attr( $right_key ); ?>' class='dm-control-input' name='<?php echo esc_attr( $name ); ?>'
-                            <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
-                    <label  class='dm_switcher_label dm-option-label'></label>
-                </div>
-                <input id='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>' class='' name='<?php echo esc_attr( $name ); ?>' <?php echo ( $value == $left_key ) ? 'checked' : ''; ?> />
+        <div class='dm_switcher_main_block'>
+            <div class='dm_switcher_item'>
+                <input id='dm_switcher_right' type='checkbox' value='<?php echo esc_attr( $right_key ); ?>'
+                    class='dm-control-input' name='<?php echo esc_attr( $name ); ?>'
+                    <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
+                <label class='dm_switcher_label dm-option-label'></label>
             </div>
+            <input id='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>' class=''
+                name='<?php echo esc_attr( $name ); ?>' <?php echo ( $value == $left_key ) ? 'checked' : ''; ?> />
+        </div>
         <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
     </td>
-    </tr>
+</tr>
 <?php
 }
 
