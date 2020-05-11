@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
 
-    $(".dm-dimension-attachment-input").on("click", function(){
+    $(".dm-dimension-attachment-input").on("click", function(e){
+        e.preventDefault();
         var current_div = $(this);
         //toggle class on clicking isLinked button
         current_div.toggleClass('clicked');
