@@ -22,7 +22,6 @@ class DatetimeRange extends Structure {
         $this->current_screen = $meta_owner;
 
         if ( $this->current_screen == "post" ) {
-
             $this->enqueue_date_time_range_scripts();
         } elseif ( $this->current_screen == "taxonomy" ) {
             add_action( 'init', [$this, 'enqueue_date_time_range_scripts'] );
@@ -58,14 +57,12 @@ class DatetimeRange extends Structure {
         : ( date( "Y-m-d h:m a" ) . " - " . date( "Y-m-d h:m a" ) );
         global $post;
 
-        // var_dump($default_time);
         $this->value = (  ( $this->current_screen == "post" )
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $default_time;
 
-        var_dump( $this->value );
         $this->output();
     }
 

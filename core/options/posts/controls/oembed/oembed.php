@@ -6,24 +6,30 @@ use Devmonsta\Options\Posts\Structure;
 
 class Oembed extends Structure {
 
+    protected $current_screen;
+
     /**
      * @internal
      */
     public function init() {
     }
 
-    public function enqueue() {
+    /**
+     * @internal
+     */
+    public function enqueue( $meta_owner ) {
+        $this->current_screen = $meta_owner;
         add_action( 'init', [$this, 'enqueue_oembed_scripts'] );
-        add_action(
-            'wp_ajax_get_oembed_response',
-            [$this, '_action_get_oembed_response']
-        );
     }
 
     public function enqueue_oembed_scripts() {
         wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
         wp_localize_script( 'dm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
         wp_enqueue_script( 'dm-oembed' );
+        add_action(
+            'wp_ajax_get_oembed_response',
+            [$this, '_action_get_oembed_response']
+        );
     }
 
     /**
@@ -32,10 +38,12 @@ class Oembed extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $this->value = ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) !== "" &&
-            !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        $this->value = (  ( $this->current_screen == "post" )
+            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $content['value'];
+
         $this->output();
     }
 
@@ -43,10 +51,11 @@ class Oembed extends Structure {
      * @internal
      */
     public function output() {
-        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name  = isset( $this->content['name'] ) ? $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $prefix = 'devmonsta_';
+        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
         $wrapper_attr['data-preview'] = json_encode( $this->content['preview'] );
@@ -78,13 +87,93 @@ class Oembed extends Structure {
         </div>
         <div class="dm-oembed-input">
             <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
-                    type="url" name="<?php echo esc_attr( $this->prefix . $name ); ?>"
+                    type="url" name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_html( $this->value ); ?>"
                     class="dm-oembed-url-input"/>
         </div>
         <div class="dm-oembed-preview">
-        </div<>
+        </div>
     <?php
+}
+
+    public function columns() {
+        $visible = false;
+        $content = $this->content;
+        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
+            function ( $columns ) use ( $content, $visible ) {
+
+                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
+
+                if ( $visible ) {
+                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                }
+
+                return $columns;
+            } );
+
+        $cc = $content;
+        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
+            function ( $content, $column_name, $term_id ) use ( $cc ) {
+
+                if ( $column_name == $cc['name'] ) {
+                    echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
+                }
+
+                return $content;
+
+            }, 10, 3 );
+
+    }
+
+    public function edit_fields( $term, $taxonomy ) {
+        $this->enqueue_oembed_scripts();
+        $label                        = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $prefix                       = 'devmonsta_';
+        $name                         = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $desc                         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs                        = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $value                        = get_term_meta( $term->term_id, $name, true );
+        $default_attributes           = "";
+        $dynamic_classes              = "";
+        $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
+        $wrapper_attr['data-preview'] = json_encode( $this->content['preview'] );
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+
+        ?>
+
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <th scope="row">
+            <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+        </th>
+        <td>
+            <div class="dm-oembed-input">
+                <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
+                        type="url" name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_html( $value ); ?>"
+                        class="dm-oembed-url-input"/>
+            </div>
+            <div class="dm-oembed-preview">
+            </div>
+            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
+        </td>
+        </tr>
+<?php
 }
 
     public function _action_get_oembed_response() {
