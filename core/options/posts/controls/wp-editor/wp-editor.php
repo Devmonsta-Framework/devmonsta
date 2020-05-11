@@ -68,8 +68,10 @@ wp_editor( $this->value, $name, $settings );
         $editor_html = ob_get_contents();
         ob_end_clean();
 
-        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
-        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+        $settings["attr"]["data-size"]          = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
+        $settings["attr"]["data-mode"]          = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
+        $settings["attr"]["data-editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
+        $settings["attr"]["data-wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
 
         echo dm_html_tag( 'div', $settings["attr"], $editor_html );
         ?>

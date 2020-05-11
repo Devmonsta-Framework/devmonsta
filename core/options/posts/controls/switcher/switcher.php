@@ -47,7 +47,6 @@ class Switcher extends Structure {
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
         : $content['value'];
-        var_dump( $this->value );
 
         $this->output();
     }

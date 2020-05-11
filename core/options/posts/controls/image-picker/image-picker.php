@@ -72,8 +72,6 @@ class ImagePicker extends Structure {
         $default_attributes = "";
         $dynamic_classes    = "";
 
-        var_dump( $this->value );
-
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
             foreach ( $attrs as $key => $val ) {
