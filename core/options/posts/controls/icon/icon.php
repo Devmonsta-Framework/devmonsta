@@ -16,7 +16,7 @@ class Icon extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
+    public function enqueue($current_screen) {
         add_action( 'init', [$this, 'enqueue_icon_scripts'] );
     }
 
@@ -103,8 +103,15 @@ class Icon extends Structure {
                             <option value="fa-volume-down">Volume-down</option>
                             <option value="fa-thumbs-up">Thumbs-up</option>
             </select>
-        </div<>
+        </div>
     <?php
+}
+
+public function columns() {
+
+}
+
+public function edit_fields( $term, $taxonomy ) {
 }
 
 }

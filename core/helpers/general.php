@@ -968,9 +968,7 @@ function dm_html_tag( $tag, $attr = [], $end = false ) {
 
 	if ( $end === true ) {
 		$html .= '></' . $tag . '>';
-	} else
-
-	if ( $end === false ) {
+	} elseif ( $end === false ) {
 		$html .= '/>';
 	} else {
 		$html .= '>' . $end . '</' . $tag . '>';

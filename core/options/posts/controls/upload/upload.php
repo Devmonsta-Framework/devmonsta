@@ -91,18 +91,22 @@ class Upload extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
                     <label  class="dm-option-label"> <?php echo esc_html( $label ); ?> </label>
-                    <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
+                </div>
+                <div class="dm-option-column right">
                     <div>
                         <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="dm_upload_image_button<?php echo dm_render_markup( $image ); ?> </a>
                         <input type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ''; ?>' />
                         <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' ); ?></a>
                     </div>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
             </div>
         <?php
 }

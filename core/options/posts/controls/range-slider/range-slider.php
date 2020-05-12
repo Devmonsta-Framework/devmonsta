@@ -84,16 +84,21 @@ class RangeSlider extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-            <input class="dm-range-slider"
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+
+            <div class="dm-option-column right">
+                <input class="dm-range-slider"
                     type="text" value="<?php echo esc_attr( $this->value ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"/>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
         </div>
     <?php
 }
