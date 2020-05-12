@@ -21,7 +21,7 @@
     cursor: pointer;
 }
 .dm-list-icon {
-    max-height: 465px;
+    height: 465px;
     overflow: auto;
 }
 .dm-list-icon ul {
@@ -30,13 +30,25 @@
 }
 .dm-list-icon ul li {
     margin: 0;
-    color: #6a737b;
-    font-size: 22px;
     flex: 0 0 70px;
     height: 65px;
     text-align: center;
     line-height: 65px;
     cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dm-list-icon ul li span {
+    color: #6a737b;
+    font-size: 22px;
+}
+.dm-list-icon ul li:hover {
+    box-shadow: inset 0px 0px 0px 3px #d2d7dc;
+}
+.dm-list-icon ul li.active {
+    box-shadow: inset 0px 0px 0px 3px #00aadc;
 }
 .dm-icon-modal-container {
     position: fixed;
@@ -60,7 +72,8 @@
 }
 .dm-icon-modal-data {
     background-color: #fff;
-    max-width: 840px;
+    width: 840px;
+    max-width: 100%;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -115,4 +128,25 @@
     margin-right: auto;
     background-color: #FCFCFC;
     padding: 20px;
+}
+.dm-icon-modal-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid transparent;
+    background: 0 0;
+    color: #666;
+    z-index: 1000;
+    cursor: pointer;
+    outline: 0;
+    transition: color .1s ease-in-out,background .1s ease-in-out;
+    text-align: center;
+    line-height: 50px;
+}
+.dm-icon-modal-close:hover{
+    color: #00a0d2
 }
