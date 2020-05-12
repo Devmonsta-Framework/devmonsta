@@ -116,7 +116,7 @@ class Icon extends Structure {
                             <option value="fa-volume-down">Volume-down</option>
                             <option value="fa-thumbs-up">Thumbs-up</option>
             </select>
-        </div<>
+        </div>
     <?php
 }
 
