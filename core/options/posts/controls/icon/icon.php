@@ -16,7 +16,7 @@ class Icon extends Structure {
     /**
      * @internal
      */
-    public function enqueue() {
+    public function enqueue($current_screen) {
         add_action( 'init', [$this, 'enqueue_icon_scripts'] );
     }
 
@@ -105,6 +105,13 @@ class Icon extends Structure {
             </select>
         </div<>
     <?php
+}
+
+public function columns() {
+
+}
+
+public function edit_fields( $term, $taxonomy ) {
 }
 
 }
