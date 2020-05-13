@@ -1,11 +1,8 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\TestButton;
 
-class TestButton extends \WP_Customize_Control
-{
+class TestButton extends \WP_Customize_Control {
     public $type = 'test-button';
-
-
 
     /**
      * enqueue() – Enqueue control related scripts/styles.
@@ -17,20 +14,23 @@ class TestButton extends \WP_Customize_Control
      * render_content() – Render the control’s content.
      */
 
-     public function __construct($manager,$id,$args)
-     {
+    public function __construct( $manager, $id, $args ) {
         parent::__construct( $manager, $id, $args );
-     }
-     
+    }
 
-   
-    
-    public function render_content()
-    {
-    ?>
-  
-        <input <?php $this->link(); ?> value="<?php echo $this->value(); ?>" placeholder="Test text" type="text" name="my_cool_text">
-    
+    public function enqueue() {
+
+    }
+
+    public function render() {
+
+    }
+
+    public function render_content() {
+        ?>
+
+        <input <?php $this->link();?> value="<?php echo $this->value(); ?>" placeholder="Test text" type="text" name="my_cool_text">
+
     <?php
 }
 }
