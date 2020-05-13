@@ -70,7 +70,8 @@ class DatetimePicker extends \WP_Customize_Control {
             <div class="dm-option-column right">
                 <input <?php $this->link();?>
                     type="text"
-                    class="dm-option-input dm-datetime-picker"
+                    id="dm-datetime-picker"
+                    class="dm-option-input"
                     name="<?php echo esc_attr( $this->name ); ?>"
                     value="<?php echo esc_attr( $this->value() ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>

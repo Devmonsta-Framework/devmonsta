@@ -1,10 +1,11 @@
 jQuery(document).ready(function ($) {
 
 
-    console.log("reached");
 
     //Initialize the datepicker and set the first day of the week as Monday
-    if ($(".dm-datetime-picker").length) {
+    if ($("#dm-datetime-picker").length) {
+
+        console.log("reached from date-time picker");
 
         var min_date;
         var max_date;
