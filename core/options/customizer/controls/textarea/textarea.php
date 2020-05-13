@@ -1,42 +1,19 @@
 <?php
-namespace Devmonsta\Options\Customizer\Controls\TestControl;
-/**
- * Customize for textarea, extend the WP customizer
- *
- * @package    WordPress
- * @subpackage Documentation
- * @since      10/16/2012
- */
+namespace Devmonsta\Options\Customizer\Controls\Textarea;
 
 if ( ! class_exists( 'WP_Customize_Control' ) )
 	return NULL;
 
-class TestControl extends \WP_Customize_Control {
+class Textarea extends \WP_Customize_Control {
 
 	/**
 	 * @access public
 	 * @var    string
 	 */
-	public $type = 'test-control';
+	public $type = 'textarea';
 
-	/**
-	 * @access public
-	 * @var    array
-	 */
 	public $statuses;
 
-	/**
-	 * Constructor.
-	 *
-	 * If $args['settings'] is not defined, use the $id as the setting ID.
-	 *
-	 * @since   10/16/2012
-	 * @uses    WP_Customize_Control::__construct()
-	 * @param   WP_Customize_Manager $manager
-	 * @param   string $id
-	 * @param   array $args
-	 * @return  void
-	 */
 	public function __construct( $manager, $id, $args = array() ) {
 
 		$this->statuses = array( '' => __( 'Default' ) );
