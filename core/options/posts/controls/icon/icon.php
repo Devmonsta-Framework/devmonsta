@@ -16,7 +16,8 @@ class Icon extends Structure {
     /**
      * @internal
      */
-    public function enqueue($current_screen) {
+    public function enqueue( $current_screen ) {
+        $this->current_screen = $current_screen;
         add_action( 'init', [$this, 'enqueue_icon_scripts'] );
     }
 
@@ -37,9 +38,19 @@ class Icon extends Structure {
         $content = $this->content;
         global $post;
 
-        $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        $icon_data              = [];
+        $icon_data['icon_name'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
         : "";
+
+        $icon_data['icon_type'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true )
+        : "dm-font-awesome";
+        // wp_localize_script( 'dm-asicon', 'iconValues', $data );
+
+        $this->value = $icon_data;
         $this->output();
     }
 
@@ -48,15 +59,12 @@ class Icon extends Structure {
      */
     public function output() {
         include 'icon-data.php';
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
-
-        
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
@@ -74,9 +82,9 @@ class Icon extends Structure {
 
         $class_attributes = "class='dm-vue-app dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $iconEncoded = json_encode($iconList);
+        $iconEncoded = json_encode( $iconList );
         ?>
-        
+
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
@@ -85,8 +93,8 @@ class Icon extends Structure {
                 <dm-icon-picker
                     name='<?php echo esc_attr( $this->prefix . $name ); ?>'
                     icon_list='<?php echo $iconEncoded; ?>'
-                    default_icon_type='dm-font-awesome'
-                    default_icon='fas fa-angle-right'
+                    default_icon_type='<?php echo isset( $this->value['icon_type'] ) ? $this->value['icon_type'] : "dm-font-awesome"; ?>'
+                    default_icon='<?php echo isset( $this->value['icon_name'] ) ? $this->value['icon_name'] : "fas fa-angle-right"; ?>'
                 ></dm-icon-picker>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
@@ -94,11 +102,11 @@ class Icon extends Structure {
     <?php
 }
 
-public function columns() {
+    public function columns() {
 
-}
+    }
 
-public function edit_fields( $term, $taxonomy ) {
-}
+    public function edit_fields( $term, $taxonomy ) {
+    }
 
 }
