@@ -95,12 +95,19 @@ class Customizer
             $all_settings = $customizer->all_settings();
 
             /**
+             * Get all tabs and the controls of the tabs
+             */
+
+            $all_tabs = $customizer->all_tabs();
+
+            /**
              * Build the panel , sections and controls
              */
 
             $this->build_panels($all_panels);
             $this->build_sections($all_sections);
             $this->build_controls($all_controls);
+            $this->build_tabs($all_tabs);
 
         }
     }
@@ -128,6 +135,7 @@ class Customizer
     /**
      *=================================
      * Build options for customizer
+     *
      * @access  public
      * @return  void
      *=================================
@@ -156,7 +164,9 @@ class Customizer
                         $this->build_repeater_control($type, $control);
 
                     } elseif ($type == 'addable-popup') {
-                        $this->build_addable_popup_control($type,$control);
+
+                        // $this->build_addable_popup_control($type,$control);
+
                     } else {
 
                         /** If control type is default */
@@ -171,6 +181,37 @@ class Customizer
 
     }
 
+    public function build_tabs($all_tabs)
+    {
+
+        
+        if(is_array($all_tabs)){
+        
+            foreach($all_tabs as $tab){
+
+                $this->tab_content($tab);
+
+            }
+        }
+
+    }
+
+
+    public function tab_content($tab){
+
+        // $tab_id = $tab['id'];
+        
+
+    }
+
+    /**
+     *=================================
+     * Build control for customizer
+     *
+     * @access  public
+     * @return  void
+     *=================================
+     */
     public function build_control($type, $control)
     {
 
@@ -210,10 +251,21 @@ class Customizer
         }
     }
 
+    /**
+     * ===============================
+     *
+     * Repeater control functionality
+     *
+     * @access  public
+     * @return  void
+     *
+     */
+
     public function build_repeater_control($type, $control)
     {
+
         add_action('customize_register', function ($wp_customize) use ($control, $type) {
-            require_once __DIR__ . '/customize-repeater-control.php';
+            require_once __DIR__ . '/libs/customize-repeater-control.php';
 
             $wp_customize->register_control_type('Theme_Customize_Repeater_Control');
 
@@ -277,9 +329,11 @@ class Customizer
         });
     }
 
-    public function build_addable_popup_control($type,$control){
+    public function build_addable_popup_control($type, $control)
+    {
+
         add_action('customize_register', function ($wp_customize) use ($control, $type) {
-            require_once __DIR__ . '/customize-repeater-control-popup.php';
+            require_once __DIR__ . '/libs/customize-repeater-control-popup.php';
 
             $wp_customize->register_control_type('Theme_Customize_Repeater_Popup_Control');
 
@@ -353,6 +407,7 @@ class Customizer
         $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
         add_action('customize_register', function ($wp_customize) use ($control_file, $control_class, $control) {
+
             if (file_exists($control_file)) {
                 require_once $control_file;
 
@@ -367,7 +422,7 @@ class Customizer
 
                         // $control
                         'section' => $control['section'],
-                        $control
+                        $control,
 
                     ]));
 

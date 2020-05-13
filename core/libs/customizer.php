@@ -7,6 +7,7 @@ class Customizer
     protected static $section;
     protected static $panel;
     protected static $settings;
+    protected static $tabs;
 
     public function add_control($control)
     {
@@ -44,5 +45,13 @@ class Customizer
 
     public function all_settings(){
         return self::$settings;
+    }
+
+    public function add_tab($tabs){
+        self::$tabs = $tabs;
+    }
+
+    public function all_tabs(){
+        return self::$tabs;
     }
 }
