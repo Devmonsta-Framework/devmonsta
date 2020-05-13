@@ -23,7 +23,7 @@ class Typography extends Structure {
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
 
-        if (  ( $this->current_screen == "post" && isset( $_GET['action'] ) && $_GET['action'] == 'edit' ) || ( $this->current_screen == "taxonomy" ) ) {
+        if (  ( $this->current_screen == "post" ) || ( $this->current_screen == "taxonomy" ) ) {
             add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
         }
 
@@ -212,9 +212,9 @@ break;
         $data['selected_data'] = $value;
         wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
 
-        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $components = isset( $this->content['components'] ) ? $this->content['components'] : [];
 
         $default_attributes = "";
