@@ -86,6 +86,7 @@ class Icon extends Structure {
                     name='<?php echo esc_attr( $this->prefix . $name ); ?>'
                     icon_list='<?php echo $iconEncoded; ?>'
                     default_icon_type='dm-font-awesome'
+                    default_icon='fas fa-angle-right'
                 ></dm-icon-picker>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>

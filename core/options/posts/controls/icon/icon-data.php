@@ -795,8 +795,6 @@ $iconList = [
         "name" => "Dashicons",
         "id"   => "dm-dashicons",
         "icons" => [
-            'dashicons dashicons-arrow-down-alt2',
-            'dashicons dashicons-admin-site',
             'dashicons dashicons-menu',
             'dashicons dashicons-menu-alt',
             'dashicons dashicons-menu-alt2',

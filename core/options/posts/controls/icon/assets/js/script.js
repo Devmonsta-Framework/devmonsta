@@ -1,23 +1,47 @@
 Vue.component('dm-icon-picker',{
-    props: ["icon_list", "name", "default_icon_type"],
+    props: ["icon_list", "name", "default_icon_type", "default_icon"],
     template: `
         <div class="dm-icon-control">
             <div class="dm-select-icon">
-                <div class="dm-icon-box">
-                    <i :class="'current-icon ' + pickedIcon"></i>
+                <div :class="iconBox">
+                    <div class="iconBox-inner" @click="openModal">
+                        <span :class="'dm-icon ' + savedIconClass"></span>
+                        <div class="dm-placeholder-icons">
+                                <i class="fas fa-ad"></i>
+                                <i class="far fa-address-book"></i>
+                                <i class="fab fa-affiliatetheme"></i>
+                        </div>
+                   </div>
+                   <div class="dm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
                 </div>
-                <button class="dm-add-icon-btn button" @click="openModal">Add Icon</button>
-                <input type="hidden" :name="name" v-model="pickedIcon">
+                <button class="dm-add-icon-btn button" @click="openModal">{{ iconBtnText }}</button>
+                <input type="hidden" :name="name" v-model="savedIconClass">
+                <input type="hidden" :name="name + '_type'" v-model="default_icon_type">
             </div>
-            <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon"></dm-icon-modal>
+            <transition name="fade">
+                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon"></dm-icon-modal>
+            </transition>
         </div>
     `,
     data: function(){
         return {
             iconList: [],
             pickedIcon: '',
+            savedIconClass: '',
             showModal: false,
             save: false
+        }
+    },
+    computed: {
+        iconBtnText:function(){
+            return this.savedIconClass ? 'Change Icon' : 'Add Icon'
+        },
+        iconBox: function(){
+            let iconClass = 'dm-icon-box';
+            if(this.savedIconClass){
+                iconClass += ' has-icon '
+            }
+            return iconClass;
         }
     },
     methods: {
@@ -29,14 +53,21 @@ Vue.component('dm-icon-picker',{
         },
         closeModal: function(){
             this.showModal = false;
+            this.save = false;
+        },
+        removeIcon: function(){
+            this.pickedIcon = '';
+            this.savedIconClass = '';
         },
         saveIcon: function(){
             this.showModal = false;
             this.save = true;
+            this.savedIconClass = this.pickedIcon;
         }
     },
     created: function(){
         this.iconList = JSON.parse(this.icon_list);
+        this.savedIconClass = this.default_icon ? this.default_icon : '';
     }
 });
 
