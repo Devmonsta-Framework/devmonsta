@@ -1,14 +1,7 @@
 (function(api, wp, $) {
     'use strict';
 
-    wp.customize.control.add(new wp.customize.DateTimeControl('birthdate', {
-        label: 'Birthdate',
-        description: "Someone was born on this day.",
-        section: 'devmonsta_text_settings_section',
-        includeTime: false,
-        setting: new wp.customize.Value('2000-01-02'),
-        transport: 'postMessage',
-    }));
+
 
 
 
@@ -30,8 +23,8 @@
 
             this.STATE = [],
                 this.fieldQueryPattern = new RegExp('^' + control.id + '_(\\d+)_(\\S+)$');
-            this.rowPrototype = this.container.find('.customize-control-repeater-field.prototype').remove().clone().removeClass('prototype')
-            this.btnNew = this.container.find('.customize-add-repeater-field');
+            this.rowPrototype = this.container.find('.customize-control-repeater-field-popup.prototype').remove().clone().removeClass('prototype')
+            this.btnNew = this.container.find('.customize-add-repeater-field-popup');
 
             this.setupRepeaterRows();
 
@@ -39,8 +32,8 @@
             api.bind('save-request-params', this.normalizeSaveRequestQuery);
 
             this.btnNew.on('click', this.addRepeaterRow);
-            this.container.on('click', '.customize-control-repeater-field .menu-item-handle', this.toggleFieldSettings);
-            this.container.on('click', '.customize-control-repeater-field .item-delete', this.deleteRepeaterRow);
+            this.container.on('click', '.customize-control-repeater-field-popup .menu-item-handle-popup', this.toggleFieldSettings);
+            this.container.on('click', '.customize-control-repeater-field-popup .item-delete-popup', this.deleteRepeaterRow);
 
             // on sortable change
 
@@ -109,7 +102,7 @@
             row = control.rowPrototype.clone().insertBefore(control.btnNew);
             row.data('index', index);
 
-            fieldLabel = row.find('.menu-item-title');
+            fieldLabel = row.find('.menu-item-title-popup');
 
             // console.log('Fields');
             // console.log(control.params.fields);
@@ -169,7 +162,7 @@
                 // console.log(Control.container);
 
                 // Add field to row
-                row.find('.customize-control-repeater-field-settings').append(Control.container);
+                row.find('.customize-control-repeater-field-settings-popup').append(Control.container);
 
 
 
@@ -191,7 +184,7 @@
         },
 
         deleteRepeaterRow: function(event) {
-            var row = $(event.target).closest('.customize-control-repeater-field');
+            var row = $(event.target).closest('.customize-control-repeater-field-popup');
             var index = row.data('index');
 
             this.STATE.splice(index, 1);

@@ -9,7 +9,7 @@ if (!class_exists('WP_Customize_Control')) {
     return;
 }
 
-class Theme_Customize_Repeater_Control extends WP_Customize_Control
+class Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
 {
     /*
      ** Field that is used as the repeater label
@@ -40,7 +40,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
         }
 
         // Force control type to 'repeater'
-        $this->type = 'repeater';
+        $this->type = 'addable-popup';
     }
 
     /*
@@ -48,12 +48,13 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
      */
     public function enqueue()
     {
+        wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-widget');
         wp_enqueue_script('jquery-ui-mouse');
         wp_enqueue_script('jquery-ui-accordion');
         wp_enqueue_script('jquery-ui-autocomplete');
         wp_enqueue_script('jquery-ui-slider');
-        wp_enqueue_script('customize-repeater-control', plugin_dir_url(__FILE__) . '/assets/js/customize-repeater-control.js', array('jquery', 'customize-controls'), false, true);
+        wp_enqueue_script('customize-repeater-popup-control', plugin_dir_url(__FILE__) . '/assets/js/customize-repeater-control-popup.js', array('jquery', 'customize-controls'), false, true);
     }
 
     /*
@@ -153,13 +154,13 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 		<# console.log(data.content) #>
 		<# console.log(data.developer) #>
 		<# if (data.label) { #>
-			<span class="customize-control-title">{{{ data.label }}}</span>
+			<span class="customize-control-title-popup">{{{ data.label }}}</span>
 		<# } #>
 		<# if (data.description) { #>
-			<span class="description customize-control-description">{{{ data.description }}}</span>
+			<span class="description customize-control-description-popup">{{{ data.description }}}</span>
 		<# } #>
-		<div class="customize-control-content">
-			<div class="customize-control-repeater-fields">
+		<div class="customize-control-content-popup">
+			<div class="customize-control-repeater-fields-popup">
 				<div class="customize-control-repeater-field menu-item menu-item-edit-inactive prototype">
 					<div class="menu-item-bar">
 						<div class="customize-control-repeater-field-handle menu-item-handle">
@@ -174,13 +175,13 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 							</span>
 						</div>
 					</div>
-					<div class="menu-item-settings wp-clearfix">
-						<ul class="customize-control-repeater-field-settings">
+					<div class="menu-item-settings-popup wp-clearfix">
+						<ul class="customize-control-repeater-field-settings-popup">
 
                         </ul>
                         
-						<div class="menu-item-actions description-thin submitbox">
-							<button type="button" class="button-link button-link-delete item-delete submitdelete deletion"><?php _e('Delete')?></button>
+						<div class="menu-item-actions-popup description-thin submitbox">
+							<button type="button" class="button-link-popup button-link-delete-popup item-delete-popup submitdelete-popup deletion-popup"><?php _e('Delete')?></button>
 						</div>
 					</div>
 				</div>
@@ -190,7 +191,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 
 
 
-			<button type="button" class="button customize-add-repeater-field" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
+			<button type="button" class="button customize-add-repeater-field-popup" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
 				<?php _e('Add Items')?>
 			</button>
 		</div>
