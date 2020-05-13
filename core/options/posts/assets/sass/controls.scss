@@ -13,6 +13,9 @@
             &.right {
                 max-width: 428px;
             }
+            &.full-width{
+                max-width: 100%;
+            }
         }
         &-label {
             font-weight: 600;
@@ -33,7 +36,7 @@
 
             vertical-align: middle;
             max-width: 428px;
-            width: 100%;
+            width: 100% !important;
             min-height: 30px;
         }
         &-textarea {
@@ -63,6 +66,34 @@
             border-bottom: 0;
             padding-bottom: 5px;
         }
+        &-typography{
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0;
+            padding: 0;
+            li{
+                flex: 0 0 8%;
+                padding: 0 5px;
+                > label {
+                    font-size: 13px;
+                    padding-top: 7px;
+                    padding-left: 1px;
+                    padding-bottom: 10px;
+                    font-style: italic;
+                    color: #666;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+            .wp-picker-container{
+                display: block;
+                > button {
+                    margin: 0;
+                }
+            }
+        }
+        
         .select2-container{
             max-width: 428px;
             width: 100% !important

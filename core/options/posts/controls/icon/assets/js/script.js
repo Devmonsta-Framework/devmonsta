@@ -3,8 +3,8 @@ Vue.component('dm-icon-picker',{
     template: `
         <div class="dm-icon-control">
             <div class="dm-select-icon">
-                <div :class="iconBox">
-                    <div class="iconBox-inner" @click="openModal">
+                <div class="dm-icon-box">
+                    <div :class="iconBox" @click="openModal">
                         <span :class="'dm-icon ' + savedIconClass"></span>
                         <div class="dm-placeholder-icons">
                                 <i class="fas fa-ad"></i>
@@ -37,7 +37,7 @@ Vue.component('dm-icon-picker',{
             return this.savedIconClass ? 'Change Icon' : 'Add Icon'
         },
         iconBox: function(){
-            let iconClass = 'dm-icon-box';
+            let iconClass = 'iconBox-inner';
             if(this.savedIconClass){
                 iconClass += ' has-icon '
             }
