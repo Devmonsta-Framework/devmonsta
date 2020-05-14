@@ -112,7 +112,7 @@ class Posts
     public function check_requirements()
     {
         global $pagenow;
-        if ($pagenow == 'post.php') {
+        if ($pagenow == 'post.php' || $pagenow == 'post-new.php') {
 
             return true;
 
