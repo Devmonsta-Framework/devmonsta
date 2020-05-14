@@ -353,7 +353,7 @@ class Taxonomies
     public function load_scripts()
     {
 
-        wp_enqueue_style('devmonsta-controls-style', plugin_dir_url(__FILE__) . '/assets/css/controls.css');
+        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'options/posts/assets/css/controls.css');
 
     }
 
