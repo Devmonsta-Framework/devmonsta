@@ -125,7 +125,7 @@ class Gradient extends Structure {
 
             if ( $id == "secondary" ) {
                 ?>
-                <span>  To  </span>
+                <span class="delimiter">To</span>
                 <?php
 }
 

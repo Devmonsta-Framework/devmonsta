@@ -68,7 +68,7 @@ class ImagePicker extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = isset( $this->content['value'] ) ? $this->content['value'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -91,67 +91,72 @@ class ImagePicker extends Structure {
 
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?>>
-            <lable class="dm-option-label"><?php echo esc_html( $label ); ?> </lable>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-            <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"
-                id="dm_image_picker">
-                <?php
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
-        foreach ( $choices as $key => $item ) {
-            $selected = ( $key == $this->value ) ? 'selected' : '';
-            ?>
-                <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $selected ); ?>></option>
-                <?php
-}
+            <div class="dm-option-column right">
 
-        ?>
-            </select>
-            <ul class="thumbnails image_picker_selector">
-            <?php
+                <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" id="dm_image_picker">
+                    <?php
 
-        foreach ( $choices as $item_key => $item ) {
-            $selected = ( $item_key == $this->value ) ? 'selected' : '';
+                        if ( is_array( $choices ) && isset( $choices ) ) {
 
-            if ( is_array( $item ) ) {
-                $small_image = '';
-                $large_image = '';
+                            foreach ( $choices as $key => $item ) {
+                                $selected = ( $key == $this->value ) ? 'selected' : '';
+                                ?>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $selected ); ?>></option>
+                                <?php
+                            }
 
-                foreach ( $item as $key => $item_size ) {
+                        }
 
-                    if ( $key == "small" ) {
-                        $small_image .= $item_size;
-                    } else {
-                        $large_image .= $item_size;
+                    ?>
+                </select>
+                <ul class="thumbnails image_picker_selector">
+                    <?php
+
+        if ( is_array( $choices ) && isset( $choices ) ) {
+
+            foreach ( $choices as $item_key => $item ) {
+                $selected = ( $item_key == $this->value ) ? 'selected' : '';
+
+                if ( is_array( $item ) && isset( $choices ) ) {
+                    $small_image = '';
+                    $large_image = '';
+
+                    foreach ( $item as $key => $item_size ) {
+
+                        if ( $key == "small" ) {
+                            $small_image .= $item_size;
+                        } else {
+                            $large_image .= $item_size;
+                        }
+
                     }
 
+                    ?>
+                        <div class="tooltip">
+                            <span class="tooltiptext">
+                                <img src="<?php echo esc_attr( $large_image ); ?>" height="50" width="50" />
+                            </span>
+                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+                                <div class="thumbnail">
+                                    <img src="<?php echo esc_attr( $small_image ); ?>" height="50" width="50" />
+                                </div>
+                            </li>
+                        </div>
+                    <?php
                 }
 
-                ?>
-            <div class="tooltip">
-                <span class="tooltiptext"><img src="<?php echo esc_attr( $large_image ); ?>" height="50"
-                        width="50" /></span>
-                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                    <div class="thumbnail">
-                        <img src="<?php echo esc_attr( $small_image ); ?>" height="50" width="50" />
-                    </div>
-                </li>
-            </div>
-            <?php
-} else {
-                ?>
-            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                <div class="thumbnail">
-                    <img src="<?php echo esc_attr( $item ); ?>" height="50" width="50" />
-                </div>
-            </li>
-            <?php
-}
+            }
 
         }
 
-        echo '<div class="dm_help_tip">' . esc_html( $help ) . ' </div>';
         ?>
-        </ul>
+                </ul>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
     </div>
 <?php
 }
@@ -224,103 +229,64 @@ class ImagePicker extends Structure {
         <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
     </th>
     <td>
-            <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>"
-                id="dm_image_picker">
-                <?php
+    <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" id="dm_image_picker">
+                    <?php
 
-        foreach ( $choices as $key => $item ) {
-            $selected = ( $key == $value ) ? 'selected' : '';
-            ?>
-                        <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $selected ); ?>></option>
-                        <?php
-}
+                        if ( is_array( $choices ) && isset( $choices ) ) {
 
-        ?>
-            </select>
-            <ul class="thumbnails image_picker_selector">
-            <?php
+                            foreach ( $choices as $key => $item ) {
+                                $selected = ( $key == $this->value ) ? 'selected' : '';
+                                ?>
+                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $selected ); ?>></option>
+                                <?php
+                            }
 
-        foreach ( $choices as $item_key => $item ) {
-            $selected = ( $item_key == $value ) ? 'selected' : '';
-
-            if ( is_array( $item ) ) {
-                $small_image = '';
-                $large_image = '';
-
-                        foreach ( $choices as $key => $item ) {
-                            $selected = $key == $this->value ? 'selected' : '';
-                            echo '<option value="' . $key . '" ' . $selected . '></option>';
                         }
+
                     ?>
                 </select>
                 <ul class="thumbnails image_picker_selector">
-                <?php
-                    foreach ( $choices as $item_key => $item ) {
-                        $selected = $item_key == $this->value ? 'selected' : '';
+                    <?php
 
-                        if ( is_array( $item ) ) {
-                            $small_image = '';
-                            $large_image = '';
+                    if ( is_array( $choices ) && isset( $choices ) ) {
 
-                            foreach ( $item as $key => $item_size ) {
+                        foreach ( $choices as $item_key => $item ) {
+                            $selected = ( $item_key == $this->value ) ? 'selected' : '';
 
-                                if ( $key == "small" ) {
-                                    $small_image .= $item_size;
-                                } else {
-                                    $large_image .= $item_size;
+                            if ( is_array( $item ) && isset( $choices ) ) {
+                                $small_image = '';
+                                $large_image = '';
+
+                                foreach ( $item as $key => $item_size ) {
+
+                                    if ( $key == "small" ) {
+                                        $small_image .= $item_size;
+                                    } else {
+                                        $large_image .= $item_size;
+                                    }
+
                                 }
 
+                                ?>
+                                    <div class="tooltip">
+                                        <span class="tooltiptext">
+                                            <img src="<?php echo esc_attr( $large_image ); ?>" height="50" width="50" />
+                                        </span>
+                                        <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+                                            <div class="thumbnail">
+                                                <img src="<?php echo esc_attr( $small_image ); ?>" height="50" width="50" />
+                                            </div>
+                                        </li>
+                                    </div>
+                                <?php
                             }
 
-                            ?>
-                            <div class="tooltip">
-                                <span class="tooltiptext"><img src="<?php echo esc_attr( $large_image ); ?>" height="50" width="50"/></span>
-                                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                    <div class="thumbnail">
-                                        <img src="<?php echo esc_attr( $small_image ); ?>" height="50" width="50"/>
-                                    </div>
-                                </li>
-                            </div>
-                            <?php
-                                    } else {
-                                        ?>
-                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>' >
-                                                <div class="thumbnail">
-                                                    <img src="<?php echo esc_attr( $item ); ?>" height="50" width="50" />
-                                                </div>
-                                            </li>
-                                        <?php
-                                    }
+                        }
 
                     }
 
-                echo '<div class="dm_help_tip">' . esc_html( $help ) . ' </div>';
                 ?>
-                    <div class="tooltip">
-                        <span class="tooltiptext"><img src="<?php echo esc_attr( $large_image ); ?>" height="50"
-                                width="50" /></span>
-                        <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                            <div class="thumbnail">
-                                <img src="<?php echo esc_attr( $small_image ); ?>" height="50" width="50" />
-                            </div>
-                        </li>
-                    </div>
-                    <?php
-} else {
-                ?>
-                    <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                        <div class="thumbnail">
-                            <img src="<?php echo esc_attr( $item ); ?>" height="50" width="50" />
-                        </div>
-                    </li>
-                    <?php
-}
-
-        }
-
-        echo '<div class="dm_help_tip">' . esc_html( $help ) . ' </div>';
-        ?>
-            </ul>
+                </ul>
         <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
     </td>
     </tr>

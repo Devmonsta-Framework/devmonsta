@@ -3,8 +3,8 @@ Vue.component('dm-icon-picker',{
     template: `
         <div class="dm-icon-control">
             <div class="dm-select-icon">
-                <div :class="iconBox">
-                    <div class="iconBox-inner" @click="openModal">
+                <div class="dm-icon-box">
+                    <div :class="iconBox" @click="openModal">
                         <span :class="'dm-icon ' + savedIconClass"></span>
                         <div class="dm-placeholder-icons">
                                 <i class="fas fa-ad"></i>
@@ -19,7 +19,7 @@ Vue.component('dm-icon-picker',{
                 <input type="hidden" :name="name + '_type'" v-model="default_icon_type">
             </div>
             <transition name="fade">
-                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon"></dm-icon-modal>
+                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon"></dm-icon-modal>
             </transition>
         </div>
     `,
@@ -37,7 +37,7 @@ Vue.component('dm-icon-picker',{
             return this.savedIconClass ? 'Change Icon' : 'Add Icon'
         },
         iconBox: function(){
-            let iconClass = 'dm-icon-box';
+            let iconClass = 'iconBox-inner';
             if(this.savedIconClass){
                 iconClass += ' has-icon '
             }
@@ -72,7 +72,7 @@ Vue.component('dm-icon-picker',{
 });
 
 Vue.component('dm-icon-modal', {
-    props: ["iconList", "default_icon_type"],
+    props: ["iconList", "default_icon_type", "default_icon"],
     template: `
         <div class="dm-icon-modal-container">
             <div class="dm-icon-modal-data">
@@ -84,11 +84,11 @@ Vue.component('dm-icon-modal', {
                 </div>
                 <div class="dm-icon-modal-selection">
                     <select class="dm-icon-type" v-if="iconList.length" v-model="iconType">
-                        <option :value="icon.id" v-for="icon in iconList" :selected="{ selected: icon.id == iconType }">{{ icon.name }}</option>
+                        <option :value="icon.id" v-for="icon in iconList">{{ icon.name }}</option>
                     </select>
                     <input type="text" placeholder="serach..." class="dm-icon-search" v-model="search">
                 </div>
-                <dm-icon-list v-if="icons.length" :icons="icons" :search="search" @picked-icon="pickedIcon"></dm-icon-list>
+                <dm-icon-list v-if="icons.length" :icons="icons" :search="search" @picked-icon="pickedIcon" :default_icon="default_icon"></dm-icon-list>
                 <div class="dm-icon-modal-footer">
                     <button class="button media-button button-primary button-large media-button-0" @click="$emit('save-icon')">Save</button>
                 </div>
@@ -118,7 +118,7 @@ Vue.component('dm-icon-modal', {
 });
 
 Vue.component('dm-icon-list', {
-    props: ["icons", "search"],
+    props: ["icons", "search", "default_icon"],
     template: `
         <div class="dm-list-icon">
             <ul>
@@ -146,6 +146,7 @@ Vue.component('dm-icon-list', {
     },
     created: function(){
         this.iconsCl = this.icons;
+        this.pickedIcon = this.default_icon;
     },
     watch: {
         search: function(val){
