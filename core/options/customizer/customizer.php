@@ -25,6 +25,10 @@ class Customizer
     public function init()
     {
 
+        if(!$this->check_requirements()){
+            return;
+        }
+
         /**
          * Get Customizer file from the
          * current active theme
@@ -112,6 +116,18 @@ class Customizer
         }
     }
 
+    public function check_requirements()
+    {
+        global $wp_customize;
+        if (isset($wp_customize)) {
+            // do stuff
+            return true;
+        }
+
+        return false;
+
+    }
+
     /**
      * ======================================
      * Get the active theme location
@@ -184,10 +200,9 @@ class Customizer
     public function build_tabs($all_tabs)
     {
 
-        
-        if(is_array($all_tabs)){
-        
-            foreach($all_tabs as $tab){
+        if (is_array($all_tabs)) {
+
+            foreach ($all_tabs as $tab) {
 
                 $this->tab_content($tab);
 
@@ -196,11 +211,10 @@ class Customizer
 
     }
 
-
-    public function tab_content($tab){
+    public function tab_content($tab)
+    {
 
         // $tab_id = $tab['id'];
-        
 
     }
 
@@ -393,7 +407,7 @@ class Customizer
                 'fields' => $field_controls,
                 'add_button_text' => isset($control['add_button_text']) ? $control['add_button_text'] : 'Add new Item',
                 'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title',
-                
+
             ]));
 
         });
@@ -403,7 +417,7 @@ class Customizer
      * ==============================
      * Build custom control
      * for customizer
-     * 
+     *
      * @access  public
      * @return  void
      * ==============================
@@ -458,7 +472,7 @@ class Customizer
         if (!empty($panels)) {
 
             foreach ($panels as $panel) {
-                
+
                 add_action('customize_register', function ($wp_customize) use ($panel) {
                     $panel_id = $panel['id'];
                     unset($panel['id']);

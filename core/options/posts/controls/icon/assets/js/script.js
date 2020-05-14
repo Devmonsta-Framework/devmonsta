@@ -16,10 +16,10 @@ Vue.component('dm-icon-picker',{
                 </div>
                 <button class="dm-add-icon-btn button" @click="openModal">{{ iconBtnText }}</button>
                 <input type="hidden" :name="name" v-model="savedIconClass">
-                <input type="hidden" :name="name + '_type'" v-model="default_icon_type">
+                <input type="hidden" :name="name + '_type'" v-model="dmIconType">
             </div>
             <transition name="fade">
-                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon"></dm-icon-modal>
+                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @dm-icon-type="iconType"></dm-icon-modal>
             </transition>
         </div>
     `,
@@ -29,7 +29,8 @@ Vue.component('dm-icon-picker',{
             pickedIcon: '',
             savedIconClass: '',
             showModal: false,
-            save: false
+            save: false,
+            dmIconType: ''
         }
     },
     computed: {
@@ -47,6 +48,9 @@ Vue.component('dm-icon-picker',{
     methods: {
         pickedIconClass: function(iconClass){
             this.pickedIcon = iconClass;
+        },
+        iconType: function(icon_type){
+            this.dmIconType = icon_type;
         },
         openModal: function(){
             this.showModal = true;
@@ -68,6 +72,7 @@ Vue.component('dm-icon-picker',{
     created: function(){
         this.iconList = JSON.parse(this.icon_list);
         this.savedIconClass = this.default_icon ? this.default_icon : '';
+        this.dmIconType = this.default_icon_type ? this.default_icon_type : '';
     }
 });
 
@@ -110,6 +115,11 @@ Vue.component('dm-icon-modal', {
     methods: {
         pickedIcon: function(iconClass){
             this.$emit('picked-icon', iconClass);
+        }
+    },
+    watch: {
+        iconType: function(){
+            this.$emit('dm-icon-type', this.iconType);
         }
     },
     created: function(){
