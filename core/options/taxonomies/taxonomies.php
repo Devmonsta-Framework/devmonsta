@@ -86,7 +86,7 @@ class Taxonomies
     public function check_requirements()
     {
         global $pagenow;
-        if ($pagenow == 'edit-tags.php') {
+        if ($pagenow == 'edit-tags.php' || $pagenow == 'term.php') {
 
             return true;
 
