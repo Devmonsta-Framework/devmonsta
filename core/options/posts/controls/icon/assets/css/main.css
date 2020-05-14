@@ -87,7 +87,8 @@
     margin-bottom: -1px;
     background-color: #f1f1f1;
     transition: all .4s;
-    display: inline-block
+    display: inline-block;
+    opacity: 0;
 }
 .dm-icon-modal-header ul li.active{
     color: #222;
@@ -151,8 +152,11 @@
 }
 
 .dm-icon-box{
-    background-image: url("../images/no-image.png");
+    position: relative;
     margin-right: 25px;
+}
+.iconBox-inner{
+    background-image: url("../images/no-image.png");
     position: relative;
     display: flex;
     align-items: center;
@@ -165,9 +169,6 @@
     width: 55px;
     cursor: pointer;
 }
-.iconBox-inner{
-    position: relative;
-}
 .dm-icon-box:hover .dm-close-icon{
     opacity: 1;
 }
@@ -178,18 +179,20 @@
 .dm-close-icon i:hover{
     color: #CC0000;
 }
-.dm-icon-box.has-icon{
+.iconBox-inner.has-icon{
     background-image: url("../images/transparent_bg.png");
     background-size: 10px;
 }
-.dm-icon-box .dm-icon{
+.iconBox-inner .dm-icon{
     color: #7a7a7a;
     background-repeat: no-repeat;
     line-height: 1em;
     margin: 0;
 }
-.dm-icon-box.has-icon .dm-icon {
+.iconBox-inner.has-icon .dm-icon{
     font-size: 40px;
+    width: auto;
+    height: auto;
 }
 .dm-close-icon{
     position: absolute;
