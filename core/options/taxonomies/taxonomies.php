@@ -16,59 +16,58 @@ class Taxonomies
      *
      * @return void
      */
-    
+
     public function init()
     {
-        global $pagenow;
 
-        if ($pagenow == 'edit-tags.php') {
+        if (!$this->check_requirements()) {
+            return;
+        }
 
-            /**
-             * Add css class to the admin body for better views of controls
-             */
+        /**
+         * Add css class to the admin body for better views of controls
+         */
 
-            add_filter('admin_body_class', [$this, 'add_body_classes']);
+        add_filter('admin_body_class', [$this, 'add_body_classes']);
 
-            if (isset($_GET['taxonomy'])) {
-                $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
+        if (isset($_GET['taxonomy'])) {
+            $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
 
-                if (file_exists($taxonomy_file)) {
+            if (file_exists($taxonomy_file)) {
 
-                    require_once $taxonomy_file;
-                    $path = $taxonomy_file;
-                    $file = basename($path);
-                    $file = basename($path, ".php");
+                require_once $taxonomy_file;
+                $path = $taxonomy_file;
+                $file = basename($path);
+                $file = basename($path, ".php");
 
-                    $taxonomy = $file;
+                $taxonomy = $file;
 
-                    /**
-                     * Save term meta
-                     */
+                /**
+                 * Save term meta
+                 */
 
-                    update_option('dm_taxonomy', $taxonomy);
+                update_option('dm_taxonomy', $taxonomy);
 
-                    /**
-                     * Edit term meta
-                     */
+                /**
+                 * Edit term meta
+                 */
 
-                    $class_name = $this->make_class_structure($file);
+                $class_name = $this->make_class_structure($file);
 
-                    $taxonomy_lib = new LibsTaxonomies;
+                $taxonomy_lib = new LibsTaxonomies;
 
-                    if (class_exists($class_name)) {
-                        $taxonomy_class = new $class_name;
+                if (class_exists($class_name)) {
+                    $taxonomy_class = new $class_name;
 
-                        if (method_exists($taxonomy_class, 'register_controls')) {
-                            $taxonomy_class->register_controls();
-                        }
-
-                        $controls = $taxonomy_lib->all_controls();
-
-                        // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
-
-                        $this->build_taxonomoy($taxonomy, $controls);
-
+                    if (method_exists($taxonomy_class, 'register_controls')) {
+                        $taxonomy_class->register_controls();
                     }
+
+                    $controls = $taxonomy_lib->all_controls();
+
+                    // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
+
+                    $this->build_taxonomoy($taxonomy, $controls);
 
                 }
 
@@ -84,12 +83,24 @@ class Taxonomies
 
     }
 
+    public function check_requirements()
+    {
+        global $pagenow;
+        if ($pagenow == 'edit-tags.php') {
+
+            return true;
+
+        }
+
+        return false;
+    }
+
     /**
      * =======================================================
      * Added CSS class name .dm-taxonomy-wrapper to the body
      * So that controls insdie taxonomy markup can be stylable
-     * 
-     * @return  string 
+     *
+     * @return  string
      * =======================================================
      */
 
