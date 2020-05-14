@@ -57,6 +57,7 @@ class WpEditor extends Structure {
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
         $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
+        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
 
         ob_start();
         ?>
@@ -67,18 +68,13 @@ class WpEditor extends Structure {
 
             <div class="dm-option-column right">
                 <?php
-wp_editor( $this->value, $name, $settings );
-        $editor_html = ob_get_contents();
-        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
-        ob_end_clean();
+                        wp_editor( $this->value, $name, $settings );
+                        $editor_html = ob_get_contents();
+                        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+                        ob_end_clean();
 
-        $settings["attr"]["data-size"]          = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
-        $settings["attr"]["data-mode"]          = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
-        $settings["attr"]["data-editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
-        $settings["attr"]["data-wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
-
-        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
-        ?>
+                        echo dm_render_markup( $editor_html );
+                    ?>
             </div>
         </div>
 <?php
