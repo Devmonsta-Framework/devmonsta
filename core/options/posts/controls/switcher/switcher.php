@@ -51,6 +51,8 @@ class Switcher extends Structure {
         $this->output();
     }
 
+    public function array_key_first(array $array) { foreach ($array as $key => $value) { return $key; } }
+
     /**
      * @internal
      */
@@ -61,8 +63,8 @@ class Switcher extends Structure {
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $left_choice  = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
         $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
-        $left_key     = array_key_first( $left_choice );
-        $right_key    = array_key_first( $right_choice );
+        $left_key     = $this->array_key_first( $left_choice );
+        $right_key    = $this->array_key_first( $right_choice );
 
         // add inline css for dynamic value
         $style = '';
@@ -144,8 +146,8 @@ class Switcher extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $left_choice        = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
         $right_choice       = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
-        $left_key           = array_key_first( $left_choice );
-        $right_key          = array_key_first( $right_choice );
+        $left_key           = $this->array_key_first( $left_choice );
+        $right_key          = $this->array_key_first( $right_choice );
         $value              = get_term_meta( $term->term_id, $name, true );
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
