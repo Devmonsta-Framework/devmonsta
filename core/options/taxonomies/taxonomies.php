@@ -24,6 +24,8 @@ class Taxonomies
             return;
         }
 
+        add_action('admin_init', [$this, 'load_scripts']);
+
         /**
          * Add css class to the admin body for better views of controls
          */
@@ -340,6 +342,18 @@ class Taxonomies
     {
 
         $this->get_edit_controls($term, $taxonomy);
+
+    }
+
+    /**
+     * ===========================================
+     *      Load Styles & Scripts for controls
+     * ===========================================
+     */
+    public function load_scripts()
+    {
+
+        wp_enqueue_style('devmonsta-controls-style', plugin_dir_url(__FILE__) . '/assets/css/controls.css');
 
     }
 
