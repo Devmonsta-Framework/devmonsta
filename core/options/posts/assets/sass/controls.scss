@@ -170,3 +170,26 @@
         }
     }
 }
+.dm-taxonomy-wrapper{
+    .dm-option{
+        display: block;
+        border: none;
+        padding: 10px 0;
+        &-column{
+            &.left {
+            }
+            &.right{
+                max-width: 95%;
+            }
+        }
+        &-label{
+            float: none    
+        }
+        &-input{
+            max-width: 100%;
+        }
+        .delimiter {
+            top: 17px;
+        }
+    }
+}

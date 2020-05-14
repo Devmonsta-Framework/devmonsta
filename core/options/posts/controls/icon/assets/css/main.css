@@ -87,7 +87,8 @@
     margin-bottom: -1px;
     background-color: #f1f1f1;
     transition: all .4s;
-    display: inline-block
+    display: inline-block;
+    opacity: 0;
 }
 .dm-icon-modal-header ul li.active{
     color: #222;
