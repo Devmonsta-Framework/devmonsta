@@ -386,16 +386,28 @@ class Customizer
             ]);
 
             $wp_customize->add_control(new \Theme_Customize_Repeater_Popup_Control($wp_customize, $control['id'], [
+
                 'label' => __($control['label'], 'devmonsta'),
                 'description_a' => 'This is description',
                 'section' => $control['section'],
                 'fields' => $field_controls,
                 'add_button_text' => isset($control['add_button_text']) ? $control['add_button_text'] : 'Add new Item',
                 'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title',
+                
             ]));
 
         });
     }
+
+    /**
+     * ==============================
+     * Build custom control
+     * for customizer
+     * 
+     * @access  public
+     * @return  void
+     * ==============================
+     */
     public function build_custom_control($type, $control)
     {
 
@@ -409,18 +421,19 @@ class Customizer
         add_action('customize_register', function ($wp_customize) use ($control_file, $control_class, $control) {
 
             if (file_exists($control_file)) {
+
                 require_once $control_file;
 
                 if (class_exists($control_class)) {
 
                     $wp_customize->add_setting($control['id'], array(
+
                         'default' => isset($control['default']) ? $control['default'] : '',
 
                     ));
 
                     $wp_customize->add_control(new $control_class($wp_customize, $control['id'], [
 
-                        // $control
                         'section' => $control['section'],
                         $control,
 
@@ -443,12 +456,15 @@ class Customizer
     public function build_panels($panels)
     {
         if (!empty($panels)) {
+
             foreach ($panels as $panel) {
+                
                 add_action('customize_register', function ($wp_customize) use ($panel) {
                     $panel_id = $panel['id'];
                     unset($panel['id']);
                     $wp_customize->add_panel($panel_id, $panel);
                 });
+
             }
         }
 
@@ -465,12 +481,15 @@ class Customizer
     public function build_sections($sections)
     {
         if (!empty($sections)) {
+
             foreach ($sections as $section) {
 
                 add_action('customize_register', function ($wp_customize) use ($section) {
+
                     $section_id = $section['id'];
                     unset($section['id']);
                     $wp_customize->add_section($section_id, $section);
+
                 });
 
             }

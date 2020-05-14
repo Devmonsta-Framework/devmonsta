@@ -16,11 +16,16 @@ class Taxonomies
      *
      * @return void
      */
+    
     public function init()
     {
         global $pagenow;
 
         if ($pagenow == 'edit-tags.php') {
+
+            /**
+             * Add css class to the admin body for better views of controls
+             */
 
             add_filter('admin_body_class', [$this, 'add_body_classes']);
 
@@ -79,6 +84,15 @@ class Taxonomies
 
     }
 
+    /**
+     * =======================================================
+     * Added CSS class name .dm-taxonomy-wrapper to the body
+     * So that controls insdie taxonomy markup can be stylable
+     * 
+     * @return  string 
+     * =======================================================
+     */
+
     public function add_body_classes($classes)
     {
         $classes = 'dm-taxonomy-wrapper';
@@ -86,11 +100,14 @@ class Taxonomies
     }
 
     /**
+     * ==================================================
      * Generate full class name from control type field
      *
      * @param [type] $file
      * @return void
+     * ===================================================
      */
+
     public function make_class_structure($file)
     {
         $class_name = explode('-', $file);
@@ -101,11 +118,13 @@ class Taxonomies
     }
 
     /**
+     * ====================================================
      * Buils controls dynamically from controls directory
      *
      * @param [type] $taxonomy
      * @param [type] $controls
      * @return void
+     * ====================================================
      */
     public function build_taxonomoy($taxonomy, $controls)
     {
@@ -162,12 +181,14 @@ class Taxonomies
     }
 
     /**
+     * ======================================================
      * Build control for edit form from controls directory
      *
      * @param [type] $term
      * @param [type] $taxonomy
      * @param [type] $controls
      * @return void
+     * =======================================================
      */
     public function build_taxonomoy_edit_fields($term, $taxonomy, $controls)
     {
@@ -221,7 +242,7 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
-        $taxonomy = get_option('dm_taxonomy');
+        // $taxonomy = get_option('dm_taxonomy');
         $prefix = 'devmonsta_';
 
         foreach ($_POST as $key => $value) {
