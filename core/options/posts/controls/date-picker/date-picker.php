@@ -20,6 +20,19 @@ class DatePicker extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+        if ( $this->current_screen == "post" ) {
+
+            $this->enqueue_date_time_picker_scripts();
+        } elseif ( $this->current_screen == "taxonomy" ) {
+            add_action( 'init', [$this, 'enqueue_date_time_picker_scripts'] );
+
+        }
+    }
+
+    public function enqueue_date_time_picker_scripts() {
+        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_script( 'dm-date-picker', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
     }
 
     /**
@@ -75,6 +88,7 @@ class DatePicker extends Structure {
 
             <div class="dm-option-column right">
                 <input type="date" name="<?php echo esc_attr( $name ); ?>"
+                    class="dm-option-input dm-option-input-date-picker"
                     value="<?php echo esc_attr( $this->value ); ?>"
                     min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

@@ -33,9 +33,9 @@ class DatetimePicker extends Structure {
     }
 
     public function enqueue_date_time_picker_scripts() {
-        wp_enqueue_style( 'date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/jquery.datetimepicker.min.css' );
-        wp_enqueue_script( 'date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/jquery.datetimepicker.full.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery', 'date-time-picker'] );
+        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
 
         $date_time_picker_config               = $this->content['datetime-picker'];
         $date_time_picker_data['format']       = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
@@ -101,7 +101,7 @@ class DatetimePicker extends Structure {
             <div class="dm-option-column right">
                 <input type="text"
                     id="dm-datetime-picker"
-                    class="dm-option-input"
+                    class="dm-option-input dm-option-input-datetime-picker"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

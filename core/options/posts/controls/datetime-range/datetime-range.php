@@ -31,10 +31,9 @@ class DatetimeRange extends Structure {
 
     public function enqueue_date_time_range_scripts() {
 
-        wp_enqueue_style( 'date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/css/daterangepicker.css' );
-        wp_enqueue_script( 'date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/daterangepicker.js', ['jquery', 'date-time-range-moment'] );
-        wp_enqueue_script( 'date-time-range-moment', DM_CORE . 'options/posts/controls/datetime-range/assets/js/moment.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery', 'date-time-range-moment', 'date-time-range'] );
+        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
 
         $date_time_range_config = $this->content['datetime-pickers'];
         $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime( $date_time_range_config['minDate'] ) ) : date( "YYYY-MM-DD" );
@@ -104,7 +103,7 @@ class DatetimeRange extends Structure {
             <div class="dm-option-column right">
                 <input type="text"
                         id="dm-datetime-range"
-                        class="dm-option-input"
+                        class="dm-option-input dm-option-input-datetime-range"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
