@@ -10,6 +10,7 @@
 namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Libs\Posts as LibsPosts;
+use Devmonsta\Libs\Repeater;
 use Devmonsta\Traits\Singleton;
 
 class Posts
@@ -63,6 +64,9 @@ class Posts
             /** Get all the properties defined in post file */
 
             $post_lib = new LibsPosts;
+            
+
+            $repeater  = new Repeater('','');
 
             foreach ($post_file_class as $child_class) {
 
@@ -75,6 +79,8 @@ class Posts
                 }
 
             }
+
+            error_log( serialize($repeater->all_controls()));
 
             /** Get all the metaboxed that has been defined */
 
