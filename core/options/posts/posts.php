@@ -19,6 +19,14 @@ class Posts
 
     protected $data;
 
+    /**
+     * =============================
+     * Bootstrap post functionality
+     *
+     * @return  void
+     * =============================
+     */
+
     public function init()
     {
 
@@ -109,6 +117,14 @@ class Posts
 
     }
 
+    /**
+     * =========================================
+     * Check requirements for bootstraping post.
+     *
+     * @return  boolean
+     * =========================================
+     */
+
     public function check_requirements()
     {
         global $pagenow;
@@ -121,6 +137,14 @@ class Posts
         return false;
     }
 
+    /**
+     * =========================================================
+     *       Load scripts and style files form the controls
+     *
+     *                      @return  void
+     * =========================================================
+     */
+    
     public function load_enqueue($all_controls)
     {
 
