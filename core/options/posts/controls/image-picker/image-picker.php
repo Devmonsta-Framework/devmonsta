@@ -97,7 +97,7 @@ class ImagePicker extends Structure {
 
             <div class="dm-option-column right">
 
-                <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" id="dm_image_picker">
+                <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" class="dm_image_picker">
                     <?php
 
                         if ( is_array( $choices ) && isset( $choices ) ) {
@@ -229,7 +229,7 @@ class ImagePicker extends Structure {
         <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
     </th>
     <td>
-    <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" id="dm_image_picker">
+    <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" class="dm_image_picker">
                     <?php
 
                         if ( is_array( $choices ) && isset( $choices ) ) {

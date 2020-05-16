@@ -51,7 +51,9 @@ class Switcher extends Structure {
         $this->output();
     }
 
-    public function array_key_first(array $array) { foreach ($array as $key => $value) { return $key; } }
+    public function array_key_first( array $array ) {
+        foreach ( $array as $key => $value ) {return $key;}
+    }
 
     /**
      * @internal
@@ -97,11 +99,11 @@ class Switcher extends Structure {
         <div><small class='dm-option-desc'><?php echo esc_html( $desc ); ?></small></div>
             <div class='dm_switcher_main_block'>
                 <div class='dm_switcher_item'>
-                    <input id='dm_switcher_right' type='checkbox' value='<?php echo esc_attr( $right_key ); ?>' class='dm-control-input' name='<?php echo esc_attr( $name ); ?>'
+                    <input  type='checkbox' value='<?php echo esc_attr( $right_key ); ?>' class='dm-control-input dm_switcher_right' name='<?php echo esc_attr( $name ); ?>'
                             <?php echo ( $this->value == $right_key ) ? 'checked' : ''; ?> />
                     <label  class='dm_switcher_label dm-option-label'></label>
                 </div>
-                <input id='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>' class='' name='<?php echo esc_attr( $name ); ?>' <?php echo ( $this->value == $left_key ) ? 'checked' : ''; ?> />
+                <input class='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>'  name='<?php echo esc_attr( $name ); ?>' <?php echo ( $this->value == $left_key ) ? 'checked' : ''; ?> />
             </div>
 
         <?php
@@ -204,11 +206,11 @@ class Switcher extends Structure {
     <td>
             <div class='dm_switcher_main_block'>
                 <div class='dm_switcher_item'>
-                    <input id='dm_switcher_right' type='checkbox' value='<?php echo esc_attr( $right_key ); ?>' class='dm-control-input' name='<?php echo esc_attr( $name ); ?>'
+                    <input type='checkbox' value='<?php echo esc_attr( $right_key ); ?>' class='dm-control-input dm_switcher_right' name='<?php echo esc_attr( $name ); ?>'
                             <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
                     <label  class='dm_switcher_label dm-option-label'></label>
                 </div>
-                <input id='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>' class='' name='<?php echo esc_attr( $name ); ?>' <?php echo ( $value == $left_key ) ? 'checked' : ''; ?> />
+                <input class='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>'  name='<?php echo esc_attr( $name ); ?>' <?php echo ( $value == $left_key ) ? 'checked' : ''; ?> />
             </div>
         <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
     </td>

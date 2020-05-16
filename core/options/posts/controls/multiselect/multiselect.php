@@ -88,7 +88,7 @@ class Multiselect extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <select id="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
+                <select class="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
                     <?php
                         if ( isset( $choices ) ) {
                             foreach ( $choices as $key => $val ) {
@@ -196,7 +196,7 @@ class Multiselect extends Structure {
     </th>
     <td>
 
-        <select id="dm_select" name="<?php echo esc_attr( $name ); ?>[]" multiple="multiple" >
+        <select class="dm_multi_select" name="<?php echo esc_attr( $name ); ?>[]" multiple="multiple" >
     <?php
 
         if ( isset( $choices ) ) {

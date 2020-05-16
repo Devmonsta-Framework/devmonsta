@@ -87,7 +87,7 @@ class Select extends Structure {
 
             <div class="dm-option-column right">
                 <select 
-                    id="dm_select"
+                    class="dm_select"
                     class="dm-option-input"
                     name="<?php echo esc_attr( $name ); ?>">
                     <?php
@@ -191,7 +191,7 @@ class Select extends Structure {
         </th>
         <td>
 
-            <select id="dm_select"
+            <select class="dm_select"
                         name="<?php echo esc_attr( $name ); ?>">
                         <?php
 
