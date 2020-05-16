@@ -125,7 +125,7 @@ class Gradient extends Structure {
 
             if ( $id == "secondary" ) {
                 ?>
-                <span class="delimiter">To</span>
+                <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
                 <?php
 }
 
@@ -218,15 +218,21 @@ class Gradient extends Structure {
         <?php
 
         foreach ( $value as $id => $val ) {
+
+            if ( $id == "secondary" ) {
+                ?>
+                <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
+                <?php
+            }
+
             ?>
-                    <?php echo esc_html( $id ); ?>
                     <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                         name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                         value="<?php echo esc_attr( $val ); ?>"
                         data-default-color="<?php echo esc_attr( $val ); ?>"
                          />
             <?php
-}
+        }
 
         ?>
             <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
