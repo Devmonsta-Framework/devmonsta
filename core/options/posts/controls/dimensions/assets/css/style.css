@@ -1,7 +1,0 @@
-.dm-dimension-btn{
-    cursor: pointer;
-    transition: all .4s;
-}
-.dm-dimension-btn.active{
-    background-color: #A4AFB7 !important;
-}
