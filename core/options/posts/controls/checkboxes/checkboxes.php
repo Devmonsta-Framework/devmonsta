@@ -91,15 +91,17 @@ class Checkboxes extends Structure {
             <div class="dm-option-column right">
                 <?php
 
-        foreach ( $choices as $id => $element ) {
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
-            if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = null;
-            }
+            foreach ( $choices as $id => $element ) {
 
-            ?>
+                if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
+                    $checked = 'checked="checked"';
+                } else {
+                    $checked = null;
+                }
+
+                ?>
                         <label class="dm-option-label-list">
                             <input  type="checkbox"
                                 name="<?php echo esc_attr( $name ); ?>[]"
@@ -108,6 +110,8 @@ class Checkboxes extends Structure {
                         </label>
                     <?php
 }
+
+        }
 
         ?>
                 <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
@@ -184,21 +188,25 @@ class Checkboxes extends Structure {
             <td>
             <?php
 
-        foreach ( $choices as $id => $element ) {
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
-            if ( is_array( $value ) && in_array( $id, $value ) ) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = null;
-            }
+            foreach ( $choices as $id => $element ) {
 
-            ?>
+                if ( is_array( $value ) && in_array( $id, $value ) ) {
+                    $checked = 'checked="checked"';
+                } else {
+                    $checked = null;
+                }
+
+                ?>
                 <input  type="checkbox"
                         name="<?php echo esc_attr( $name ); ?>[]"
                         value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                     <?php echo esc_html( $element ); ?>
             <?php
 }
+
+        }
 
         ?>
                 <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">

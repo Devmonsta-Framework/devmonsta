@@ -90,6 +90,8 @@ class Typography extends Structure {
                     <ul class="dm-option-typography">
                     <?php
 
+
+if ( is_array( $components ) && !empty( $components ) ) {
         foreach ( $components as $key => $item ) {
 
             if ( $key ) {
@@ -173,6 +175,7 @@ break;
             }
 
         }
+    }
 
         // end foreach
         ?>
@@ -262,6 +265,7 @@ break;
         <ul class="dm-option-typography">
                     <?php
 
+if ( is_array( $components ) && !empty( $components ) ) {
         foreach ( $components as $key => $item ) {
 
             if ( $key ) {
@@ -345,6 +349,7 @@ break;
             }
 
         }
+    }
 
         // end foreach
         ?>

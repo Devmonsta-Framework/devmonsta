@@ -133,8 +133,12 @@ class Dimensions extends Structure {
                 if ( $column_name == $cc['name'] ) {
                     $values = maybe_unserialize( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
 
-                    foreach ( $values as $key => $value ) {
-                        echo $key . ": " . $value . "<br>";
+                    if ( is_array( $values ) && !empty( $values ) ) {
+
+                        foreach ( $values as $key => $value ) {
+                            echo $key . ": " . $value . "<br>";
+                        }
+
                     }
 
                 }

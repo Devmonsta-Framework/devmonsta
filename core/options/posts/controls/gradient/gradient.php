@@ -121,15 +121,17 @@ class Gradient extends Structure {
             <div class="dm-option-column right">
                 <?php
 
-        foreach ( $this->value as $id => $value ) {
+        if ( is_array( $this->value ) && !empty( $this->value ) ) {
 
-            if ( $id == "secondary" ) {
-                ?>
+            foreach ( $this->value as $id => $value ) {
+
+                if ( $id == "secondary" ) {
+                    ?>
                 <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
                 <?php
 }
 
-            ?>
+                ?>
                             <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                             name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                             value="<?php echo esc_attr( $value ); ?>"
@@ -137,6 +139,8 @@ class Gradient extends Structure {
                             />
                         <?php
 }
+
+        }
 
         ?>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small>
@@ -167,8 +171,12 @@ class Gradient extends Structure {
                 if ( $column_name == $cc['name'] ) {
                     $color_values = maybe_unserialize( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
 
-                    foreach ( $color_values as $key => $value ) {
-                        echo $key . ": " . $value . "<br>";
+                    if ( is_array( $color_values ) && !empty( $color_values ) ) {
+
+                        foreach ( $color_values as $key => $value ) {
+                            echo $key . ": " . $value . "<br>";
+                        }
+
                     }
 
                 }
@@ -217,21 +225,25 @@ class Gradient extends Structure {
         <td>
         <?php
 
-        foreach ( $value as $id => $val ) {
+        if ( is_array( $value ) && !empty( $value ) ) {
 
-            if ( $id == "secondary" ) {
-                ?>
+            foreach ( $value as $id => $val ) {
+
+                if ( $id == "secondary" ) {
+                    ?>
                 <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
                 <?php
-            }
+}
 
-            ?>
+                ?>
                     <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                         name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                         value="<?php echo esc_attr( $val ); ?>"
                         data-default-color="<?php echo esc_attr( $val ); ?>"
                          />
             <?php
+}
+
         }
 
         ?>
