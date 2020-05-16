@@ -1,8 +1,7 @@
-.dm-dimension-number-input .dm-dimension-attachment-input{
-    width:30px; 
-    border: '1px solid slategray'
+.dm-dimension-btn{
+    cursor: pointer;
+    transition: all .4s;
 }
-
-.dm-dimension-attachment-input .clicked{
-    background-color: #000000;
+.dm-dimension-btn.active{
+    background-color: #A4AFB7 !important;
 }
