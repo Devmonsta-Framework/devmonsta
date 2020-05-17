@@ -66,8 +66,6 @@ class Posts
             $post_lib = new LibsPosts;
             
 
-            $repeater  = new Repeater('','');
-
             foreach ($post_file_class as $child_class) {
 
                 $post_file = new $child_class;
@@ -80,7 +78,7 @@ class Posts
 
             }
 
-            error_log( serialize($repeater->all_controls()));
+            // error_log( serialize($repeater->all_controls()));
 
             /** Get all the metaboxed that has been defined */
 
