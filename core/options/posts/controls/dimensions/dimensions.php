@@ -81,29 +81,33 @@ class Dimensions extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <ul class="dm-option-dimensions">
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-top" type="number" name="<?php echo esc_attr( $name ); ?>[top]" value="<?php echo isset( $this->value["top"] ) ? esc_html( intval( $this->value["top"] ) ) : 0; ?>" min="0"/>
-                        <label><?php esc_html_e( "top", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-right" type="number" name="<?php echo esc_attr( $name ); ?>[right]" value="<?php echo isset( $this->value["right"] ) ? esc_html( intval( $this->value["right"] ) ) : 0; ?>"  min="0"/>
-                        <label><?php esc_html_e( "right", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-bottom" type="number" name="<?php echo esc_attr( $name ); ?>[bottom]" value="<?php echo isset( $this->value["bottom"] ) ? esc_html( intval( $this->value["bottom"] ) ) : 0; ?>"  min="0"/>
-                        <label><?php esc_html_e( "bottom", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-left" type="number" name="<?php echo esc_attr( $name ); ?>[left]" value="<?php echo isset( $this->value["left"] ) ? esc_html( intval( $this->value["left"] ) ) : 0; ?>"  min="0"/>
-                        <label><?php esc_html_e( "left", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-dimension-linked-input" type="hidden" name="<?php echo esc_attr( $name ); ?>[isLinked]" value="<?php echo isset( $this->value["isLinked"] ) ? esc_html( intval( $this->value["isLinked"] ) ) : 0; ?>"/>
-                        <button class="dm-dimension-attachment-input <?php echo intval( $this->value["isLinked"] ) == 1 ? 'clicked' : ''; ?>" style="cursor:pointer; width:50px; height: 30px; border: 1px solid gray;"></button>
-                        <label>&nbsp;</label>
-                    </li>
-                </ul>
+                <dm-dimensions 
+                    :dimension="<?php echo isset( $this->value["isLinked"] ) ? esc_attr( $this->value["isLinked"] ) : 'false'; ?>" linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
+                >
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[top]"
+                        value="<?php echo isset( $this->value["top"] ) ? esc_html( intval( $this->value["top"] ) ) : 0; ?>"
+                        label="top"
+                    ></dm-dimensions-item>
+
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[right]"
+                        value="<?php echo isset( $this->value["right"] ) ? esc_html( intval( $this->value["right"] ) ) : 0; ?>"
+                        label="right"
+                    ></dm-dimensions-item>
+
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[bottom]"
+                        value="<?php echo isset( $this->value["bottom"] ) ? esc_html( intval( $this->value["bottom"] ) ) : 0; ?>"
+                        label="bottom"
+                    ></dm-dimensions-item>
+
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[left]"
+                        value="<?php echo isset( $this->value["left"] ) ? esc_html( intval( $this->value["left"] ) ) : 0; ?>"
+                        label="left"
+                    ></dm-dimensions-item>
+                </dm-dimensions>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>

@@ -22,13 +22,9 @@ class Icon extends Structure {
     }
 
     public function enqueue_icon_scripts() {
-        include 'icon-data.php';
-
         wp_enqueue_style( 'dm-fontawesome-css', DM_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
         wp_enqueue_style( 'dm-main-css', DM_CORE . 'options/posts/controls/icon/assets/css/main.css' );
-        // wp_enqueue_script( 'vue-js', 'https://cdn.jsdelivr.net/npm/vue/dist/vue.js' );
-        wp_enqueue_script( 'dm-asicon', DM_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery', 'vue-js'], time(), true );
-        wp_localize_script( 'dm-asicon', 'dmIcons', $iconList );
+        wp_enqueue_script( 'dm-asicon', DM_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**

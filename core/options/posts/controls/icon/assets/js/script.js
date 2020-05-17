@@ -16,10 +16,10 @@ Vue.component('dm-icon-picker',{
                 </div>
                 <button class="dm-add-icon-btn button" @click="openModal">{{ iconBtnText }}</button>
                 <input type="hidden" :name="name" v-model="savedIconClass">
-                <input type="hidden" :name="name + '_type'" v-model="dmIconType">
+                <input type="hidden" :name="name + '_type'" :value="iconType">
             </div>
             <transition name="fade">
-                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @dm-icon-type="iconType"></dm-icon-modal>
+                <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @icon-type="changeIconType"></dm-icon-modal>
             </transition>
         </div>
     `,
@@ -30,7 +30,8 @@ Vue.component('dm-icon-picker',{
             savedIconClass: '',
             showModal: false,
             save: false,
-            dmIconType: ''
+            iconType: '',
+            tempiconType: ''
         }
     },
     computed: {
@@ -49,9 +50,6 @@ Vue.component('dm-icon-picker',{
         pickedIconClass: function(iconClass){
             this.pickedIcon = iconClass;
         },
-        iconType: function(icon_type){
-            this.dmIconType = icon_type;
-        },
         openModal: function(){
             this.showModal = true;
         },
@@ -67,12 +65,16 @@ Vue.component('dm-icon-picker',{
             this.showModal = false;
             this.save = true;
             this.savedIconClass = this.pickedIcon;
+            this.iconType = this.tempiconType;
+        },
+        changeIconType: function(value){
+            this.tempiconType = value;
         }
     },
     created: function(){
         this.iconList = JSON.parse(this.icon_list);
         this.savedIconClass = this.default_icon ? this.default_icon : '';
-        this.dmIconType = this.default_icon_type ? this.default_icon_type : '';
+        this.iconType = this.default_icon_type ? this.default_icon_type : '';
     }
 });
 
@@ -118,8 +120,8 @@ Vue.component('dm-icon-modal', {
         }
     },
     watch: {
-        iconType: function(){
-            this.$emit('dm-icon-type', this.iconType);
+        iconType: function(val){
+            this.$emit('icon-type', val);
         }
     },
     created: function(){
@@ -168,12 +170,16 @@ Vue.component('dm-icon-list', {
     }
 });
 
-var app = new Vue({
-    el: '.dm-vue-app',
-    data: {
-        icons: []
-    },
-    created: function(){
-        this.icons = dmIcons;
-    }
-})
+let elements = document.querySelectorAll('.dm-box');
+elements.forEach(function(item){
+    new Vue({
+        el: item
+    });
+});
+
+let taxonomyEl = document.getElementById('addtag');
+if(taxonomyEl){
+    new Vue({
+        el: taxonomyEl
+    });
+}
