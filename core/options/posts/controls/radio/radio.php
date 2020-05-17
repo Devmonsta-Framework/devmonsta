@@ -80,7 +80,8 @@ class Radio extends Structure {
             
             <div class="dm-option-column right">
                 <?php
-                    if ( isset( $choices ) ) {
+                    
+                    if ( is_array( $choices ) && !empty( $choices ) ) {
                         foreach ( $choices as $key => $val ) {
                             $is_checked = ( $this->current_screen == "post" && $key == $this->value ) ? 'checked' : '';
 
@@ -167,7 +168,8 @@ class Radio extends Structure {
         <td>
         <?php
 
-        if ( isset( $choices ) ) {
+        
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {
                 $is_checked = ( $key == $value ) ? 'checked' : '';

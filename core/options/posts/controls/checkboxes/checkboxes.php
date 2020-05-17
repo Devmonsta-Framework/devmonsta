@@ -44,9 +44,9 @@ class Checkboxes extends Structure {
         }
 
         $this->value = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-                    ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                    : $default_value_array;
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        : $default_value_array;
 
         $this->output();
     }
@@ -91,15 +91,17 @@ class Checkboxes extends Structure {
             <div class="dm-option-column right">
                 <?php
 
-                foreach ( $choices as $id => $element ) {
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
-                    if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
-                        $checked = 'checked="checked"';
-                    } else {
-                        $checked = null;
-                    }
+            foreach ( $choices as $id => $element ) {
 
-                    ?>
+                if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
+                    $checked = 'checked="checked"';
+                } else {
+                    $checked = null;
+                }
+
+                ?>
                         <label class="dm-option-label-list">
                             <input  type="checkbox"
                                 name="<?php echo esc_attr( $name ); ?>[]"
@@ -107,15 +109,17 @@ class Checkboxes extends Structure {
                             <?php echo esc_html( $element ); ?>
                         </label>
                     <?php
-                }
+}
 
-                ?>
+        }
+
+        ?>
                 <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
     <?php
-    }
+}
 
     public function columns() {
         $visible = false;
@@ -137,7 +141,7 @@ class Checkboxes extends Structure {
             function ( $content, $column_name, $term_id ) use ( $cc ) {
 
                 if ( $column_name == $cc['name'] ) {
-                    echo esc_html(  ( maybe_unserialize( $term_id, 'devmonsta_' . $column_name, true ) == true ) ? "yes" : "no" );
+                    print_r( esc_html(  ( maybe_unserialize( $term_id, 'devmonsta_' . $column_name, true ) == true ) ) );
                 }
 
                 return $content;
@@ -184,21 +188,25 @@ class Checkboxes extends Structure {
             <td>
             <?php
 
-        foreach ( $choices as $id => $element ) {
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
-            if ( is_array( $value ) && in_array( $id, $value ) ) {
-                $checked = 'checked="checked"';
-            } else {
-                $checked = null;
-            }
+            foreach ( $choices as $id => $element ) {
 
-            ?>
+                if ( is_array( $value ) && in_array( $id, $value ) ) {
+                    $checked = 'checked="checked"';
+                } else {
+                    $checked = null;
+                }
+
+                ?>
                 <input  type="checkbox"
                         name="<?php echo esc_attr( $name ); ?>[]"
                         value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                     <?php echo esc_html( $element ); ?>
             <?php
 }
+
+        }
 
         ?>
                 <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">

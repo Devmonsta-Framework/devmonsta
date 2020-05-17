@@ -100,7 +100,6 @@ class DatetimePicker extends Structure {
 
             <div class="dm-option-column right">
                 <input type="text"
-                    id="dm-datetime-picker"
                     class="dm-option-input dm-option-input-datetime-picker"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $this->value ); ?>">
@@ -178,7 +177,6 @@ class DatetimePicker extends Structure {
     </th>
     <td>
         <input type="text"
-                    id="dm-datetime-picker"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $value ); ?>">
         <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>

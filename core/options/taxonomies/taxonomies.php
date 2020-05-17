@@ -16,54 +16,60 @@ class Taxonomies
      *
      * @return void
      */
+
     public function init()
     {
-        global $pagenow;
 
-        if ($pagenow == 'edit-tags.php') {
+        if (!$this->check_requirements()) {
+            return;
+        }
 
-            add_filter('admin_body_class', [$this, 'add_body_classes']);
+        add_action('admin_init', [$this, 'load_scripts']);
 
-            if (isset($_GET['taxonomy'])) {
-                $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
+        /**
+         * Add css class to the admin body for better views of controls
+         */
 
-                if (file_exists($taxonomy_file)) {
+        add_filter('admin_body_class', [$this, 'add_body_classes']);
 
-                    require_once $taxonomy_file;
-                    $path = $taxonomy_file;
-                    $file = basename($path);
-                    $file = basename($path, ".php");
+        if (isset($_GET['taxonomy'])) {
+            $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
 
-                    $taxonomy = $file;
+            if (file_exists($taxonomy_file)) {
 
-                    /**
-                     * Save term meta
-                     */
+                require_once $taxonomy_file;
+                $path = $taxonomy_file;
+                $file = basename($path);
+                $file = basename($path, ".php");
 
-                    update_option('dm_taxonomy', $taxonomy);
+                $taxonomy = $file;
 
-                    /**
-                     * Edit term meta
-                     */
+                /**
+                 * Save term meta
+                 */
 
-                    $class_name = $this->make_class_structure($file);
+                update_option('dm_taxonomy', $taxonomy);
 
-                    $taxonomy_lib = new LibsTaxonomies;
+                /**
+                 * Edit term meta
+                 */
 
-                    if (class_exists($class_name)) {
-                        $taxonomy_class = new $class_name;
+                $class_name = $this->make_class_structure($file);
 
-                        if (method_exists($taxonomy_class, 'register_controls')) {
-                            $taxonomy_class->register_controls();
-                        }
+                $taxonomy_lib = new LibsTaxonomies;
 
-                        $controls = $taxonomy_lib->all_controls();
+                if (class_exists($class_name)) {
+                    $taxonomy_class = new $class_name;
 
-                        // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
-
-                        $this->build_taxonomoy($taxonomy, $controls);
-
+                    if (method_exists($taxonomy_class, 'register_controls')) {
+                        $taxonomy_class->register_controls();
                     }
+
+                    $controls = $taxonomy_lib->all_controls();
+
+                    // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
+
+                    $this->build_taxonomoy($taxonomy, $controls);
 
                 }
 
@@ -79,6 +85,27 @@ class Taxonomies
 
     }
 
+    public function check_requirements()
+    {
+        global $pagenow;
+        if ($pagenow == 'edit-tags.php' || $pagenow == 'term.php') {
+
+            return true;
+
+        }
+
+        return false;
+    }
+
+    /**
+     * =======================================================
+     * Added CSS class name .dm-taxonomy-wrapper to the body
+     * So that controls insdie taxonomy markup can be stylable
+     *
+     * @return  string
+     * =======================================================
+     */
+
     public function add_body_classes($classes)
     {
         $classes = 'dm-taxonomy-wrapper';
@@ -86,11 +113,14 @@ class Taxonomies
     }
 
     /**
+     * ==================================================
      * Generate full class name from control type field
      *
      * @param [type] $file
      * @return void
+     * ===================================================
      */
+
     public function make_class_structure($file)
     {
         $class_name = explode('-', $file);
@@ -101,11 +131,13 @@ class Taxonomies
     }
 
     /**
+     * ====================================================
      * Buils controls dynamically from controls directory
      *
      * @param [type] $taxonomy
      * @param [type] $controls
      * @return void
+     * ====================================================
      */
     public function build_taxonomoy($taxonomy, $controls)
     {
@@ -162,12 +194,14 @@ class Taxonomies
     }
 
     /**
+     * ======================================================
      * Build control for edit form from controls directory
      *
      * @param [type] $term
      * @param [type] $taxonomy
      * @param [type] $controls
      * @return void
+     * =======================================================
      */
     public function build_taxonomoy_edit_fields($term, $taxonomy, $controls)
     {
@@ -221,7 +255,7 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
-        $taxonomy = get_option('dm_taxonomy');
+        // $taxonomy = get_option('dm_taxonomy');
         $prefix = 'devmonsta_';
 
         foreach ($_POST as $key => $value) {
@@ -308,6 +342,18 @@ class Taxonomies
     {
 
         $this->get_edit_controls($term, $taxonomy);
+
+    }
+
+    /**
+     * ===========================================
+     *      Load Styles & Scripts for controls
+     * ===========================================
+     */
+    public function load_scripts()
+    {
+
+        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
 
     }
 

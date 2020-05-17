@@ -87,10 +87,11 @@ class Select extends Structure {
 
             <div class="dm-option-column right">
                 <select 
-                    id="dm_select"
+                    class="dm_select"
                     name="<?php echo esc_attr( $name ); ?>">
                     <?php
-                        if ( isset( $choices ) ) {
+                        
+                        if ( is_array( $choices ) && !empty( $choices ) ) {
                             foreach ( $choices as $key => $val ) {
                                 $is_selected = ( $key == $this->value ) ? 'selected' : '';
                                 ?>
@@ -132,7 +133,8 @@ class Select extends Structure {
                     $selected_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
                     $selected_data  = "";
 
-                    if ( isset( $choices ) ) {
+                    
+                    if ( is_array( $choices ) && !empty( $choices ) ) {
 
                         foreach ( $choices as $key => $val ) {
 
@@ -190,11 +192,12 @@ class Select extends Structure {
         </th>
         <td>
 
-            <select id="dm_select"
+            <select class="dm_select"
                         name="<?php echo esc_attr( $name ); ?>">
                         <?php
 
-        if ( isset( $choices ) ) {
+        
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {
                 $is_selected = ( $key == $value ) ? 'selected' : '';
