@@ -253,8 +253,8 @@ class Posts
      */
     public function load_scripts()
     {
-
-        wp_enqueue_style('devmonsta-controls-style', plugin_dir_url(__FILE__) . '/assets/css/controls.css');
+        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, true );
 
     }
 
