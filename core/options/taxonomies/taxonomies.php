@@ -354,6 +354,7 @@ class Taxonomies
     {
 
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
 
     }
 

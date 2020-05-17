@@ -10,6 +10,7 @@
 namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Libs\Posts as LibsPosts;
+use Devmonsta\Libs\Repeater;
 use Devmonsta\Traits\Singleton;
 
 class Posts
@@ -63,6 +64,7 @@ class Posts
             /** Get all the properties defined in post file */
 
             $post_lib = new LibsPosts;
+            
 
             foreach ($post_file_class as $child_class) {
 
@@ -75,6 +77,8 @@ class Posts
                 }
 
             }
+
+            // error_log( serialize($repeater->all_controls()));
 
             /** Get all the metaboxed that has been defined */
 
@@ -249,8 +253,9 @@ class Posts
      */
     public function load_scripts()
     {
-
-        wp_enqueue_style('devmonsta-controls-style', plugin_dir_url(__FILE__) . '/assets/css/controls.css');
+        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
+        wp_enqueue_script( 'dm-color-picker', DM_PATH.'core/options/posts/assets/js/script.js', [], null, true );
 
     }
 
