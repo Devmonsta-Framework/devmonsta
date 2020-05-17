@@ -36,15 +36,13 @@ class Upload extends Structure {
      */
     public function render() {
 
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
+        $content = $this->content;
+        global $post;
 
-            if ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
-                $this->value = get_post_meta( $post->ID, $this->prefix . $content['name'], true );
-            }
-
-        }
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true ) 
+                        : $default_value;
 
         $this->output();
     }

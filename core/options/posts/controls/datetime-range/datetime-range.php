@@ -50,8 +50,8 @@ class DatetimeRange extends Structure {
      * @internal
      */
     public function render() {
-        $content      = $this->content;
-        $default_time = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
+        $content       = $this->content;
+        $default_value = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
         ? ( date( "Y-m-d h:m a", strtotime( $content['value']['from'] ) ) . " - " . date( "Y-m-d h:m a", strtotime( $content['value']['to'] ) ) )
         : ( date( "Y-m-d h:m a" ) . " - " . date( "Y-m-d h:m a" ) );
         global $post;
@@ -60,7 +60,7 @@ class DatetimeRange extends Structure {
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_time;
+        : $default_value;
 
         $this->output();
     }
@@ -145,7 +145,7 @@ class DatetimeRange extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) && ( "" != get_term_meta( $term->term_id, $name, true ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $default_attributes = "";
         $dynamic_classes    = "";
 

@@ -20,6 +20,7 @@ class DatePicker extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+
         if ( $this->current_screen == "post" ) {
 
             $this->enqueue_date_time_picker_scripts();
@@ -27,6 +28,7 @@ class DatePicker extends Structure {
             add_action( 'init', [$this, 'enqueue_date_time_picker_scripts'] );
 
         }
+
     }
 
     public function enqueue_date_time_picker_scripts() {
@@ -41,11 +43,14 @@ class DatePicker extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
+
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+
         $this->value = (  ( $this->current_screen == "post" )
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        : $default_value;
         $this->output();
     }
 
@@ -130,7 +135,7 @@ class DatePicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = ( !is_null( get_term_meta( $term->term_id, $name, true ) ) && "" != get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $min_date           = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
         $max_date           = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         $default_attributes = "";

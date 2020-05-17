@@ -26,17 +26,15 @@ class Radio extends Structure {
      * @internal
      */
     public function render() {
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
+        $content = $this->content;
+        global $post;
 
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-        }
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = ( $this->current_screen == "post" ) 
+                        && "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) 
+                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
+                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }

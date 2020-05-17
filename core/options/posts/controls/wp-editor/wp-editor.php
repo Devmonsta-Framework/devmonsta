@@ -37,11 +37,12 @@ class WpEditor extends Structure {
         $content = $this->content;
         global $post;
 
-        $this->value = (  ( $this->current_screen == "post" )
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" )
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        : $default_value;
         $this->output();
     }
 
@@ -49,9 +50,9 @@ class WpEditor extends Structure {
      * @internal
      */
     public function output() {
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
 
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
@@ -67,13 +68,13 @@ class WpEditor extends Structure {
 
             <div class="dm-option-column right">
                 <?php
-                        wp_editor( $this->value, $name, $settings );
-                        $editor_html = ob_get_contents();
-                        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
-                        ob_end_clean();
+wp_editor( $this->value, $name, $settings );
+        $editor_html = ob_get_contents();
+        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+        ob_end_clean();
 
-                        echo dm_render_markup( $editor_html );
-                ?>
+        echo dm_render_markup( $editor_html );
+        ?>
             </div>
         </div>
 <?php
@@ -110,11 +111,11 @@ class WpEditor extends Structure {
 
     public function edit_fields( $term, $taxonomy ) {
         $this->load_wpeditor_scripts();
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value  = get_term_meta( $term->term_id, $name, true );
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
 
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
@@ -148,19 +149,19 @@ class WpEditor extends Structure {
             </th>
             <td>
                     <?php
-                        ob_start();
-                    ?>
+ob_start();
+        ?>
                     <div>
                         <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
                         <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
                         <?php
-                            wp_editor( $value, $name, $settings );
-                            $editor_html = ob_get_contents();
-                            $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
-                            ob_end_clean();
+wp_editor( $value, $name, $settings );
+        $editor_html = ob_get_contents();
+        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+        ob_end_clean();
 
-                            echo dm_render_markup( $editor_html );
-                    ?>
+        echo dm_render_markup( $editor_html );
+        ?>
                 <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
             </td>
         </tr>

@@ -31,7 +31,7 @@ class Checkboxes extends Structure {
         $content             = $this->content;
         $default_value_array = [];
 
-        if ( is_array( $content['value'] ) && !empty( $content['value'] ) ) {
+        if ( isset( $content['value'] ) && is_array( $content['value'] ) && !empty( $content['value'] ) ) {
 
             foreach ( $content['value'] as $default_key => $default_value ) {
 
@@ -55,11 +55,12 @@ class Checkboxes extends Structure {
      * @internal
      */
     public function output() {
-        $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name    = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $label    = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name     = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $choices  = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -87,7 +88,7 @@ class Checkboxes extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
                 <?php
 
         if ( is_array( $choices ) && !empty( $choices ) ) {
@@ -101,13 +102,13 @@ class Checkboxes extends Structure {
                 }
 
                 ?>
-                        <label class="dm-option-label-list">
-                            <input  type="checkbox"
-                                name="<?php echo esc_attr( $name ); ?>[]"
-                                value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                            <?php echo esc_html( $element ); ?>
-                        </label>
-                    <?php
+                                <label class="dm-option-label-list">
+                                    <input  type="checkbox"
+                                        name="<?php echo esc_attr( $name ); ?>[]"
+                                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
+                                    <?php echo esc_html( $element ); ?>
+                                </label>
+                            <?php
 }
 
         }
@@ -154,7 +155,7 @@ class Checkboxes extends Structure {
         $name    = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value   = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );
+        $value   = ( !empty( get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
 
         $default_attributes = "";

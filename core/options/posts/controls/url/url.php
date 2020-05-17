@@ -26,17 +26,14 @@ class Url extends Structure {
      * @internal
      */
     public function render() {
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
 
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-        }
+        $content = $this->content;
+        global $post;
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = ( $this->current_screen == "post" )
+        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }
@@ -75,13 +72,13 @@ class Url extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
            </div>
            <div class="dm-option-column right">
-                <input 
+                <input
                     type="url"
                     class="dm-option-input"
                     id="<?php echo esc_attr( $name ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_html( $this->value ); 
-                ?>" >
+                    value="<?php echo esc_html( $this->value );
+        ?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
@@ -116,10 +113,10 @@ class Url extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -140,7 +137,7 @@ class Url extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $value = get_term_meta( $term->term_id, $name, true );
+        $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         ?>
 
 <tr <?php echo dm_render_markup( $default_attributes ); ?> >

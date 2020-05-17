@@ -28,14 +28,13 @@ class Hidden extends Structure {
      */
     public function render() {
 
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-            $this->value = ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-        }
+        $content = $this->content;
+        global $post;
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }
@@ -44,7 +43,7 @@ class Hidden extends Structure {
      * @internal
      */
     public function output() {
-        $name               = isset( $this->content['name'] ) ? $this->prefix. $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -107,8 +106,8 @@ class Hidden extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $name               = $this->prefix . $this->content['name'];
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
+        $value              = (  ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) && ( "" != get_term_meta( $term->term_id, $name, true ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";

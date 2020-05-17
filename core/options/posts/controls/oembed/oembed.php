@@ -38,11 +38,12 @@ class Oembed extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }
@@ -130,7 +131,7 @@ return false;
         $name                         = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc                         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs                        = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value                        = get_term_meta( $term->term_id, $name, true );
+        $value                        = (("" != get_term_meta( $term->term_id, $name, true )) && (!is_null(get_term_meta( $term->term_id, $name, true )))) ? get_term_meta( $term->term_id, $name, true ) : "";
         $default_attributes           = "";
         $dynamic_classes              = "";
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
