@@ -30,11 +30,11 @@ class Radio extends Structure {
         global $post;
 
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = ( $this->current_screen == "post" ) 
-                        && "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) 
-                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $default_value;
+        $this->value   = ( $this->current_screen == "post" )
+        && "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
+        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }
@@ -43,12 +43,12 @@ class Radio extends Structure {
      * @internal
      */
     public function output() {
-        $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name    = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
-
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $isInline           = ( $this->content['inline'] ) ? "inline" : "list";
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -75,7 +75,7 @@ class Radio extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
                 <?php
 
         if ( is_array( $choices ) && !empty( $choices ) ) {
