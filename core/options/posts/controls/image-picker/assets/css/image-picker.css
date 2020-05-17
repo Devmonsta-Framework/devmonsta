@@ -33,7 +33,7 @@
   .tooltip:hover .tooltiptext {
     visibility: visible;
   }
-  #dm_image_picker{
+  .dm_image_picker{
     display: none;
   }
   .image_picker_selector li.selected{

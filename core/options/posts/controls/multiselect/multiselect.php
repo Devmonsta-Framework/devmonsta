@@ -88,23 +88,29 @@ class Multiselect extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <select id="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
+                <select class="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
                     <?php
-                        if ( isset( $choices ) ) {
-                            foreach ( $choices as $key => $val ) {
-                                if ( is_array( $this->value ) && in_array( $key, $this->value ) ) {
-                                    $selected = 'selected';
-                                } else {
-                                    $selected = null;
-                                }
-                                ?>
+
+        if ( is_array( $choices ) && !empty( $choices ) ) {
+
+            foreach ( $choices as $key => $val ) {
+
+                if ( is_array( $this->value ) && in_array( $key, $this->value ) ) {
+                    $selected = 'selected';
+                } else {
+                    $selected = null;
+                }
+
+                ?>
                                     <option value="<?php echo esc_attr( $key ); ?>"
                                             <?php echo esc_html( $selected ); ?>>
                                             <?php echo esc_html( $val ); ?>
                                 <?php
-                            }
-                        }
-                    ?>
+}
+
+        }
+
+        ?>
                 </select>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
@@ -136,7 +142,8 @@ class Multiselect extends Structure {
                     $selected_value = maybe_unserialize( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
                     $selected_data  = [];
 
-                    if ( isset( $choices ) ) {
+                    
+                    if ( is_array( $choices ) && !empty( $choices ) ) {
 
                         foreach ( $choices as $key => $val ) {
 
@@ -196,10 +203,11 @@ class Multiselect extends Structure {
     </th>
     <td>
 
-        <select id="dm_select" name="<?php echo esc_attr( $name ); ?>[]" multiple="multiple" >
+        <select class="dm_multi_select" name="<?php echo esc_attr( $name ); ?>[]" multiple="multiple" >
     <?php
 
-        if ( isset( $choices ) ) {
+        
+        if ( is_array( $choices ) && !empty( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {
 

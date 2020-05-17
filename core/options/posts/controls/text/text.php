@@ -151,7 +151,7 @@ class Text extends Structure {
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row"><label  class="dm-option-label"><?php echo esc_html( $this->content['label'] ); ?></label></th>
         <td> 
-            <input name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $name ); ?>" type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true">
+            <input name="<?php echo esc_attr( $name ); ?>"  type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true">
             <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
         </td>
         
