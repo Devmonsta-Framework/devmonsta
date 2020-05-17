@@ -20,16 +20,13 @@ class Oembed extends Structure {
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
         add_action( 'init', [$this, 'enqueue_oembed_scripts'] );
+        add_action( 'wp_ajax_get_oembed_response', [$this, '_action_get_oembed_response']);
     }
 
     public function enqueue_oembed_scripts() {
         wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
         wp_localize_script( 'dm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
         wp_enqueue_script( 'dm-oembed' );
-        add_action(
-            'wp_ajax_get_oembed_response',
-            [$this, '_action_get_oembed_response']
-        );
     }
 
     /**
@@ -79,9 +76,28 @@ class Oembed extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
-return false;
         ?>
+
+
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
+
+            <div class="dm-option-column left">
+                <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+            <div class="dm-option-column right dm-oembed-input">
+                <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
+                        type="url" name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_html( $this->value ); ?>"
+                        class="dm-oembed-url-input"/>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                
+                <div class="dm-oembed-preview"></div>
+            </div>
+
+        </div>
+
+
+        <!-- <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
         </div>
@@ -92,7 +108,7 @@ return false;
                     class="dm-oembed-url-input"/>
         </div>
         <div class="dm-oembed-preview">
-        </div>
+        </div> -->
     <?php
 }
 
