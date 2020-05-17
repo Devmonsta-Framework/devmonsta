@@ -112,6 +112,7 @@ class Textarea extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $value = get_term_meta( $term->term_id, $name, true );
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
@@ -134,7 +135,6 @@ class Textarea extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $value = get_term_meta( $term->term_id, $name, true );
         ?>
 
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >

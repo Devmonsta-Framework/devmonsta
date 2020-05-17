@@ -45,9 +45,8 @@ class Url extends Structure {
      * @internal
      */
     public function output() {
-        $prefix             = 'devmonsta_';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -117,9 +116,8 @@ class Url extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix = 'devmonsta_';
         $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 

@@ -50,8 +50,7 @@ class WpEditor extends Structure {
      */
     public function output() {
         $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix = 'devmonsta_';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
 
         $settings                  = [];
@@ -74,7 +73,7 @@ class WpEditor extends Structure {
                         ob_end_clean();
 
                         echo dm_render_markup( $editor_html );
-                    ?>
+                ?>
             </div>
         </div>
 <?php
@@ -112,8 +111,7 @@ class WpEditor extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         $this->load_wpeditor_scripts();
         $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix = 'devmonsta_';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value  = get_term_meta( $term->term_id, $name, true );
@@ -144,30 +142,28 @@ class WpEditor extends Structure {
 
         ?>
 
-<tr <?php echo dm_render_markup( $default_attributes ); ?> >
-<th scope="row">
-    <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-</th>
-<td>
-        <?php
-ob_start();
-        ?>
-        <div>
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-    <?php
-wp_editor( $value, $name, $settings );
-        $editor_html = ob_get_contents();
-        ob_end_clean();
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+            <th scope="row">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+            </th>
+            <td>
+                    <?php
+                        ob_start();
+                    ?>
+                    <div>
+                        <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                        <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
+                        <?php
+                            wp_editor( $value, $name, $settings );
+                            $editor_html = ob_get_contents();
+                            $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+                            ob_end_clean();
 
-        $settings["attr"]["data-size"] = ( isset( $this->content['size'] ) ) ? $this->content['size'] : "small";
-        $settings["attr"]["data-mode"] = ( isset( $this->content['editor_type'] ) ) ? $this->content['editor_type'] : false;
-
-        echo dm_html_tag( 'div', $settings["attr"], $editor_html );
-        ?>
-    <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-</td>
-</tr>
+                            echo dm_render_markup( $editor_html );
+                    ?>
+                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
+            </td>
+        </tr>
 <?php
 }
 

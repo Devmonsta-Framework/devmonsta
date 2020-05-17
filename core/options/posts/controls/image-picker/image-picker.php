@@ -119,8 +119,6 @@ class ImagePicker extends Structure {
                             <?php
                             }
                          }
-
-                        echo '<div class="dm_help_tip">' . esc_html( $help ) . ' </div>';
                         ?>
                     </ul>
                 </div>

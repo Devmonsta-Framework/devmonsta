@@ -53,11 +53,10 @@ class Upload extends Structure {
      * @internal
      */
     public function output() {
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix = 'devmonsta_';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $image_size = 'full';
         $display    = 'none';
@@ -150,9 +149,8 @@ class Upload extends Structure {
 
         $this->load_upload_scripts();
 
-        $prefix     = 'devmonsta_';
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name       = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name       = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value      = get_term_meta( $term->term_id, $name, true );
