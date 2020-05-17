@@ -55,11 +55,12 @@ class Checkboxes extends Structure {
      * @internal
      */
     public function output() {
-        $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name    = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $label    = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name     = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $choices  = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -87,7 +88,7 @@ class Checkboxes extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
                 <?php
 
         if ( is_array( $choices ) && !empty( $choices ) ) {
@@ -101,13 +102,13 @@ class Checkboxes extends Structure {
                 }
 
                 ?>
-                        <label class="dm-option-label-list">
-                            <input  type="checkbox"
-                                name="<?php echo esc_attr( $name ); ?>[]"
-                                value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                            <?php echo esc_html( $element ); ?>
-                        </label>
-                    <?php
+                                <label class="dm-option-label-list">
+                                    <input  type="checkbox"
+                                        name="<?php echo esc_attr( $name ); ?>[]"
+                                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
+                                    <?php echo esc_html( $element ); ?>
+                                </label>
+                            <?php
 }
 
         }
