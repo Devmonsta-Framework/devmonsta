@@ -104,7 +104,7 @@ if ( is_array( $components ) && !empty( $components ) ) {
 
                     if ( count( $font_list ) > 0 ): ?>
                                                 <div class="google-fonts">
-                                                    <select class="dm-option-input google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
+                                                    <select class="google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
                                                         <?php
 
                     foreach ( $font_list as $key => $item ) {
