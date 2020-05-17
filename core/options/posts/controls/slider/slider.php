@@ -48,11 +48,12 @@ class Slider extends Structure {
 
         global $post;
 
-        $this->value = (  ( $this->current_screen == "post" )
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        : $default_value;
 
         $this->output();
     }
@@ -124,7 +125,7 @@ class Slider extends Structure {
             function ( $content, $column_name, $term_id ) use ( $cc ) {
 
                 if ( $column_name == $cc['name'] ) {
-                    echo esc_html(  "" != get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ? get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) : "" );
+                    echo esc_html( "" != get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ? get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) : "" );
                 }
 
                 return $content;
@@ -140,7 +141,7 @@ class Slider extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true ) ;
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $default_attributes = "";
         $dynamic_classes    = "";
 

@@ -42,11 +42,12 @@ class Switcher extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $this->value = (  ( $this->current_screen == "post" )
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" )
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        : $default_value;
 
         $this->output();
     }
@@ -150,7 +151,7 @@ class Switcher extends Structure {
         $right_choice       = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
         $left_key           = $this->array_key_first( $left_choice );
         $right_key          = $this->array_key_first( $right_choice );
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";

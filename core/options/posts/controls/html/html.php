@@ -27,11 +27,6 @@ class Html extends Structure {
      * @internal
      */
     public function render() {
-        $content = $this->content;
-        global $post;
-        $this->value = (  ( $this->current_screen == "post" ) && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
         $this->output();
     }
 

@@ -59,7 +59,7 @@ class ColorPicker extends Structure {
 
         $content = $this->content;
         global $post;
-        $default_value = $content['value'];
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
@@ -146,8 +146,8 @@ class ColorPicker extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         //enqueue scripts and styles for color picker
         $this->dm_enqueue_color_picker();
-        $name               = $this->prefix . $this->content['name'];
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";

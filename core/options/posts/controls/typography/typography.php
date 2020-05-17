@@ -59,11 +59,12 @@ class Typography extends Structure {
         $content = $this->content;
         global $post;
 
-        $this->value = (  ( $this->current_screen == "post" )
+        $default_value = isset( $content['value'] ) ? $content['value'] : [];
+        $this->value   = (  ( $this->current_screen == "post" )
             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
             && "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
         ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $content['value'];
+        : $default_value;
         $this->output();
     }
 
@@ -90,29 +91,29 @@ class Typography extends Structure {
                     <ul class="dm-option-typography">
                     <?php
 
+        if ( is_array( $components ) && !empty( $components ) ) {
 
-if ( is_array( $components ) && !empty( $components ) ) {
-        foreach ( $components as $key => $item ) {
+            foreach ( $components as $key => $item ) {
 
-            if ( $key ) {
+                if ( $key ) {
 
-                switch ( $key ) {
-                case 'family':
-                    ?>
+                    switch ( $key ) {
+                    case 'family':
+                        ?>
                                         <li>
                                             <?php
 
-                    if ( count( $font_list ) > 0 ): ?>
+                        if ( count( $font_list ) > 0 ): ?>
                                                 <div class="google-fonts">
                                                     <select class="google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
                                                         <?php
 
-                    foreach ( $font_list as $key => $item ) {
-                        $selected = $item->family == esc_html( $this->value["family"] ) ? 'selected' : '';
-                        echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
-                    }
+                        foreach ( $font_list as $key => $item ) {
+                            $selected = $item->family == esc_html( $this->value["family"] ) ? 'selected' : '';
+                            echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                        }
 
-                    ?>
+                        ?>
                                                     </select>
                                                 </div>
                                             <?php endif;?>
@@ -129,8 +130,8 @@ if ( is_array( $components ) && !empty( $components ) ) {
                                         </li>
                                     <?php
 break;
-                case 'size':
-                    ?>
+                    case 'size':
+                        ?>
                                         <li>
                                             <input type="number" name="<?php echo esc_attr( $name ) ?>[size]"
                                                 value="<?php echo isset( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input" />
@@ -138,24 +139,24 @@ break;
                                         </li>
                                     <?php
 break;
-                case 'line-height':
-                    ?>
+                    case 'line-height':
+                        ?>
                                         <li>
                                             <input type="number"name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $this->value["line_height"] ) ? esc_html( trim( $this->value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input" />
                                             <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
                                         </li>
                                     <?php
 break;
-                case 'letter-spacing':
-                    ?>
+                    case 'letter-spacing':
+                        ?>
                                         <li>
                                             <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $this->value["letter_spacing"] ) ? esc_html( trim( $this->value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input" />
                                             <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
                                         </li>
                                     <?php
 break;
-                case 'color':
-                    ?>
+                    case 'color':
+                        ?>
                                         <li>
                                             <input  type="number"
                                             name="<?php echo esc_attr( $name ) ?>[color]"
@@ -167,15 +168,16 @@ break;
                                     <?php
 break;
 
-                default:
-                    # code...
-                    break;
+                    default:
+                        # code...
+                        break;
+                    }
+
                 }
 
             }
 
         }
-    }
 
         // end foreach
         ?>
@@ -219,7 +221,7 @@ break;
     public function edit_fields( $term, $taxonomy ) {
 
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
-        $value = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );
+        $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
 
         $this->load_scripts();
 
@@ -265,28 +267,29 @@ break;
         <ul class="dm-option-typography">
                     <?php
 
-if ( is_array( $components ) && !empty( $components ) ) {
-        foreach ( $components as $key => $item ) {
+        if ( is_array( $components ) && !empty( $components ) ) {
 
-            if ( $key ) {
+            foreach ( $components as $key => $item ) {
 
-                switch ( $key ) {
-                case 'family':
-                    ?>
+                if ( $key ) {
+
+                    switch ( $key ) {
+                    case 'family':
+                        ?>
                                         <li>
                                             <?php
 
-                    if ( count( $font_list ) > 0 ): ?>
+                        if ( count( $font_list ) > 0 ): ?>
                                                 <div class="google-fonts">
                                                     <select class="dm-option-input google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
                                                         <?php
 
-                    foreach ( $font_list as $key => $item ) {
-                        $selected = $item->family == esc_html( $this->value["family"] ) ? 'selected' : '';
-                        echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
-                    }
+                        foreach ( $font_list as $key => $item ) {
+                            $selected = $item->family == esc_html( $this->value["family"] ) ? 'selected' : '';
+                            echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                        }
 
-                    ?>
+                        ?>
                                                     </select>
                                                 </div>
                                             <?php endif;?>
@@ -303,8 +306,8 @@ if ( is_array( $components ) && !empty( $components ) ) {
                                         </li>
                                     <?php
 break;
-                case 'size':
-                    ?>
+                    case 'size':
+                        ?>
                                         <li>
                                             <input type="number" name="<?php echo esc_attr( $name ) ?>[size]"
                                                 value="<?php echo isset( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input" />
@@ -312,24 +315,24 @@ break;
                                         </li>
                                     <?php
 break;
-                case 'line-height':
-                    ?>
+                    case 'line-height':
+                        ?>
                                         <li>
                                             <input type="number"name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $this->value["line_height"] ) ? esc_html( trim( $this->value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input" />
                                             <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
                                         </li>
                                     <?php
 break;
-                case 'letter-spacing':
-                    ?>
+                    case 'letter-spacing':
+                        ?>
                                         <li>
                                             <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $this->value["letter_spacing"] ) ? esc_html( trim( $this->value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input" />
                                             <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
                                         </li>
                                     <?php
 break;
-                case 'color':
-                    ?>
+                    case 'color':
+                        ?>
                                         <li>
                                             <input  type="number"
                                             name="<?php echo esc_attr( $name ) ?>[color]"
@@ -341,15 +344,16 @@ break;
                                     <?php
 break;
 
-                default:
-                    # code...
-                    break;
+                    default:
+                        # code...
+                        break;
+                    }
+
                 }
 
             }
 
         }
-    }
 
         // end foreach
         ?>

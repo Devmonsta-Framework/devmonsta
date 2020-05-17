@@ -42,9 +42,10 @@ class Select extends Structure {
         $content = $this->content;
 
         global $post;
-        $this->value = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        : $default_value;
 
         $this->output();
     }
@@ -85,22 +86,25 @@ class Select extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <select 
+                <select
                     class="dm_select"
                     name="<?php echo esc_attr( $name ); ?>">
                     <?php
-                        
-                        if ( is_array( $choices ) && !empty( $choices ) ) {
-                            foreach ( $choices as $key => $val ) {
-                                $is_selected = ( $key == $this->value ) ? 'selected' : '';
-                                ?>
+
+        if ( is_array( $choices ) && !empty( $choices ) ) {
+
+            foreach ( $choices as $key => $val ) {
+                $is_selected = ( $key == $this->value ) ? 'selected' : '';
+                ?>
                                     <option value="<?php echo esc_html( $key ); ?>"
                                             <?php echo esc_html( $is_selected ); ?>>
                                             <?php echo esc_html( $val ); ?>
                                 <?php
-                            }
-                        }
-                    ?>
+}
+
+        }
+
+        ?>
                 </select>
                 <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
             </div>
@@ -132,7 +136,6 @@ class Select extends Structure {
                     $selected_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
                     $selected_data  = "";
 
-                    
                     if ( is_array( $choices ) && !empty( $choices ) ) {
 
                         foreach ( $choices as $key => $val ) {
@@ -157,10 +160,10 @@ class Select extends Structure {
 
     public function edit_fields( $term, $taxonomy ) {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->prefix  . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -194,7 +197,6 @@ class Select extends Structure {
                         name="<?php echo esc_attr( $name ); ?>">
                         <?php
 
-        
         if ( is_array( $choices ) && !empty( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {

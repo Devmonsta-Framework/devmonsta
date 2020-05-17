@@ -43,10 +43,11 @@ class Multiselect extends Structure {
 
         global $post;
 
-        if (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) {
-            $this->value = maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) );
-        }
+        $default_value = ( isset( $content['value'] ) && is_array( $content['value'] ) && !empty( $content['value'] ) ) ? $content['value'] : [];
+        $this->value   = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        : $default_value;
 
         $this->output();
     }
@@ -170,7 +171,7 @@ class Multiselect extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";

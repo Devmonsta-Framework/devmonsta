@@ -45,8 +45,8 @@ class RangeSlider extends Structure {
      */
     public function render() {
         $content  = $this->content;
-        $from_val = $content['value']['from'];
-        $to_val   = $content['value']['to'];
+        $from_val = isset( $content['value']['from'] ) ? $content['value']['from'] : "10";
+        $to_val   = isset( $content['value']['to'] ) ? $content['value']['to'] : "20";
         global $post;
         $this->value = (  ( $this->current_screen == "post" ) && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) !== "" ) ) ?
@@ -60,11 +60,11 @@ class RangeSlider extends Structure {
      * @internal
      */
     public function output() {
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $this->prefix  . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -135,10 +135,10 @@ class RangeSlider extends Structure {
         $this->enqueue_slider_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->prefix  . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $default_attributes = "";
         $dynamic_classes    = "";
 

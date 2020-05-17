@@ -135,11 +135,8 @@ class Icon extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $icon               = get_term_meta( $term->term_id, $name, true );
-        $icon_type          = get_term_meta( $term->term_id, $name . "_type", true );
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
+        $icon               = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
+        $icon_type          = (  ( "" != get_term_meta( $term->term_id, $name . "_type", true ) ) && ( !is_null( get_term_meta( $term->term_id, $name . "_type", true ) ) ) ) ? get_term_meta( $term->term_id, $name . "_type", true ) : "";
         $default_attributes = "";
         $dynamic_classes    = "";
 

@@ -28,7 +28,7 @@ class Checkbox extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value = $content['value'];
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
@@ -130,7 +130,7 @@ class Checkbox extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $text               = isset( $this->content['text'] ) ? $this->content['text'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $default_attributes = "";
         $dynamic_classes    = "";
         $is_checked         = ( $value == 'true' ) ? 'checked' : '';

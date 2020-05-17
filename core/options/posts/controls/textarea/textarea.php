@@ -28,10 +28,11 @@ class Textarea extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $this->value = (  ( $this->current_screen == "post" ) 
-                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) 
-                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $content['value'];
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" )
+            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }
@@ -112,7 +113,7 @@ class Textarea extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $value = get_term_meta( $term->term_id, $name, true );
+        $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 

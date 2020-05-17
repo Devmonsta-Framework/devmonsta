@@ -48,11 +48,12 @@ class ImagePicker extends Structure {
         $content = $this->content;
         global $post;
 
-        $this->value = (  ( $this->current_screen == "post" )
-            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $content['value'];
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" )
+                        && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                            : $default_value;
 
         $this->output();
     }
@@ -92,34 +93,39 @@ class ImagePicker extends Structure {
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-            
+
             <div class="dm-option-column right full-width">
-            
+
                 <div class="thumbnails dm-option-image_picker_selector">
                     <input class="dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
                     <ul>
                         <?php
-                         if ( is_array( $choices ) && isset( $choices ) ) {
-                            foreach ( $choices as $item_key => $item ) {
-                                $selected = ( $item_key == $this->value ) ? 'selected' : '';
-                                $small_image = isset($item['small']) ? $item['small'] : '';
-                                $large_image = isset($item['large']) ? $item['large'] : '';
-                                ?>
-                                    
+
+        if ( is_array( $choices ) && isset( $choices ) ) {
+
+            foreach ( $choices as $item_key => $item ) {
+                $selected    = ( $item_key == $this->value ) ? 'selected' : '';
+                $small_image = isset( $item['small'] ) ? $item['small'] : '';
+                $large_image = isset( $item['large'] ) ? $item['large'] : '';
+                ?>
+
                                 <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                    <?php if(!empty($large_image)) : ?>
+                                    <?php
+if ( !empty( $large_image ) ): ?>
                                         <div class="dm-img-picker-preview">
                                             <img src="<?php echo esc_attr( $large_image ); ?>" />
                                         </div>
-                                    <?php endif; ?>
+                                    <?php endif;?>
                                     <div class="thumbnail">
                                         <img src="<?php echo esc_attr( $small_image ); ?>" />
                                     </div>
                                 </li>
                             <?php
-                            }
-                         }
-                        ?>
+}
+
+        }
+
+        ?>
                     </ul>
                 </div>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
@@ -162,11 +168,11 @@ class ImagePicker extends Structure {
         $this->enqueue_image_picker_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $name               = isset( $this->content['name'] )  ? $this->prefix . $this->content['name'] : '';
+        $desc               = isset( $this->content['desc'] )  ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] )  ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -197,42 +203,42 @@ class ImagePicker extends Structure {
     <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" class="dm_image_picker">
                     <?php
 
-                        if ( is_array( $choices ) && isset( $choices ) ) {
+        if ( is_array( $choices ) && isset( $choices ) ) {
 
-                            foreach ( $choices as $key => $item ) {
-                                $selected = ( $key == $this->value ) ? 'selected' : '';
-                                ?>
+            foreach ( $choices as $key => $item ) {
+                $selected = ( $key == $this->value ) ? 'selected' : '';
+                ?>
                                     <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $selected ); ?>></option>
                                 <?php
-                            }
+}
 
-                        }
+        }
 
-                    ?>
+        ?>
                 </select>
                 <ul class="thumbnails image_picker_selector">
                     <?php
 
-                    if ( is_array( $choices ) && isset( $choices ) ) {
+        if ( is_array( $choices ) && isset( $choices ) ) {
 
-                        foreach ( $choices as $item_key => $item ) {
-                            $selected = ( $item_key == $this->value ) ? 'selected' : '';
+            foreach ( $choices as $item_key => $item ) {
+                $selected = ( $item_key == $this->value ) ? 'selected' : '';
 
-                            if ( is_array( $item ) && isset( $choices ) ) {
-                                $small_image = '';
-                                $large_image = '';
+                if ( is_array( $item ) && isset( $choices ) ) {
+                    $small_image = '';
+                    $large_image = '';
 
-                                foreach ( $item as $key => $item_size ) {
+                    foreach ( $item as $key => $item_size ) {
 
-                                    if ( $key == "small" ) {
-                                        $small_image .= $item_size;
-                                    } else {
-                                        $large_image .= $item_size;
-                                    }
+                        if ( $key == "small" ) {
+                            $small_image .= $item_size;
+                        } else {
+                            $large_image .= $item_size;
+                        }
 
-                                }
+                    }
 
-                                ?>
+                    ?>
                                     <div class="tooltip">
                                         <span class="tooltiptext">
                                             <img src="<?php echo esc_attr( $large_image ); ?>" height="50" width="50" />
@@ -244,13 +250,13 @@ class ImagePicker extends Structure {
                                         </li>
                                     </div>
                                 <?php
-                            }
+}
 
-                        }
+            }
 
-                    }
+        }
 
-                ?>
+        ?>
                 </ul>
         <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
     </td>

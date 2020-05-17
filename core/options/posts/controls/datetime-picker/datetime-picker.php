@@ -53,13 +53,13 @@ class DatetimePicker extends Structure {
      * @internal
      */
     public function render() {
-        $content           = $this->content;
-        $default_date_time = isset( $content['value'] ) ? $content['value'] : "";
+        $content       = $this->content;
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         global $post;
         $this->value = (  ( $this->current_screen == "post" )
             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
         get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_date_time;
+        : $default_value;
         $this->output();
     }
 
@@ -144,7 +144,7 @@ class DatetimePicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = ( !is_null( get_term_meta( $term->term_id, $name, true ) ) && "" != get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $min_date           = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
         $max_date           = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         $default_attributes = "";

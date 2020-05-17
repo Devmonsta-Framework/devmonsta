@@ -19,25 +19,22 @@ class Text extends Structure {
      * @internal
      */
     public function enqueue( $meta_owner ) {
-        $this->current_screen;
+        $this->current_screen = $meta_owner;
     }
 
     /**
      * @internal
      */
     public function render() {
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
+        $content = $this->content;
+        global $post;
 
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-
-            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-        }
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $this->value   = (  ( $this->current_screen == "post" )
+                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+                    ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                    : $default_value;
 
         $this->output();
     }
@@ -69,7 +66,6 @@ class Text extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
 
@@ -81,7 +77,7 @@ class Text extends Structure {
                     type="text"
                     class="dm-option-input"
                     name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>"
+                    value="<?php echo esc_html( $this->value ); ?>"
                 >
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
@@ -122,7 +118,7 @@ class Text extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $value              = get_term_meta( $term->term_id, $name, true );
+        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";

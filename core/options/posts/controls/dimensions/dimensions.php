@@ -36,11 +36,12 @@ class Dimensions extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $this->value = (  ( $this->current_screen == "post" )
+        $default_value = isset( $content['value'] ) ? $content['value'] : [];
+        $this->value   = (  ( $this->current_screen == "post" )
             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
         ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $content['value'];
+        : $default_value;
 
         $this->output();
     }
@@ -80,7 +81,7 @@ class Dimensions extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <dm-dimensions 
+                <dm-dimensions
                     :dimension="<?php echo isset( $this->value["isLinked"] ) ? esc_attr( $this->value["isLinked"] ) : 'false'; ?>" linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
                 >
                     <dm-dimensions-item
@@ -159,7 +160,7 @@ class Dimensions extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );
+        $value              = (  ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) && ( "" != get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
