@@ -62,9 +62,7 @@ class ImagePicker extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $help               = isset( $this->content['help'] ) ? $this->content['help'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = isset( $this->content['value'] ) ? $this->content['value'] : '';
@@ -195,9 +193,7 @@ class ImagePicker extends Structure {
         $this->enqueue_image_picker_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $help               = isset( $this->content['help'] ) ? $this->content['help'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';

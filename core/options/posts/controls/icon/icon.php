@@ -60,7 +60,7 @@ class Icon extends Structure {
     public function output() {
         include 'icon-data.php';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -91,7 +91,7 @@ class Icon extends Structure {
             </div>
             <div class="dm-option-column right">
                 <dm-icon-picker
-                    name='<?php echo esc_attr( $this->prefix . $name ); ?>'
+                    name='<?php echo esc_attr( $name ); ?>'
                     icon_list='<?php echo $iconEncoded; ?>'
                     default_icon_type='<?php echo isset( $this->value['icon_type'] ) ? esc_attr( $this->value['icon_type'] ) : "dm-font-awesome"; ?>'
                     default_icon='<?php echo isset( $this->value['icon_name'] ) ? esc_attr( $this->value['icon_name'] ) : "fas fa-angle-right"; ?>'
@@ -136,8 +136,7 @@ class Icon extends Structure {
 
         include 'icon-data.php';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $icon               = get_term_meta( $term->term_id, $name, true );
@@ -176,8 +175,8 @@ class Icon extends Structure {
                     <dm-icon-picker
                         name='<?php echo esc_attr( $name ); ?>'
                         icon_list='<?php echo $iconEncoded; ?>'
-                        default_icon_type='<?php echo isset( $icon_type ) ? $icon_type : "dm-font-awesome"; ?>'
-                        default_icon='<?php echo isset( $icon ) ? $icon : ""; ?>'
+                        default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : "dm-font-awesome"; ?>'
+                    default_icon='<?php echo isset( $icon ) ? esc_attr( $icon ) : "fas fa-angle-right"; ?>'
                     ></dm-icon-picker>
                     <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
                 </td>

@@ -89,8 +89,7 @@ class Gradient extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -191,8 +190,7 @@ class Gradient extends Structure {
         $this->dm_enqueue_gradient_picker();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );

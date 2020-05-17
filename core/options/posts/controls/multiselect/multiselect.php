@@ -56,8 +56,7 @@ class Multiselect extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
@@ -142,7 +141,6 @@ class Multiselect extends Structure {
                     $selected_value = maybe_unserialize( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) );
                     $selected_data  = [];
 
-                    
                     if ( is_array( $choices ) && !empty( $choices ) ) {
 
                         foreach ( $choices as $key => $val ) {
@@ -168,9 +166,8 @@ class Multiselect extends Structure {
 
         $this->load_multi_select_scripts();
 
-        $prefix             = 'devmonsta_';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = maybe_unserialize( get_term_meta( $term->term_id, $name, true ) );
@@ -206,7 +203,6 @@ class Multiselect extends Structure {
         <select class="dm_multi_select" name="<?php echo esc_attr( $name ); ?>[]" multiple="multiple" >
     <?php
 
-        
         if ( is_array( $choices ) && !empty( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {

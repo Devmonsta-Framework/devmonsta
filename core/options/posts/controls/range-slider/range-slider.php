@@ -61,8 +61,7 @@ class RangeSlider extends Structure {
      */
     public function output() {
         $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix = 'devmonsta_';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name   = isset( $this->content['name'] ) ? $this->prefix  . $this->content['name'] : '';
         $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
@@ -135,9 +134,8 @@ class RangeSlider extends Structure {
 
         $this->enqueue_slider_scripts();
 
-        $prefix             = 'devmonsta_';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix  . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = get_term_meta( $term->term_id, $name, true );

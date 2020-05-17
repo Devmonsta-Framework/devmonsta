@@ -43,8 +43,7 @@ class Checkbox extends Structure {
      */
     public function output() {
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix     = 'devmonsta_';
-        $name       = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name       = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $text       = isset( $this->content['text'] ) ? $this->content['text'] : '';
@@ -83,11 +82,11 @@ class Checkbox extends Structure {
                         style="display: none">
 
                 <label class="dm-option-label-list">
-                    <input 
+                    <input
                         type="checkbox"
                         name="<?php echo esc_attr( $name ); ?>"
-                        value="true" <?php echo esc_attr( $is_checked ); 
-                    ?>>
+                        value="true" <?php echo esc_attr( $is_checked );
+        ?>>
                     <?php echo esc_html( $text ); ?>
                 </label>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
@@ -126,9 +125,8 @@ class Checkbox extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix             = 'devmonsta_';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $text               = isset( $this->content['text'] ) ? $this->content['text'] : '';

@@ -26,19 +26,12 @@ class Textarea extends Structure {
      * @internal
      */
     public function render() {
-
-        global $wpdocs_admin_page;
-        $screen               = get_current_screen();
-        $this->current_screen = $screen->base;
-
-        if ( $this->current_screen == "post" ) {
-            $content = $this->content;
-            global $post;
-            $this->value = !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ?
-            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            : $content['value'];
-
-        }
+        $content = $this->content;
+        global $post;
+        $this->value = (  ( $this->current_screen == "post" ) 
+                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) 
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $content['value'];
 
         $this->output();
     }
@@ -47,9 +40,9 @@ class Textarea extends Structure {
      * @internal
      */
     public function output() {
-        $prefix             = 'devmonsta_';
+
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -78,7 +71,7 @@ class Textarea extends Structure {
                 <label class="dm-option-label" for="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?> </label>
             </div>
             <div class="dm-option-column right">
-                <textarea 
+                <textarea
                     rows="6"
                     id="<?php echo $name; ?>"
                     class="dm-option-input dm-option-textarea"
@@ -117,11 +110,10 @@ class Textarea extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix = 'devmonsta_';
-        $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
-        $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $default_attributes = "";
         $dynamic_classes    = "";

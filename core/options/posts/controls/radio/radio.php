@@ -45,9 +45,8 @@ class Radio extends Structure {
      * @internal
      */
     public function output() {
-        $prefix  = 'devmonsta_';
         $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name    = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name    = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
@@ -77,29 +76,32 @@ class Radio extends Structure {
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-            
+
             <div class="dm-option-column right">
                 <?php
-                    
-                    if ( is_array( $choices ) && !empty( $choices ) ) {
-                        foreach ( $choices as $key => $val ) {
-                            $is_checked = ( $this->current_screen == "post" && $key == $this->value ) ? 'checked' : '';
 
-                            ?>
+        if ( is_array( $choices ) && !empty( $choices ) ) {
+
+            foreach ( $choices as $key => $val ) {
+                $is_checked = ( $this->current_screen == "post" && $key == $this->value ) ? 'checked' : '';
+
+                ?>
                             <label class="dm-option-label-list">
-                                <input 
+                                <input
                                     type="radio"
                                     name="<?php echo esc_attr( $name ); ?>"
                                     value="<?php echo esc_attr( $key ); ?>"
                                     <?php
-                                    echo esc_html( $is_checked );
-                                ?>>
+echo esc_html( $is_checked );
+                ?>>
                                 <?php echo esc_html( $val ); ?>
                             </label>
                             <?php
-                        }
-                    }
-                ?>
+}
+
+        }
+
+        ?>
                  <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
 
@@ -135,8 +137,8 @@ class Radio extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix             = 'devmonsta_';
-        $name               = $prefix . $this->content['name'];
+
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = get_term_meta( $term->term_id, $name, true );
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
@@ -168,7 +170,6 @@ class Radio extends Structure {
         <td>
         <?php
 
-        
         if ( is_array( $choices ) && !empty( $choices ) ) {
 
             foreach ( $choices as $key => $val ) {

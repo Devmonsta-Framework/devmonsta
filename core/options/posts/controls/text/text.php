@@ -47,8 +47,7 @@ class Text extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -78,7 +77,7 @@ class Text extends Structure {
                 <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
             <div class="dm-option-column right">
-                <input 
+                <input
                     type="text"
                     class="dm-option-input"
                     name="<?php echo esc_attr( $name ); ?>"
@@ -121,8 +120,7 @@ class Text extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix             = 'devmonsta_';
-        $name               = $prefix . $this->content['name'];
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = get_term_meta( $term->term_id, $name, true );
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
@@ -150,11 +148,11 @@ class Text extends Structure {
 
     <tr <?php echo dm_render_markup( $default_attributes ); ?> >
         <th scope="row"><label  class="dm-option-label"><?php echo esc_html( $this->content['label'] ); ?></label></th>
-        <td> 
+        <td>
             <input name="<?php echo esc_attr( $name ); ?>"  type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true">
             <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
         </td>
-        
+
     </tr>
     <?php
 }

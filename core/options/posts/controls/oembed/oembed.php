@@ -52,8 +52,7 @@ class Oembed extends Structure {
      */
     public function output() {
         $label  = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix = 'devmonsta_';
-        $name   = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name   = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc   = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs  = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
@@ -128,8 +127,7 @@ return false;
     public function edit_fields( $term, $taxonomy ) {
         $this->enqueue_oembed_scripts();
         $label                        = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix                       = 'devmonsta_';
-        $name                         = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name                         = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc                         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs                        = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value                        = get_term_meta( $term->term_id, $name, true );

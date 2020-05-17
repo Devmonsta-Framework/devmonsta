@@ -52,7 +52,9 @@ class Switcher extends Structure {
     }
 
     public function array_key_first( array $array ) {
+
         foreach ( $array as $key => $value ) {return $key;}
+
     }
 
     /**
@@ -60,8 +62,7 @@ class Switcher extends Structure {
      */
     public function output() {
         $label        = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix       = 'devmonsta_';
-        $name         = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name         = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $left_choice  = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
         $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
@@ -143,8 +144,7 @@ class Switcher extends Structure {
         $this->load_switcher_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $left_choice        = isset( $this->content['left-choice'] ) ? $this->content['left-choice'] : '';
         $right_choice       = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';

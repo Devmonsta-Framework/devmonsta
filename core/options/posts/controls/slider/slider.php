@@ -63,8 +63,7 @@ class Slider extends Structure {
     public function output() {
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -125,7 +124,7 @@ class Slider extends Structure {
             function ( $content, $column_name, $term_id ) use ( $cc ) {
 
                 if ( $column_name == $cc['name'] ) {
-                    echo esc_html( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ? get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) : "" );
+                    echo esc_html(  "" != get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ? get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) : "" );
                 }
 
                 return $content;
@@ -137,9 +136,8 @@ class Slider extends Structure {
 
         $this->enqueue_slider_scripts();
 
-        $prefix             = 'devmonsta_';
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = get_term_meta( $term->term_id, $name, true ) ;

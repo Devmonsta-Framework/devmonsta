@@ -44,8 +44,7 @@ class Hidden extends Structure {
      * @internal
      */
     public function output() {
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix. $this->content['name'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -108,8 +107,7 @@ class Hidden extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
-        $prefix             = 'devmonsta_';
-        $name               = $prefix . $this->content['name'];
+        $name               = $this->prefix . $this->content['name'];
         $value              = get_term_meta( $term->term_id, $name, true );
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -134,17 +132,17 @@ class Hidden extends Structure {
 
         ?>
 
-<tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row"><label class="dm-option-label"></label></th>
-    <td>
-    <input style="display: none"
-                    type="text"
-                    id="<?php echo $name; ?>"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_attr( $value ); ?>" size="40" aria-required="true">
-    </td>
+        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+            <th scope="row"><label class="dm-option-label"></label></th>
+            <td>
+            <input style="display: none"
+                            type="text"
+                            id="<?php echo $name; ?>"
+                            name="<?php echo esc_attr( $name ); ?>"
+                            value="<?php echo esc_attr( $value ); ?>" size="40" aria-required="true">
+            </td>
 
-</tr>
+        </tr>
 <?php
 }
 
