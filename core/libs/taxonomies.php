@@ -15,4 +15,9 @@ class Taxonomies
     {
         return self::$data;
     }
+
+    public function __destruct()
+    {
+        self::$data[] = '';
+    }
 }

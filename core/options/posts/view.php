@@ -124,13 +124,15 @@ class View
             <script>
                 jQuery(document).ready(function($){
                     $("#dm-repeater-add-new").click(function(){
-                        
+                        $('.dm-color-field').wpColorPicker();
                         // $($('#dm-repeater-template').html()).insertAfter('#dm-repeater-section');
                         $('#dm-repeater-section').append($('#dm-repeater-template').html());
                         $('.dm-repeater-delete-btn').click(function(){
                         
-                        $(this).closest('div').remove();
-                    });
+                            $(this).closest('div').remove();
+
+                         });
+                         
                     });
 
                     

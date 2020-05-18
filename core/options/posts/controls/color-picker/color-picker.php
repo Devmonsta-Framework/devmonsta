@@ -77,7 +77,8 @@ class ColorPicker extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $prefix             = 'devmonsta_';
+        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";

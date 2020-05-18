@@ -7,9 +7,9 @@ use Devmonsta\Traits\Singleton;
 
 class Taxonomies
 {
-
-    protected $meta_owner = "taxonomy";
     use Singleton;
+    protected $meta_owner = "taxonomy";
+    protected $controls = null;
 
     /**
      * Entry point of taxonomy control
@@ -19,6 +19,12 @@ class Taxonomies
 
     public function init()
     {
+
+        $t = get_option('dm_taxonomy'); // T for taxonomy name
+
+        add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
+        add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
+        add_action('edited_' . $t, [$this, 'update_meta'], 10, 2);
 
         if (!$this->check_requirements()) {
             return;
@@ -67,6 +73,8 @@ class Taxonomies
 
                     $controls = $taxonomy_lib->all_controls();
 
+                    $this->controls = $controls;
+
                     // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
 
                     $this->build_taxonomoy($taxonomy, $controls);
@@ -76,12 +84,6 @@ class Taxonomies
             }
 
         }
-
-        $t = get_option('dm_taxonomy'); // T for taxonomy name
-
-        add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
-        add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
-        add_action('edited_' . $t, [$this, 'update_meta'], 10, 2);
 
     }
 
@@ -317,22 +319,28 @@ class Taxonomies
              * Edit term meta
              */
 
-            $class_name = $this->make_class_structure($file);
+            if ($this->controls == null) {
+                $class_name = $this->make_class_structure($file);
 
-            $taxonomy_lib = new LibsTaxonomies;
+                $taxonomy_lib = new LibsTaxonomies();
 
-            if (class_exists($class_name)) {
-                $taxonomy_class = new $class_name;
+                if (class_exists($class_name)) {
+                    $taxonomy_class = new $class_name;
 
-                if (method_exists($taxonomy_class, 'register_controls')) {
-                    $taxonomy_class->register_controls();
+                    if (method_exists($taxonomy_class, 'register_controls')) {
+                        $taxonomy_class->register_controls();
+                    }
+
+                    $controls = $taxonomy_lib->all_controls();
+
+                    error_log(serialize($controls));
+
+                    $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
+
                 }
-
-                $controls = $taxonomy_lib->all_controls();
-
-                $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
-
             }
+
+            $this->build_taxonomoy_edit_fields($term, $taxonomy, $this->controls);
 
         }
 
@@ -354,8 +362,8 @@ class Taxonomies
     {
 
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
-        wp_enqueue_script( 'dm-color-picker', DM_PATH.'core/options/posts/assets/js/script.js', [], null, true );
+        wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
 
     }
 
