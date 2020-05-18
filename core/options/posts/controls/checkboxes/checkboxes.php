@@ -44,9 +44,9 @@ class Checkboxes extends Structure {
         }
 
         $this->value = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $default_value_array;
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                        : $default_value_array;
 
         $this->output();
     }

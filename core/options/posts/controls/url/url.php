@@ -20,7 +20,16 @@ class Url extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-    }
+
+        add_action('admin_init', [$this, 'load_url_scripts']);
+      }
+
+      function load_url_scripts(){
+            
+        // wp_enqueue_style('devmonsta-custom-style', DM_CORE . 'options/posts/controls/url/assets/css/dm-ui.css');
+        // wp_enqueue_script( 'devmonsta-custom-js', DM_CORE . 'options/posts/controls/url/assets/js/etn-ui.min.js', [], false, true );
+    
+      }
 
     /**
      * @internal
@@ -75,7 +84,6 @@ class Url extends Structure {
                 <input
                     type="url"
                     class="dm-option-input"
-                    id="<?php echo esc_attr( $name ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_html( $this->value );
         ?>" >
