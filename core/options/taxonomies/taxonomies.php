@@ -333,7 +333,6 @@ class Taxonomies
 
                     $controls = $taxonomy_lib->all_controls();
 
-                    error_log(serialize($controls));
 
                     $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
 
