@@ -84,7 +84,6 @@ class Url extends Structure {
                 <input
                     type="url"
                     class="dm-option-input"
-                    id="<?php echo esc_attr( $name ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_html( $this->value );
         ?>" >
