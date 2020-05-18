@@ -14,7 +14,7 @@ Vue.component('dm-icon-picker', {
                    </div>
                    <div class="dm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
                 </div>
-                <button class="dm-add-icon-btn button" @click="openModal">{{ iconBtnText }}</button>
+                <button class="dm-add-icon-btn button" @click.prevent="openModal">{{ iconBtnText }}</button>
                 <input type="hidden" :name="name" v-model="savedIconClass">
                 <input type="hidden" :name="name + '_type'" :value="iconType">
             </div>
@@ -97,7 +97,7 @@ Vue.component('dm-icon-modal', {
                 </div>
                 <dm-icon-list v-if="icons.length" :icons="icons" :search="search" @picked-icon="pickedIcon" :default_icon="default_icon"></dm-icon-list>
                 <div class="dm-icon-modal-footer">
-                    <button class="button media-button button-primary button-large media-button-0" @click="$emit('save-icon')">Save</button>
+                    <button class="button media-button button-primary button-large media-button-0" @click.prevent="$emit('save-icon')">Save</button>
                 </div>
             </div>
         </div>

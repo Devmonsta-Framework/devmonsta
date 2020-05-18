@@ -145,6 +145,6 @@ class Text extends Structure {
 
             </div>
     <?php
-}
+    }
 
 }
