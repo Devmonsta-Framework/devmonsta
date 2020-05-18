@@ -79,24 +79,9 @@ class Icon extends Structure {
         $class_attributes = "class='dm-vue-app dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
-        ?>
+        $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $this->value['icon_type'], $this->value['icon_name'] );
 
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-            </div>
-            <div class="dm-option-column right">
-                <dm-icon-picker
-                    name='<?php echo esc_attr( $name ); ?>'
-                    icon_list='<?php echo $iconEncoded; ?>'
-                    default_icon_type='<?php echo isset( $this->value['icon_type'] ) ? esc_attr( $this->value['icon_type'] ) : "dm-font-awesome"; ?>'
-                    default_icon='<?php echo isset( $this->value['icon_name'] ) ? esc_attr( $this->value['icon_name'] ) : "fas fa-angle-right"; ?>'
-                ></dm-icon-picker>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-    <?php
-}
+    }
 
     public function columns() {
         $visible = false;
@@ -154,27 +139,30 @@ class Icon extends Structure {
 
         }
 
-        $class_attributes = "class='dm-vue-app dm-option form-field $dynamic_classes'";
+        $class_attributes = "class='dm-vue-app dm-option form-field dm-box $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
+        $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon );
 
+}
+
+    public function generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon_name ) {
         ?>
-
-            <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-                <th scope="row">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-                </th>
-                <td>
-                    <dm-icon-picker
-                        name='<?php echo esc_attr( $name ); ?>'
-                        icon_list='<?php echo $iconEncoded; ?>'
-                        default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : "dm-font-awesome"; ?>'
-                    default_icon='<?php echo isset( $icon ) ? esc_attr( $icon ) : "fas fa-angle-right"; ?>'
-                    ></dm-icon-picker>
-                    <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-                </td>
-            </tr>
-<?php
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+            </div>
+            <div class="dm-option-column right">
+                <dm-icon-picker
+                    name='<?php echo esc_attr( $name ); ?>'
+                    icon_list='<?php echo $iconEncoded; ?>'
+                    default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : "dm-font-awesome"; ?>'
+                    default_icon='<?php echo isset( $icon_name ) ? esc_attr( $icon_name ) : "fas fa-angle-right"; ?>'
+                ></dm-icon-picker>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+        <?php
 }
 
 }
