@@ -11,6 +11,7 @@
 }
 .dm_switcher_item input.dm-control-input:checked + label.dm_switcher_label {
     background: #5d78ff !important;
+    color: #fff;
 }
 .dm_switcher_item label.dm_switcher_label:after {
     content: "";
@@ -38,4 +39,21 @@
     -webkit-transform: translateX(-100%);
     -ms-transform: translateX(-100%);
     transform: translateX(-100%);
+}
+.dm_switcher_item label.dm_switcher_label:before {
+    content: attr(data-left);
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.dm_switcher_item input.dm-control-input:checked + label.dm_switcher_label:before {
+    content: attr(data-right);
+    right: inherit;
+    left: 10px;
 }

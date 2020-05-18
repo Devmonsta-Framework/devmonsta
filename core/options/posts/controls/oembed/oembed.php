@@ -79,6 +79,7 @@ class Oembed extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        return false;
         ?>
 
 
