@@ -65,23 +65,8 @@ class Textarea extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label" for="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $label ); ?> </label>
-            </div>
-            <div class="dm-option-column right">
-                <textarea
-                    rows="6"
-                    id="<?php echo $name; ?>"
-                    class="dm-option-input dm-option-textarea"
-                    name="<?php echo esc_attr( $name ); ?>"><?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?></textarea>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-    <?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
+    }
 
     public function columns() {
         $visible = false;
@@ -136,15 +121,24 @@ class Textarea extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        ?>
-
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row"><label  class="dm-option-label"><?php echo esc_html( $label ); ?></label></th>
-        <td> <textarea name="<?php echo esc_attr( $name ); ?>"><?php echo esc_html( $value ); ?></textarea>
-            <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-    </tr>
-    <?php
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }
+
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label class="dm-option-label" ><?php echo esc_html( $label ); ?> </label>
+                </div>
+                <div class="dm-option-column right">
+                    <textarea
+                        rows="6"
+                        class="dm-option-input dm-option-textarea"
+                        name="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $value ); ?></textarea>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
+            </div>
+    <?php
+    }
 
 }
