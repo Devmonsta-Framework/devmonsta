@@ -20,6 +20,12 @@ class Taxonomies
     public function init()
     {
 
+        $t = get_option('dm_taxonomy'); // T for taxonomy name
+
+        add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
+        add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
+        add_action('edited_' . $t, [$this, 'update_meta'], 10, 2);
+
         if (!$this->check_requirements()) {
             return;
         }
@@ -76,12 +82,6 @@ class Taxonomies
             }
 
         }
-
-        $t = get_option('dm_taxonomy'); // T for taxonomy name
-
-        add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
-        add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
-        add_action('edited_' . $t, [$this, 'update_meta'], 10, 2);
 
     }
 
@@ -255,6 +255,7 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
+        error_log('Saved taxonomy');
         // $taxonomy = get_option('dm_taxonomy');
         $prefix = 'devmonsta_';
 
@@ -280,10 +281,17 @@ class Taxonomies
     {
 
         $prefix = 'devmonsta_';
+        error_log('Term ID ' . $term_id);
 
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
+
+                if (is_array($_POST[$key])) {
+                    error_log(serialize($_POST[$key]));
+                }
+
+                error_log('Key : ' . $key . ' value : ' . $_POST[$key]);
 
                 update_term_meta($term_id, $key, $_POST[$key]);
             }
@@ -354,8 +362,8 @@ class Taxonomies
     {
 
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
-        wp_enqueue_script( 'dm-color-picker', DM_PATH.'core/options/posts/assets/js/script.js', [], null, true );
+        wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
 
     }
 
