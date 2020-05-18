@@ -7,9 +7,9 @@ use Devmonsta\Traits\Singleton;
 
 class Taxonomies
 {
-
-    protected $meta_owner = "taxonomy";
     use Singleton;
+    protected $meta_owner = "taxonomy";
+    protected $controls = null;
 
     /**
      * Entry point of taxonomy control
@@ -72,6 +72,8 @@ class Taxonomies
                     }
 
                     $controls = $taxonomy_lib->all_controls();
+
+                    $this->controls = $controls;
 
                     // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
 
@@ -255,7 +257,6 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
-        error_log('Saved taxonomy');
         // $taxonomy = get_option('dm_taxonomy');
         $prefix = 'devmonsta_';
 
@@ -281,17 +282,10 @@ class Taxonomies
     {
 
         $prefix = 'devmonsta_';
-        error_log('Term ID ' . $term_id);
 
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
-
-                if (is_array($_POST[$key])) {
-                    error_log(serialize($_POST[$key]));
-                }
-
-                error_log('Key : ' . $key . ' value : ' . $_POST[$key]);
 
                 update_term_meta($term_id, $key, $_POST[$key]);
             }
@@ -325,22 +319,28 @@ class Taxonomies
              * Edit term meta
              */
 
-            $class_name = $this->make_class_structure($file);
+            if ($this->controls == null) {
+                $class_name = $this->make_class_structure($file);
 
-            $taxonomy_lib = new LibsTaxonomies;
+                $taxonomy_lib = new LibsTaxonomies();
 
-            if (class_exists($class_name)) {
-                $taxonomy_class = new $class_name;
+                if (class_exists($class_name)) {
+                    $taxonomy_class = new $class_name;
 
-                if (method_exists($taxonomy_class, 'register_controls')) {
-                    $taxonomy_class->register_controls();
+                    if (method_exists($taxonomy_class, 'register_controls')) {
+                        $taxonomy_class->register_controls();
+                    }
+
+                    $controls = $taxonomy_lib->all_controls();
+
+                    error_log(serialize($controls));
+
+                    $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
+
                 }
-
-                $controls = $taxonomy_lib->all_controls();
-
-                $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
-
             }
+
+            $this->build_taxonomoy_edit_fields($term, $taxonomy, $this->controls);
 
         }
 
