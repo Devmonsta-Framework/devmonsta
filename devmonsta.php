@@ -86,34 +86,34 @@ final class Devmonsta {
 Devmonsta::init();
 
 
-add_action(
-    'wp_ajax_get_oembed_response',  '_action_get_oembed_response'
-);
-function _action_get_oembed_response() {
+// add_action(
+//     'wp_ajax_get_oembed_response',  '_action_get_oembed_response'
+// );
+// function _action_get_oembed_response() {
 
-    if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
+//     if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
 
-        require_once DM_CORE . 'helpers/class-dm-request.php';
-        $url = \DM_Request::POST( 'url' );
+//         require_once DM_CORE . 'helpers/class-dm-request.php';
+//         $url = \DM_Request::POST( 'url' );
 
-        $width = \DM_Request::POST( 'preview/width' );
+//         $width = \DM_Request::POST( 'preview/width' );
 
-        $height = \DM_Request::POST( 'preview/height' );
+//         $height = \DM_Request::POST( 'preview/height' );
 
-        $keep_ratio = ( \DM_Request::POST( 'preview/keep_ratio' ) === 'true' );
+//         $keep_ratio = ( \DM_Request::POST( 'preview/keep_ratio' ) === 'true' );
 
-        $iframe = empty( $keep_ratio ) ?
+//         $iframe = empty( $keep_ratio ) ?
 
-        dm_oembed_get( $url, compact( 'width', 'height' ) ) :
+//         dm_oembed_get( $url, compact( 'width', 'height' ) ) :
 
-        wp_oembed_get( $url, compact( 'width', 'height' ) );
+//         wp_oembed_get( $url, compact( 'width', 'height' ) );
 
-        echo $iframe;
-        die();
+//         echo $iframe;
+//         die();
 
-    } else {
-        echo 'Invalid nonce';
-        die();
-    }
+//     } else {
+//         echo 'Invalid nonce';
+//         die();
+//     }
 
-}
+// }
