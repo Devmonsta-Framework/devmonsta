@@ -5,6 +5,7 @@
 /* ==========================================================================
    Standard Selection
    ========================================================================== */
+
 .customize-control select,
 .select2-container--default .selection .select2-selection--single {
 	border: none;
@@ -1053,41 +1054,39 @@ input::-moz-focus-inner, input::-moz-focus-outer {
   font-weight: 700; 
 }
 	
-
-
 @media only screen and (max-width: 782px) {
-	.google-weight-list .customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
+	.customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
 		width: 184px;
 	}
 }
 
 @media only screen and (max-width: 640px) {
-	.google-weight-list .customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
+	.customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
 		width: 172px;
 		height: 33px;
 	}
 }
 
 @media only screen and (max-width: 782px) {
-	.google-weight-list .customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
+	.customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
 	   width: 184px;
 	}
  }
  
  @media only screen and (max-width: 640px) {
-	.google-weight-list .customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
+	.customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
 	   width: 172px;
 	   height: 33px;
 	}
  }
 @media only screen and (max-width: 782px) {
-	.google-weight-list .customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
+	.customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
 		width: 184px;
 	}
 }
 
 @media only screen and (max-width: 640px) {
-	.google-weight-list .customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
+	.customize-control-alpha-color .wp-picker-input-wrap input[type="text"].wp-color-picker.alpha-color-control {
 		width: 172px;
 		height: 33px;
 	}
