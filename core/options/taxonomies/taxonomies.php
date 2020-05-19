@@ -226,6 +226,7 @@ class Taxonomies
                     $control_object->init();
                     $control_object->enqueue($this->meta_owner);
                     $control_object->edit_fields($term, $taxonomy);
+                    
 
                 } else {
 
