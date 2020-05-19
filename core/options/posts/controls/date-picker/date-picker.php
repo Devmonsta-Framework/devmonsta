@@ -49,10 +49,10 @@ class DatePicker extends Structure {
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
 
         $this->value = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
         $this->output();
     }
 
@@ -85,22 +85,7 @@ class DatePicker extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <input type="date" name="<?php echo esc_attr( $name ); ?>"
-                    class="dm-option-input dm-option-input-date-picker"
-                    value="<?php echo esc_attr( $this->value ); ?>"
-                    min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-    <?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $min_date, $max_date );
 }
 
     public function columns() {
@@ -159,21 +144,25 @@ class DatePicker extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row">
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-        </th>
-        <td>
-            <input type="date" name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_attr( $value ); ?>"
-                    min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
-            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-    </tr>
-<?php
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $min_date, $max_date );
 }
+
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $min_date, $max_date ) {
+        ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
+
+                <div class="dm-option-column right">
+                    <input type="date" name="<?php echo esc_attr( $name ); ?>"
+                        class="dm-option-input dm-option-input-date-picker"
+                        value="<?php echo esc_attr( $value ); ?>"
+                        min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
+            </div>
+    <?php
+    }
 
 }
