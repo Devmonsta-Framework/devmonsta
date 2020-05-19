@@ -32,9 +32,9 @@ class Hidden extends Structure {
         global $post;
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+                    get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                    : $default_value;
 
         $this->output();
     }
@@ -64,16 +64,7 @@ class Hidden extends Structure {
 
         $class_attributes = "class='dm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <input style="display: none"
-                    type="text"
-                    id="<?php echo $name; ?>"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ""; ?>" >
-        </div>
-    <?php
+        $this->generate_markup( $default_attributes, $name, $this->value );
 }
 
     public function columns() {
@@ -129,20 +120,20 @@ class Hidden extends Structure {
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
-        ?>
-
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row"><label class="dm-option-label"></label></th>
-            <td>
-            <input style="display: none"
-                            type="text"
-                            id="<?php echo $name; ?>"
-                            name="<?php echo esc_attr( $name ); ?>"
-                            value="<?php echo esc_attr( $value ); ?>" size="40" aria-required="true">
-            </td>
-
-        </tr>
-<?php
+        $this->generate_markup( $default_attributes, $name, $value );
 }
+
+    public function generate_markup( $default_attributes, $name, $value ) {
+        ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                </div>
+                <div class="dm-option-column right">
+                    <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" >
+                </div>
+            </div>
+    <?php
+    }
+
 
 }
