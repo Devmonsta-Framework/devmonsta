@@ -81,44 +81,7 @@ class Checkboxes extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
-                <?php
-
-        if ( is_array( $choices ) && !empty( $choices ) ) {
-
-            foreach ( $choices as $id => $element ) {
-
-                if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
-                    $checked = 'checked="checked"';
-                } else {
-                    $checked = null;
-                }
-
-                ?>
-                                <label class="dm-option-label-list">
-                                    <input  type="checkbox"
-                                        name="<?php echo esc_attr( $name ); ?>[]"
-                                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                                    <?php echo esc_html( $element ); ?>
-                                </label>
-                            <?php
-}
-
-        }
-
-        ?>
-                <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-    <?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices, $isInline );
 }
 
     public function columns() {
@@ -157,6 +120,7 @@ class Checkboxes extends Structure {
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value   = ( !empty( get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 
         $default_attributes = "";
         $dynamic_classes    = "";
@@ -177,44 +141,49 @@ class Checkboxes extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices, $isInline );
 
+}
+
+
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices, $isInline ) {
         ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-            </th>
-            <td>
-            <?php
+                <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
+                    <?php
 
-        if ( is_array( $choices ) && !empty( $choices ) ) {
+            if ( is_array( $choices ) && !empty( $choices ) ) {
 
-            foreach ( $choices as $id => $element ) {
+                foreach ( $choices as $id => $element ) {
 
-                if ( is_array( $value ) && in_array( $id, $value ) ) {
-                    $checked = 'checked="checked"';
-                } else {
-                    $checked = null;
+                    if ( is_array( $value ) && in_array( $id, $value ) ) {
+                        $checked = 'checked="checked"';
+                    } else {
+                        $checked = null;
+                    }
+
+                    ?>
+                    <label class="dm-option-label-list">
+                        <input  type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
+                            value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
+                            <?php echo esc_html( $element ); ?>
+                    </label>
+                    <?php
                 }
 
-                ?>
-                <input  type="checkbox"
-                        name="<?php echo esc_attr( $name ); ?>[]"
-                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                    <?php echo esc_html( $element ); ?>
-            <?php
-}
+            }
 
-        }
-
-        ?>
-                <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
-
-
-                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-            </td>
-        </tr>
+            ?>
+                    <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
+            </div>
     <?php
-}
+    }
+
 
 }

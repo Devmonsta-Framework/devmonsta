@@ -31,10 +31,10 @@ class Text extends Structure {
 
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-                        && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
-                    ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                    : $default_value;
+            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+            && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+        : $default_value;
 
         $this->output();
     }
@@ -66,25 +66,8 @@ class Text extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-
-            <div class="dm-option-column left">
-                <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-            <div class="dm-option-column right">
-                <input
-                    type="text"
-                    class="dm-option-input"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_html( $this->value ); ?>"
-                >
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-
-        </div>
-    <?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
+    }
 
     public function columns() {
         $visible = false;
@@ -116,6 +99,7 @@ class Text extends Structure {
     }
 
     public function edit_fields( $term, $taxonomy ) {
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
@@ -139,18 +123,28 @@ class Text extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
 
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row"><label  class="dm-option-label"><?php echo esc_html( $this->content['label'] ); ?></label></th>
-        <td>
-            <input name="<?php echo esc_attr( $name ); ?>"  type="text" value="<?php echo esc_html( $value ); ?>" size="40" aria-required="true">
-            <br> <small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
+                <div class="dm-option-column left">
+                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
+                <div class="dm-option-column right">
+                    <input
+                        type="text"
+                        class="dm-option-input"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_html( $value ); ?>"
+                    >
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
 
-    </tr>
+            </div>
     <?php
-}
+    }
 
 }

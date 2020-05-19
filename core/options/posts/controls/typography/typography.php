@@ -134,7 +134,7 @@ class Typography extends Structure {
                                     ?>
                                                     <li>
                                                         <input type="number" name="<?php echo esc_attr( $name ) ?>[size]"
-                                                            value="<?php echo isset( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input" />
+                                                            value="<?php echo isset( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input font-size" />
                                                             <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
                                                     </li>
                                                 <?php
