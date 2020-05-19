@@ -41,7 +41,7 @@ class Upload extends Structure {
 
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true ) 
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
                         : $default_value;
 
         $this->output();
@@ -90,23 +90,8 @@ class Upload extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label  class="dm-option-label"> <?php echo esc_html( $label ); ?> </label>
-                </div>
-                <div class="dm-option-column right">
-                    <div>
-                        <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="dm_upload_image_button<?php echo dm_render_markup( $image ); ?> </a>
-                        <input type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo ( $this->current_screen == "post" ) ? esc_attr( $this->value ) : ''; ?>' />
-                        <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' ); ?></a>
-                    </div>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                </div>
-            </div>
-        <?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $multiple, $image, $display );
+    }
 
     public function columns() {
         $visible = false;
@@ -151,7 +136,7 @@ class Upload extends Structure {
         $name       = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value      = get_term_meta( $term->term_id, $name, true );
+        $value      = "" != get_term_meta( $term->term_id, $name, true ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $image_size = 'full';
         $display    = 'none';
         $multiple   = 0;
@@ -170,36 +155,36 @@ class Upload extends Structure {
         $dynamic_classes    = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
-
                 if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
                 } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-
             }
-
         }
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display ) {
         ?>
-
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope='row'>
-            <label class='dm-option-label'><?php echo esc_html( $label ); ?></label>
-        </th>
-        <td>
-            <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class=<?php echo dm_render_markup( $image ); ?> </a>
-            <input type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
-            <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' ); ?></a>
-            <br><small class='dm-option-desc'>(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-    </tr>
-<?php
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label  class="dm-option-label"> <?php echo esc_html( $label ); ?> </label>
+                </div>
+                <div class="dm-option-column right">
+                    <div>
+                        <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="dm_upload_image_button<?php echo dm_render_markup( $image ); ?> </a>
+                        <input type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
+                        <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' ); ?></a>
+                    </div>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
+            </div>
+    <?php
 }
 
 }

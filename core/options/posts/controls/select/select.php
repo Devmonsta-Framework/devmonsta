@@ -32,7 +32,6 @@ class Select extends Structure {
         wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
         wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
         wp_enqueue_script( 'dm-select-js', DM_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
-
     }
 
     /**
@@ -43,9 +42,9 @@ class Select extends Structure {
 
         global $post;
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) 
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }
@@ -78,39 +77,8 @@ class Select extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <select
-                    class="dm_select"
-                    name="<?php echo esc_attr( $name ); ?>">
-                    <?php
-
-        if ( is_array( $choices ) && !empty( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-                $is_selected = ( $key == $this->value ) ? 'selected' : '';
-                ?>
-                                    <option value="<?php echo esc_html( $key ); ?>"
-                                            <?php echo esc_html( $is_selected ); ?>>
-                                            <?php echo esc_html( $val ); ?>
-                                <?php
-}
-
-        }
-
-        ?>
-                </select>
-                <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
-            </div>
-        </div>
-    <?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
+    }
 
     public function columns() {
         $visible = false;
@@ -184,39 +152,36 @@ class Select extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row">
-            <label  class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-        </th>
-        <td>
-
-            <select class="dm_select"
-                        name="<?php echo esc_attr( $name ); ?>">
+                <div class="dm-option-column right">
+                    <select class="dm_select" name="<?php echo esc_attr( $name ); ?>">
                         <?php
+                            if ( is_array( $choices ) && !empty( $choices ) ) {
+                                foreach ( $choices as $key => $val ) {
+                                    $is_selected = ( $key == $value ) ? 'selected' : '';
+                                    ?>
+                                    <option value="<?php echo esc_html( $key ); ?>"
+                                        <?php echo esc_html( $is_selected ); ?>>
+                                        <?php echo esc_html( $val ); ?>
+                                    <?php
+                                }
+                            }
+                        ?>
+                    </select>
+                    <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
+                </div>
+            </div>
+        <?php
+    }
 
-        if ( is_array( $choices ) && !empty( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-                $is_selected = ( $key == $value ) ? 'selected' : '';
-                ?>
-                        <option value="<?php echo esc_html( $key ); ?>"
-                                <?php echo esc_html( $is_selected ); ?>>
-                                <?php echo esc_html( $val ); ?>
-                    <?php
-}
-
-        }
-
-        ?>
-                </select>
-
-            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-    </tr>
-<?php
-}
 
 }
