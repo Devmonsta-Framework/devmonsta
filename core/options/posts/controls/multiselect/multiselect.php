@@ -136,7 +136,7 @@ class Multiselect extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] )? $this->content['choices'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
