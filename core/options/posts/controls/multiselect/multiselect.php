@@ -43,12 +43,12 @@ class Multiselect extends Structure {
 
         global $post;
 
-        $default_value = ( isset( $content['value'] ) && is_array( $content['value'] ) && !empty( $content['value'] ) ) ? $content['value'] : [];
+        $default_value = ( isset( $content['value'] ) && (is_array( $content['value'] )) ) ? $content['value'] : [];
         $this->value   = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $default_value;
-
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                            : $default_value;
+        // array_unshift($this->value, "default");
         $this->output();
     }
 
@@ -60,63 +60,27 @@ class Multiselect extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
+        // $choices            = ["default" => ""] + $choices;
         $default_attributes = "";
         $dynamic_classes    = "";
+        // var_dump( $choices  );
+        // var_dump($this->value);
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
-
                 if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
                 } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-
             }
-
         }
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <select class="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
-                    <?php
-
-        if ( is_array( $choices ) && !empty( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-
-                if ( is_array( $this->value ) && in_array( $key, $this->value ) ) {
-                    $selected = 'selected';
-                } else {
-                    $selected = null;
-                }
-
-                ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>"
-                                            <?php echo esc_html( $selected ); ?>>
-                                            <?php echo esc_html( $val ); ?>
-                                <?php
-}
-
-        }
-
-        ?>
-                </select>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-    <?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
+    }
 
     public function columns() {
         $visible = false;
@@ -192,44 +156,40 @@ class Multiselect extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-<tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row">
-        <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-    </th>
-    <td>
+            <div class="dm-option-column right">
+                <select class="dm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
+                    <?php
+                        if ( is_array( $choices ) && !empty( $choices ) ) {
+                            foreach ( $choices as $key => $val ) {
+                                if ( is_array( $value ) && in_array( $key, $value ) ) {
+                                    $selected = 'selected';
+                                } else {
+                                    $selected = null;
+                                }
 
-        <select class="dm_multi_select" name="<?php echo esc_attr( $name ); ?>[]" multiple="multiple" >
+                                ?>
+                                <option value="<?php echo esc_attr( $key ); ?>"
+                                        <?php echo esc_html( $selected ); ?>> <?php echo esc_html( $val ); ?>
+                                </option>
+                                <?php
+                            }
+                        }
+                    ?>
+                </select>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
     <?php
-
-        if ( is_array( $choices ) && !empty( $choices ) ) {
-
-            foreach ( $choices as $key => $val ) {
-
-                if ( is_array( $value ) && in_array( $key, $value ) ) {
-                    $selected = 'selected';
-                } else {
-                    $selected = null;
-                }
-
-                ?>
-                    <option value="<?php echo esc_attr( $key ); ?>"
-                            <?php echo esc_html( $selected ); ?>>
-                            <?php echo esc_html( $val ); ?>
-        <?php
-}
-
-        }
-
-        ?>
-            </select>
-
-        <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-    </td>
-</tr>
-<?php
-}
+    }
 
 }
