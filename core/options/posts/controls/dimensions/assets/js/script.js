@@ -4,7 +4,7 @@ Vue.component('dm-dimensions', {
         <ul class="dm-option-dimensions">
             <slot></slot>
             <li>
-                <button @click="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
+                <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
                 <input type="hidden" :name="linkedName" v-model="isDimension" />
                 <label>&nbsp;</label>
             </li>

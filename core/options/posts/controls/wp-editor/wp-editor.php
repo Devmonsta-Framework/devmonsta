@@ -53,31 +53,31 @@ class WpEditor extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $default_attributes = "";
+        $dynamic_classes    = "";
 
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        $default_attributes .= $class_attributes;
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
         $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
         $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
-
-        ob_start();
-        ?>
-        <div class="dm-option form-field">
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <?php
-wp_editor( $this->value, $name, $settings );
-        $editor_html = ob_get_contents();
-        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
-        ob_end_clean();
-
-        echo dm_render_markup( $editor_html );
-        ?>
-            </div>
-        </div>
-<?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $settings );
 }
 
     public function columns() {
@@ -111,18 +111,18 @@ wp_editor( $this->value, $name, $settings );
 
     public function edit_fields( $term, $taxonomy ) {
         $this->load_wpeditor_scripts();
-        $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-
+        $label                     = isset( $this->content['label'] ) ? $this->content['label'] : '';
+        $name                      = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
+        $desc                      = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $attrs                     = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $value                     = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
+        $default_attributes        = "";
+        $dynamic_classes           = "";
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
-        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 425;
-
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
+        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
+        
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
 
@@ -140,32 +140,30 @@ wp_editor( $this->value, $name, $settings );
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $settings );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $settings ) {
+        
+        ob_start();
         ?>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-            </th>
-            <td>
-                    <?php
-ob_start();
-        ?>
-                    <div>
-                        <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-                        <div><small class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small></div>
-                        <?php
-wp_editor( $value, $name, $settings );
-        $editor_html = ob_get_contents();
-        $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
-        ob_end_clean();
+            <div class="dm-option-column right">
+        <?php
+                wp_editor( $value, $name, $settings );
+                $editor_html = ob_get_contents();
+                $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+                ob_end_clean();
 
-        echo dm_render_markup( $editor_html );
-        ?>
-                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-            </td>
-        </tr>
-<?php
-}
+                echo dm_render_markup( $editor_html );
+                ?>
+            </div>
+        </div>
+        <?php
+    }
 
 }
