@@ -164,6 +164,6 @@ class Slider extends Structure {
             </div>
         </div>
     <?php
-}
+    }
 
 }
