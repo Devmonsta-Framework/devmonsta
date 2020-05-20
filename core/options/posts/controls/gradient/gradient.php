@@ -139,7 +139,7 @@ class Gradient extends Structure {
                     if ( is_array( $color_values ) && !empty( $color_values ) ) {
 
                         foreach ( $color_values as $key => $value ) {
-                            echo $key . ": " . $value . "<br>";
+                            echo esc_html($key . ": " . $value) . "<br>";
                         }
 
                     }

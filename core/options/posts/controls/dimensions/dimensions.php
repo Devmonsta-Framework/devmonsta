@@ -101,7 +101,7 @@ class Dimensions extends Structure {
                     if ( is_array( $values ) && !empty( $values ) ) {
 
                         foreach ( $values as $key => $value ) {
-                            echo $key . ": " . $value . "<br>";
+                            echo esc_html($key) . ": " . esc_html($value) . "<br>";
                         }
 
                     }

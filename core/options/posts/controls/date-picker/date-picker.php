@@ -37,6 +37,11 @@ class DatePicker extends Structure {
         wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
         wp_enqueue_script( 'dm-date-picker', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
+       
+        $data['mondayFirst'] = isset( $this->content['monday-first'] ) ? 1 : 0;
+        $data['minDate'] = isset( $this->content['min-date'] ) ? $this->content['min-date'] : "today";
+        $data['maxDate'] = isset( $this->content['max-date'] ) ? $this->content['max-date'] : false;
+        wp_localize_script( 'dm-date-picker', 'dm_date_picker_config', $data );
     }
 
     /**
@@ -145,7 +150,7 @@ class DatePicker extends Structure {
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $min_date, $max_date );
-}
+    }
 
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $min_date, $max_date ) {
         ?>

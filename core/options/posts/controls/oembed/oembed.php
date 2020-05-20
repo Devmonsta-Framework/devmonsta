@@ -177,11 +177,11 @@ class Oembed extends Structure {
     
             wp_oembed_get( $url, compact( 'width', 'height' ) );
     
-            echo $iframe;
+            echo wp_kses_post($iframe);
             die();
     
         } else {
-            echo 'Invalid nonce';
+            echo esc_html_e('Invalid nonce', 'devmonsta');
             die();
         }
     }

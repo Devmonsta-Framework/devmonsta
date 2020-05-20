@@ -31,10 +31,10 @@ class Text extends Structure {
 
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }

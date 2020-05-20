@@ -26,7 +26,7 @@ class Url extends Structure {
       function load_url_scripts(){
             
         // wp_enqueue_style('devmonsta-custom-style', DM_CORE . 'options/posts/controls/url/assets/css/dm-ui.css');
-        // wp_enqueue_script( 'devmonsta-custom-js', DM_CORE . 'options/posts/controls/url/assets/js/etn-ui.min.js', [], false, true );
+         wp_enqueue_script( 'dm-url-js', DM_CORE . 'options/posts/controls/url/assets/js/script.js', [], false, true );
     
       }
 
@@ -140,7 +140,7 @@ class Url extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
            </div>
            <div class="dm-option-column right">
-                <input
+                <input class="dm-input-url"
                     type="url"
                     class="dm-option-input"
                     name="<?php echo esc_attr( $name ); ?>"
