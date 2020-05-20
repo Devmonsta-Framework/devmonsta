@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    console.log(dm_date_picker_config.mondayFirst);
+    
     $(".dm-option-input-date-picker").flatpickr({
         dateFormat: "Y-m-d",
         minDate: dm_date_picker_config.minDate,
