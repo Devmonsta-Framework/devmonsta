@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-    console.log("hello");
     var url_fields = $(".dm-input-url");
     var SubmitButton = document.getElementById("save-post") || false;
     var PublishButton = document.getElementById("publish") || false;
@@ -14,7 +13,6 @@ jQuery(document).ready(function ($) {
         var passed = false;
 
         url_fields.each(function (index) {
-            console.log($(this).val());
             if (validURL($(this).val())) {
                 passed = true;
             } else {
