@@ -15,15 +15,22 @@ jQuery(document).ready(function($){
 
             var iframeWrapper = wrapper.siblings(".dm-oembed-preview");
             if( url_input && is_url( url_input ) ) {
+
                 var data = {
-                    action : 'get_oembed_response', 
+                    action : "get_oembed_response", 
                     _nonce : wrapper.data('nonce'),
                     preview: wrapper.data('preview'),
                     url    : url_input				
                 };
-                $.post(ajaxurl, data, function(response) {
-                    iframeWrapper.html(response);
-                });
+                
+                $.ajax({
+                    type: "POST",
+                    url: ajaxurl,
+                    data: data,
+                    success: function(response) {
+                        iframeWrapper.html(response);
+                    },
+                  });
             }else {
                 iframeWrapper.html('');
             }
