@@ -31,7 +31,7 @@ class Checkboxes extends Structure {
         $content             = $this->content;
         $default_value_array = [];
 
-        if ( isset( $content['value'] ) && is_array( $content['value'] ) && !empty( $content['value'] ) ) {
+        if ( isset( $content['value'] ) && is_array( $content['value'] ) ) {
 
             foreach ( $content['value'] as $default_key => $default_value ) {
 
@@ -59,7 +59,7 @@ class Checkboxes extends Structure {
         $name     = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices  = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices  = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 
         $default_attributes = "";
@@ -82,7 +82,7 @@ class Checkboxes extends Structure {
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices, $isInline );
-}
+    }
 
     public function columns() {
         $visible = false;
@@ -119,7 +119,7 @@ class Checkboxes extends Structure {
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value   = ( !empty( get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-        $choices = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices = isset( $this->content['choices'] ) && is_array( $this->content['choices'] )? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 
         $default_attributes = "";

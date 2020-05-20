@@ -38,10 +38,10 @@ class Dimensions extends Structure {
         global $post;
         $default_value = isset( $content['value'] ) ? $content['value'] : [];
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $default_value;
+                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                    ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                    : $default_value;
 
         $this->output();
     }
@@ -73,46 +73,7 @@ class Dimensions extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <dm-dimensions
-                    :dimension="<?php echo isset( $this->value["isLinked"] ) ? esc_attr( $this->value["isLinked"] ) : 'false'; ?>" linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
-                >
-                    <dm-dimensions-item
-                        name="<?php echo esc_attr( $name ); ?>[top]"
-                        value="<?php echo isset( $this->value["top"] ) ? esc_html( intval( $this->value["top"] ) ) : 0; ?>"
-                        label="top"
-                    ></dm-dimensions-item>
-
-                    <dm-dimensions-item
-                        name="<?php echo esc_attr( $name ); ?>[right]"
-                        value="<?php echo isset( $this->value["right"] ) ? esc_html( intval( $this->value["right"] ) ) : 0; ?>"
-                        label="right"
-                    ></dm-dimensions-item>
-
-                    <dm-dimensions-item
-                        name="<?php echo esc_attr( $name ); ?>[bottom]"
-                        value="<?php echo isset( $this->value["bottom"] ) ? esc_html( intval( $this->value["bottom"] ) ) : 0; ?>"
-                        label="bottom"
-                    ></dm-dimensions-item>
-
-                    <dm-dimensions-item
-                        name="<?php echo esc_attr( $name ); ?>[left]"
-                        value="<?php echo isset( $this->value["left"] ) ? esc_html( intval( $this->value["left"] ) ) : 0; ?>"
-                        label="left"
-                    ></dm-dimensions-item>
-                </dm-dimensions>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-
-    <?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
 }
 
     public function columns() {
@@ -178,43 +139,50 @@ class Dimensions extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $class_attributes = "class='dm-option term-group-wrap dm-box $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row">
-        <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-    </th>
-    <td>
-        <ul class="dm-option-dimensions">
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-top" type="number" name="<?php echo esc_attr( $name ); ?>[top]" value="<?php echo isset( $this->value["top"] ) ? esc_html( intval( $this->value["top"] ) ) : 0; ?>" min="0"/>
-                        <label><?php esc_html_e( "top", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-right" type="number" name="<?php echo esc_attr( $name ); ?>[right]" value="<?php echo isset( $this->value["right"] ) ? esc_html( intval( $this->value["right"] ) ) : 0; ?>"  min="0"/>
-                        <label><?php esc_html_e( "right", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-bottom" type="number" name="<?php echo esc_attr( $name ); ?>[bottom]" value="<?php echo isset( $this->value["bottom"] ) ? esc_html( intval( $this->value["bottom"] ) ) : 0; ?>"  min="0"/>
-                        <label><?php esc_html_e( "bottom", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-option-input dm-dimension-number-input input-left" type="number" name="<?php echo esc_attr( $name ); ?>[left]" value="<?php echo isset( $this->value["left"] ) ? esc_html( intval( $this->value["left"] ) ) : 0; ?>"  min="0"/>
-                        <label><?php esc_html_e( "left", "devmonsta" );?></label>
-                    </li>
-                    <li>
-                        <input class="dm-dimension-linked-input" type="hidden" name="<?php echo esc_attr( $name ); ?>[isLinked]" value="<?php echo isset( $this->value["isLinked"] ) ? esc_html( intval( $this->value["isLinked"] ) ) : 0; ?>"/>
-                        <button class="dm-dimension-attachment-input <?php echo intval( $this->value["isLinked"] ) == 1 ? 'clicked' : ''; ?>" style="cursor:pointer; width:50px; height: 30px; border: 1px solid gray;"></button>
-                        <label>&nbsp;</label>
-                    </li>
-        </ul>
-        <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-    </td>
-    </tr>
-<?php
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }
 
+
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+
+            <div class="dm-option-column right">
+                <dm-dimensions
+                    :dimension="<?php echo isset( $value["isLinked"] ) ? esc_attr( $value["isLinked"] ) : 'false'; ?>" linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
+                >
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[top]"
+                        value="<?php echo isset( $value["top"] ) ? esc_html( intval( $value["top"] ) ) : 0; ?>"
+                        label="top"
+                    ></dm-dimensions-item>
+
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[right]"
+                        value="<?php echo isset( $value["right"] ) ? esc_html( intval( $value["right"] ) ) : 0; ?>"
+                        label="right"
+                    ></dm-dimensions-item>
+
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[bottom]"
+                        value="<?php echo isset( $value["bottom"] ) ? esc_html( intval( $value["bottom"] ) ) : 0; ?>"
+                        label="bottom"
+                    ></dm-dimensions-item>
+
+                    <dm-dimensions-item
+                        name="<?php echo esc_attr( $name ); ?>[left]"
+                        value="<?php echo isset( $value["left"] ) ? esc_html( intval( $value["left"] ) ) : 0; ?>"
+                        label="left"
+                    ></dm-dimensions-item>
+                </dm-dimensions>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+    <?php
+    }
 }

@@ -93,24 +93,7 @@ class RgbaColorPicker extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <input  type="text"
-                        name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_attr( $this->value ); ?>"
-                        class="dm-color-field color-picker-rgb"
-                        data-alpha="true"
-                        data-default-color="<?php echo esc_attr( $this->value ); ?>" />
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-    <?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
 }
 
     public function columns() {
@@ -146,6 +129,7 @@ class RgbaColorPicker extends Structure {
         //enqueue scripts and styles for color picker
         $this->dm_enqueue_color_picker();
 
+        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -169,21 +153,26 @@ class RgbaColorPicker extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row"><label class="dm-option-label"><?php echo esc_html( $this->content['label'] ); ?></label></th>
-        <td> <input  type="text"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_attr( $value ); ?>"
-                    class="dm-color-field color-picker-rgb"
-                    data-alpha="true"
-                    data-default-color="<?php echo esc_attr( $value ); ?>" />
-                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-    </tr>
+            <div class="dm-option-column right">
+                <input  type="text"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_attr( $value ); ?>"
+                        class="dm-color-field color-picker-rgb"
+                        data-alpha="true"
+                        data-default-color="<?php echo esc_attr( $value ); ?>" />
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
     <?php
-}
-
+    }
 }

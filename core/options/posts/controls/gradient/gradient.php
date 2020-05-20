@@ -76,10 +76,10 @@ class Gradient extends Structure {
         }
 
         $this->value = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        : $default_value_array;
+                        && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                    ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                    : $default_value_array;
 
         $this->output();
     }
@@ -111,41 +111,7 @@ class Gradient extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-            <div class="dm-option-column right">
-                <?php
-
-        if ( is_array( $this->value ) && !empty( $this->value ) ) {
-
-            foreach ( $this->value as $id => $value ) {
-
-                if ( $id == "secondary" ) {
-                    ?>
-                <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
-                <?php
-}
-
-                ?>
-                            <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
-                            name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
-                            value="<?php echo esc_attr( $value ); ?>"
-                            data-default-color="<?php echo esc_attr( $value ); ?>"
-                            />
-                        <?php
-}
-
-        }
-
-        ?>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small>
-            </div>
-        </div>
-    <?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
 }
 
     public function columns() {
@@ -213,42 +179,44 @@ class Gradient extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+    }
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
+                <div class="dm-option-column right">
+                    <?php
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row">
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-        </th>
-        <td>
-        <?php
+                        if ( is_array( $value ) && !empty( $value ) ) {
 
-        if ( is_array( $value ) && !empty( $value ) ) {
+                            foreach ( $value as $id => $value ) {
 
-            foreach ( $value as $id => $val ) {
+                                if ( $id == "secondary" ) {
+                                    ?>
+                                    <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
+                                    <?php
+                                }
 
-                if ( $id == "secondary" ) {
-                    ?>
-                <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
-                <?php
-}
+                                ?>
+                                    <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
+                                            name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
+                                            value="<?php echo esc_attr( $value ); ?>"
+                                            data-default-color="<?php echo esc_attr( $value ); ?>"
+                                            />
+                                <?php
+                            }
 
-                ?>
-                    <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
-                        name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
-                        value="<?php echo esc_attr( $val ); ?>"
-                        data-default-color="<?php echo esc_attr( $val ); ?>"
-                         />
-            <?php
-}
+                        }
 
-        }
-
-        ?>
-            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-        </tr>
-<?php
-}
+            ?>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small>
+                </div>
+            </div>
+    <?php
+    }
 
 }

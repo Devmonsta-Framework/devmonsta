@@ -66,8 +66,7 @@ class ImagePicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value              = isset( $this->content['value'] ) ? $this->content['value'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : [];
+        $choices            = is_array( $this->content['choices'] ) && isset( $this->content['choices'] ) ? $this->content['choices'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -87,54 +86,8 @@ class ImagePicker extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right full-width">
-
-                <div class="thumbnails dm-option-image_picker_selector">
-                    <input class="dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
-                    <ul>
-                        <?php
-
-        if ( is_array( $choices ) && isset( $choices ) ) {
-
-            foreach ( $choices as $item_key => $item ) {
-                if(is_array($item) && isset($item)){
-                    $selected    = ( $item_key == $this->value ) ? 'selected' : '';
-                    $small_image = isset( $item['small'] ) ? $item['small'] : '';
-                    $large_image = isset( $item['large'] ) ? $item['large'] : '';
-                    ?>
-    
-                                    <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                        <?php
-                                        if ( !empty( $large_image ) ): ?>
-                                            <div class="dm-img-picker-preview">
-                                                <img src="<?php echo esc_attr( $large_image ); ?>" />
-                                            </div>
-                                        <?php endif;?>
-                                        <div class="thumbnail">
-                                            <img src="<?php echo esc_attr( $small_image ); ?>" />
-                                        </div>
-                                    </li>
-                                <?php
-                }
-            }
-
-        }
-
-        ?>
-                    </ul>
-                </div>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-    </div>
-<?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
+    }
 
     public function columns() {
         $visible = false;
@@ -194,76 +147,53 @@ class ImagePicker extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row">
-        <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-    </th>
-    <td>
-    <select name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" class="dm_image_picker">
-                    <?php
-
-        if ( is_array( $choices ) && isset( $choices ) ) {
-
-            foreach ( $choices as $key => $item ) {
-                $selected = ( $key == $this->value ) ? 'selected' : '';
-                ?>
-                                    <option value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $selected ); ?>></option>
-                                <?php
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
+    
 }
-
-        }
-
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
-                </select>
-                <ul class="thumbnails image_picker_selector">
-                    <?php
+            <div <?php echo dm_render_markup( $default_attributes ); ?>>
+                <div class="dm-option-column left">
+                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-        if ( is_array( $choices ) && isset( $choices ) ) {
+                <div class="dm-option-column right full-width">
 
-            foreach ( $choices as $item_key => $item ) {
-                $selected = ( $item_key == $this->value ) ? 'selected' : '';
+                    <div class="thumbnails dm-option-image_picker_selector">
+                        <input class="dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+                        <ul>
+                            <?php
+                                if ( is_array( $choices ) && isset( $choices ) ) {
 
-                if ( is_array( $item ) && isset( $choices ) ) {
-                    $small_image = '';
-                    $large_image = '';
+                                    foreach ( $choices as $item_key => $item ) {
+                                        if(is_array($item) && isset($item)){
+                                            $selected    = ( $item_key == $value ) ? 'selected' : '';
+                                            $small_image = isset( $item['small'] ) ? $item['small'] : '';
+                                            $large_image = isset( $item['large'] ) ? $item['large'] : '';
+                                            ?>
+                                                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+                                                    <?php if ( !empty( $large_image ) ): ?>
+                                                    <div class="dm-img-picker-preview">
+                                                        <img src="<?php echo esc_attr( $large_image ); ?>" />
+                                                    </div>
+                                                    <?php endif;?>
+                                                    <div class="thumbnail">
+                                                        <img src="<?php echo esc_attr( $small_image ); ?>" />
+                                                    </div>
+                                                </li>
+                                            <?php
+                                        }
+                                    }
 
-                    foreach ( $item as $key => $item_size ) {
+                                }
 
-                        if ( $key == "small" ) {
-                            $small_image .= $item_size;
-                        } else {
-                            $large_image .= $item_size;
-                        }
-
-                    }
-
-                    ?>
-                                    <div class="tooltip">
-                                        <span class="tooltiptext">
-                                            <img src="<?php echo esc_attr( $large_image ); ?>" height="50" width="50" />
-                                        </span>
-                                        <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                            <div class="thumbnail">
-                                                <img src="<?php echo esc_attr( $small_image ); ?>" height="50" width="50" />
-                                            </div>
-                                        </li>
-                                    </div>
-                                <?php
-}
-
-            }
-
-        }
-
-        ?>
-                </ul>
-        <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-    </td>
-    </tr>
-<?php
-}
+                            ?>
+                        </ul>
+                    </div>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
+            </div>
+    <?php
+    }
 
 }

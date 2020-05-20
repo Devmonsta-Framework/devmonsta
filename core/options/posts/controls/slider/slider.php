@@ -50,10 +50,10 @@ class Slider extends Structure {
 
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) ?
+                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }
@@ -86,24 +86,8 @@ class Slider extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <input class="dm-slider"
-                        type="range"
-                        name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_attr( $this->value ); ?>"/>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-
-    <?php
-}
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
+    }
 
     public function columns() {
         $visible = false;
@@ -161,23 +145,25 @@ class Slider extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
-
-        ?>
-
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-            <th scope="row">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-            </th>
-            <td>
-                <input class="dm-slider"
-                    type="range"
-                    name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_attr( $value ); ?>"/>
-
-                <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-            </td>
-        </tr>
-<?php
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }
+
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        ?>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+
+            <div class="dm-option-column right">
+                <input class="dm-slider"
+                        type="range"
+                        name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_attr( $value ); ?>"/>
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+    <?php
+    }
 
 }

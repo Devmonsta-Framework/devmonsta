@@ -58,21 +58,8 @@ class Html extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $html, $desc );
 
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
-
-            <div class="dm-option-column right">
-                <div class='dm_html_block'>
-                    <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
-                </div>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>
-            </div>
-        </div>
-        <?php
 }
 
     public function columns() {
@@ -129,18 +116,25 @@ class Html extends Structure {
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
-        ?>
+        $this->generate_markup( $default_attributes, $label, $html, $desc );
+    }
 
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-        <th scope="row">
-            <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-        </th>
-        <td>
-        <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
-            <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-        </td>
-    </tr>
-<?php
-}
+    
+    public function generate_markup( $default_attributes, $label, $html, $desc ) {
+        ?>
+            <div <?php echo dm_render_markup( $default_attributes ); ?> >
+                <div class="dm-option-column left">
+                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
+
+                <div class="dm-option-column right">
+                    <div class='dm_html_block'>
+                        <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
+                    </div>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>
+                </div>
+            </div>
+    <?php
+    }
 
 }

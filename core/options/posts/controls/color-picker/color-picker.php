@@ -21,11 +21,11 @@ class ColorPicker extends Structure {
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
 
-// add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+        // add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
 
-// add_action( 'admin_init', [$this, 'dm_enqueue_color_picker'] );
+        // add_action( 'admin_init', [$this, 'dm_enqueue_color_picker'] );
 
-// add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_color_picker'] );
+        // add_action( 'admin_enqueue_scripts', [$this, 'dm_enqueue_color_picker'] );
 
         if ( $this->current_screen == "post" ) {
             $this->dm_enqueue_color_picker();
