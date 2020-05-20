@@ -12,7 +12,6 @@ class Url extends Structure {
      * @internal
      */
     public function init() {
-
     }
 
     /**
@@ -145,7 +144,7 @@ class Url extends Structure {
                     type="url"
                     class="dm-option-input"
                     name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_html( $value );?>" >
+                    value="<?php echo esc_url( $value );?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>

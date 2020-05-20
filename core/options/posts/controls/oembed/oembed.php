@@ -6,6 +6,7 @@ use Devmonsta\Options\Posts\Structure;
 
 class Oembed extends Structure {
 
+
     protected $current_screen;
 
     /**
@@ -157,7 +158,7 @@ class Oembed extends Structure {
     <?php
     }
 
-    function _action_get_oembed_response() {
+    public static function _action_get_oembed_response() {
 
         if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
     
