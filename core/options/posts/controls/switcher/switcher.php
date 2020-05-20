@@ -90,26 +90,7 @@ class Switcher extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-
-                <div class="dm-option-column left">
-                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
-                <div class="dm-option-column right dm_switcher_main_block" >
-                    <div class='dm_switcher_item' date-right="<?php echo esc_attr( $right_choice[$right_key] ); ?>">
-                        <input  type='checkbox' class='dm-control-input dm_switcher_right'  value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>'
-                                <?php echo ( $this->value == $right_key ) ? 'checked' : ''; ?> />
-                        <label data-left="<?php echo esc_attr( $left_choice[$left_key] ); ?>" data-right="<?php echo esc_attr( $right_choice[$right_key] ); ?>" class='dm_switcher_label dm-option-label'></label>
-                    </div>
-                    <input class='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>'  name='<?php echo esc_attr( $name ); ?>' <?php echo ( $this->value == $left_key ) ? 'checked' : ''; ?> />
-
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                </div>
-
-            </div>
-
-        <?php
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $right_choice[$right_key] , $left_choice[$left_key]) ;
 }
 
     public function columns() {
@@ -173,51 +154,31 @@ class Switcher extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $right_choice[$right_key] , $left_choice[$left_key]) ;
+    }
 
-        // add inline css for dynamic value
-        $style = '';
-        $style .= '
-        .dm_switcher_item label.dm_switcher_label:before {
-            content: "' . esc_attr( $left_choice[$left_key] ) . '";
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #fff;
-            font-size: 10px;
-            display: inline-block;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .dm_switcher_item input.dm-control-input:checked + label.dm_switcher_label:before {
-            content: "' . esc_attr( $right_choice[$right_key] ) . '";
-            right: inherit;
-            left: 10px;
-        }
-        ';
-        wp_register_style( 'dm-switcher-inline-css', false, ['dm-switcher'] );
-        wp_enqueue_style( 'dm-switcher-inline-css' );
-        wp_add_inline_style( 'dm-switcher-inline-css', $style );
 
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $right_key, $left_key) {
         ?>
+        <div <?php echo dm_render_markup( $default_attributes ); ?> >
 
-    <tr <?php echo dm_render_markup( $default_attributes ); ?> >
-    <th scope="row">
-        <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-    </th>
-    <td>
-            <div class='dm_switcher_main_block'>
-                <div class='dm_switcher_item'>
-                    <input type='checkbox' value='<?php echo esc_attr( $right_key ); ?>' class='dm-control-input dm_switcher_right' name='<?php echo esc_attr( $name ); ?>'
+            <div class="dm-option-column left">
+                <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
+            <div class="dm-option-column right dm_switcher_main_block" >
+                <div class='dm_switcher_item' date-right="<?php echo esc_attr( $right_key); ?>">
+                    <input  type='checkbox' class='dm-control-input dm_switcher_right'  value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>'
                             <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
-                    <label  class='dm_switcher_label dm-option-label'></label>
+                    <label data-left="<?php echo esc_attr( $left_key ); ?>" data-right="<?php echo esc_attr( $right_key ); ?>" class='dm_switcher_label dm-option-label'></label>
                 </div>
                 <input class='dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>'  name='<?php echo esc_attr( $name ); ?>' <?php echo ( $value == $left_key ) ? 'checked' : ''; ?> />
+
+                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
-        <br><small class="dm-option-desc">(<?php echo esc_html( $desc ); ?> )</small>
-    </td>
-    </tr>
-<?php
-}
+
+        </div>
+
+    <?php
+    }
 
 }
