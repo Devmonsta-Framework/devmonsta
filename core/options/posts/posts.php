@@ -104,7 +104,7 @@ class Posts
                     if ($post_type == $args['post_type']) {
                         $this->data = $args;
 
-                        // $this->load_enqueue($all_controls);
+                        $this->load_enqueue($all_controls);
                         $this->add_meta_box($post_type, $args, $all_controls);
                     }
 
