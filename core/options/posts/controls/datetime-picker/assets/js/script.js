@@ -1,34 +1,16 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 
     //Initialize the datepicker and set the first day of the week as Monday
     if ($(".dm-option-input-datetime-picker").length) {
 
-        var min_date;
-        var max_date;
-        var time_picker = (date_time_picker_config.timepicker == "") ? false : true;
-        var date_picker = (date_time_picker_config.datepicker == "") ? false : true;
-
-        if(date_time_picker_config.min_date == ""){
-            min_date = false;
-        }else{
-            min_date = date_time_picker_config.min_date;
-        }
-        
-        if(date_time_picker_config.max_date == ""){
-            max_date = false;
-        }else{
-            max_date = date_time_picker_config.max_date;
-        }
-
-        var today = new Date();
-        var defaultDate = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var time_picker = (date_time_picker_config.timepicker == 0) ? false : true;
 
         $(".dm-option-input-datetime-picker").flatpickr({
             dateFormat: date_time_picker_config.format,
-            minDate: min_date,
-            maxDate: max_date,
-            defaultTime: date_time_picker_config.default_time,
-            enableTime: true,
+            minDate: date_time_picker_config.minDate,
+            maxDate: date_time_picker_config.maxDate,
+            defaultTime: date_time_picker_config.defaultTime,
+            enableTime: time_picker,
         });
     }
 });

@@ -131,6 +131,9 @@ class Posts
 
     public function check_requirements()
     {
+        //register script for ajax calls
+        $this->register_ajax_callbacks();
+
         global $pagenow;
         if ($pagenow == 'post.php' || $pagenow == 'post-new.php') {
 
@@ -233,7 +236,6 @@ class Posts
         $prefix = 'devmonsta_';
 
         foreach ($_POST as $key => $value) {
-
             if (strpos($key, $prefix) !== false) {
                 update_post_meta(
                     $post_id,
@@ -257,6 +259,15 @@ class Posts
         wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
         wp_enqueue_script( 'dm-color-picker', DM_PATH.'core/options/posts/assets/js/script.js', [], null, true );
 
+    }
+
+    /**
+     * Register all ajax callback functions to be called later
+     *
+     * @return void
+     */
+    public function register_ajax_callbacks(){
+        add_action( 'wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", '_action_get_oembed_response'] );
     }
 
 }

@@ -1,4 +1,4 @@
-jQuery(document).ready(function($) {
+jQuery(document).ready(function($){
     var ajaxurl = object.ajaxurl;
     var is_url = function(str) {
         var pattern = new RegExp(/^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/, 'i');
@@ -13,15 +13,15 @@ jQuery(document).ready(function($) {
             var url_input = $(this).val();
 
             var iframeWrapper = wrapper.siblings(".dm-oembed-preview");
-            if (url_input && is_url(url_input)) {
+            if( url_input && is_url( url_input ) ) {
 
                 var data = {
-                    action: "get_oembed_response",
-                    _nonce: wrapper.data('nonce'),
+                    action : "get_oembed_response", 
+                    _nonce : wrapper.data('nonce'),
                     preview: wrapper.data('preview'),
                     url: url_input
                 };
-
+                
                 $.ajax({
                     type: "POST",
                     url: ajaxurl,
@@ -29,8 +29,8 @@ jQuery(document).ready(function($) {
                     success: function(response) {
                         iframeWrapper.html(response);
                     },
-                });
-            } else {
+                  });
+            }else {
                 iframeWrapper.html('');
             }
 

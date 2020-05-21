@@ -37,6 +37,11 @@ class DatePicker extends Structure {
         wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
         wp_enqueue_script( 'dm-date-picker', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
+       
+        $data['mondayFirst'] = $this->content['monday-first'] ? 1 : 0;
+        $data['minDate'] = isset( $this->content['min-date'] ) ? date("Y-m-d", strtotime($this->content['min-date'])) : "today";
+        $data['maxDate'] = isset( $this->content['max-date'] ) ? date("Y-m-d", strtotime($this->content['max-date'])) : false;
+        wp_localize_script( 'dm-date-picker', 'dm_date_picker_config', $data );
     }
 
     /**
@@ -64,8 +69,6 @@ class DatePicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $min_date           = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
-        $max_date           = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -85,7 +88,7 @@ class DatePicker extends Structure {
 
         $class_attributes = "class='dm-option form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $min_date, $max_date );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
 }
 
     public function columns() {
@@ -123,8 +126,6 @@ class DatePicker extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = ( !is_null( get_term_meta( $term->term_id, $name, true ) ) && "" != get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $min_date           = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
-        $max_date           = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -144,10 +145,10 @@ class DatePicker extends Structure {
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $min_date, $max_date );
-}
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+    }
 
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $min_date, $max_date ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
                 <div class="dm-option-column left">
@@ -157,8 +158,7 @@ class DatePicker extends Structure {
                 <div class="dm-option-column right">
                     <input type="date" name="<?php echo esc_attr( $name ); ?>"
                         class="dm-option-input dm-option-input-date-picker"
-                        value="<?php echo esc_attr( $value ); ?>"
-                        min="<?php echo esc_attr( $min_date ) ?>" max="<?php echo esc_attr( $max_date ) ?>">
+                        value="<?php echo esc_attr( $value ); ?>">
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>

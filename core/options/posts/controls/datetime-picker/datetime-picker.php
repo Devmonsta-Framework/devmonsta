@@ -7,6 +7,24 @@ use Devmonsta\Options\Posts\Structure;
 class DatetimePicker extends Structure {
 
     protected $current_screen;
+    private $allowed_date_formats = [
+        'Y-m-d',
+        'n/j/Y',
+        'm/d/Y',
+        'j/n/Y',
+        'd/m/Y',
+        'n-j-Y',
+        'm-d-Y',
+        'j-n-Y',
+        'd-m-Y',
+        'Y.m.d',
+        'm.d.Y',
+        'd.m.Y',
+    ];
+    private $allowed_time_formats = [
+        'H:i',
+        'h:i'
+    ];
 
     /**
      * @internal
@@ -38,12 +56,13 @@ class DatetimePicker extends Structure {
         wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
 
         $date_time_picker_config               = $this->content['datetime-picker'];
-        $date_time_picker_data['format']       = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
-        $date_time_picker_data['min_date']     = ( $date_time_picker_config['minDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['minDate'] ) ) : date( $date_time_picker_data['format'] );
-        $date_time_picker_data['max_date']     = ( $date_time_picker_config['maxDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['maxDate'] ) ) : "";
-        $date_time_picker_data['datepicker']   = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : "";
-        $date_time_picker_data['timepicker']   = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : "";
-        $date_time_picker_data['default_time'] = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
+        $date_format                           = isset( $date_time_picker_config['date-format'] ) && in_array($date_time_picker_config['date-format'], $this->allowed_date_formats) ? $date_time_picker_config['date-format'] : 'Y-m-d';
+        $time_format                           = isset( $date_time_picker_config['time-format'] ) && in_array($date_time_picker_config['time-format'], $this->allowed_time_formats) ? $date_time_picker_config['time-format'] : 'H:i';
+        $date_time_picker_data['format']       = $date_format . " " . $time_format;
+        $date_time_picker_data['minDate']      = isset( $date_time_picker_config['min-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['min-date'])) : "today";
+        $date_time_picker_data['maxDate']      = isset( $date_time_picker_config['max-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['max-date'])) : false;
+        $date_time_picker_data['timepicker']   = ( $date_time_picker_config['timepicker'] ) ? 1 : 0;
+        $date_time_picker_data['defaultTime'] = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
 
         wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
 
@@ -130,8 +149,6 @@ class DatetimePicker extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = ( !is_null( get_term_meta( $term->term_id, $name, true ) ) && "" != get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $min_date           = isset( $this->content['min-date'] ) ? $this->content['min-date'] : date( 'd-m-Y' );
-        $max_date           = isset( $this->content['max-date'] ) ? $this->content['max-date'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
 

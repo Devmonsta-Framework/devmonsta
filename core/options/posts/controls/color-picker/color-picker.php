@@ -48,13 +48,15 @@ class ColorPicker extends Structure {
 
         $data = [];
         global $post;
+        $content = $this->content;
+        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-        : $this->content['value'];
+                                && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+                                ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                                : $default_value;
 
-        $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
-        wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
+        $data['palettes'] = isset( $content['palettes'] ) ? $content['palettes'] : false;
+        wp_localize_script( 'dm-script-handle', 'dm_color_picker_config', $data );
 
     }
 
@@ -67,9 +69,9 @@ class ColorPicker extends Structure {
         global $post;
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
+                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }
@@ -79,8 +81,7 @@ class ColorPicker extends Structure {
      */
     public function output() {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $prefix             = 'devmonsta_';
-        $name               = isset( $this->content['name'] ) ? $prefix . $this->content['name'] : '';
+        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
@@ -175,7 +176,7 @@ class ColorPicker extends Structure {
                     <input  type="text"
                             name="<?php echo esc_attr( $name ); ?>"
                             value="<?php echo esc_attr( $value ); ?>"
-                            class="dm-color-field"
+                            class="dm-color-picker-field"
                             data-default-color="<?php echo esc_attr( $value ); ?>" />
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
