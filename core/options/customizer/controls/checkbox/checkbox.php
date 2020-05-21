@@ -24,7 +24,7 @@ class Checkbox extends \WP_Customize_Control {
     }
 
     private function prepare_values( $id, $args = [] ) {
-        var_dump($args[0]);
+        // var_dump($args[0]);
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
