@@ -527,14 +527,14 @@ class Customizer
     {
         $this->default_controls = [
             'text',
-            'checkbox',
+            // 'checkbox',
             'radio',
             'select',
-            'textarea',
+            // 'textarea',
             'dropdown-pages',
             'email',
-            'url',
-            'number',
+            // 'url',
+            // 'number',
             'hidden',
             'date',
         ];

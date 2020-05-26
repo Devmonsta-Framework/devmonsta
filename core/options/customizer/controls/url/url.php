@@ -1,19 +1,19 @@
 <?php
-namespace Devmonsta\Options\Customizer\Controls\Textarea;
+namespace Devmonsta\Options\Customizer\Controls\Url;
 
 if ( !class_exists( 'WP_Customize_Control' ) ) {
     return NULL;
 }
 
-class Textarea extends \WP_Customize_Control {
+class Url extends \WP_Customize_Control {
 
-    public $label, $name, $desc, $default_value, $value;
+    public $label, $name, $desc, $default_value, $value, $text;
 
     /**
      * @access public
      * @var    string
      */
-    public $type = 'textarea';
+    public $type = 'url';
 
     public $statuses;
 
@@ -23,6 +23,7 @@ class Textarea extends \WP_Customize_Control {
         parent::__construct( $manager, $id, $args );
     }
 
+    
     /**
      * Prepare default values passed from theme
      *
@@ -31,44 +32,47 @@ class Textarea extends \WP_Customize_Control {
      * @return void
      */
     private function prepare_values( $id, $args = [] ) {
+        
+        var_dump($args[0]);
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
     }
 
-    /**
-     * Internal
-     *
-     * @return void
+    /*
+     ** Enqueue control related scripts/styles
      */
     public function enqueue() {
+
     }
 
     /**
      * @internal
      */
     public function render() {
-        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
+        $this->value   = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         // var_dump($this->value);
         $this->render_content();
     }
 
+
+    
     public function render_content() {
         ?>
         <div>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+                
             </div>
 
             <div class="dm-option-column right">
-                <textarea class="large-text" cols="20" rows="5" <?php $this->link();?>>
-                    <?php echo esc_textarea( $this->value() ); ?>
-                </textarea>
+                <input <?php $this->link();?> class="dm-input-url" type="url" class="dm-option-input"
+                    name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_url( $this->value );?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </div>
-		<?php
-    }
 
+        <?php
+    }
 }
