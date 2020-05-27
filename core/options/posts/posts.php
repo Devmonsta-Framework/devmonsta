@@ -244,7 +244,15 @@ class Posts
                 );
             }
 
+            if (strpos($key, 'repeater_control_') !== false) {
+              
+              
+            }
+
         }
+
+        $email = $_POST['devmonsta_repeater_control_user_url_1'];
+        error_log(count($email));
 
     }
 

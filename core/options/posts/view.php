@@ -123,10 +123,13 @@ class View
             ?>
             <script>
                 jQuery(document).ready(function($){
-                    $("#dm-repeater-add-new").click(function(){
-                        $('.dm-color-field').wpColorPicker();
+                    // $('.dm-color-field').wpColorPicker();
+
+                    $(".dm-repeater-add-new").click(function(){
+                        var id = $(this).attr('data-id');
                         // $($('#dm-repeater-template').html()).insertAfter('#dm-repeater-section');
-                        $('#dm-repeater-section').append($('#dm-repeater-template').html());
+                        $('#dm-repeater-section-' + id).append($('#dm-repeater-template-'+id).html());
+                        
                         $('.dm-repeater-delete-btn').click(function(){
                         
                             $(this).closest('div').remove();
@@ -140,7 +143,7 @@ class View
             </script>
 
             <?php
-            echo '<div style="display:none" id="dm-repeater-template">';
+            echo '<div style="display:none" id="dm-repeater-template-'.$control_data['name'].'">';
             echo '<div>';
             $this->repeater_controls($control_data);
             echo "<br><button class='button dm-repeater-delete-btn'>Delete</button>";
@@ -149,12 +152,12 @@ class View
 
             // controls
 
-            echo '<div id="dm-repeater-section">';
+            echo '<div id="dm-repeater-section-'.$control_data['name'].'">';
             echo "<h1>" . $control_data['label'] . "</h1>";
             $this->repeater_controls($control_data);
             
             echo "</div>";
-            echo "<br><br><button id='dm-repeater-add-new' class='button'>Add new</button>";
+            echo "<br><br><button data-id='".$control_data['name']."' class='dm-repeater-add-new button'>Add new</button>";
             
 
         }

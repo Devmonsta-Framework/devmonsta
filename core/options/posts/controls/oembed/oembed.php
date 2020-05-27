@@ -162,7 +162,7 @@ class Oembed extends Structure {
 
         if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
     
-            require_once DM_CORE . 'helpers/class-dm-request.php';
+            require_once DM_DIR . '/core/helpers/class-dm-request.php';
             $url = \DM_Request::POST( 'url' );
     
             $width = \DM_Request::POST( 'preview/width' );
