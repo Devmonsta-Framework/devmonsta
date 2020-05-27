@@ -251,8 +251,7 @@ class Posts
 
         }
 
-        $email = $_POST['devmonsta_repeater_control_user_url_1'];
-        error_log(count($email));
+       
 
     }
 
