@@ -43,8 +43,8 @@ class DatetimePicker extends \WP_Customize_Control {
 
         $date_time_picker_config               = $this->date_time_picker_config;
         $date_time_picker_data['format']       = isset( $date_time_picker_config['format'] ) ? $date_time_picker_config['format'] : 'Y-m-d H:i';
-        $date_time_picker_data['min_date']     = ( $date_time_picker_config['minDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['minDate'] ) ) : date( $date_time_picker_data['format'] );
-        $date_time_picker_data['max_date']     = ( $date_time_picker_config['maxDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['maxDate'] ) ) : "";
+        $date_time_picker_data['min_date']     = isset( $date_time_picker_config['minDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['minDate'] ) ) : date( $date_time_picker_data['format'] );
+        $date_time_picker_data['max_date']     = isset( $date_time_picker_config['maxDate'] ) ? date( $date_time_picker_data['format'], strtotime( $date_time_picker_config['maxDate'] ) ) : "";
         $date_time_picker_data['datepicker']   = isset( $date_time_picker_config['datepicker'] ) ? $date_time_picker_config['datepicker'] : "";
         $date_time_picker_data['timepicker']   = isset( $date_time_picker_config['timepicker'] ) ? $date_time_picker_config['timepicker'] : "";
         $date_time_picker_data['default_time'] = isset( $date_time_picker_config['defaultTime'] ) ? $date_time_picker_config['defaultTime'] : '12:00';
