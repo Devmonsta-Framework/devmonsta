@@ -58,7 +58,7 @@ class Checkboxes extends Structure {
         $label    = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name     = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : [];
         $choices  = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 

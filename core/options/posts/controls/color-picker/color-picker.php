@@ -49,13 +49,12 @@ class ColorPicker extends Structure {
         $data = [];
         global $post;
         $content = $this->content;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
                                 && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
                                 ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                                : $default_value;
+                                : ( isset( $content['value'] ) ? $content['value'] : "" );
 
-        $data['palettes'] = isset( $content['palettes'] ) ? $content['palettes'] : false;
+        $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'dm_color_picker_config', $data );
 
     }
@@ -67,11 +66,11 @@ class ColorPicker extends Structure {
 
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        $this->value   = (  ( $this->current_screen == "post" ) 
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
-                        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $default_value;
+                            get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                            : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
@@ -83,7 +82,7 @@ class ColorPicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -138,11 +137,12 @@ class ColorPicker extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         //enqueue scripts and styles for color picker
         $this->dm_enqueue_color_picker();
+
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -175,9 +175,9 @@ class ColorPicker extends Structure {
                 <div class="dm-option-column right">
                     <input  type="text"
                             name="<?php echo esc_attr( $name ); ?>"
-                            value="<?php echo esc_attr( $value ); ?>"
                             class="dm-color-picker-field"
-                            data-default-color="<?php echo esc_attr( $value ); ?>" />
+                            value="<?php echo esc_attr( $value );?>"
+                            data-default-color="<?php echo esc_attr( $value );?>" />
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>

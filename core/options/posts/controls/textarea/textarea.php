@@ -28,11 +28,11 @@ class Textarea extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
