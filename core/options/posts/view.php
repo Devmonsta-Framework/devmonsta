@@ -120,12 +120,13 @@ class View
          */
         if (isset($control_data['controls'])) {
             // Template
-            
-            echo '<div style="display:none" id="dm-repeater-template-'.$control_data['name'].'">';
+            echo '<div style="display:none">';
+            echo '<div  id="dm-repeater-template-'.$control_data['name'].'">';
             echo '<div>';
             $this->repeater_controls($control_data);
             echo "<br><button class='button dm-repeater-delete-btn'>Delete</button>";
             echo '</div>';
+            echo "</div>";
             echo "</div>";
 
             // controls
