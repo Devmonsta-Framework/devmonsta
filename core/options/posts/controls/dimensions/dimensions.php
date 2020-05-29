@@ -158,24 +158,28 @@ class Dimensions extends Structure {
                 >
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"
+                        class="dm-ctrl"
                         value="<?php echo isset( $value["top"] ) ? esc_html( intval( $value["top"] ) ) : 0; ?>"
                         label="top"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[right]"
+                        class="dm-ctrl"
                         value="<?php echo isset( $value["right"] ) ? esc_html( intval( $value["right"] ) ) : 0; ?>"
                         label="right"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[bottom]"
+                        class="dm-ctrl"
                         value="<?php echo isset( $value["bottom"] ) ? esc_html( intval( $value["bottom"] ) ) : 0; ?>"
                         label="bottom"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[left]"
+                        class="dm-ctrl"
                         value="<?php echo isset( $value["left"] ) ? esc_html( intval( $value["left"] ) ) : 0; ?>"
                         label="left"
                     ></dm-dimensions-item>

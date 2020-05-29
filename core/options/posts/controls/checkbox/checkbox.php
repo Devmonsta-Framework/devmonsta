@@ -28,13 +28,11 @@ class Checkbox extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
                         && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                         && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-                    ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                    : $default_value;
-
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : ( isset( $content['value'] ) ? $content['value'] : "" );
         $this->output();
     }
 
@@ -142,12 +140,14 @@ class Checkbox extends Structure {
             <div class="dm-option-column right">
                 <input type="text"
                         value="false"
+                        class="dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
                         style="display: none">
 
                 <label class="dm-option-label-list">
                     <input
                         type="checkbox"
+                        class="dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="true" <?php echo esc_attr( $is_checked );
         ?>>

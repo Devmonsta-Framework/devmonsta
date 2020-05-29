@@ -58,7 +58,7 @@ class Checkboxes extends Structure {
         $label    = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name     = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
+        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : [];
         $choices  = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
 
@@ -168,7 +168,7 @@ class Checkboxes extends Structure {
 
                                 ?>
                                 <label class="dm-option-label-list">
-                                    <input  type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
+                                    <input class="dm-ctrl" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
                                         value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                                         <?php echo esc_html( $element ); ?>
                                 </label>
@@ -178,7 +178,7 @@ class Checkboxes extends Structure {
                         }
 
                     ?>
-                    <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
+                    <input class="dm-ctrl" type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>

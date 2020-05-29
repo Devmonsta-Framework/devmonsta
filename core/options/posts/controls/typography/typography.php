@@ -221,31 +221,31 @@ class Typography extends Structure {
                             switch ( $key ) {
                             case 'family':
                                 ?>
-                                                <li>
-                                                    <?php
+                                            <li>
+                                            <?php
 
                                 if ( count( $font_list ) > 0 ): ?>
-                                                        <div class="google-fonts">
-                                                            <select class="google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
-                                                                <?php
+                                    <div class="google-fonts">
+                                        <select class="dm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
+                                    <?php
 
-                                foreach ( $font_list as $key => $item ) {
-                                    $selected = $item->family == esc_html( $value["family"] ) ? 'selected' : '';
-                                    echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
-                                }
+                                    foreach ( $font_list as $key => $item ) {
+                                        $selected = $item->family == esc_html( $value["family"] ) ? 'selected' : '';
+                                        echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                                    }
 
-                                ?>
-                                                            </select>
-                                                        </div>
-                                                    <?php endif;?>
-                                                    <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
-                                                </li>
+                                    ?>
+                                        </select>
+                                    </div>
+                                <?php endif;?>
+                                    <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
+                                            </li>
                                                 <li>
-                                                    <select name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input google-weight-list"></select>
+                                                    <select name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
                                                     <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
                                                 </li>
                                                 <li>
-                                                    <select name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input google-style-list">
+                                                    <select name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
                                                     </select>
                                                     <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
                                                 </li>
@@ -255,7 +255,7 @@ class Typography extends Structure {
                                 ?>
                                                 <li>
                                                     <input type="number" name="<?php echo esc_attr( $name ) ?>[size]"
-                                                        value="<?php echo isset( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input font-size" />
+                                                        value="<?php echo isset( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input dm-ctrl font-size" />
                                                         <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
                                                 </li>
                                             <?php
@@ -263,7 +263,7 @@ class Typography extends Structure {
                             case 'line-height':
                                 ?>
                                                 <li>
-                                                    <input type="number"name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input" />
+                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input dm-ctrl " />
                                                     <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
                                                 </li>
                                             <?php
@@ -271,7 +271,7 @@ class Typography extends Structure {
                             case 'letter-spacing':
                                 ?>
                                                 <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input" />
+                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input dm-ctrl " />
                                                     <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
                                                 </li>
                                             <?php
@@ -282,7 +282,7 @@ class Typography extends Structure {
                                                     <input  type="text"
                                                     name="<?php echo esc_attr( $name ) ?>[color]"
                                                     value="<?php echo isset( $value["color"] ) ? esc_html( $value["color"] ) : ""; ?>"
-                                                    class="dm-typography-color-field"
+                                                    class="dm-ctrl dm-typography-color-field"
                                                     data-default-color="<?php echo esc_attr( $value["color"] ); ?>" />
                                                     <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
                                                 </li>

@@ -28,13 +28,11 @@ class Text extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
                             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                             && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
                         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $default_value;
+                        : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
@@ -136,7 +134,7 @@ class Text extends Structure {
                 <div class="dm-option-column right">
                     <input
                         type="text"
-                        class="dm-option-input"
+                        class="dm-option-input dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_html( $value ); ?>"
                     >

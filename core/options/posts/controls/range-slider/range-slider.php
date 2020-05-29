@@ -157,7 +157,7 @@ class RangeSlider extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input class="dm-range-slider"
+                <input class="dm-ctrl dm-range-slider"
                     type="text" value="<?php echo esc_attr( $value ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"/>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

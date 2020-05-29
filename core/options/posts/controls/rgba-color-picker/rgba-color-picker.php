@@ -167,7 +167,7 @@ class RgbaColorPicker extends Structure {
                 <input  type="text"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $value ); ?>"
-                        class="dm-color-field color-picker-rgb"
+                        class="dm-ctrl dm-color-field color-picker-rgb"
                         data-alpha="true"
                         data-default-color="<?php echo esc_attr( $value ); ?>" />
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

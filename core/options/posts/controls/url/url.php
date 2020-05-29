@@ -37,11 +37,11 @@ class Url extends Structure {
 
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = ( $this->current_screen == "post" )
-        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+        $this->value   = (  ( $this->current_screen == "post" )
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+                            ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                            : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
@@ -142,7 +142,7 @@ class Url extends Structure {
            <div class="dm-option-column right">
                 <input class="dm-input-url"
                     type="url"
-                    class="dm-option-input"
+                    class="dm-option-input dm-ctrl"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_url( $value );?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

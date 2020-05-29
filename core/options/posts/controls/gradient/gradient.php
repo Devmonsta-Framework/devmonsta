@@ -202,7 +202,7 @@ class Gradient extends Structure {
                                 }
 
                                 ?>
-                                    <input type="text" class="dm-gradient-field-<?php echo esc_attr( $id ); ?>"
+                                    <input type="text" class="dm-ctrl dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                                             name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                                             value="<?php echo esc_attr( $value ); ?>"
                                             data-default-color="<?php echo esc_attr( $value ); ?>"

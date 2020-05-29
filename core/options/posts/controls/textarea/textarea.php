@@ -28,11 +28,11 @@ class Textarea extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
@@ -133,7 +133,7 @@ class Textarea extends Structure {
                 <div class="dm-option-column right">
                     <textarea
                         rows="6"
-                        class="dm-option-input dm-option-textarea"
+                        class="dm-option-input dm-ctrl dm-option-textarea"
                         name="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $value ); ?></textarea>
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>

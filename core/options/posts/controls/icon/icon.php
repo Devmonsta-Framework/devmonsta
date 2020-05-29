@@ -155,6 +155,7 @@ class Icon extends Structure {
             <div class="dm-option-column right">
                 <dm-icon-picker
                     name='<?php echo esc_attr( $name ); ?>'
+                    class="dm-ctrl"
                     icon_list='<?php echo dm_render_markup($iconEncoded); ?>'
                     default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : "dm-font-awesome"; ?>'
                     default_icon='<?php echo isset( $icon_name ) ? esc_attr( $icon_name ) : "fas fa-angle-right"; ?>'
