@@ -134,7 +134,7 @@ class Text extends Structure {
                 <div class="dm-option-column right">
                     <input
                         type="text"
-                        class="dm-option-input"
+                        class="dm-option-input dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_html( $value ); ?>"
                     >

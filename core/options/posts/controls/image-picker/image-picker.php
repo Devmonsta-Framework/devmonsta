@@ -160,7 +160,7 @@ class ImagePicker extends Structure {
                 <div class="dm-option-column right full-width">
 
                     <div class="thumbnails dm-option-image_picker_selector">
-                        <input class="dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+                        <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
                         <ul>
                             <?php
                                 if ( is_array( $choices ) && isset( $choices ) ) {

@@ -143,7 +143,7 @@ class Radio extends Structure {
                             $is_checked = ( $key == $value ) ? 'checked' : '';
                             ?>
                                 <label class="dm-option-label-list">
-                                    <input type="radio" name="<?php echo esc_attr( $name ); ?>"
+                                    <input class="dm-ctrl" type="radio" name="<?php echo esc_attr( $name ); ?>"
                                         value="<?php echo esc_attr( $key ); ?>"
                                             <?php echo esc_html( $is_checked ); ?>>
                                             <?php echo esc_html( $val ); ?>

@@ -128,7 +128,7 @@ class Html extends Structure {
                 </div>
 
                 <div class="dm-option-column right">
-                    <div class='dm_html_block'>
+                    <div class='dm-ctrl dm_html_block'>
                         <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
                     </div>
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>

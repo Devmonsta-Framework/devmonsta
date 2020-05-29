@@ -140,12 +140,14 @@ class Checkbox extends Structure {
             <div class="dm-option-column right">
                 <input type="text"
                         value="false"
+                        class="dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
                         style="display: none">
 
                 <label class="dm-option-label-list">
                     <input
                         type="checkbox"
+                        class="dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="true" <?php echo esc_attr( $is_checked );
         ?>>

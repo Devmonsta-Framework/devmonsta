@@ -30,11 +30,10 @@ class Hidden extends Structure {
 
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true )
                         && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
                     get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                    : $default_value;
+                    : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
@@ -129,7 +128,7 @@ class Hidden extends Structure {
                 <div class="dm-option-column left">
                 </div>
                 <div class="dm-option-column right">
-                    <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" >
+                    <input class="dm-ctrl" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" >
                 </div>
             </div>
     <?php

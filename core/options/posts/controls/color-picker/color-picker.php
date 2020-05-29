@@ -175,7 +175,7 @@ class ColorPicker extends Structure {
                 <div class="dm-option-column right">
                     <input  type="text"
                             name="<?php echo esc_attr( $name ); ?>"
-                            class="dm-color-picker-field"
+                            class="dm-ctrl dm-color-picker-field"
                             value="<?php echo esc_attr( $value );?>"
                             data-default-color="<?php echo esc_attr( $value );?>" />
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

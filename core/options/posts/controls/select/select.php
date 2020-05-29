@@ -163,7 +163,7 @@ class Select extends Structure {
                 </div>
 
                 <div class="dm-option-column right">
-                    <select class="dm_select" name="<?php echo esc_attr( $name ); ?>">
+                    <select class="dm-ctrl dm_select" name="<?php echo esc_attr( $name ); ?>">
                         <?php
                             if ( is_array( $choices ) && !empty( $choices ) ) {
                                 foreach ( $choices as $key => $val ) {

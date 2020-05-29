@@ -142,7 +142,7 @@ class Url extends Structure {
            <div class="dm-option-column right">
                 <input class="dm-input-url"
                     type="url"
-                    class="dm-option-input"
+                    class="dm-option-input dm-ctrl"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_url( $value );?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
