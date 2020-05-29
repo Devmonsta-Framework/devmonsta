@@ -33,7 +33,7 @@ jQuery(document).ready(function ($) {
         var html_content = $('#dm-repeater-template-' + id).html();
         $('#dm-repeater-section-' + id).append(html_content);
 
-        $('#dm-repeater-section-' + id + ' [class^="dm-ctrl"]').each(function () {
+        $('#dm-repeater-section-' + id + ' [class^="dm-option-input"]').each(function () {
             $(this).attr('name', 'repeater_control_' + id + '_' + makeid(5));
         });
 
