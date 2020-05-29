@@ -29,6 +29,8 @@ class Customizer
             return;
         }
 
+        add_action('customize_controls_enqueue_scripts', [$this, 'load_scripts']);
+
         /**
          * Get Customizer file from the
          * current active theme
@@ -538,6 +540,19 @@ class Customizer
             'hidden',
             'date',
         ];
+    }
+
+    
+    /**
+     * ===========================================
+     *      Load Styles & Scripts for controls
+     * ===========================================
+     */
+    public function load_scripts()
+    {
+        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-vue', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
     }
 
 }
