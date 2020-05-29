@@ -21,9 +21,7 @@ class Multiselect extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
         add_action( 'init', [$this, 'load_multi_select_scripts'] );
-
     }
 
     /**
@@ -40,15 +38,11 @@ class Multiselect extends Structure {
      */
     public function render() {
         $content = $this->content;
-
         global $post;
-
-        $default_value = ( isset( $content['value'] ) && (is_array( $content['value'] )) ) ? $content['value'] : [];
-        $this->value   = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+        $this->value   = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                             ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                            : $default_value;
-        // array_unshift($this->value, "default");
+                            : ( ( isset( $content['value'] ) && (is_array( $content['value'] )) ) ? $content['value'] : [] );
         $this->output();
     }
 
@@ -61,11 +55,8 @@ class Multiselect extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
-        // $choices            = ["default" => ""] + $choices;
         $default_attributes = "";
         $dynamic_classes    = "";
-        // var_dump( $choices  );
-        // var_dump($this->value);
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
             foreach ( $attrs as $key => $val ) {
