@@ -9,6 +9,25 @@ class DatetimePicker extends \WP_Customize_Control {
 
     public $label, $name, $desc, $date_time_picker_config;
 
+    private $allowed_date_formats = [
+        'Y-m-d',
+        'n/j/Y',
+        'm/d/Y',
+        'j/n/Y',
+        'd/m/Y',
+        'n-j-Y',
+        'm-d-Y',
+        'j-n-Y',
+        'd-m-Y',
+        'Y.m.d',
+        'm.d.Y',
+        'd.m.Y',
+    ];
+    private $allowed_time_formats = [
+        'H:i',
+        'h:i',
+    ];
+
     /**
      * @access public
      * @var    string
@@ -25,12 +44,10 @@ class DatetimePicker extends \WP_Customize_Control {
     }
 
     public function prepare_values( $id, $args = [] ) {
-
-        var_dump( $args[0] );
-        $this->label                   = $args[0]['label'];
-        $this->name                    = $args[0]['id'];
-        $this->desc                    = $args[0]['desc'];
-        $this->date_time_picker_config = $args[0]['datetime-picker'];
+        $this->label                   = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
+        $this->name                    = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
+        $this->desc                    = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
     }
 
     /*
@@ -52,9 +69,6 @@ class DatetimePicker extends \WP_Customize_Control {
         wp_localize_script( 'dm-customizer-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
     }
 
-    public function enqueue_date_time_picker_scripts() {
-        }
-
     public function render() {
         $this->render_content();
     }
@@ -71,7 +85,7 @@ class DatetimePicker extends \WP_Customize_Control {
                 <input <?php $this->link();?>
                     type="text"
                     id="dm-datetime-picker"
-                    class="dm-option-input"
+                    class="dm-option-input dm-option-input-datetime-picker"
                     name="<?php echo esc_attr( $this->name ); ?>"
                     value="<?php echo esc_attr( $this->value() ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
@@ -79,6 +93,6 @@ class DatetimePicker extends \WP_Customize_Control {
         </div>
 
     <?php
-}
+    }
 
 }
