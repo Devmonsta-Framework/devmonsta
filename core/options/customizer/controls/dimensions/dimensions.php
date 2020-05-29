@@ -34,8 +34,6 @@ class Dimensions extends \WP_Customize_Control {
     
     }
 
-    public function enqueue_dimensions_scripts() {
-        }
 
     public function render() {
         $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? maybe_unserialize( $this->value() ) : $this->default_value;
@@ -44,7 +42,7 @@ class Dimensions extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <div>
+        <div class="dm-box">
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>

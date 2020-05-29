@@ -554,5 +554,4 @@ class Customizer
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-vue', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
     }
-
 }

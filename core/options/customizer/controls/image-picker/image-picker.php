@@ -1,37 +1,46 @@
 <?php
+namespace Devmonsta\Options\Customizer\Controls\ImagePicker;
 
-namespace Devmonsta\Options\Posts\Controls\ImagePicker;
+if ( !class_exists( 'WP_Customize_Control' ) ) {
+    return NULL;
+}
+class ImagePicker extends \WP_Customize_Control {
 
-use Devmonsta\Options\Posts\Structure;
-
-class ImagePicker extends Structure {
-
-    protected $current_screen;
-
-    protected $value;
+    public $label, $name, $desc, $default_value, $value, $choices;
 
     /**
-     * @internal
+     * @access public
+     * @var    string
      */
-    public function init() {
+    public $type = 'image-picker';
+
+    public $statuses;
+
+    public function __construct( $manager, $id, $args = [] ) {
+        $this->prepare_values( $id, $args );
+        $this->statuses = ['' => __( 'Default' )];
+        parent::__construct( $manager, $id, $args );
     }
 
     /**
-     * @internal
+     * Prepare default values passed from theme
+     *
+     * @param [type] $id
+     * @param array $args
+     * @return void
      */
-    public function enqueue( $meta_owner ) {
-        $this->current_screen = $meta_owner;
-
-        if ( $this->current_screen == "post" ) {
-            $this->enqueue_image_picker_scripts();
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'enqueue_image_picker_scripts'] );
-
-        }
-
+    private function prepare_values( $id, $args = [] ) {
+        $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
+        $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
+        $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
+        $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
     }
 
-    public function enqueue_image_picker_scripts() {
+    /*
+     ** Enqueue control related scripts/styles
+     */
+    public function enqueue() {
 
         // js
         wp_enqueue_script( 'dm-image-picker-js', plugins_url( 'image-picker/assets/js/image-picker.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
@@ -40,160 +49,53 @@ class ImagePicker extends Structure {
 
     }
 
-    /**
-     * @internal
-     */
-    public function render() {
-
-        $content = $this->content;
-        global $post;
-
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = (  ( $this->current_screen == "post" )
-                        && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-                            ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                            : $default_value;
-
-        $this->output();
-    }
-
-    /**
-     * @internal
-     */
-    public function output() {
-        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices            = is_array( $this->content['choices'] ) && isset( $this->content['choices'] ) ? $this->content['choices'] : [];
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
-    }
-
-    public function columns() {
-        $visible = false;
-        $content = $this->content;
-        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
-            function ( $columns ) use ( $content, $visible ) {
-
-                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
-
-                if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
-                }
-
-                return $columns;
-            } );
-
-        $cc = $content;
-        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
-            function ( $content, $column_name, $term_id ) use ( $cc ) {
-
-                if ( $column_name == $cc['name'] ) {
-                    echo get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
-
-                }
-
-                return $content;
-
-            }, 10, 3 );
-
-    }
-
-    public function edit_fields( $term, $taxonomy ) {
-        $this->enqueue_image_picker_scripts();
-
-        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $name               = isset( $this->content['name'] )  ? $this->prefix . $this->content['name'] : '';
-        $desc               = isset( $this->content['desc'] )  ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] )  ? $this->content['attr'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
-        $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
     
-}
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
+    public function render() {
+        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
+        $this->render_content();
+    }
+
+    public function render_content() {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
-
-                <div class="dm-option-column right full-width">
-
-                    <div class="thumbnails dm-option-image_picker_selector">
-                        <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
-                        <ul>
-                            <?php
-                                if ( is_array( $choices ) && isset( $choices ) ) {
-
-                                    foreach ( $choices as $item_key => $item ) {
-                                        if(is_array($item) && isset($item)){
-                                            $selected    = ( $item_key == $value ) ? 'selected' : '';
-                                            $small_image = isset( $item['small'] ) ? $item['small'] : '';
-                                            $large_image = isset( $item['large'] ) ? $item['large'] : '';
-                                            ?>
-                                                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                                    <?php if ( !empty( $large_image ) ): ?>
-                                                    <div class="dm-img-picker-preview">
-                                                        <img src="<?php echo esc_attr( $large_image ); ?>" />
-                                                    </div>
-                                                    <?php endif;?>
-                                                    <div class="thumbnail">
-                                                        <img src="<?php echo esc_attr( $small_image ); ?>" />
-                                                    </div>
-                                                </li>
-                                            <?php
-                                        }
-                                    }
-
-                                }
-
-                            ?>
-                        </ul>
-                    </div>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                </div>
+        <div>
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
-    <?php
+
+            <div class="dm-option-column right full-width">
+                <div class="thumbnails dm-option-image_picker_selector">
+                    <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
+                    <ul>
+                        <?php
+                            if ( is_array( $this->choices ) && isset( $this->choices ) ) {
+                                foreach ( $this->choices as $item_key => $item ) {
+                                    if ( is_array( $item ) && isset( $item ) ) {
+                                        $selected    = ( $item_key == $this->value ) ? 'selected' : '';
+                                        $small_image = isset( $item['small'] ) ? $item['small'] : '';
+                                        $large_image = isset( $item['large'] ) ? $item['large'] : '';
+                                        ?>
+                                        <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+                                        <?php
+                                        if ( !empty( $large_image ) ): ?>
+                                            <div class="dm-img-picker-preview">
+                                                <img src="<?php echo esc_attr( $large_image ); ?>" />
+                                            </div>
+                                        <?php endif;?>
+                                            <div class="thumbnail">
+                                                <img src="<?php echo esc_attr( $small_image ); ?>" />
+                                            </div>
+                                        </li>
+                                    <?php
+                                    }
+                                }
+                            }
+                        ?>
+                    </ul>
+                </div>
+                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+            </div>
+        </div>
+        <?php
     }
 
 }
