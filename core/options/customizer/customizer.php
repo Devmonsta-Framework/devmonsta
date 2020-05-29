@@ -30,6 +30,12 @@ class Customizer
         }
 
         /**
+         * Add styles and scripts
+         */
+
+         add_action('customize_preview_init',[$this,'scripts_and_styles']);
+
+        /**
          * Get Customizer file from the
          * current active theme
          */
@@ -538,6 +544,11 @@ class Customizer
             'hidden',
             'date',
         ];
+    }
+
+
+    public function scripts_and_styles(){
+        wp_enqueue_script( 'devmonsta-customizer', plugin_dir_url( __FILE__ ) . 'libs/assets/js/customizer.js', ['customize-preview', 'jquery'] );
     }
 
 }
