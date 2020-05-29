@@ -39,10 +39,9 @@ class Upload extends Structure {
         $content = $this->content;
         global $post;
 
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $default_value;
+                        : ( isset( $content['value'] ) ? $content['value'] : "" );
 
         $this->output();
     }
@@ -58,7 +57,7 @@ class Upload extends Structure {
 
         $image_size = 'full';
         $display    = 'none';
-        $multiple   = 0;
+        $multiple   = false;
         $image      = ' button">Upload image';
 
         if ( isset( $this->content['multiple'] ) && $this->content['multiple'] ) {
@@ -136,10 +135,10 @@ class Upload extends Structure {
         $name       = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $value      = "" != get_term_meta( $term->term_id, $name, true ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
+        $value      = ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $image_size = 'full';
         $display    = 'none';
-        $multiple   = 0;
+        $multiple   = false;
         $image      = '"dm_upload_image_button button">Upload image';
 
         if ( isset( $this->content['multiple'] ) && $this->content['multiple'] ) {
