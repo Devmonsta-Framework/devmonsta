@@ -116,17 +116,16 @@ class View
     public function build_repeater($control_data)
     {
         /**
-         * Income code , just testing , do not read or use
+         * Incomplete code , just testing , do not read or use
          */
         if (isset($control_data['controls'])) {
             // Template
-            echo '<div style="display:none">';
-            echo '<div  id="dm-repeater-template-'.$control_data['name'].'">';
+            
+            echo '<div style="display:none" id="dm-repeater-template-'.$control_data['name'].'">';
             echo '<div>';
             $this->repeater_controls($control_data);
             echo "<br><button class='button dm-repeater-delete-btn'>Delete</button>";
             echo '</div>';
-            echo "</div>";
             echo "</div>";
 
             // controls
@@ -144,6 +143,8 @@ class View
 
     public function repeater_controls($control_data)
     {
+        // incomplete code , just testing 
+        
         foreach ($control_data['controls'] as $control_content) {
 
             if($control_content['type'] == 'repeater'){

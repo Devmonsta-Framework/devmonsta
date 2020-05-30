@@ -30,10 +30,10 @@ jQuery(document).ready(function ($,ajax_object) {
     }
 
     $(".dm-repeater-add-new").click(function () {
-        // var id = $(this).attr('data-id');
+        var id = $(this).attr('data-id');
         
        
-        // $('#dm-repeater-section-' + id).append($('#dm-repeater-template-' + id).clone(true));
+        $('#dm-repeater-section-' + id).append($('#dm-repeater-template-' + id).clone(true));
 
         // $('.dm-repeater-delete-btn').click(function () {
 
