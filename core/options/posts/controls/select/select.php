@@ -39,13 +39,10 @@ class Select extends Structure {
      */
     public function render() {
         $content = $this->content;
-
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
-        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) 
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) 
                         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $default_value;
-
+                        : ( isset( $content['value'] ) ? $content['value'] : "" );
         $this->output();
     }
 
@@ -57,7 +54,7 @@ class Select extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -132,7 +129,7 @@ class Select extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
+        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : [];
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -182,6 +179,4 @@ class Select extends Structure {
             </div>
         <?php
     }
-
-
 }
