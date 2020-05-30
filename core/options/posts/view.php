@@ -30,13 +30,10 @@ class View
                 if ($control['box_id'] == $box_id) {
                     $this->render($control);
                 }
-
             }
-
         }
 
         echo '</div>';
-
     }
 
     /**
@@ -55,12 +52,10 @@ class View
             if ($control_content['type'] == 'repeater') {
 
                 $this->build_repeater($control_content);
-
             }
 
             $this->build_controls($control_content);
         }
-
     }
 
     /**
@@ -83,7 +78,6 @@ class View
             $control->init();
             $control->enqueue($this->meta_owner);
             $control->render();
-
         } else {
 
             $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
@@ -98,11 +92,8 @@ class View
                     $control->init();
                     $control->enqueue($this->meta_owner);
                     $control->render();
-
                 }
-
             }
-
         }
     }
 
@@ -116,47 +107,48 @@ class View
     public function build_repeater($control_data)
     {
         /**
-         * Income code , just testing , do not read or use
+         * Incomplete code , just testing , do not read or use
          */
         if (isset($control_data['controls'])) {
-            // Template
-            echo '<div style="display:none">';
-            echo '<div  id="dm-repeater-template-'.$control_data['name'].'">';
-            echo '<div>';
-            $this->repeater_controls($control_data);
-            echo "<br><button class='button dm-repeater-delete-btn'>Delete</button>";
-            echo '</div>';
-            echo "</div>";
-            echo "</div>";
 
-            // controls
-            echo "<div id='dm-repeater-".$control_data['name']."'>";
-            echo '<div id="dm-repeater-section-'.$control_data['name'].'">';
-            echo "<h1>" . $control_data['label'] . "</h1>";
-            $this->repeater_controls($control_data);
-            
-            echo "</div>";
-            echo "<br><br><button data-id='".$control_data['name']."' class='dm-repeater-add-new button'>".$control_data['add_new']."</button>";
-            echo "</div>";
+            add_thickbox();
+            ?>
+            <div class="dm-option form-field ">
 
+                <div class='dm-option-column left'>
+                    <label class="dm-option-label"><?php echo $control_data['label']; ?> </label>
+                </div>
+
+
+                <div class='dm-option-column right'>
+
+
+                    <div class="dm-repeater-control">
+                        <a href="#TB_inline?width=600&height=550&inlineId=<?php echo $control_data['name']; ?>" class="thickbox">Control</a>
+                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button editor-post-trash is-link">Delete</button>
+
+                        <div id="<?php echo $control_data['name']; ?>" style="display:none;">
+                            <?php $this->repeater_controls($control_data); ?>
+                        </div>
+                    </div>
+
+
+
+                    <br><br><a href='#TB_inline?width=600&height=550&inlineId=<?php echo $control_data['name']; ?>' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button thickbox'><?php echo $control_data['add_new']; ?></a>
+                </div>
+            </div>
+
+        <?php
         }
     }
 
     public function repeater_controls($control_data)
     {
+        // incomplete code , just testing 
+
         foreach ($control_data['controls'] as $control_content) {
 
-            if($control_content['type'] == 'repeater'){
-                ?> 
-                <ul>
-                    <li>
-                <?php
-                $this->repeater_controls($control_content) ;
-                ?>
-                </li>
-                </ul>
-                <?php
-            }
+
 
             $name = $control_content['name'];
             unset($control_content['name']);
@@ -172,7 +164,6 @@ class View
                 $control->init();
                 $control->enqueue($this->meta_owner);
                 $control->render();
-
             } else {
 
                 $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
@@ -187,13 +178,9 @@ class View
                         $control->init();
                         $control->enqueue($this->meta_owner);
                         $control->render();
-
                     }
-
                 }
-
             }
         }
     }
-
 }
