@@ -1,20 +1,3 @@
-jQuery.ajax({
-    type: 'POST',
-    url: ajax_object.ajax_url,
-    data:{
-        'action' : 'dm_repeater_controls',
-        'repeater' : 'repeater',
-    },
-    success:function(data){
-        console.log(data);
-    },
-    error:function(data){
-        alert('Something went wrong');
-        console.log(data.responseText);
-    }
-});
-
-
 jQuery(document).ready(function ($,ajax_object) {
     
    
