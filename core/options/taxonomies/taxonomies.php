@@ -226,6 +226,7 @@ class Taxonomies
                     $control_object->init();
                     $control_object->enqueue($this->meta_owner);
                     $control_object->edit_fields($term, $taxonomy);
+                    
 
                 } else {
 
@@ -333,7 +334,6 @@ class Taxonomies
 
                     $controls = $taxonomy_lib->all_controls();
 
-                    error_log(serialize($controls));
 
                     $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
 

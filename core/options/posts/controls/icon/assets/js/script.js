@@ -23,7 +23,7 @@ Vue.component('dm-icon-picker', {
             </transition>
         </div>
     `,
-    data: function() {
+    data: function () {
         return {
             iconList: [],
             pickedIcon: '',
@@ -35,10 +35,10 @@ Vue.component('dm-icon-picker', {
         }
     },
     computed: {
-        iconBtnText: function() {
+        iconBtnText: function () {
             return this.savedIconClass ? 'Change Icon' : 'Add Icon'
         },
-        iconBox: function() {
+        iconBox: function () {
             let iconClass = 'iconBox-inner';
             if (this.savedIconClass) {
                 iconClass += ' has-icon '
@@ -47,31 +47,31 @@ Vue.component('dm-icon-picker', {
         }
     },
     methods: {
-        pickedIconClass: function(iconClass) {
+        pickedIconClass: function (iconClass) {
             this.pickedIcon = iconClass;
         },
-        openModal: function() {
+        openModal: function () {
             this.showModal = true;
         },
-        closeModal: function() {
+        closeModal: function () {
             this.showModal = false;
             this.save = false;
         },
-        removeIcon: function() {
+        removeIcon: function () {
             this.pickedIcon = '';
             this.savedIconClass = '';
         },
-        saveIcon: function() {
+        saveIcon: function () {
             this.showModal = false;
             this.save = true;
             this.savedIconClass = this.pickedIcon;
             this.iconType = this.tempiconType;
         },
-        changeIconType: function(value) {
+        changeIconType: function (value) {
             this.tempiconType = value;
         }
     },
-    created: function() {
+    created: function () {
         this.iconList = JSON.parse(this.icon_list);
         this.savedIconClass = this.default_icon ? this.default_icon : '';
         this.iconType = this.default_icon_type ? this.default_icon_type : '';
@@ -102,29 +102,29 @@ Vue.component('dm-icon-modal', {
             </div>
         </div>
     `,
-    data: function() {
+    data: function () {
         return {
             search: '',
             iconType: ''
         }
     },
     computed: {
-        icons: function() {
+        icons: function () {
             let icons = this.iconList.filter(item => item.id == this.iconType);
             return icons ? icons[0].icons : [];
         }
     },
     methods: {
-        pickedIcon: function(iconClass) {
+        pickedIcon: function (iconClass) {
             this.$emit('picked-icon', iconClass);
         }
     },
     watch: {
-        iconType: function(val) {
+        iconType: function (val) {
             this.$emit('icon-type', val);
         }
     },
-    created: function() {
+    created: function () {
         this.iconType = this.default_icon_type
     }
 });
@@ -138,7 +138,7 @@ Vue.component('dm-icon-list', {
             </ul>
         </div>
     `,
-    data: function() {
+    data: function () {
         return {
             iconsCl: [],
             searchText: '',
@@ -146,25 +146,25 @@ Vue.component('dm-icon-list', {
         }
     },
     methods: {
-        pickIcon: function(iconClass) {
+        pickIcon: function (iconClass) {
             this.pickedIcon = iconClass;
             this.$emit('picked-icon', iconClass);
         }
     },
     computed: {
-        finalIcon: function() {
+        finalIcon: function () {
             return this.searchText ? this.iconsCl.filter(icon => icon.indexOf(this.searchText) > -1) : this.iconsCl;
         }
     },
-    created: function() {
+    created: function () {
         this.iconsCl = this.icons;
         this.pickedIcon = this.default_icon;
     },
     watch: {
-        search: function(val) {
+        search: function (val) {
             this.searchText = val;
         },
-        icons: function(val) {
+        icons: function (val) {
             this.iconsCl = val;
         }
     }

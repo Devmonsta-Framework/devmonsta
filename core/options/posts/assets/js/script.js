@@ -1,5 +1,5 @@
 let elements = document.querySelectorAll('.dm-box');
-elements.forEach(function(item) {
+elements.forEach(function (item) {
     new Vue({
         el: item
     });
@@ -11,3 +11,4 @@ if (taxonomyEl) {
         el: taxonomyEl
     });
 }
+

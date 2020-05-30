@@ -120,42 +120,24 @@ class View
          */
         if (isset($control_data['controls'])) {
             // Template
-            ?>
-            <script>
-                jQuery(document).ready(function($){
-                    $("#dm-repeater-add-new").click(function(){
-                        $('.dm-color-field').wpColorPicker();
-                        // $($('#dm-repeater-template').html()).insertAfter('#dm-repeater-section');
-                        $('#dm-repeater-section').append($('#dm-repeater-template').html());
-                        $('.dm-repeater-delete-btn').click(function(){
-                        
-                            $(this).closest('div').remove();
-
-                         });
-                         
-                    });
-
-                    
-                });
-            </script>
-
-            <?php
-            echo '<div style="display:none" id="dm-repeater-template">';
+            echo '<div style="display:none">';
+            echo '<div  id="dm-repeater-template-'.$control_data['name'].'">';
             echo '<div>';
             $this->repeater_controls($control_data);
             echo "<br><button class='button dm-repeater-delete-btn'>Delete</button>";
             echo '</div>';
             echo "</div>";
+            echo "</div>";
 
             // controls
-
-            echo '<div id="dm-repeater-section">';
+            echo "<div id='dm-repeater-".$control_data['name']."'>";
+            echo '<div id="dm-repeater-section-'.$control_data['name'].'">';
             echo "<h1>" . $control_data['label'] . "</h1>";
             $this->repeater_controls($control_data);
             
             echo "</div>";
-            echo "<br><br><button id='dm-repeater-add-new' class='button'>Add new</button>";
-            
+            echo "<br><br><button data-id='".$control_data['name']."' class='dm-repeater-add-new button'>".$control_data['add_new']."</button>";
+            echo "</div>";
 
         }
     }
@@ -163,6 +145,18 @@ class View
     public function repeater_controls($control_data)
     {
         foreach ($control_data['controls'] as $control_content) {
+
+            if($control_content['type'] == 'repeater'){
+                ?> 
+                <ul>
+                    <li>
+                <?php
+                $this->repeater_controls($control_content) ;
+                ?>
+                </li>
+                </ul>
+                <?php
+            }
 
             $name = $control_content['name'];
             unset($control_content['name']);

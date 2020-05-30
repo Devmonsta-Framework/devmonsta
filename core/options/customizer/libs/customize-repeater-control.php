@@ -60,6 +60,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
      */
     public function enqueue()
     {
+        wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('jquery-ui-widget');
         wp_enqueue_script('jquery-ui-mouse');
         wp_enqueue_script('jquery-ui-accordion');

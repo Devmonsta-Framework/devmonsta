@@ -4,7 +4,8 @@ namespace Devmonsta;
 
 use Devmonsta\Traits\Singleton;
 
-final class Bootstrap {
+final class Bootstrap
+{
 
     use Singleton;
 
@@ -16,8 +17,9 @@ final class Bootstrap {
      * =============================================
      */
 
-    public function init() {
-        define( 'DM', true );
+    public function init()
+    {
+        define('DM', true);
 
         //Make all the helper functions available
         $helper_files = [
@@ -36,12 +38,15 @@ final class Bootstrap {
             'repeater',
         ];
 
-        foreach ( $helper_files as $file ) {
-            require dirname( __FILE__ ) . '/helpers/' . $file . '.php';
+        foreach ($helper_files as $file) {
+            require dirname(__FILE__) . '/helpers/' . $file . '.php';
         }
 
+        
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
         \Devmonsta\Options\Taxonomies\Taxonomies::instance()->init();
+        \Devmonsta\Rest::instance()->init();
+        
     }
 }

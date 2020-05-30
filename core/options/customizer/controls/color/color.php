@@ -78,6 +78,7 @@ class Color extends \WP_Customize_Control {
      */
     public function content_template() {
         ?>
+        
         <# var defaultValue = '#RRGGBB', defaultValueAttr = '',
             isHueSlider = data.mode === 'hue';
         if ( data.defaultValue && _.isString( data.defaultValue ) && ! isHueSlider ) {
@@ -103,6 +104,7 @@ class Color extends \WP_Customize_Control {
             <# } #>
             </label>
         </div>
+
         <?php
     }
 }
