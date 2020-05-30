@@ -9,6 +9,8 @@
 
             $(this).addClass("selected").siblings().removeClass("selected");
             $(this).parents(".dm-option-image_picker_selector").find('.dm-option-image-picker-input').val(name);
+            
+            // console.log("image selected: " + name);
         })
     })
 })(jQuery)

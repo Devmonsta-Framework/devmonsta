@@ -56,7 +56,6 @@ class Switcher extends \WP_Customize_Control {
      */
     public function render() {
         $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
-        // var_dump($this->value);
         $this->render_content();
     }
 
@@ -67,7 +66,6 @@ class Switcher extends \WP_Customize_Control {
     }
 
     public function render_content() {
-        
         ?>
         <div>
             <div class="dm-option-column left">
@@ -75,11 +73,11 @@ class Switcher extends \WP_Customize_Control {
             </div>
             <div class="dm-option-column right dm_switcher_main_block" >
                 <div class='dm_switcher_item' date-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>">
-                    <input  type='checkbox' class='dm-ctrl dm-control-input dm_switcher_right'  value='<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>' name='<?php echo esc_attr( $this->name ); ?>'
+                    <input <?php $this->link();?> type='checkbox' class='dm-ctrl dm-control-input dm_switcher_right'  value='<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>' name='<?php echo esc_attr( $this->name ); ?>'
                             <?php echo ( $this->value == $this->right_choice[$this->right_key] ) ? 'checked' : ''; ?> />
                     <label data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='dm_switcher_label dm-option-label'></label>
                 </div>
-                <input class='dm-ctrl dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>'  name='<?php echo esc_attr( $this->name ); ?>' <?php echo ( $this->value == $this->left_choice[$this->left_key] ) ? 'checked' : ''; ?> />
+                <input <?php $this->link();?> class='dm-ctrl dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>'  name='<?php echo esc_attr( $this->name ); ?>' <?php echo ( $this->value == $this->left_choice[$this->left_key] ) ? 'checked' : ''; ?> />
 
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>

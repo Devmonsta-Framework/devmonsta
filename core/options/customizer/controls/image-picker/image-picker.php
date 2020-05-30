@@ -64,7 +64,7 @@ class ImagePicker extends \WP_Customize_Control {
 
             <div class="dm-option-column right full-width">
                 <div class="thumbnails dm-option-image_picker_selector">
-                    <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
+                    <input <?php $this->link();?> class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
                     <ul>
                         <?php
                             if ( is_array( $this->choices ) && isset( $this->choices ) ) {
@@ -81,7 +81,7 @@ class ImagePicker extends \WP_Customize_Control {
                                                 <img src="<?php echo esc_attr( $large_image ); ?>" />
                                             </div>
                                         <?php endif;?>
-                                            <div class="thumbnail">
+                                            <div class="thumbnail img-picker-thumbnail">
                                                 <img src="<?php echo esc_attr( $small_image ); ?>" />
                                             </div>
                                         </li>
