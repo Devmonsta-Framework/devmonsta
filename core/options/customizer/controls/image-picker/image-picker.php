@@ -46,7 +46,7 @@ class ImagePicker extends \WP_Customize_Control {
         wp_enqueue_script( 'dm-image-picker-js', plugins_url( 'image-picker/assets/js/image-picker.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
         // css
         wp_enqueue_style( 'dm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) );
-        var_dump($this->name);
+        // var_dump($this->name);
         wp_localize_script( 'dm-image-picker-js', 'settings_id', $this->name );
     }
 
