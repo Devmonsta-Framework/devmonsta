@@ -66,7 +66,7 @@ class Text extends Structure {
         $condition_data     = "";
         if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
             $condition_class = "dm-condition-active";
-            $condition_data = json_encode($this->content['active_callback']);
+            $condition_data = json_encode($this->content['active_callback'], true);
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
@@ -125,11 +125,12 @@ class Text extends Structure {
 
         }
 
+        
         $condition_class    = "";
         $condition_data     = "";
         if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
             $condition_class = "dm-condition-active";
-            $condition_data = json_encode($this->content['active_callback']);
+            $condition_data = json_encode($this->content['active_callback'], true);
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
