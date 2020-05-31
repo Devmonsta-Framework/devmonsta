@@ -84,13 +84,16 @@ class Slider extends Structure {
 
         }
 
-
-        $condition_class = ( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] )) ? "dm-condition-active" : "";
-        // var_dump($condition_class);
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['active_callback'], true);
+        }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
         
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $condition_data );
     }
 
     public function columns() {
@@ -147,14 +150,19 @@ class Slider extends Structure {
 
         }
 
-        $condition_class = ( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] )) ? "dm-condition-active" : "";
-        // var_dump($condition_class);
+        
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['active_callback'], true);
+        }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data );
 }
 
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data ) {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
@@ -165,7 +173,10 @@ class Slider extends Structure {
                 <input class="dm-ctrl dm-slider"
                         type="range"
                         name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_attr( $value ); ?>"/>
+                        value="<?php echo esc_attr( $value ); ?>"
+                        <?php if($condition_data != ""){ ?>
+                            data-dm_conditions="<?php echo esc_attr( $condition_data ); ?>"
+                        <?php } ?>/>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
