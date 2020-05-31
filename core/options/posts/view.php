@@ -111,7 +111,7 @@ class View
          */
         if (isset($control_data['controls'])) {
 
-            add_thickbox();
+            // add_thickbox();
             ?>
             <div class="dm-option form-field ">
 
@@ -122,17 +122,19 @@ class View
 
                 <div class='dm-option-column dm-repeater-column right'>
 
+                    <div class="dm-repeater-control dm-repeater-sample">
+                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control</a>
+                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link" >Delete</button>
 
-                    <div class="dm-repeater-control-list">
-                        <div class="dm-repeater-control <?php echo isset($control_data['name']) ? 'dm-'. $control_data['name'] .'-repeater-control' : ''; ?>">
-                            <a href="#TB_inline?width=600&height=550&inlineId=<?php echo $control_data['name']; ?>" class="thickbox dm-repeater-control-action">Control</a>
-                            <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button editor-post-trash is-link">Delete</button>
-
-                            <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
+                        <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
+                            <div class="dm-repeater-inner-controls-inner">
+                                <span class="dm-repeater-popup-close dashicons dashicons-dismiss" data-id="<?php echo $control_data['name']; ?>"></span>
                                 <?php $this->repeater_controls($control_data); ?>
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="dm-repeater-control-list"></div>
 
 
 
@@ -154,7 +156,7 @@ class View
 
             $name = $control_content['name'];
             unset($control_content['name']);
-            $control_content['name'] = $name . '[]';
+            $control_content['name'] =  $name;
             $class_name = explode('-', $control_content['type']);
             $class_name = array_map('ucfirst', $class_name);
             $class_name = implode('', $class_name);

@@ -140,7 +140,7 @@ class Url extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
            </div>
            <div class="dm-option-column right">
-                <input class="dm-input-url"
+                <input class="dm-input-url dm-ctrl"
                     type="url"
                     class="dm-option-input dm-ctrl"
                     name="<?php echo esc_attr( $name ); ?>"
