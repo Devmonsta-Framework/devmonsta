@@ -120,21 +120,23 @@ class View
                 </div>
 
 
-                <div class='dm-option-column right'>
+                <div class='dm-option-column dm-repeater-column right'>
 
 
-                    <div class="dm-repeater-control">
-                        <a href="#TB_inline?width=600&height=550&inlineId=<?php echo $control_data['name']; ?>" class="thickbox">Control</a>
-                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button editor-post-trash is-link">Delete</button>
+                    <div class="dm-repeater-control-list">
+                        <div class="dm-repeater-control <?php echo isset($control_data['name']) ? 'dm-'. $control_data['name'] .'-repeater-control' : ''; ?>">
+                            <a href="#TB_inline?width=600&height=550&inlineId=<?php echo $control_data['name']; ?>" class="thickbox dm-repeater-control-action">Control</a>
+                            <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button editor-post-trash is-link">Delete</button>
 
-                        <div id="<?php echo $control_data['name']; ?>" style="display:none;">
-                            <?php $this->repeater_controls($control_data); ?>
+                            <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
+                                <?php $this->repeater_controls($control_data); ?>
+                            </div>
                         </div>
                     </div>
 
 
 
-                    <br><br><a href='#TB_inline?width=600&height=550&inlineId=<?php echo $control_data['name']; ?>' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button thickbox'><?php echo $control_data['add_new']; ?></a>
+                    <br><br><a href='' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
                 </div>
             </div>
 
