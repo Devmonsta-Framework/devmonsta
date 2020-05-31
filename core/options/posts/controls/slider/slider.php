@@ -84,8 +84,12 @@ class Slider extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+
+        $condition_class = ( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] )) ? "dm-condition-active" : "";
+        // var_dump($condition_class);
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
     }
 
@@ -143,7 +147,9 @@ class Slider extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $condition_class = ( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] )) ? "dm-condition-active" : "";
+        // var_dump($condition_class);
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }

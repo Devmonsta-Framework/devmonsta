@@ -62,9 +62,15 @@ class Text extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['active_callback']);
+        }
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $condition_data );
     }
 
     public function columns() {
@@ -119,12 +125,18 @@ class Text extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['active_callback']);
+        }
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data );
     }
 
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
 
@@ -132,12 +144,15 @@ class Text extends Structure {
                     <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
                 <div class="dm-option-column right">
-                    <input
-                        type="text"
-                        class="dm-option-input dm-ctrl"
-                        name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_html( $value ); ?>"
-                    >
+                    <input type="text" class="dm-option-input dm-ctrl" name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_html( $value ); ?>" 
+                        <?php 
+                            if($condition_data != ""){
+                            ?>
+                            data-dm_conditions="<?php echo esc_attr( $condition_data ); ?>"
+                        <?php 
+                            }
+                        ?>>
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
 
