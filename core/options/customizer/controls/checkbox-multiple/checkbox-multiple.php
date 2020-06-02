@@ -1,22 +1,33 @@
 <?php
-namespace Devmonsta\Options\Customizer\Controls\Checkboxes;
+namespace Devmonsta\Options\Customizer\Controls\CheckboxMultiple;
 
 if ( !class_exists( 'WP_Customize_Control' ) ) {
     return NULL;
 }
 
-class Checkboxes extends \WP_Customize_Control {
+class CheckboxMultiple extends \WP_Customize_Control {
 
     public $label, $name, $desc, $default_value, $value, $choices, $isInline;
 
     /**
-     * @access public
-     * @var    string
-     */
-    public $type = 'checkboxes';
+	 * The type of customize control being rendered.
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'checkbox-multiple';
 
     public $statuses;
 
+    
+    /**
+	 * Constructor of this control. Must call parent constructor
+	 *
+	 * @since  1.0.0
+	 * @access public
+	 * @var    string
+	 */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
         $this->statuses = ['' => __( 'Default' )];
@@ -43,7 +54,7 @@ class Checkboxes extends \WP_Customize_Control {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-
+        wp_enqueue_script( 'dm-checkbox-multiple', DM_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -54,6 +65,10 @@ class Checkboxes extends \WP_Customize_Control {
         $this->render_content();
     }
 
+    /**
+     * Generates markup for specific control
+     * @internal
+     */
     public function render_content() {
         ?>
             <div>
@@ -62,31 +77,23 @@ class Checkboxes extends \WP_Customize_Control {
                 </div>
 
                 <div class="dm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
-                    <?php
-                        // var_dump($this->value);
-                        if ( is_array( $this->choices ) && !empty( $this->choices ) ) {
+                    
+                    <?php $multi_values = !is_array( $this->value() ) ? explode( ',', $this->value() ) : $this->value(); ?>
 
-                            foreach ( $this->choices as $id => $element ) {
+                    <ul class="customize-control">
+                        <?php foreach ( $this->choices as $value => $label ) : ?>
 
-                                if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
-                                    $checked = "checked='checked'";
-                                } else {
-                                    $checked = null;
-                                }
+                            <li>
+                                <label>
+                                    <input class="customize-control-checkbox-multiple" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
+                                    <?php echo esc_html( $label ); ?>
+                                </label>
+                            </li>
 
-                                ?>
-                                    <label class="dm-option-label-list">
-                                        <input <?php $this->link();?>  class="dm-ctrl" type="checkbox" name="<?php echo esc_attr( $this->name ); ?>[]"
-                                            value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                                            <?php echo esc_html( $element ); ?>
-                                    </label>
-                   <?php
-                            }
+                        <?php endforeach; ?>
+                        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $multi_values ) ); ?>" />
 
-                        }
-
-                    ?>
-                    <input <?php $this->link();?> class="dm-ctrl" type="text" value="default" name="<?php echo esc_attr( $this->name ); ?>[]" style="display: none">
+                    </ul>
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </div>
