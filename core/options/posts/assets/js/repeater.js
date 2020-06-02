@@ -1,15 +1,25 @@
 jQuery(document).ready(function ($) {
     function controlNameChanging(param){
-        $(param.repeaterControl).each(function(){
+        $(param.repeaterControl).each(function(index){
+            var repeaterCount = index + 1;
+
+            if(param.isRemoved){
+                $(this).find('.dm-repeater-control-action, .dm-repeater-popup-close, .dm-editor-post-trash').attr('data-id', param.id+'_'+(repeaterCount));
+                $(this).find('.dm-repeater-inner-controls').attr('id', param.id+'_'+(repeaterCount));
+            }
             $(this).find('.dm-ctrl').each(function(index){
-                var clonedInputs = !param.isRemoved ? param.clonedElement.find('.dm-ctrl')[index] : this;
-                if(!param.isRemoved){
-                    repeatCount = index;
+                var clonedInputs = !param.isRemoved ? param.clonedElement.find('.dm-ctrl')[index] : this,
+                    name = $(clonedInputs).attr('name') ? $(clonedInputs).attr('name') : '',
+                    formattedName = !param.isRemoved ? 'dm_options['+ param.id +']['+ param.repeatCount +']['+ name +']' : name;
+
+                if(param.isRemoved){
+                    formattedName = formattedName.replace(/\[(\d+)\]/, function(args, digit){ 
+                        return "["+( repeaterCount )+"]";
+                    });
                 }
-    
-                var name = $(clonedInputs).attr('name') ? $(clonedInputs).attr('name') : '';
+
                 if(name){
-                    $(clonedInputs).attr('name', 'dm_options['+ param.id +']['+ param.repeatCount +']['+ name +']')
+                    $(clonedInputs).attr('name', formattedName)
                 }
             });
         })
@@ -32,33 +42,28 @@ jQuery(document).ready(function ($) {
             'isRemoved': isRemoved,
             'clonedElement': clonedElement,
             'id': id,
-            'repeatCount': repeatCount,
+            'repeatCount': repeatCount
         };
         if(!isRemoved){
             $(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').append(clonedElement);
         } else {
             repeatCount = repeatCount - 1;
+            controlConfig.repeaterControl = $(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').children();
         }
 
 
         // resetting repeater name
         controlNameChanging(controlConfig)
-        // repeaterControl.find('.dm-ctrl').each(function(index){
-        //     var clonedInputs = !isRemoved ? clonedElement.find('.dm-ctrl')[index] : this;
 
-        //     var name = $(clonedInputs).attr('name') ? $(clonedInputs).attr('name') : '';
-        //     if(name){
-        //         $(clonedInputs).attr('name', 'dm_options['+ id +']['+ repeatCount +']['+ name +']')
-        //     }
-        // });
         // resetting data
         jQuery(window).trigger('dm-scripts.dm', [$('.dm-'+id+'-repeater-control').last()]);
     });
     
     // open and closing popup
-    jQuery('body').on('click', '.dm-repeater-control-action, .dm-repeater-popup-close', function(e){
+    jQuery(document).on('click', '.dm-repeater-control-action, .dm-repeater-popup-close', function(e){
         e.preventDefault();
-        var id = jQuery(this).data('id');
+        var id = jQuery(this).attr('data-id');
+        console.log(id);
         jQuery('#'+id).toggleClass('open')
     });
 
