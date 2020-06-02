@@ -8,6 +8,7 @@ jQuery(window).on('dm-scripts.dm', function(e,val){
 
     if(val){
         el = val.find('.dm-color-picker-field')
+        el.parents('.wp-picker-container').find('.wp-picker-default').remove()
         el.parents('.wp-picker-container').find('.wp-color-result').remove()
         el.parents('.wp-picker-container').find('.wp-picker-holder').remove()
         el.parents('.wp-picker-container').find('.wp-picker-input-wrap').removeClass('hidden');

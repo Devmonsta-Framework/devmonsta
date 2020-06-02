@@ -310,7 +310,8 @@
     z-index: 99;
     opacity: 0;
     visibility: hidden;
-    transition: all .4s;;
+    transition: all .4s;
+    overflow-y: auto;
     &.open {
         opacity: 1;
         visibility: visible;
@@ -319,14 +320,15 @@
 .dm-repeater-inner-controls-inner {
     position: absolute;
     background-color: #fff;
-    top: 100px;
+    top: 0;
     padding: 30px;
-    margin-left: 160px;
-    left: 100px;
-    right: 100px;
+    left: 0;
+    right: 0;
     bottom: auto;
     border-radius: 3px;
     overflow: auto;
+    margin: 100px;
+    margin-left: 260px;
 }
 .dm-repeater-popup-close{
     cursor: pointer;
@@ -341,4 +343,10 @@
 }
 .dm-repeater-sample{
     display: none;
+}
+
+@media only screen and (max-width: 767px) {
+    .dm-repeater-inner-controls-inner{
+        margin-left: 100px;
+    }
 }
