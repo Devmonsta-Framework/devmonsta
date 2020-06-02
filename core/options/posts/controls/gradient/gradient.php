@@ -109,9 +109,16 @@ class Gradient extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['active_callback'], true);
+        }
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $condition_data );
 }
 
     public function columns() {
@@ -177,12 +184,19 @@ class Gradient extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['active_callback'] ) && is_array( $this->content['active_callback'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['active_callback'], true);
+        }
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+        
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data );
     }
 
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data  ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
                 <div class="dm-option-column left">
@@ -206,7 +220,13 @@ class Gradient extends Structure {
                                             name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                                             value="<?php echo esc_attr( $value ); ?>"
                                             data-default-color="<?php echo esc_attr( $value ); ?>"
-                                            />
+                                            <?php 
+                                                if($condition_data != ""){
+                                                ?>
+                                                data-dm_conditions="<?php echo esc_attr( $condition_data ); ?>"
+                                            <?php 
+                                                }
+                                            ?>/>
                                 <?php
                             }
 

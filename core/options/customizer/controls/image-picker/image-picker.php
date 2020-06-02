@@ -46,7 +46,8 @@ class ImagePicker extends \WP_Customize_Control {
         wp_enqueue_script( 'dm-image-picker-js', plugins_url( 'image-picker/assets/js/image-picker.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
         // css
         wp_enqueue_style( 'dm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) );
-
+        // var_dump($this->name);
+        wp_localize_script( 'dm-image-picker-js', 'settings_id', $this->name );
     }
 
     
@@ -64,8 +65,8 @@ class ImagePicker extends \WP_Customize_Control {
 
             <div class="dm-option-column right full-width">
                 <div class="thumbnails dm-option-image_picker_selector">
-                    <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
-                    <ul>
+                    <input <?php $this->link();?> class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
+                    <ul class="img-picker-ul">
                         <?php
                             if ( is_array( $this->choices ) && isset( $this->choices ) ) {
                                 foreach ( $this->choices as $item_key => $item ) {
@@ -81,7 +82,7 @@ class ImagePicker extends \WP_Customize_Control {
                                                 <img src="<?php echo esc_attr( $large_image ); ?>" />
                                             </div>
                                         <?php endif;?>
-                                            <div class="thumbnail">
+                                            <div class="thumbnail img-picker-thumbnail">
                                                 <img src="<?php echo esc_attr( $small_image ); ?>" />
                                             </div>
                                         </li>
