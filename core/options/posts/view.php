@@ -153,6 +153,17 @@ class View
         foreach ($control_data['controls'] as $control_content) {
 
 
+            if($control_content['type'] == 'repeater'){
+                echo "<div class='dm-option form-field '>";
+                echo "<div class='dm-option-column left'>";
+                echo "<label clas='dm-option-label'>".$control_content['lable'] . "</label>";
+                echo "</div>";
+                echo "<div class='dm-option-column right'>";
+                $this->sub_repeater_controls($control_content['controls']);
+                echo '<a href="#" class="button">Add new</a>';
+                echo "</div>";
+                echo "</div>";
+            }
 
             $name = $control_content['name'];
             unset($control_content['name']);
@@ -168,6 +179,7 @@ class View
                 $control->init();
                 $control->enqueue($this->meta_owner);
                 $control->render();
+                
             } else {
 
                 $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
@@ -186,5 +198,10 @@ class View
                 }
             }
         }
+    }
+
+
+    public function sub_repeater_controls(){
+        
     }
 }
