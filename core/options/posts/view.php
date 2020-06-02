@@ -112,7 +112,7 @@ class View
         if (isset($control_data['controls'])) {
 
             // add_thickbox();
-            ?>
+?>
             <div class="dm-option form-field ">
 
                 <div class='dm-option-column left'>
@@ -124,7 +124,7 @@ class View
 
                     <div class="dm-repeater-control dm-repeater-sample">
                         <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control</a>
-                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link" >Delete</button>
+                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link">Delete</button>
 
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
@@ -133,7 +133,7 @@ class View
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="dm-repeater-control-list"></div>
 
 
@@ -153,16 +153,9 @@ class View
         foreach ($control_data['controls'] as $control_content) {
 
 
-            if($control_content['type'] == 'repeater'){
-                echo "<div class='dm-option form-field '>";
-                echo "<div class='dm-option-column left'>";
-                echo "<label clas='dm-option-label'>".$control_content['lable'] . "</label>";
-                echo "</div>";
-                echo "<div class='dm-option-column right'>";
-                $this->sub_repeater_controls($control_content['controls']);
-                echo '<a href="#" class="button">Add new</a>';
-                echo "</div>";
-                echo "</div>";
+            if ($control_content['type'] == 'repeater') {
+
+                $this->repeater_control_markup($control_content);
             }
 
             $name = $control_content['name'];
@@ -179,7 +172,6 @@ class View
                 $control->init();
                 $control->enqueue($this->meta_owner);
                 $control->render();
-                
             } else {
 
                 $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
@@ -201,7 +193,26 @@ class View
     }
 
 
-    public function sub_repeater_controls(){
-        
+
+    public function repeater_control_markup($control_content)
+    {
+
+     ?>
+        <div class='dm-option form-field '>
+            <div class='dm-option-column left'>
+                <label clas='dm-option-label'><?php echo $control_content['lable']; ?> </label>
+            </div>
+            <div class='dm-option-column right'>
+                <?php $this->sub_repeater_controls($control_content['controls']); ?>
+                <a href="#" class="button">Add new</a>
+            </div>
+        </div>
+
+    <?php
+    
+    }
+
+    public function sub_repeater_controls()
+    {
     }
 }
