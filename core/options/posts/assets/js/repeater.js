@@ -54,9 +54,8 @@ jQuery(document).ready(function ($) {
 
         // resetting repeater name
         controlNameChanging(controlConfig)
-
         // resetting data
-        jQuery(window).trigger('dm-scripts.dm', [$(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').last()]);
+        jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
     });
     
     // open and closing popup
