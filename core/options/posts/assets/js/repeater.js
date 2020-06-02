@@ -56,14 +56,13 @@ jQuery(document).ready(function ($) {
         controlNameChanging(controlConfig)
 
         // resetting data
-        jQuery(window).trigger('dm-scripts.dm', [$('.dm-'+id+'-repeater-control').last()]);
+        jQuery(window).trigger('dm-scripts.dm', [$(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').last()]);
     });
     
     // open and closing popup
     jQuery(document).on('click', '.dm-repeater-control-action, .dm-repeater-popup-close', function(e){
         e.preventDefault();
         var id = jQuery(this).attr('data-id');
-        console.log(id);
         jQuery('#'+id).toggleClass('open')
     });
 

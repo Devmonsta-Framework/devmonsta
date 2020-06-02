@@ -18,6 +18,5 @@ jQuery(window).on('dm-scripts.dm', function(e,val){
 });
 
 jQuery(document).ready(function($){
-    
     jQuery(window).trigger('dm-scripts.dm');
 });
