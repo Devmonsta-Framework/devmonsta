@@ -265,6 +265,7 @@ class Posts
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
         wp_enqueue_script( 'dm-color-picker', DM_PATH.'core/options/posts/assets/js/script.js', [], null, true );
+        wp_enqueue_script( 'dm-conditions', DM_PATH.'core/options/posts/assets/js/conditions.js', [], null, true );
         wp_enqueue_script("jquery-ui-draggable");
         wp_enqueue_script( 'dm-repeater', DM_PATH.'core/options/posts/assets/js/repeater.js', ['jquery'], null, true );
         wp_localize_script( 'dm-repeater', 'ajax_object', [
