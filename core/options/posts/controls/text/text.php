@@ -67,6 +67,7 @@ class Text extends Structure {
         if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
             $condition_class = "dm-condition-active";
             $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
@@ -140,23 +141,14 @@ class Text extends Structure {
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
-
                 <div class="dm-option-column left">
                     <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
                 <div class="dm-option-column right">
                     <input type="text" class="dm-option-input dm-ctrl" name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_html( $value ); ?>" 
-                        <?php 
-                            if($condition_data != ""){
-                            ?>
-                            data-dm_conditions="<?php echo esc_attr( $condition_data ); ?>"
-                        <?php 
-                            }
-                        ?>>
+                        value="<?php echo esc_html( $value ); ?>" >
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
-
             </div>
     <?php
     }

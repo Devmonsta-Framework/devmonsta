@@ -109,12 +109,12 @@ class Gradient extends Structure {
 
         }
 
-        
         $condition_class    = "";
         $condition_data     = "";
         if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
             $condition_class = "dm-condition-active";
             $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
