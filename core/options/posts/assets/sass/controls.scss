@@ -350,3 +350,13 @@
         margin-left: 100px;
     }
 }
+
+// conditional
+.dm-box{
+    .dm-condition-active{
+        display: none;
+        &.open {
+            display: flex
+        }
+    }
+}
