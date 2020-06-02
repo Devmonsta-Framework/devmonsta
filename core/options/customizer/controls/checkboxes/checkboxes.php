@@ -63,20 +63,20 @@ class Checkboxes extends \WP_Customize_Control {
 
                 <div class="dm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
                     <?php
-
+                        // var_dump($this->value);
                         if ( is_array( $this->choices ) && !empty( $this->choices ) ) {
 
                             foreach ( $this->choices as $id => $element ) {
 
                                 if ( is_array( $this->value ) && in_array( $id, $this->value ) ) {
-                                    $checked = 'checked="checked"';
+                                    $checked = "checked='checked'";
                                 } else {
                                     $checked = null;
                                 }
 
                                 ?>
                                     <label class="dm-option-label-list">
-                                        <input class="dm-ctrl" type="checkbox" name="<?php echo esc_attr( $this->name ); ?>[]"
+                                        <input <?php $this->link();?>  class="dm-ctrl" type="checkbox" name="<?php echo esc_attr( $this->name ); ?>[]"
                                             value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                                             <?php echo esc_html( $element ); ?>
                                     </label>
@@ -86,7 +86,7 @@ class Checkboxes extends \WP_Customize_Control {
                         }
 
                     ?>
-                    <input class="dm-ctrl" type="text" value="default" name="<?php echo esc_attr( $this->name ); ?>[]" style="display: none">
+                    <input <?php $this->link();?> class="dm-ctrl" type="text" value="default" name="<?php echo esc_attr( $this->name ); ?>[]" style="display: none">
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </div>

@@ -29,6 +29,12 @@ class Dimensions extends \WP_Customize_Control {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
+        
+		wp_enqueue_style('element-ui', 'https://unpkg.com/element-ui/lib/theme-chalk/index.css', [], null, '');
+		wp_enqueue_script('vue', '//unpkg.com/vue/dist/vue.js', [], null);
+        wp_enqueue_script('elment-script', "https://unpkg.com/element-ui/lib/index.js", [], null);
+        
+        
         wp_enqueue_style( 'dm-dimensions-css', DM_CORE . 'options/customizer/controls/dimensions/assets/css/style.css', [], time(), true );
         wp_enqueue_script( 'dm-dimensions', DM_CORE . 'options/customizer/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     
@@ -87,7 +93,8 @@ class Dimensions extends \WP_Customize_Control {
             </div>
         </div>
 
+		<script src=<?php echo DM_PATH . 'core/options/posts/assets/js/script.js'; ?>></script>
     <?php
     }
-
+    
 }
