@@ -100,8 +100,8 @@ class Rest
             $control->render();
 
             
-
         } else {
+
             error_log('rendred test');
             $file = DM_DIR . '/core/options/posts/controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
 
