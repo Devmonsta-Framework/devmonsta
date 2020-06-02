@@ -147,7 +147,7 @@ class Oembed extends Structure {
                     <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
                 <div class="dm-option-column right dm-oembed-input">
-                <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
+                    <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
                             type="url" name="<?php echo esc_attr( $name ); ?>"
                             value="<?php echo esc_html( $value ); ?>"
                             class="dm-ctrl dm-oembed-url-input"/>
@@ -163,6 +163,7 @@ class Oembed extends Structure {
         if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
     
             require_once DM_DIR . '/core/helpers/class-dm-request.php';
+            
             $url = \DM_Request::POST( 'url' );
     
             $width = \DM_Request::POST( 'preview/width' );
