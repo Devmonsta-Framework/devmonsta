@@ -545,8 +545,8 @@ class Customizer {
             // 'textarea',
             'dropdown-pages',
             'email',
-            // 'url',
-            // 'number',
+            'url',
+            'number',
             'hidden',
             'date',
         ];

@@ -66,7 +66,6 @@ class DatetimePicker extends \WP_Customize_Control {
         $date_time_picker_data['timepicker']  = ( $this->date_time_picker_config['timepicker'] ) ? 1 : 0;
         $date_time_picker_data['defaultTime'] = isset( $this->date_time_picker_config['default-time'] ) ? $this->date_time_picker_config['default-time'] : '12:00';
         wp_localize_script( 'dm-customizer-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
-    
     }
 
     public function render() {

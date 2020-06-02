@@ -9,6 +9,13 @@
 
             $(this).addClass("selected").siblings().removeClass("selected");
             $(this).parents(".dm-option-image_picker_selector").find('.dm-option-image-picker-input').val(name);
+            
+            // console.log("image selected: " + name);
+            // console.log("settings id is " + settings_id);
+            wp.customize( settings_id, function ( obj ) {
+                obj.bind( function( name ) {});
+                obj.set( name );
+            } );
         })
     })
 })(jQuery)
