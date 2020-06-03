@@ -62,7 +62,7 @@ class Switcher extends \WP_Customize_Control {
     public function render() {
         $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         
-        var_dump($this->value);
+        // var_dump($this->value);
         $this->render_content();
     }
 
