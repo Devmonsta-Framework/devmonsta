@@ -56,14 +56,12 @@ class Hidden extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <div>
-            
-
+        <li class="dm-option">
             <div class="dm-option-column right">
                 <input type="hidden" <?php $this->link();?> value="<?php echo esc_html( $this->value() ); ?>">
               
             </div>
-        </div>
+        </li>
 		<?php
     }
 
