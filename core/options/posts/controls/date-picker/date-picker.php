@@ -20,11 +20,6 @@ class DatePicker extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        // add_action( 'init', [$this, 'enqueue_date_time_picker_scripts'] );
-        // add_action( 'admin_init', [$this, 'enqueue_date_time_picker_scripts'] );
-        // add_action( 'admin_enqueue_scripts', [$this, 'enqueue_date_time_picker_scripts'] );
-
         if ( $this->current_screen == "post" ) {
             $this->enqueue_date_time_picker_scripts();
         } elseif ( $this->current_screen == "taxonomy" ) {
