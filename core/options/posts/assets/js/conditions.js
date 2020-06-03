@@ -1,4 +1,33 @@
 jQuery(document).ready(function($){
+
+    function operators(a,b, comparison){  
+        switch(comparison) {
+            case "<":
+                return a < b;
+            case "<=":
+                return a <= b;
+            case ">":
+                return a > b;
+            case ">=" :
+                return a >= b;
+            case "==":
+                return a == b;
+            case "===":
+                return a === b;
+            case "!=":
+                return a != b;
+            case "!==":
+                return a !== b;
+            case "not-empty" :
+                return typeof a != 'undefined' && String(a).length > 0;
+            case "empty" :
+            case "" :
+                return typeof a != 'undefined' && String(a).length == 0;
+            default:
+                return false;
+        }
+    }
+
     $(document).on('input change','.dm-ctrl', function(){
         var currentControlValue = $(this).val(),
             conditionalInputs = $('.dm-condition-active'),
@@ -15,7 +44,7 @@ jQuery(document).ready(function($){
                     value = condition.value;
                     
                 if(currentControlName === name){
-                    if(currentControlValue === value){
+                    if(operators(currentControlValue, value, oparator)){
                         conditionField.addClass('open');
                         return false;
                     }
