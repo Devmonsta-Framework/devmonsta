@@ -72,7 +72,7 @@ class Select extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        $class_attributes = "class='dm-option active-script form-field $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
     }
@@ -147,7 +147,7 @@ class Select extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
     }

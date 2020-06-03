@@ -45,6 +45,7 @@ jQuery(document).ready(function ($) {
             'repeatCount': repeatCount
         };
         if(!isRemoved){
+            clonedElement.find('.dm-option').addClass('active-script');
             $(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').append(clonedElement);
         } else {
             repeatCount = repeatCount - 1;
