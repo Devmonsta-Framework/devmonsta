@@ -198,9 +198,9 @@ class View
     {
 
      ?>
-        <div class='dm-option form-field '>
+        <div class='dm-option form-field dm-repeater-child'>
             <div class='dm-option-column left'>
-                <label clas='dm-option-label'><?php echo $control_content['lable']; ?> </label>
+                <label class='dm-option-label'><?php echo $control_content['lable']; ?> </label>
             </div>
             <div class='dm-option-column right'>
                 <?php $this->sub_repeater_controls($control_content['controls']); ?>
@@ -212,7 +212,13 @@ class View
     
     }
 
-    public function sub_repeater_controls()
+    public function sub_repeater_controls($control_contents)
     {
+        foreach($control_contents as $control_content){
+            
+            $this->build_controls($control_content);
+
+        }
+        
     }
 }
