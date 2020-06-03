@@ -58,8 +58,8 @@ class Gradient extends \WP_Customize_Control {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        if ( !wp_script_is( 'dm-gradient-handle', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+        if ( !wp_script_is( 'dm-customizer-gradient-handle', 'enqueued' ) ) {
+            wp_enqueue_script( 'dm-customizer-gradient-handle', DM_CORE . 'options/customizer/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
         }
 
@@ -76,7 +76,7 @@ class Gradient extends \WP_Customize_Control {
 
         $data['defaults'] = $default_value_array;
 
-        wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
+        wp_localize_script( 'dm-customizer-gradient-handle', 'gradient_picker_config', $data );
     }
 
 
