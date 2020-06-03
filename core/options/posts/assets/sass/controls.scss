@@ -344,6 +344,13 @@
 .dm-repeater-sample{
     display: none;
 }
+.dm-repeater-child .dm-repeater-inner-controls-inner {
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 260px;
+    top: 150px;
+}
 
 @media only screen and (max-width: 767px) {
     .dm-repeater-inner-controls-inner{

@@ -26,15 +26,13 @@ jQuery(document).ready(function ($) {
         
     }
     
-    jQuery('.dm-repeater-add-new').on('click', function(e, isRemoved){
+    jQuery(document).on('click', '.dm-repeater-add-new', function(e, isRemoved){
         e.preventDefault();
         var id = $(this).data('id');
 
-        console.log(id);
-
-        var repeaterControl = $('.dm-repeater-sample'),
+        var repeaterControl = $(this).closest('.dm-repeater-column').children('.dm-repeater-sample'),
             clonedElement = repeaterControl.clone().removeClass('dm-repeater-sample'),
-            repeatCount = $(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').children().length + 1;
+            repeatCount = $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').children().length + 1;
 
             clonedElement.find('.dm-repeater-control-action, .dm-repeater-popup-close, .dm-editor-post-trash').attr('data-id', id+'_'+(repeatCount)).end();
             clonedElement.find('.dm-repeater-inner-controls').attr('id', id+'_'+(repeatCount)).end();
@@ -47,11 +45,12 @@ jQuery(document).ready(function ($) {
             'repeatCount': repeatCount
         };
         if(!isRemoved){
-            clonedElement.find('.dm-option').addClass('active-script');
-            $(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').append(clonedElement);
+            console.log(clonedElement);
+            clonedElement.children('.dm-repeater-inner-controls').children('.dm-repeater-inner-controls-inner').children('.dm-option:not(.dm-repeater-child)').addClass('active-script');
+            $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').append(clonedElement);
         } else {
             repeatCount = repeatCount - 1;
-            controlConfig.repeaterControl = $(this).parents('.dm-repeater-column').find('.dm-repeater-control-list').children();
+            controlConfig.repeaterControl = $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').children();
         }
 
 
@@ -62,15 +61,19 @@ jQuery(document).ready(function ($) {
     });
     
     // open and closing popup
-    jQuery(document).on('click', '.dm-repeater-control-action, .dm-repeater-popup-close', function(e){
+    jQuery(document).on('click', '.dm-repeater-control-action', function(e){
         e.preventDefault();
-        var id = jQuery(this).attr('data-id');
-        jQuery('#'+id).toggleClass('open')
+        $(this).closest('.dm-repeater-control').children('.dm-repeater-inner-controls').addClass('open')
+    });
+
+    jQuery(document).on('click', '.dm-repeater-popup-close', function(e){
+        e.preventDefault();
+        $(this).closest('.dm-repeater-control').children('.dm-repeater-inner-controls').removeClass('open')
     });
 
     // deleting repeater
     $(document).on('click', '.dm-editor-post-trash',function(){
-        $(this).parents('.dm-repeater-control').remove();
+        $(this).closest('.dm-repeater-control').remove();
         jQuery('.dm-repeater-add-new').trigger('click', [true]);
     })
 });
