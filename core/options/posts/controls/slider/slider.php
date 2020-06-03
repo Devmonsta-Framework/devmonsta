@@ -89,11 +89,11 @@ class Slider extends Structure {
         if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
             $condition_class = "dm-condition-active";
             $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $condition_data );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
     }
 
     public function columns() {
@@ -149,20 +149,20 @@ class Slider extends Structure {
             }
 
         }
-
         
         $condition_class    = "";
         $condition_data     = "";
         if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
             $condition_class = "dm-condition-active";
             $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }
 
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
@@ -170,13 +170,7 @@ class Slider extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input class="dm-ctrl dm-slider"
-                        type="range"
-                        name="<?php echo esc_attr( $name ); ?>"
-                        value="<?php echo esc_attr( $value ); ?>"
-                        <?php if($condition_data != ""){ ?>
-                            data-dm_conditions="<?php echo esc_attr( $condition_data ); ?>"
-                        <?php } ?>/>
+                <input class="dm-ctrl dm-slider" type="range" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>

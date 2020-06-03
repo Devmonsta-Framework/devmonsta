@@ -109,16 +109,16 @@ class Gradient extends Structure {
 
         }
 
-        
         $condition_class    = "";
         $condition_data     = "";
         if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
             $condition_class = "dm-condition-active";
             $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $condition_data );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
 }
 
     public function columns() {
@@ -184,19 +184,20 @@ class Gradient extends Structure {
 
         }
 
+        
         $condition_class    = "";
         $condition_data     = "";
         if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
             $condition_class = "dm-condition-active";
             $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
         $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
-        
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
     }
 
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data  ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc  ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
                 <div class="dm-option-column left">
@@ -219,14 +220,7 @@ class Gradient extends Structure {
                                     <input type="text" class="dm-ctrl dm-gradient-field-<?php echo esc_attr( $id ); ?>"
                                             name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
                                             value="<?php echo esc_attr( $value ); ?>"
-                                            data-default-color="<?php echo esc_attr( $value ); ?>"
-                                            <?php 
-                                                if($condition_data != ""){
-                                                ?>
-                                                data-dm_conditions="<?php echo esc_attr( $condition_data ); ?>"
-                                            <?php 
-                                                }
-                                            ?>/>
+                                            data-default-color="<?php echo esc_attr( $value ); ?>" />
                                 <?php
                             }
 

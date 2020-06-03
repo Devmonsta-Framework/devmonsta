@@ -178,7 +178,7 @@ class Oembed extends Structure {
     
             wp_oembed_get( $url, compact( 'width', 'height' ) );
     
-            echo wp_kses_post($iframe);
+            echo dm_render_markup($iframe) ;
             die();
     
         } else {
