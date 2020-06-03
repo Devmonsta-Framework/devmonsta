@@ -113,7 +113,7 @@ class View
 
             // add_thickbox();
 ?>
-            <div class="dm-option form-field ">
+            <div id="<?php echo $control_data['name'] ;?>" class="dm-option form-field ">
 
                 <div class='dm-option-column left'>
                     <label class="dm-option-label"><?php echo $control_data['label']; ?> </label>
