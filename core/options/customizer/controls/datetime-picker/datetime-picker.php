@@ -75,7 +75,7 @@ class DatetimePicker extends \WP_Customize_Control {
     public function render_content() {
         ?>
 
-        <div>
+        <li  class="dm-option">
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
@@ -89,7 +89,7 @@ class DatetimePicker extends \WP_Customize_Control {
                     value="<?php echo esc_attr( $this->value() ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
-        </div>
+        </li>
 
     <?php
     }

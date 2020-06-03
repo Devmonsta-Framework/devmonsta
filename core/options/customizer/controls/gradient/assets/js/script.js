@@ -1,8 +1,23 @@
 jQuery(document).ready(function ($) {
 
-    $(".wp-color-result").on('change',
+    // console.log("from customizer color picker script");
+    
+    for(color_id in gradient_picker_config.defaults){
+        let single_color = '.dm-gradient-field-' + color_id ;
+        let dmOptions = {
+            defaultColor: gradient_picker_config.defaults[color_id],
+            hide: true,
+        };
+        $(single_color).wpColorPicker(dmOptions);
+
+
+        $('.dm-gradient-field').on('load',
         function () {
             var current_object = $(this);
-            console.log("changed");
+            // console.log("changed");
         });
+
+     }
+    
+    
 });

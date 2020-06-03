@@ -1,13 +1,13 @@
 <?php
-namespace Devmonsta\Options\Customizer\Controls\CheckboxMultiple;
+namespace Devmonsta\Options\Customizer\Controls\MultipleSelect;
 
 if ( !class_exists( 'WP_Customize_Control' ) ) {
     return NULL;
 }
 
-class CheckboxMultiple extends \WP_Customize_Control {
+class MultipleSelect extends \WP_Customize_Control {
 
-    public $label, $name, $desc, $default_value, $value, $choices, $isInline;
+    public $label, $name, $desc, $value, $choices;
 
     /**
 	 * The type of customize control being rendered.
@@ -16,11 +16,10 @@ class CheckboxMultiple extends \WP_Customize_Control {
 	 * @access public
 	 * @var    string
 	 */
-	public $type = 'checkbox-multiple';
+	public $type = 'multiple-select';
 
     public $statuses;
 
-    
     /**
 	 * Constructor of this control. Must call parent constructor
 	 *
@@ -45,8 +44,6 @@ class CheckboxMultiple extends \WP_Customize_Control {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->isInline      = ( $args[0]['inline'] ) ? "inline" : "list";
-        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : [];
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
     }
 
@@ -54,7 +51,10 @@ class CheckboxMultiple extends \WP_Customize_Control {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_script( 'dm-checkbox-multiple', DM_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_style( 'select2-css', DM_CORE . 'options/customizer/controls/multiple-select/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DM_CORE . 'options/customizer/controls/multiple-select/assets/js/select2.min.js' );
+        wp_enqueue_script( 'dm-customizer-multiselect-js', DM_CORE . 'options/customizer/controls/multiple-select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+    
     }
 
     /**
@@ -70,29 +70,20 @@ class CheckboxMultiple extends \WP_Customize_Control {
      */
     public function render_content() {
         ?>
-            <li  class="dm-option">
+            <li class="dm-option">
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
-                    
-                    <?php $multi_values = !is_array( $this->value() ) ? explode( ',', $this->value() ) : $this->value(); ?>
-
-                    <ul class="customize-control">
-                        <?php foreach ( $this->choices as $value => $label ) : ?>
-
-                            <li>
-                                <label>
-                                    <input class="customize-control-checkbox-multiple" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
-                                    <?php echo esc_html( $label ); ?>
-                                </label>
-                            </li>
-
-                        <?php endforeach; ?>
-                        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $multi_values ) ); ?>" />
-
-                    </ul>
+                <div class="dm-option-column right">
+                    <select class="dm-ctrl dm_multi_select"  <?php $this->link(); ?> multiple="multiple" style="height: 100%;">
+                        <?php
+                        foreach ( $this->choices as $value => $label ) {
+                            $selected = ( in_array( $value, $this->value() ) ) ? selected( 1, 1, false ) : '';
+                            echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . $label . '</option>';
+                        }
+                        ?>
+                    </select>
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
