@@ -251,7 +251,7 @@ class Posts
 
         }
 
-        error_log(serialize($_POST['dm_options']));
+    
 
        
 
