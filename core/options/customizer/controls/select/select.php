@@ -8,7 +8,7 @@ if ( !class_exists( 'WP_Customize_Control' ) ) {
 
 class Select extends \WP_Customize_Control {
 
-    public $label, $name, $desc, $value, $choices;
+    public $label, $name, $desc, $value, $choices, $default_value;
 
     /**
 	 * The type of customize control being rendered.
