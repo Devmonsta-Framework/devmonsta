@@ -99,7 +99,7 @@ class Typography extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components, $font_list  );
 
@@ -168,7 +168,7 @@ class Typography extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list );
 }

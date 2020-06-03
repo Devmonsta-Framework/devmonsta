@@ -1,6 +1,8 @@
-jQuery(document).ready(function($) {
-
-    if ($(".dm-option-input-datetime-range").length) {
+jQuery(window).on('dm-scripts.dm', function(){
+    var el = jQuery('.dm-option.active-script .dm-option-input-datetime-range');
+    
+    
+    if (el.length) {
 
         var time_picker = (date_time_range_config.timepicker == "") ? false : true;
         var date_picker = (date_time_range_config.datepicker == "") ? false : true;
@@ -9,7 +11,7 @@ jQuery(document).ready(function($) {
         var max_date = (date_time_range_config.max_date == "") ? false :date_time_range_config.max_date;
 
 
-        $(".dm-option-input-datetime-range").flatpickr({
+        el.flatpickr({
             mode: "range",
             dateFormat: date_time_picker_config.format,
             minDate: min_date,
@@ -22,4 +24,10 @@ jQuery(document).ready(function($) {
 
 
     }
+
+});
+
+
+jQuery(document).ready(function($) {
+    jQuery(window).trigger('dm-scripts.dm');
 });
