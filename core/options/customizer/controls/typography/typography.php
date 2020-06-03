@@ -7,172 +7,163 @@ if ( !class_exists( 'WP_Customize_Control' ) ) {
 
 class Typography extends \WP_Customize_Control {
 
-    protected $current_screen;
-
-    protected $value;
+    public $label, $name, $desc, $default_value, $value, $components;
 
     /**
-     * @internal
+     * @access public
+     * @var    string
      */
-    public function init() {
+    public $type = 'typography';
 
+    public $statuses;
+
+    public function __construct( $manager, $id, $args = [] ) {
+
+        $this->prepare_values( $id, $args );
+        $this->statuses = ['' => __( 'Default' )];
+        parent::__construct( $manager, $id, $args );
+    }
+
+    public function prepare_values( $id, $args = [] ) {
+        $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
+        $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
+        $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->default_value = isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ? $args[0]['value'] : [];
+        $this->components    = isset( $args[0]['components'] ) && is_array( $args[0]['components'] ) ? $args[0]['components'] : [];
     }
 
     /**
      * @internal
      */
-    public function enqueue( $meta_owner ) {
-        $this->current_screen = $meta_owner;
-
-        if (  ( $this->current_screen == "post" ) || ( $this->current_screen == "taxonomy" ) ) {
-            add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
-        }
-
-    }
-
-    /**
-     *
-     *
-     * @param [type] $hook
-     * @return void
-     */
-    public function load_scripts() {
-        $this->dm_enqueue_color_picker();
-    }
-
-    /**
-     * @internal
-     */
-    public function dm_enqueue_color_picker() {
+    public function enqueue() {
 
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
         wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
-
     }
 
     /**
      * @internal
      */
     public function render() {
-        $content = $this->content;
-        global $post;
-
-        $default_value = isset( $content['value'] ) && is_array( $content['value'] ) ? $content['value'] : [];
-        $this->value   = (  ( $this->current_screen == "post" )
-                        && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                        && "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                        ? maybe_unserialize( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-                        : $default_value;
-        $this->output();
+        $this->value = !empty( $this->value() ) ? json_decode($this->value()) : $this->default_value;
+        $this->render_content();
     }
 
-    /**
-     * @internal
-     */
-    public function output() {
+    public function render_content() {
         $font_list             = $this->dm_getGoogleFonts();
         $data['font_list']     = $font_list;
         $data['selected_data'] = $this->value;
         wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
+        ?>
+        <li  class="dm-option">
+            <div class="dm-option-column left">
+                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+            </div>
 
-        $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
-        $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $components         = isset( $this->content['components'] ) && is_array( $this->content['components'] ) ? $this->content['components'] : [];
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
+            <div class="dm-option-column right full-width">
+                <ul class="dm-option-typography">
+                <?php
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+        if ( is_array( $this->components ) && !empty( $this->components ) ) {
 
-            foreach ( $attrs as $key => $val ) {
+            foreach ( $this->components as $key => $item ) {
 
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
+                if ( $key ) {
+
+                    switch ( $key ) {
+                    case 'family':
+                        ?>
+                                            <li>
+                                            <?php
+
+                        if ( count( $font_list ) > 0 ): ?>
+                                    <div class="google-fonts">
+                                        <select class="dm-ctrl google-fonts-list" name="<?php echo esc_attr( $this->name ) ?>[family]">
+                                    <?php
+
+                        foreach ( $font_list as $key => $item ) {
+                            $selected = $item->family == esc_html( $this->value["family"] ) ? 'selected' : '';
+                            echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                        }
+
+                        ?>
+                                        </select>
+                                    </div>
+                                <?php endif;?>
+                                    <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
+                                            </li>
+                                                <li>
+                                                    <select name="<?php echo esc_attr( $this->name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
+                                                    <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
+                                                </li>
+                                                <li>
+                                                    <select name="<?php echo esc_attr( $this->name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
+                                                    </select>
+                                                    <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
+                                                </li>
+                                            <?php
+break;
+                    case 'size':
+                        ?>
+                                                <li>
+                                                    <input type="number" name="<?php echo esc_attr( $this->name ) ?>[size]"
+                                                        value="<?php echo isset( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input dm-ctrl font-size" />
+                                                        <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
+                                                </li>
+                                            <?php
+break;
+                    case 'line-height':
+                        ?>
+                                                <li>
+                                                    <input type="number" name="<?php echo esc_attr( $this->name ) ?>[line_height]" value="<?php echo isset( $this->value["line_height"] ) ? esc_html( trim( $this->value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input dm-ctrl " />
+                                                    <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
+                                                </li>
+                                            <?php
+break;
+                    case 'letter-spacing':
+                        ?>
+                                                <li>
+                                                    <input type="number" name="<?php echo esc_attr( $this->name ) ?>[letter_spacing]" value="<?php echo isset( $this->value["letter_spacing"] ) ? esc_html( trim( $this->value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input dm-ctrl " />
+                                                    <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
+                                                </li>
+                                            <?php
+break;
+                    case 'color':
+                        ?>
+                                                <li>
+                                                    <input  type="text"
+                                                    name="<?php echo esc_attr( $this->name ) ?>[color]"
+                                                    value="<?php echo isset( $this->value["color"] ) ? esc_html( $this->value["color"] ) : ""; ?>"
+                                                    class="dm-ctrl dm-typography-color-field"
+                                                    data-default-color="<?php echo esc_attr( $this->value["color"] ); ?>" />
+                                                    <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
+                                                </li>
+                                            <?php
+break;
+
+                    default:
+                        # code...
+                        break;
+                    }
+
                 }
 
             }
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components, $font_list  );
+        // end foreach
+        ?>
+                </ul>
+                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+            </div>
+        </li>
 
+    <?php
     }
-
-    public function columns() {
-        $visible = false;
-        $content = $this->content;
-        add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
-            function ( $columns ) use ( $content, $visible ) {
-
-                $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
-
-                if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
-                }
-
-                return $columns;
-            } );
-
-        $cc = $content;
-        add_filter( 'manage_' . $this->taxonomy . '_custom_column',
-            function ( $content, $column_name, $term_id ) use ( $cc ) {
-
-                if ( $column_name == $cc['name'] ) {
-                    print_r( esc_html( maybe_unserialize( get_term_meta( $term_id, 'devmonsta_' . $column_name, true ) ) ) );
-
-                }
-
-                return $content;
-
-            }, 10, 3 );
-    }
-
-    public function edit_fields( $term, $taxonomy ) {
-
-        $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
-        $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-
-        $this->load_scripts();
-
-        $font_list             = $this->dm_getGoogleFonts();
-        $data['font_list']     = $font_list;
-        $data['selected_data'] = $value;
-        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
-
-        $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
-        $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $components = isset( $this->content['components'] ) ? $this->content['components'] : [];
-
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list );
-}
 
     /**
      * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
@@ -202,111 +193,4 @@ class Typography extends \WP_Customize_Control {
 
     }
 
-    
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list  ) {
-        ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
-            </div>
-            <div class="dm-option-column right full-width">
-                <ul class="dm-option-typography">
-                <?php
-
-                if ( is_array( $components ) && !empty( $components ) ) {
-
-                    foreach ( $components as $key => $item ) {
-
-                        if ( $key ) {
-
-                            switch ( $key ) {
-                            case 'family':
-                                ?>
-                                            <li>
-                                            <?php
-
-                                if ( count( $font_list ) > 0 ): ?>
-                                    <div class="google-fonts">
-                                        <select class="dm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
-                                    <?php
-
-                                    foreach ( $font_list as $key => $item ) {
-                                        $selected = $item->family == esc_html( $value["family"] ) ? 'selected' : '';
-                                        echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
-                                    }
-
-                                    ?>
-                                        </select>
-                                    </div>
-                                <?php endif;?>
-                                    <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
-                                            </li>
-                                                <li>
-                                                    <select name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
-                                                    <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
-                                                </li>
-                                                <li>
-                                                    <select name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
-                                                    </select>
-                                                    <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
-                            case 'size':
-                                ?>
-                                                <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[size]"
-                                                        value="<?php echo isset( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input dm-ctrl font-size" />
-                                                        <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
-                            case 'line-height':
-                                ?>
-                                                <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input dm-ctrl " />
-                                                    <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
-                            case 'letter-spacing':
-                                ?>
-                                                <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input dm-ctrl " />
-                                                    <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
-                            case 'color':
-                                ?>
-                                                <li>
-                                                    <input  type="text"
-                                                    name="<?php echo esc_attr( $name ) ?>[color]"
-                                                    value="<?php echo isset( $value["color"] ) ? esc_html( $value["color"] ) : ""; ?>"
-                                                    class="dm-ctrl dm-typography-color-field"
-                                                    data-default-color="<?php echo esc_attr( $value["color"] ); ?>" />
-                                                    <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
-
-                            default:
-                                # code...
-                                break;
-                            }
-
-                        }
-
-                    }
-
-                }
-
-    // end foreach
-    ?>
-                </ul>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>
-            </div>
-        </div>
-    <?php
-    }
 }
