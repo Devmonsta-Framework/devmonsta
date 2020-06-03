@@ -91,7 +91,7 @@ class Slider extends Structure {
             $condition_data = json_encode($this->content['conditions'], true);
             $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
-        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
+        $class_attributes = "class='dm-option active-script form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
     }
@@ -157,7 +157,7 @@ class Slider extends Structure {
             $condition_data = json_encode($this->content['conditions'], true);
             $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
-        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
+        $class_attributes = "class='dm-option active-script form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }

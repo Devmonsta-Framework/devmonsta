@@ -113,7 +113,7 @@ class View
 
             // add_thickbox();
 ?>
-            <div class="dm-option form-field ">
+            <div id="<?php echo $control_data['name'] ;?>" class="dm-option form-field ">
 
                 <div class='dm-option-column left'>
                     <label class="dm-option-label"><?php echo $control_data['label']; ?> </label>
@@ -129,7 +129,13 @@ class View
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
                                 <span class="dm-repeater-popup-close dashicons dashicons-dismiss" data-id="<?php echo $control_data['name']; ?>"></span>
-                                <?php $this->repeater_controls($control_data); ?>
+                                <?php 
+                                ob_start();
+                                    $this->repeater_controls($control_data);
+                                $output = ob_get_clean();
+                            
+                                echo str_replace("active-script", '', $output);
+                                ?>
                             </div>
                         </div>
                     </div>

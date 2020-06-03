@@ -282,6 +282,7 @@ class Customizer {
      *
      * @access  public
      * @return  void
+     * ===============================
      *
      */
 
