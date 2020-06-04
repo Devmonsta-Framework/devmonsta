@@ -19,6 +19,10 @@ jQuery(document).ready(function ($) {
         $(single_color).wpColorPicker(dmOptions);
      }
 
+     /**
+      * convert rgb value into hex value
+      * @param {*} rgb 
+      */
      function rgb2hex(rgb) {
         if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
     

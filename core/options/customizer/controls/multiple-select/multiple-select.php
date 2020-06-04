@@ -61,6 +61,7 @@ class MultipleSelect extends \WP_Customize_Control {
      * @internal
      */
     public function render() {
+        $this->value = is_array( $this->value() ) ? $this->value() : [];
         $this->render_content();
     }
 
@@ -79,7 +80,7 @@ class MultipleSelect extends \WP_Customize_Control {
                     <select class="dm-ctrl dm_multi_select"  <?php $this->link(); ?> multiple="multiple" style="height: 100%;">
                         <?php
                         foreach ( $this->choices as $value => $label ) {
-                            $selected = ( in_array( $value, $this->value() ) ) ? selected( 1, 1, false ) : '';
+                            $selected = ( in_array( $value, $this->value ) ) ? selected( 1, 1, false ) : '';
                             echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . $label . '</option>';
                         }
                         ?>
