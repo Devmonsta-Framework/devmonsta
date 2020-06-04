@@ -84,7 +84,11 @@ class Gradient extends \WP_Customize_Control {
      * @internal
      */
     public function render() {
-        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? maybe_unserialize( $this->value() ) : $this->default_value;
+        if(!is_null( $this->value() ) && !empty( $this->value() )){
+            $saved_value['primary']   = explode( ",", $this->value() )[0];
+            $saved_value['secondary'] = explode( ",", $this->value() )[1];
+        }
+        $this->value = ( isset($saved_value) && is_array($saved_value) ) ? $saved_value : $this->default_value;
         $this->render_content();
     }
 
@@ -104,23 +108,21 @@ class Gradient extends \WP_Customize_Control {
                     <?php
 
                         if ( is_array( $this->value ) && !empty( $this->value ) ) {
-
                             foreach ( $this->value as $id => $value ) {
-
                                 if ( $id == "secondary" ) {
                                     ?>
                                     <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
-                                    <?php
+                                <?php
                                 }
-
                                 ?>
-                                    <input type="text" class="dm-ctrl dm-gradient-field-<?php echo esc_attr( $id ); ?>"
-                                            name="<?php echo esc_html( $this->name . "[" . $id . "]" ); ?>"
+                                    <input type="text" class="dm-ctrl dm-gradient-field-<?php echo esc_attr( $id ); ?>" 
                                             value="<?php echo esc_attr( $value ); ?>"
                                             data-default-color="<?php echo esc_attr( $value ); ?>" />
-                                <?php
+                            <?php
                             }
-
+                            ?>
+                                    <input type="hidden" class="dm-ctrl dm-gradient-value" <?php $this->link(); ?> value="" >
+                            <?php
                         }
 
                     ?>
