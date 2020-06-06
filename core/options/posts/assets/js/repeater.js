@@ -45,7 +45,6 @@ jQuery(document).ready(function ($) {
             'repeatCount': repeatCount
         };
         if(!isRemoved){
-            console.log(clonedElement);
             clonedElement.children('.dm-repeater-inner-controls').children('.dm-repeater-inner-controls-inner').children('.dm-option:not(.dm-repeater-child)').addClass('active-script');
             $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').append(clonedElement);
         } else {
@@ -58,6 +57,8 @@ jQuery(document).ready(function ($) {
         controlNameChanging(controlConfig)
         // resetting data
         jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
+        console.log('hello')
+        jQuery(window).trigger('dm-vue.dm', [clonedElement]);
     });
     
     // open and closing popup

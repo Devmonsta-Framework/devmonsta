@@ -71,7 +71,7 @@ class Dimensions extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        $class_attributes = "class='dm-option form-field dm-vue-app active-script $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
 }
@@ -139,7 +139,7 @@ class Dimensions extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap dm-box $dynamic_classes'";
+        $class_attributes = "class='dm-option term-group-wrap dm-vue-app active-script $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
 }

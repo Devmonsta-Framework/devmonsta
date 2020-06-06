@@ -76,7 +76,7 @@ class Icon extends Structure {
 
         }
 
-        $class_attributes = "class='dm-vue-app dm-option form-field $dynamic_classes'";
+        $class_attributes = "class='dm-vue-app dm-option form-field active-script $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $this->value['icon_type'], $this->value['icon_name'] );
@@ -139,7 +139,7 @@ class Icon extends Structure {
 
         }
 
-        $class_attributes = "class='dm-vue-app dm-option form-field dm-box $dynamic_classes'";
+        $class_attributes = "class='dm-vue-app dm-option form-field active-script $dynamic_classes'";
         $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon );
