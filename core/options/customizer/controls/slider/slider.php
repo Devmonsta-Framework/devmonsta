@@ -37,7 +37,9 @@ class Slider extends \WP_Customize_Control {
      */
     public function enqueue() {
         wp_enqueue_style( 'dm-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
-        wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
+        if ( !wp_script_is( 'dm-slider-asrange', 'enqueued' ) ) {
+            wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
+        }
         wp_enqueue_script( 'dm-customizer-slider-script', DM_CORE . 'options/customizer/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
 
         //get slider settings from theme

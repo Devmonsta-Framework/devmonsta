@@ -41,9 +41,11 @@ class RangeSlider extends \WP_Customize_Control {
      * @internal
      */
     public function enqueue( ) {
-        wp_enqueue_style( 'asRange-css', DM_CORE . 'options/post/controls/range-slider/assets/css/asRange.css' );
-        wp_enqueue_script( 'asRange-js', DM_CORE . 'options/post/controls/range-slider/assets/js/jquery-asRange.js' );
-        wp_enqueue_script( 'dm-customizer-range-slider', DM_CORE . 'options/customizer/controls/range-slider/assets/js/script.js', ['jquery', 'asRange-js'], time(), true );
+        wp_enqueue_style( 'dm-range-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
+        if ( !wp_script_is( 'dm-slider-asrange', 'enqueued' ) ) {
+            wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
+        }
+        wp_enqueue_script( 'dm-customizer-range-slider', DM_CORE . 'options/customizer/controls/range-slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
 
         $range_slider_config       = $this->properties;
         $range_slider_data['min']  = isset( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
@@ -70,9 +72,11 @@ class RangeSlider extends \WP_Customize_Control {
             </div>
 
             <div class="dm-option-column right">
+
                 <input class="dm-ctrl dm-range-slider" <?php $this->link();?>
                     type="text" value="<?php echo esc_attr( $this->value ); ?>"
                     name="<?php echo esc_attr( $this->name ); ?>"/>
+                
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
