@@ -207,7 +207,7 @@
                   opacity: 0;
                   position: absolute;
               }
-              .dm-option-image-picker-input + label{
+              .dm-option-image-picker-input + .dm-img-list{
                 line-height: 0;
                 border: 3px solid transparent;
                 position: relative;
@@ -216,7 +216,7 @@
                 display: block;
                 margin: 0 5px 5px 0;
               }
-              .dm-option-image-picker-input:checked + label {
+              .dm-option-image-picker-input:checked + .dm-img-list {
                 border: 3px solid #64bd1f;
                 &:after {
                     content: "";
