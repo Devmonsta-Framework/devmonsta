@@ -40,6 +40,7 @@ class Slider extends \WP_Customize_Control {
         if ( !wp_script_is( 'dm-slider-asrange', 'enqueued' ) ) {
             wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
         }
+        wp_enqueue_script( 'dm-slider-from-post', DM_CORE . 'options/posts/controls/slider/assets/js/script.js' );
         wp_enqueue_script( 'dm-customizer-slider-script', DM_CORE . 'options/customizer/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
 
         //get slider settings from theme
@@ -60,7 +61,7 @@ class Slider extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <li  class="dm-option dm-slider-holder">
+        <li  class="dm-option dm-slider-holder active-script">
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
