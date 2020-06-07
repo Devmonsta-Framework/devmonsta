@@ -171,7 +171,11 @@ class ImagePicker extends Structure {
                                             $small_image = isset( $item['small'] ) ? $item['small'] : '';
                                             $large_image = isset( $item['large'] ) ? $item['large'] : '';
                                             ?>
-                                                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>'>
+
+                                                <input id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+
+                                                <label for="<?php echo esc_attr( $name ) . $item_key; ?>">
                                                     <?php if ( !empty( $large_image ) ): ?>
                                                     <div class="dm-img-picker-preview">
                                                         <img src="<?php echo esc_attr( $large_image ); ?>" />
@@ -180,7 +184,9 @@ class ImagePicker extends Structure {
                                                     <div class="thumbnail">
                                                         <img src="<?php echo esc_attr( $small_image ); ?>" />
                                                     </div>
-                                                </li>
+                                                </label>
+
+                                            </li>
                                             <?php
                                         }
                                     }
