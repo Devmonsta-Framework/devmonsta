@@ -14,7 +14,7 @@
 
                     if(editor){
                         editor.onChange.add(function (ed, e) {
-                            console.log("change");
+                            // console.log("change");
                             ed.save();
                             content = editor.getContent();
                             clearTimeout(setChange);
@@ -27,7 +27,7 @@
                     tArea.css({
                         visibility: 'visible'
                     }).on('keyup', function(){
-                        console.log("change");
+                        // console.log("change");
                         content = tArea.val();
                         clearTimeout(setChange);
                         setChange = setTimeout(function(){

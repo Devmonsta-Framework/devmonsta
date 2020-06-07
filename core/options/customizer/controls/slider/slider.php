@@ -60,7 +60,7 @@ class Slider extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <li  class="dm-option">
+        <li  class="dm-option dm-slider-holder">
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
