@@ -13,17 +13,17 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
     jQuery('.dm-option.active-script .dm-typography-color-field').wpColorPicker(dmOptions);
 
     // for select2 
-    jQuery('.dm-option.active-script .google-fonts-list').select2();
+    el.select2();
 
     // select 2 on change style and weight
-    jQuery('.dm-option.active-script .google-fonts-list').on("change", function (e) {
+    el.on("change", function (e) {
         var self = jQuery(this),
             parent = self.parents('.dm-option-typography'),
             selected_value = self.val();
         if (typo_config.font_list.length > 0) {
             jQuery.each(typo_config.font_list, function (key, item) {
                 if (item.family == selected_value) {
-                    parent.find('.google-weight-list, .google-style-list').html('')
+                    parent.find('.google-weight-list, .google-style-list').html('');
                     // weight
                     jQuery.each(item.variants, function (i, variant) {
                         parent.find('.google-weight-list').append(
@@ -42,7 +42,7 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
         }
     });
 
-    jQuery('.dm-option.active-script .google-fonts-list').trigger('change');
+    el.trigger('change');
 });
 
 jQuery(document).ready(function($){
