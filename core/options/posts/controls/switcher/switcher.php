@@ -167,9 +167,11 @@ class Switcher extends Structure {
             </div>
             <div class="dm-option-column right dm_switcher_main_block" >
                 <div class='dm_switcher_item' date-right="<?php echo esc_attr( $right_key); ?>">
-                    <input  type='checkbox' id="dm-control-switcher" class='dm-ctrl dm-control-input dm-control-switcher'  value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>'
-                            <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
-                    <label for="dm-control-switcher" data-left="<?php echo esc_attr( $left_key ); ?>" data-right="<?php echo esc_attr( $right_key ); ?>" class='dm_switcher_label dm-option-label'></label>
+                    <label>
+                        <input  type='checkbox'  class='dm-ctrl dm-control-input dm-control-switcher'  value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>'
+                                <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
+                        <div data-left="<?php echo esc_attr( $left_key ); ?>" data-right="<?php echo esc_attr( $right_key ); ?>" class='dm_switcher_label dm-option-label'></div>
+                    </label>
                 </div>
 
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

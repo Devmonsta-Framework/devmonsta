@@ -57,8 +57,8 @@ jQuery(document).ready(function ($) {
         controlNameChanging(controlConfig)
         // resetting data
         jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
-        console.log('hello')
         jQuery(window).trigger('dm-vue.dm', [clonedElement]);
+        jQuery(window).trigger('dm-scripts-typo.dm', [clonedElement]);
     });
     
     // open and closing popup

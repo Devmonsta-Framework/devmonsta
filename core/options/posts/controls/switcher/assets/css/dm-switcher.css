@@ -1,4 +1,4 @@
-.dm_switcher_item label.dm_switcher_label {
+.dm_switcher_item .dm_switcher_label {
     cursor: pointer;
     width: 85px;
     height: 24px;
@@ -9,11 +9,11 @@
     margin: 0;
     padding: 0 !important;
 }
-.dm-control-switcher:checked + label.dm_switcher_label {
+.dm-control-switcher:checked + .dm_switcher_label {
     background: #5d78ff !important;
     color: #fff;
 }
-.dm_switcher_item label.dm_switcher_label:after {
+.dm_switcher_item .dm_switcher_label:after {
     content: "";
     position: absolute;
     top: 4px;
@@ -34,13 +34,13 @@
     visibility: hidden;
     display: none;
 }
-.dm-control-switcher:checked + label.dm_switcher_label:after {
+.dm-control-switcher:checked + .dm_switcher_label:after {
     left: calc(100% - 5px);
     -webkit-transform: translateX(-100%);
     -ms-transform: translateX(-100%);
     transform: translateX(-100%);
 }
-.dm_switcher_item label.dm_switcher_label:before {
+.dm_switcher_item .dm_switcher_label:before {
     content: attr(data-left);
     position: absolute;
     right: 10px;
@@ -52,7 +52,7 @@
     text-transform: uppercase;
     font-weight: 600;
 }
-.dm-control-switcher:checked + label.dm_switcher_label:before {
+.dm-control-switcher:checked + .dm_switcher_label:before {
     content: attr(data-right);
     right: inherit;
     left: 10px;
