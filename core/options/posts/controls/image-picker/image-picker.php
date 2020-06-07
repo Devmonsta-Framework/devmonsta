@@ -151,6 +151,7 @@ class ImagePicker extends Structure {
     
 }
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
+        
         var_dump( $value );
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?>>
@@ -175,7 +176,7 @@ class ImagePicker extends Structure {
                                             <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
 
                                                 <label>
-                                                    <input id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+                                                    <input id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
 
                                                     <div class="dm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
                                                         <?php if ( !empty( $large_image ) ): ?>
@@ -188,11 +189,14 @@ class ImagePicker extends Structure {
                                                         </div>
                                                     </div>
                                                 </label>
+
                                             </li>
                                             <?php
                                         }
                                     }
+
                                 }
+
                             ?>
                         </ul>
                     </div>
