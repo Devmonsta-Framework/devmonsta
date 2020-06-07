@@ -20,10 +20,10 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
         var self = jQuery(this),
             parent = self.parents('.dm-option-typography'),
             selected_value = self.val();
-            console.log(typo_config.font_list);
         if (typo_config.font_list.length > 0) {
             jQuery.each(typo_config.font_list, function (key, item) {
                 if (item.family == selected_value) {
+                    parent.find('.google-weight-list, .google-style-list').html('')
                     // weight
                     jQuery.each(item.variants, function (i, variant) {
                         parent.find('.google-weight-list').append(
