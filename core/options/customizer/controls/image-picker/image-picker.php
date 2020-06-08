@@ -65,34 +65,44 @@ class ImagePicker extends \WP_Customize_Control {
 
             <div class="dm-option-column right full-width">
                 <div class="thumbnails dm-option-image_picker_selector">
-                    <input <?php $this->link();?> class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
-                    <ul class="img-picker-ul">
-                        <?php
-                            if ( is_array( $this->choices ) && isset( $this->choices ) ) {
-                                foreach ( $this->choices as $item_key => $item ) {
-                                    if ( is_array( $item ) && isset( $item ) ) {
-                                        $selected    = ( $item_key == $this->value ) ? 'selected' : '';
-                                        $small_image = isset( $item['small'] ) ? $item['small'] : '';
-                                        $large_image = isset( $item['large'] ) ? $item['large'] : '';
-                                        ?>
-                                        <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                        <?php
-                                        if ( !empty( $large_image ) ): ?>
-                                            <div class="dm-img-picker-preview">
-                                                <img src="<?php echo esc_attr( $large_image ); ?>" />
-                                            </div>
-                                        <?php endif;?>
-                                            <div class="thumbnail img-picker-thumbnail">
-                                                <img src="<?php echo esc_attr( $small_image ); ?>" />
-                                            </div>
-                                        </li>
-                                    <?php
+                        <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
+                        <ul>
+                            <?php
+                                if ( is_array( $this->choices ) && isset( $this->choices ) ) {
+
+                                    foreach ( $this->choices as $item_key => $item ) {
+                                        if(is_array($item) && isset($item)){
+                                            $selected    = ( $item_key == $this->value ) ? 'selected' : '';
+                                            $small_image = isset( $item['small'] ) ? $item['small'] : '';
+                                            $large_image = isset( $item['large'] ) ? $item['large'] : '';
+                                            ?>
+                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+
+                                                <label>
+                                                    <input <?php $this->link(); ?> id="<?php echo esc_attr( $this->name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
+
+                                                    <div class="dm-img-list" for="<?php echo esc_attr( $this->name ) . $item_key; ?>">
+                                                        <?php if ( !empty( $large_image ) ): ?>
+                                                        <div class="dm-img-picker-preview">
+                                                            <img src="<?php echo esc_attr( $large_image ); ?>" />
+                                                        </div>
+                                                        <?php endif;?>
+                                                        <div class="thumbnail">
+                                                            <img src="<?php echo esc_attr( $small_image ); ?>" />
+                                                        </div>
+                                                    </div>
+                                                </label>
+
+                                            </li>
+                                            <?php
+                                        }
                                     }
+
                                 }
-                            }
-                        ?>
-                    </ul>
-                </div>
+
+                            ?>
+                        </ul>
+                    </div>
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
