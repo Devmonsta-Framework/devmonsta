@@ -69,29 +69,9 @@ class Upload extends Structure {
             $display          = 'inline-block';
         }
 
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-            foreach ( $attrs as $key => $val ) {
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-            }
-        }
-
-        $condition_class    = "";
-        $condition_data     = "";
-        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
-            $condition_class = "dm-condition-active";
-            $condition_data = json_encode($this->content['conditions'], true);
-            $default_attributes .= " data-dm_conditions='$condition_data' ";
-        }
-        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+                        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $multiple, $image, $display );
@@ -161,31 +141,9 @@ class Upload extends Structure {
             $image   = '"dm_upload_image_button"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
             $display = 'inline-block';
         }
-
         
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-            foreach ( $attrs as $key => $val ) {
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-            }
-        }
-
-        $condition_class    = "";
-        $condition_data     = "";
-        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
-            $condition_class = "dm-condition-active";
-            $condition_data = json_encode($this->content['conditions'], true);
-            $default_attributes .= " data-dm_conditions='$condition_data' ";
-        }
-        $class_attributes = "class='dm-option term-group-wrap $condition_class $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display );

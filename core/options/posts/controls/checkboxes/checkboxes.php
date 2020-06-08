@@ -58,32 +58,19 @@ class Checkboxes extends Structure {
         $label    = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name     = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs    = isset( $this->content['attr'] ) ? $this->content['attr'] : [];
         $choices  = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices, $isInline );
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -113,39 +100,35 @@ class Checkboxes extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
         $label   = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name    = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc    = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs   = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value   = ( !empty( get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $choices = isset( $this->content['choices'] ) && is_array( $this->content['choices'] )? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
+      
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices, $isInline );
 
     }
 
-
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices, $isInline ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >

@@ -36,15 +36,15 @@ class Icon extends Structure {
 
         $icon_data              = [];
         $icon_data['icon_name'] = (  ( $this->current_screen == "post" )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-        : "";
+                                    && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                                    && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+                                ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                                : "";
 
         $icon_data['icon_type'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true )
-        : "dm-font-awesome";
+                                    && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) ) )
+                                ? get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true )
+                                : "dm-font-awesome";
 
         $this->value = $icon_data;
         $this->output();
@@ -58,31 +58,19 @@ class Icon extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-vue-app dm-option form-field active-script $dynamic_classes'";
-        $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
+
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $this->value['icon_type'], $this->value['icon_name'] );
 
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -112,6 +100,9 @@ class Icon extends Structure {
             }, 10, 3 );
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
         $this->enqueue_icon_scripts();
 
@@ -119,33 +110,27 @@ class Icon extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $icon               = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $icon_type          = (  ( "" != get_term_meta( $term->term_id, $name . "_type", true ) ) && ( !is_null( get_term_meta( $term->term_id, $name . "_type", true ) ) ) ) ? get_term_meta( $term->term_id, $name . "_type", true ) : "";
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-vue-app dm-option form-field active-script $dynamic_classes'";
-        $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
+
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon );
+    }
 
-}
-
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon_name ) {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
