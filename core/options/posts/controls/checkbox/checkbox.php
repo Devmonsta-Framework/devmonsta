@@ -105,26 +105,23 @@ class Checkbox extends Structure {
         $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $text               = isset( $this->content['text'] ) ? $this->content['text'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
+        $is_checked         = ( $value == 'true' ) ? 'checked' : '';
+        
         $default_attributes = "";
         $dynamic_classes    = "";
-        $is_checked         = ( $value == 'true' ) ? 'checked' : '';
-
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
-
                 if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
                 } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-
             }
-
         }
 
         $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        
         $this->generate_markup( $default_attributes, $label, $name, $is_checked, $text, $desc );
         
     }

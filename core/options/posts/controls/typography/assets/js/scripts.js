@@ -42,6 +42,7 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
         }
     });
 
+
     el.trigger('change');
 });
 

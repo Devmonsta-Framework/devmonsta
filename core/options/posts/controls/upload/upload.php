@@ -53,7 +53,6 @@ class Upload extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
 
         $image_size = 'full';
         $display    = 'none';
@@ -70,28 +69,37 @@ class Upload extends Structure {
             $display          = 'inline-block';
         }
 
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
-
                 if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
                 } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-
             }
-
         }
 
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
+        }
+        $class_attributes = "class='dm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
+
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $multiple, $image, $display );
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -127,8 +135,12 @@ class Upload extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
 
+        //load all scripts for taxonomy edit field
         $this->load_upload_scripts();
 
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
@@ -150,6 +162,8 @@ class Upload extends Structure {
             $display = 'inline-block';
         }
 
+        
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
 
@@ -163,11 +177,34 @@ class Upload extends Structure {
             }
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
+        }
+        $class_attributes = "class='dm-option term-group-wrap $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
+
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display );
     }
 
+
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $multiple
+     * @param [type] $image
+     * @param [type] $display
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >

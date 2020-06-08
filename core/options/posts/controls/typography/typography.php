@@ -86,25 +86,33 @@ class Typography extends Structure {
         $dynamic_classes    = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
-
                 if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
                 } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-
             }
-
         }
 
-        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
+        }
+        $class_attributes = "class='dm-option active-script term-group-wrap $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
+
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components, $font_list  );
 
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -134,6 +142,9 @@ class Typography extends Structure {
             }, 10, 3 );
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
 
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
@@ -148,28 +159,33 @@ class Typography extends Structure {
 
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $components = isset( $this->content['components'] ) ? $this->content['components'] : [];
 
+        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $default_attributes = "";
         $dynamic_classes    = "";
 
         if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
             foreach ( $attrs as $key => $val ) {
-
                 if ( $key == "class" ) {
                     $dynamic_classes .= $val . " ";
                 } else {
                     $default_attributes .= $key . "='" . $val . "' ";
                 }
-
             }
-
         }
 
-        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($this->content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
+        }
+        $class_attributes = "class='dm-option active-script term-group-wrap $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
+        
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list );
 }
 
@@ -201,7 +217,18 @@ class Typography extends Structure {
 
     }
 
-    
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $components
+     * @param [type] $font_list
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list  ) {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
@@ -300,8 +327,8 @@ class Typography extends Structure {
 
                 }
 
-    // end foreach
-    ?>
+                // end foreach
+                ?>
                 </ul>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>
             </div>

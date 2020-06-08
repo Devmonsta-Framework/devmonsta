@@ -152,7 +152,6 @@ class ImagePicker extends Structure {
 }
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         
-        var_dump( $value );
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?>>
                 <div class="dm-option-column left">
@@ -169,14 +168,14 @@ class ImagePicker extends Structure {
 
                                     foreach ( $choices as $item_key => $item ) {
                                         if(is_array($item) && isset($item)){
-                                            $selected    = ( $item_key == $value ) ? 'selected' : '';
+                                            $selected    = ( $item_key == $value ) ? 'checked' : '';
                                             $small_image = isset( $item['small'] ) ? $item['small'] : '';
                                             $large_image = isset( $item['large'] ) ? $item['large'] : '';
                                             ?>
-                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
+                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' >
 
                                                 <label>
-                                                    <input id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
+                                                    <input <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
 
                                                     <div class="dm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
                                                         <?php if ( !empty( $large_image ) ): ?>
