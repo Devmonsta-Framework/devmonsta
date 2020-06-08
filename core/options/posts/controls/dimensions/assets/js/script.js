@@ -1,64 +1,67 @@
-Vue.component('dm-dimensions', {
-    props: ["dimension", "linkedName"],
-    template: `
-        <ul class="dm-option-dimensions">
-            <slot></slot>
-            <li>
-                <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
-                <input type="hidden" :name="linkedName" v-model="isDimension" />
-                <label>&nbsp;</label>
-            </li>
-        </ul>
-    `,
-    data: function(){
-        return {
-            isDimension: true
-        }
-    },
-    methods: {
-        linkedDimensions: function(){
-            this.isDimension = !this.isDimension
-        }
-    },
-    mounted: function(){
-        this.$on('input-change', function(val){
-            if(this.isDimension == true){
-                this.$children.forEach(function(item){
-                    item.inputValue = val;
-                });
+jQuery(window).on('dimention.dm', function(){
+    Vue.component('dm-dimensions', {
+        props: ["dimension", "linkedName", "name"],
+        template: `
+            <ul class="dm-option-dimensions">
+                <slot></slot>
+                <li>
+                    <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
+                    <input type="hidden" :name="linkedName" v-model="isDimension" />
+                    <label>&nbsp;</label>
+                </li>
+            </ul>
+        `,
+        data: function(){
+            return {
+                isDimension: true,
+                textvalue: "10,20,30,40"
             }
-        });
-        this.isDimension = this.dimension;
-    }
-});
-
-Vue.component('dm-dimensions-item', {
-    props: ["name", "value", "label"],
-    template: `
-        <li>
-            <input class="dm-option-input dm-dimension-number-input input-top" type="number" :name="name" v-model="inputValue" min="0"/>
-            <label>{{label}}</label>
-        </li>
-    `,
-    data: function(){
-        return {
-            inputValue: ''
+        },
+        methods: {
+            linkedDimensions: function(){
+                this.isDimension = !this.isDimension
+            }
+        },
+        mounted: function(){
+            this.$on('input-change', function(val){
+                if(this.isDimension == true){
+                    this.$children.forEach(function(item){
+                        item.inputValue = val;
+                    });
+                }
+            });
+            this.isDimension = this.dimension;
         }
-    },
-    watch: {
-        inputValue: function(val){
-            this.$parent.$emit('input-change', val);
+    });
+    
+    Vue.component('dm-dimensions-item', {
+        props: ["name", "value", "label"],
+        template: `
+            <li>
+                <input class="dm-option-input dm-dimension-number-input input-top" type="number" :name="name" v-model="inputValue" min="0"/>
+                <label>{{label}}</label>
+            </li>
+        `,
+        data: function(){
+            return {
+                inputValue: ''
+            }
+        },
+        watch: {
+            inputValue: function(val){
+                this.$parent.$emit('input-change', val);
+            }
+        },
+        created: function(){
+            this.inputValue = this.value;
         }
-    },
-    created: function(){
-        this.inputValue = this.value;
-    }
+    })
 })
 
 
 
-
 jQuery(document).ready(function($){
+    jQuery(window).trigger('dimention.dm')
 
     // $(".dm-dimension-attachment-input").on("click", function(e){
     //     e.preventDefault();

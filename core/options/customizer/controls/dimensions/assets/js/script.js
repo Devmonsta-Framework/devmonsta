@@ -1,60 +1,7 @@
-Vue.component('dm-dimensions', {
-    props: ["dimension", "linkedName"],
-    template: `
-        <ul class="dm-option-dimensions">
-            <slot></slot>
-            <li>
-                <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
-                <input type="hidden" :name="linkedName" v-model="isDimension" />
-                <label>&nbsp;</label>
-            </li>
-        </ul>
-    `,
-    data: function(){
-        return {
-            isDimension: true
-        }
-    },
-    methods: {
-        linkedDimensions: function(){
-            this.isDimension = !this.isDimension
-        }
-    },
-    mounted: function(){
-        // console.log("mounted");
-        this.$on('input-change', function(val){
-            if(this.isDimension == true){
-                this.$children.forEach(function(item){
-                    item.inputValue = val;
-                });
-            }
-        });
-        this.isDimension = this.dimension;
-    }
-});
-
-Vue.component('dm-dimensions-item', {
-    props: ["name", "value", "label"],
-    template: `
-        <li>
-            <input class="dm-option-input dm-dimension-number-input input-top" type="number" :name="name" v-model="inputValue" min="0"/>
-            <label>{{label}}</label>
-        </li>
-    `,
-    data: function(){
-        return {
-            inputValue: ''
-        }
-    },
-    watch: {
-        inputValue: function(val){
-            this.$parent.$emit('input-change', val);
-        }
-    },
-    created: function(){
-        this.inputValue = this.value;
-    }
-});
+jQuery(window).on('load', function(){
+    jQuery('.dm-vue-app').addClass('active-script');
+    jQuery(window).trigger('dm-vue.dm');
+})
 
 
 
