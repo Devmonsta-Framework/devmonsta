@@ -112,8 +112,8 @@ class View
         if (isset($control_data['controls'])) {
 
             // add_thickbox();
-            ?>
-            <div class="dm-option form-field ">
+?>
+            <div id="<?php echo $control_data['name'] ;?>" class="dm-option form-field ">
 
                 <div class='dm-option-column left'>
                     <label class="dm-option-label"><?php echo $control_data['label']; ?> </label>
@@ -124,16 +124,22 @@ class View
 
                     <div class="dm-repeater-control dm-repeater-sample">
                         <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control</a>
-                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link" >Delete</button>
+                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link">Delete</button>
 
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
                                 <span class="dm-repeater-popup-close dashicons dashicons-dismiss" data-id="<?php echo $control_data['name']; ?>"></span>
-                                <?php $this->repeater_controls($control_data); ?>
+                                <?php 
+                                ob_start();
+                                    $this->repeater_controls($control_data);
+                                $output = ob_get_clean();
+                            
+                                echo str_replace("active-script", '', $output);
+                                ?>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="dm-repeater-control-list"></div>
 
 
@@ -153,6 +159,10 @@ class View
         foreach ($control_data['controls'] as $control_content) {
 
 
+            if ($control_content['type'] == 'repeater') {
+
+                $this->repeater_control_markup($control_content);
+            }
 
             $name = $control_content['name'];
             unset($control_content['name']);
@@ -186,5 +196,60 @@ class View
                 }
             }
         }
+    }
+
+
+
+    public function repeater_control_markup($control_content)
+    {
+
+     ?>
+        <div class='dm-option form-field dm-repeater-child'>
+            <div class='dm-option-column left'>
+                <label class='dm-option-label'><?php echo $control_content['lable']; ?> </label>
+            </div>
+            <div class='dm-option-column right'>
+                
+                <div class='dm-option-column dm-repeater-column right'>
+
+                    <div class="dm-repeater-control dm-repeater-sample">
+                        <a href="#" data-id="<?php echo $control_content['name']; ?>" class="dm-repeater-control-action">Control</a>
+                        <button type="button" data-id="<?php echo $control_content['name']; ?>" class="components-button dm-editor-post-trash is-link">Delete</button>
+
+                        <div class="dm-repeater-inner-controls" id="<?php echo $control_content['name']; ?>">
+                            <div class="dm-repeater-inner-controls-inner">
+                                <span class="dm-repeater-popup-close dashicons dashicons-dismiss" data-id="<?php echo $control_content['name']; ?>"></span>
+                                <?php 
+                                ob_start();
+                                $this->sub_repeater_controls($control_content['controls']);
+                                $output = ob_get_clean();
+                            
+                                echo str_replace("active-script", '', $output);
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dm-repeater-control-list"></div>
+
+
+
+                    <br><br><a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add New</a>
+                </div>
+            </div>
+        </div>
+
+    <?php
+    
+    }
+
+    public function sub_repeater_controls($control_contents)
+    {
+        foreach($control_contents as $control_content){
+            
+            $this->build_controls($control_content);
+
+        }
+        
     }
 }

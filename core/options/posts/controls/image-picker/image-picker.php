@@ -44,10 +44,8 @@ class ImagePicker extends Structure {
      * @internal
      */
     public function render() {
-
         $content = $this->content;
         global $post;
-
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
                         && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
@@ -65,30 +63,18 @@ class ImagePicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices            = is_array( $this->content['choices'] ) && isset( $this->content['choices'] ) ? $this->content['choices'] : [];
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -119,37 +105,37 @@ class ImagePicker extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
+        //loads all scripts required for taxonomy edit field
         $this->enqueue_image_picker_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] )  ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] )  ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] )  ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
-    
-}
+    }
+
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $choices
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?>>
@@ -167,26 +153,32 @@ class ImagePicker extends Structure {
 
                                     foreach ( $choices as $item_key => $item ) {
                                         if(is_array($item) && isset($item)){
-                                            $selected    = ( $item_key == $value ) ? 'selected' : '';
+                                            $selected    = ( $item_key == $value ) ? 'checked' : '';
                                             $small_image = isset( $item['small'] ) ? $item['small'] : '';
                                             $large_image = isset( $item['large'] ) ? $item['large'] : '';
                                             ?>
-                                                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' class='<?php echo esc_attr( $selected ); ?>'>
-                                                    <?php if ( !empty( $large_image ) ): ?>
-                                                    <div class="dm-img-picker-preview">
-                                                        <img src="<?php echo esc_attr( $large_image ); ?>" />
+                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' >
+
+                                                <label>
+                                                    <input <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
+
+                                                    <div class="dm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
+                                                        <?php if ( !empty( $large_image ) ): ?>
+                                                        <div class="dm-img-picker-preview">
+                                                            <img src="<?php echo esc_attr( $large_image ); ?>" />
+                                                        </div>
+                                                        <?php endif;?>
+                                                        <div class="thumbnail">
+                                                            <img src="<?php echo esc_attr( $small_image ); ?>" />
+                                                        </div>
                                                     </div>
-                                                    <?php endif;?>
-                                                    <div class="thumbnail">
-                                                        <img src="<?php echo esc_attr( $small_image ); ?>" />
-                                                    </div>
-                                                </li>
+                                                </label>
+
+                                            </li>
                                             <?php
                                         }
                                     }
-
                                 }
-
                             ?>
                         </ul>
                     </div>

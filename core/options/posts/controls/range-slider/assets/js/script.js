@@ -1,7 +1,8 @@
-jQuery(document).ready(function($){
+jQuery(window).on('dm-scripts.dm', function(){
+    var el = jQuery('.dm-option.active-script .dm-range-slider');
     
-    if ($(".dm-range-slider").length) {
-        $('.dm-range-slider').asRange({
+    if (el.length) {
+        el.asRange({
             max: range_slider_config.max,
             min: range_slider_config.min,
             step: range_slider_config.step,
@@ -16,4 +17,10 @@ jQuery(document).ready(function($){
             }
         }); 
     }
+
+});
+
+
+jQuery(document).ready(function($) {
+    jQuery(window).trigger('dm-scripts.dm');
 });

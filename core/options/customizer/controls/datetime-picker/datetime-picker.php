@@ -54,9 +54,12 @@ class DatetimePicker extends \WP_Customize_Control {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/customizer/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/customizer/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        if ( !wp_script_is( 'flatpickr', 'enqueued' ) ) {
+            wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'], false, true );
+        }
         wp_enqueue_script( 'dm-customizer-date-time-picker', DM_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr'], false, true );
+        
         $date_time_picker_data                = [];
         $date_format                          = isset( $this->date_time_picker_config['date-format'] ) && in_array( $this->date_time_picker_config['date-format'], $this->allowed_date_formats ) ? $this->date_time_picker_config['date-format'] : 'Y-m-d';
         $time_format                          = isset( $this->date_time_picker_config['time-format'] ) && in_array( $this->date_time_picker_config['time-format'], $this->allowed_time_formats ) ? $this->date_time_picker_config['time-format'] : 'H:i';
@@ -75,7 +78,7 @@ class DatetimePicker extends \WP_Customize_Control {
     public function render_content() {
         ?>
 
-        <div>
+        <li  class="dm-option">
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
@@ -89,7 +92,7 @@ class DatetimePicker extends \WP_Customize_Control {
                     value="<?php echo esc_attr( $this->value() ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
-        </div>
+        </li>
 
     <?php
     }

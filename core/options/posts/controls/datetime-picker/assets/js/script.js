@@ -1,11 +1,12 @@
-jQuery(document).ready(function ($) {
-
+jQuery(window).on('dm-scripts.dm', function(){
+    var el = jQuery('.dm-option.active-script .dm-option-input-datetime-picker');
+    
     //Initialize the datepicker and set the first day of the week as Monday
-    if ($(".dm-option-input-datetime-picker").length) {
+    if (el.length) {
 
         var time_picker = (date_time_picker_config.timepicker == 0) ? false : true;
 
-        $(".dm-option-input-datetime-picker").flatpickr({
+        el.flatpickr({
             dateFormat: date_time_picker_config.format,
             minDate: date_time_picker_config.minDate,
             maxDate: date_time_picker_config.maxDate,
@@ -13,4 +14,10 @@ jQuery(document).ready(function ($) {
             enableTime: time_picker,
         });
     }
+
+});
+
+
+jQuery(document).ready(function($) {
+    jQuery(window).trigger('dm-scripts.dm');
 });

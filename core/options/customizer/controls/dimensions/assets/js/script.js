@@ -21,7 +21,7 @@ Vue.component('dm-dimensions', {
         }
     },
     mounted: function(){
-        console.log("mounted");
+        // console.log("mounted");
         this.$on('input-change', function(val){
             if(this.isDimension == true){
                 this.$children.forEach(function(item){

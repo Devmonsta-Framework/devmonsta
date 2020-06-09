@@ -1,5 +1,5 @@
 jQuery(document).ready(function ($) {
-    console.log(switcher_data);
+    // console.log(switcher_data);
     $(".dm_switcher_item").click(function (e) {
         e.preventDefault();
         var checkBoxe_right = $(".dm_switcher_right");

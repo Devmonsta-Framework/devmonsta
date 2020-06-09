@@ -58,4 +58,38 @@ abstract class Structure {
     abstract public function output();
     abstract public function enqueue($meta_owner);
     abstract public function edit_fields( $term, $taxonomy );
+    
+    
+    /**
+     * Prepare all attributes for parent class of this control
+     *
+     * @param [type] $content
+     * @return void
+     */
+    public function prepare_default_attributes( $content, $additional_classes = "" ){
+        $attrs              = isset( $content['attr'] ) ? $content['attr'] : '';
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+            foreach ( $attrs as $key => $val ) {
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+            }
+        }
+
+        $condition_class    = "";
+        $condition_data     = "";
+        if( isset( $content['conditions'] ) && is_array( $content['conditions'] ) ){
+            $condition_class = "dm-condition-active";
+            $condition_data = json_encode($content['conditions'], true);
+            $default_attributes .= " data-dm_conditions='$condition_data' ";
+        }
+        $class_attributes = "class='$additional_classes dm-option active-script form-field $condition_class $dynamic_classes'";
+        $default_attributes .= $class_attributes;
+        return $default_attributes;
+    }
 }

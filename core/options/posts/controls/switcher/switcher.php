@@ -30,8 +30,6 @@ class Switcher extends Structure {
      * @internal
      */
     public function load_switcher_scripts() {
-        // js
-        wp_enqueue_script( 'dm-switcher', plugins_url( 'switcher/assets/js/dm-switcher.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
         //css
         wp_enqueue_style( 'dm-switcher', plugins_url( 'switcher/assets/css/dm-switcher.css', dirname( __FILE__ ) ) );
     }
@@ -44,10 +42,10 @@ class Switcher extends Structure {
         global $post;
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
 
         $this->output();
     }
@@ -69,30 +67,17 @@ class Switcher extends Structure {
         $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
         $left_key     = $this->array_key_first( $left_choice );
         $right_key    = $this->array_key_first( $right_choice );
+                              
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $right_choice[$right_key] , $left_choice[$left_key]) ;
-}
+    }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -123,6 +108,9 @@ class Switcher extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
         $this->load_switcher_scripts();
 
@@ -134,50 +122,45 @@ class Switcher extends Structure {
         $left_key           = $this->array_key_first( $left_choice );
         $right_key          = $this->array_key_first( $right_choice );
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+                        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $right_choice[$right_key] , $left_choice[$left_key]) ;
     }
 
-
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $right_key
+     * @param [type] $left_key
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $right_key, $left_key) {
+        $is_checked = ( $value == $right_key ) ? 'checked' : '';
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
-
             <div class="dm-option-column left">
                 <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
             <div class="dm-option-column right dm_switcher_main_block" >
                 <div class='dm_switcher_item' date-right="<?php echo esc_attr( $right_key); ?>">
-                    <input  type='checkbox' class='dm-ctrl dm-control-input dm_switcher_right'  value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>'
-                            <?php echo ( $value == $right_key ) ? 'checked' : ''; ?> />
-                    <label data-left="<?php echo esc_attr( $left_key ); ?>" data-right="<?php echo esc_attr( $right_key ); ?>" class='dm_switcher_label dm-option-label'></label>
+                    <input type='text' class='dm-ctrl' style="display: none;" value='<?php echo esc_attr( $left_key ); ?>' name='<?php echo esc_attr( $name ); ?>' />
+                    <label>
+                        <input type='checkbox' class='dm-ctrl dm-control-input dm-control-switcher' value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>' <?php echo esc_attr( $is_checked ); ?>/>
+                        <div data-left="<?php echo esc_attr( $left_key ); ?>" data-right="<?php echo esc_attr( $right_key ); ?>" class='dm_switcher_label dm-option-label'></div>
+                    </label>
                 </div>
-                <input class='dm-ctrl dm_switcher_left' type='checkbox' value='<?php echo esc_attr( $left_key ); ?>'  name='<?php echo esc_attr( $name ); ?>' <?php echo ( $value == $left_key ) ? 'checked' : ''; ?> />
-
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
-
         </div>
-
     <?php
     }
 
