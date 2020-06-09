@@ -1,13 +1,17 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Switcher;
 
+use Devmonsta\Options\Customizer\Structure;
+
 if ( !class_exists( 'WP_Customize_Control' ) ) {
     return NULL;
 }
 
-class Switcher extends \WP_Customize_Control {
+class Switcher extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, $is_checked, $left_choice, $right_choice, $left_key, $right_key;
+    public $label, $name, $desc, $default_value, 
+            $value, $is_checked, $left_choice, $right_choice, 
+            $left_key, $right_key, $default_attributes;
 
     /**
      * @access public
@@ -39,6 +43,9 @@ class Switcher extends \WP_Customize_Control {
         $this->right_choice  = isset( $args[0]['right-choice'] ) && is_array( $args[0]['right-choice'] ) ? $args[0]['right-choice'] : [];
         $this->left_key      = $this->array_key_first( $this->left_choice );
         $this->right_key     = $this->array_key_first( $this->right_choice );
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /**
@@ -65,7 +72,7 @@ class Switcher extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <li class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label  class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
