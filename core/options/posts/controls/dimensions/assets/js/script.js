@@ -7,6 +7,7 @@ jQuery(window).on('dimention.dm', function(){
                 <li>
                     <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
                     <input type="hidden" :name="linkedName" v-model="isDimension" />
+                    <input v-if="name" type="hidden" v-model="message" :data-customize-setting-link="name"  />
                     <label>&nbsp;</label>
                 </li>
             </ul>
@@ -14,7 +15,16 @@ jQuery(window).on('dimention.dm', function(){
         data: function(){
             return {
                 isDimension: true,
-                textvalue: "10,20,30,40"
+                message: "hello"
+            }
+        },
+        watch: {
+            message: function(val){
+                if(val && wp.customize){
+                    wp.customize( this.name, function ( obj ) {
+                        obj.set( val );
+                    } );
+                }
             }
         },
         methods: {
@@ -23,14 +33,19 @@ jQuery(window).on('dimention.dm', function(){
             }
         },
         mounted: function(){
-            this.$on('input-change', function(val){
-                if(this.isDimension == true){
-                    this.$children.forEach(function(item){
-                        item.inputValue = val;
-                    });
-                }
-            });
+            var self = this;
             this.isDimension = this.dimension;
+
+            this.$on('input-change', function(val){
+                var dimentionData = {isLinked: this.isDimension};
+                this.$children.forEach(function(item){
+                    if(self.isDimension == true){
+                        item.inputValue = val;
+                    }
+                    dimentionData[item.label.toLowerCase().replace('/\s+/', '_')] = self.isDimension == true ? val : item.inputValue;
+                });
+                this.message = JSON.stringify(dimentionData);
+            });
         }
     });
     
@@ -56,11 +71,13 @@ jQuery(window).on('dimention.dm', function(){
             this.inputValue = this.value;
         }
     })
+
+   
 })
 
 
 
-jQuery(document).ready(function($){
+jQuery(window).on('load',function($){
     jQuery(window).trigger('dimention.dm')
 
     // $(".dm-dimension-attachment-input").on("click", function(e){

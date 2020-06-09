@@ -141,7 +141,8 @@ class Dimensions extends Structure {
 
             <div class="dm-option-column right">
                 <dm-dimensions
-                    :dimension="<?php echo isset( $value["isLinked"] ) ? esc_attr( $value["isLinked"] ) : 'false'; ?>" linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
+                    :dimension="<?php echo isset( $value["isLinked"] ) ? esc_attr( $value["isLinked"] ) : 'false'; ?>" 
+                    linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
                 >
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"

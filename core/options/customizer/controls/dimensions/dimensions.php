@@ -46,6 +46,7 @@ class Dimensions extends \WP_Customize_Control {
     }
 
     public function render_content() {
+        $savedData = json_decode($this->value());
         ?>
         
         <li class="dm-option dm-box">
@@ -57,17 +58,16 @@ class Dimensions extends \WP_Customize_Control {
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
-
             <div class="dm-option-column right dm-vue-app">
                 <dm-dimensions
-                    :dimension="<?php echo isset( $this->value["isLinked"] ) ? esc_attr( $this->value["isLinked"] ) : 'false'; ?>"  linked-name="<?php echo esc_attr( $this->name ); ?>[isLinked]"
-                    
+                    dimension="<?php echo isset( $savedData->isLinked ) ? esc_attr( $savedData->isLinked ) : 'false'; ?>"  
+                    linked-name="<?php echo esc_attr( $this->name ); ?>[isLinked]"
+                    name="<?php echo esc_attr( $this->name ); ?>"
                 >
-                    <input type="hidden" <?php echo $this->link(); ?>>
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $this->name ); ?>[top]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $this->value["top"] ) ? esc_html( intval( $this->value["top"] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData->top ) ? esc_html( intval( $savedData->top ) ) : 0; ?>"
                         label="top"
                     ></dm-dimensions-item>
 
@@ -75,7 +75,7 @@ class Dimensions extends \WP_Customize_Control {
                         
                         name="<?php echo esc_attr( $this->name ); ?>[right]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $this->value["right"] ) ? esc_html( intval( $this->value["right"] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData->right ) ? esc_html( intval( $savedData->right ) ) : 0; ?>"
                         label="right"
                     ></dm-dimensions-item>
 
@@ -83,7 +83,7 @@ class Dimensions extends \WP_Customize_Control {
                         
                         name="<?php echo esc_attr( $this->name ); ?>[bottom]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $this->value["bottom"] ) ? esc_html( intval( $this->value["bottom"] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData->bottom ) ? esc_html( intval( $savedData->bottom ) ) : 0; ?>"
                         label="bottom"
                     ></dm-dimensions-item>
 
@@ -91,7 +91,7 @@ class Dimensions extends \WP_Customize_Control {
                         
                         name="<?php echo esc_attr( $this->name ); ?>[left]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $this->value["left"] ) ? esc_html( intval( $this->value["left"] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData->left ) ? esc_html( intval( $savedData->left ) ) : 0; ?>"
                         label="left"
                     ></dm-dimensions-item>
                 </dm-dimensions>
