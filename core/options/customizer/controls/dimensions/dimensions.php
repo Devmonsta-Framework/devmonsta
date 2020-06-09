@@ -30,7 +30,7 @@ class Dimensions extends \WP_Customize_Control {
      */
     public function enqueue() {
         wp_enqueue_style('element-ui', 'https://unpkg.com/element-ui/lib/theme-chalk/index.css', [], null, '');
-        wp_enqueue_script( 'dimensions-components', DM_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_script( 'dm-dimensions-components', DM_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
         wp_enqueue_script( 'dm-dimentions-js',  DM_CORE . 'options/customizer/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
         
        

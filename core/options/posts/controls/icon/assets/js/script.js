@@ -16,8 +16,10 @@ jQuery(document).ready(function(){
                        <div class="dm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
                     </div>
                     <button class="dm-add-icon-btn button" @click.prevent="openModal">{{ iconBtnText }}</button>
-                    <input type="hidden" :name="name" v-model="savedIconClass">
-                    <input type="hidden" :name="name + '_type'" :value="iconType">
+                    <input v-if="!wp.customize" type="hidden" :name="name" v-model="savedIconClass">
+                    <input v-if="!wp.customize" type="hidden" :name="name + '_type'" :value="iconType">
+                    
+                    <input v-if="wp.customize" type="hidden" v-model="customizerdata" :data-customize-setting-link="name"  />
                 </div>
                 <transition name="fade">
                     <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @icon-type="changeIconType"></dm-icon-modal>
@@ -32,7 +34,17 @@ jQuery(document).ready(function(){
                 showModal: false,
                 save: false,
                 iconType: '',
-                tempiconType: ''
+                tempiconType: '',
+                customizerdata: ''
+            }
+        },
+        watch: {
+            customizerdata: function(val){
+                if(val && wp.customize){
+                    wp.customize( this.name, function ( obj ) {
+                        obj.set( val );
+                    } );
+                }
             }
         },
         computed: {
@@ -67,6 +79,7 @@ jQuery(document).ready(function(){
                 this.save = true;
                 this.savedIconClass = this.pickedIcon;
                 this.iconType = this.tempiconType;
+                this.customizerdata = JSON.stringify({iconType: this.iconType, icon: this.pickedIcon});
             },
             changeIconType: function (value) {
                 this.tempiconType = value;
