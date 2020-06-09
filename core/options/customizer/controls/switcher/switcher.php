@@ -3,10 +3,6 @@ namespace Devmonsta\Options\Customizer\Controls\Switcher;
 
 use Devmonsta\Options\Customizer\Structure;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
-
 class Switcher extends Structure {
 
     public $label, $name, $desc, $default_value, 

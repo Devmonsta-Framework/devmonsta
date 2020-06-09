@@ -1,13 +1,12 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Typography;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class Typography extends \WP_Customize_Control {
+class Typography extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, $components, $font_list;
+    public $label, $name, $desc, $default_value, $value, 
+            $components, $font_list, $default_attributes;
 
     /**
      * @access public
@@ -30,6 +29,9 @@ class Typography extends \WP_Customize_Control {
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ? $args[0]['value'] : [];
         $this->components    = isset( $args[0]['components'] ) && is_array( $args[0]['components'] ) ? $args[0]['components'] : [];
+    
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /**
@@ -57,7 +59,7 @@ class Typography extends \WP_Customize_Control {
     public function render_content() {
         
         ?>
-        <li class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
