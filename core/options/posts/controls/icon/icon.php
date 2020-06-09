@@ -112,6 +112,25 @@ class Icon extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $icon               = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $icon_type          = (  ( "" != get_term_meta( $term->term_id, $name . "_type", true ) ) && ( !is_null( get_term_meta( $term->term_id, $name . "_type", true ) ) ) ) ? get_term_meta( $term->term_id, $name . "_type", true ) : "";
+        $default_attributes = "";
+        $dynamic_classes    = "";
+
+        if ( is_array( $attrs ) && !empty( $attrs ) ) {
+
+            foreach ( $attrs as $key => $val ) {
+
+                if ( $key == "class" ) {
+                    $dynamic_classes .= $val . " ";
+                } else {
+                    $default_attributes .= $key . "='" . $val . "' ";
+                }
+
+            }
+
+        }
+
+        $class_attributes = "class='dm-option form-field $dynamic_classes'";
+        $default_attributes .= $class_attributes;
         $iconEncoded = json_encode( $iconList );
 
         //generate attributes dynamically for parent tag
@@ -137,7 +156,7 @@ class Icon extends Structure {
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
             </div>
-            <div class="dm-option-column right">
+            <div class="dm-option-column right dm-vue-app">
                 <dm-icon-picker
                     name='<?php echo esc_attr( $name ); ?>'
                     class="dm-ctrl"
