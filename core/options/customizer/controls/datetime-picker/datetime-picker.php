@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\DatetimePicker;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class DatetimePicker extends \WP_Customize_Control {
+class DatetimePicker extends Structure {
 
-    public $label, $name, $desc, $date_time_picker_config;
+    public $label, $name, $desc, $date_time_picker_config, $default_attributes;
 
     private $allowed_date_formats = [
         'Y-m-d',
@@ -48,6 +46,9 @@ class DatetimePicker extends \WP_Customize_Control {
         $this->name                    = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc                    = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
@@ -77,8 +78,7 @@ class DatetimePicker extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-
-        <li  class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>

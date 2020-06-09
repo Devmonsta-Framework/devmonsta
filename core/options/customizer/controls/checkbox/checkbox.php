@@ -1,12 +1,10 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Checkbox;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class Checkbox extends \WP_Customize_Control {
-    public $label, $name, $desc, $default_value, $value, $text;
+class Checkbox extends Structure {
+    public $label, $name, $desc, $default_value, $value, $text, $default_attributes;
 
     /**
      * @access public
@@ -30,6 +28,9 @@ class Checkbox extends \WP_Customize_Control {
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->text          = isset( $args[0]['text'] ) ? $args[0]['text'] : "";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
@@ -51,7 +52,7 @@ class Checkbox extends \WP_Customize_Control {
     public function render_content() {
         $is_checked = ( $this->value == 'true' ) ? 'checked' : '';
         ?>
-        <li class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>

@@ -1,12 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\ImagePicker;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
-class ImagePicker extends \WP_Customize_Control {
+use Devmonsta\Options\Customizer\Structure;
 
-    public $label, $name, $desc, $default_value, $value, $choices;
+class ImagePicker extends Structure {
+
+    public $label, $name, $desc, $default_value, $value, $choices, $default_attributes;
 
     /**
      * @access public
@@ -35,13 +34,15 @@ class ImagePicker extends \WP_Customize_Control {
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-
         // js
         wp_enqueue_script( 'dm-image-picker-js', plugins_url( 'image-picker/assets/js/image-picker.js', dirname( __FILE__ ) ), ['jquery'], time(), true );
         // css
@@ -58,7 +59,7 @@ class ImagePicker extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <li  class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>

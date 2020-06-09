@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\MultipleSelect;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class MultipleSelect extends \WP_Customize_Control {
+class MultipleSelect extends Structure {
 
-    public $label, $name, $desc, $value, $choices;
+    public $label, $name, $desc, $value, $choices, $default_attributes;
 
     /**
 	 * The type of customize control being rendered.
@@ -45,6 +43,9 @@ class MultipleSelect extends \WP_Customize_Control {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
@@ -71,7 +72,7 @@ class MultipleSelect extends \WP_Customize_Control {
      */
     public function render_content() {
         ?>
-            <li class="dm-option">
+            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>

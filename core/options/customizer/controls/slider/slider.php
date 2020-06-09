@@ -30,7 +30,7 @@ class Slider extends Structure {
         $this->properties    = isset( $args[0]['properties'] ) ? $args[0]['properties'] : [];
     
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "dm-slider-holder" );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script dm-slider-holder" );
     }
 
     /**
