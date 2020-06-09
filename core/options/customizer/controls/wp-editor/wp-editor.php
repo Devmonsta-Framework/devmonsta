@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\WpEditor;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class WpEditor extends \WP_Customize_Control {
+class WpEditor extends Structure {
 
-    public $label, $name, $desc, $value;
+    public $label, $name, $desc, $value, $default_attributes;
 
     /**
 	 * The type of customize control being rendered.
@@ -44,6 +42,9 @@ class WpEditor extends \WP_Customize_Control {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     function editor_customizer_script() {
@@ -72,7 +73,7 @@ class WpEditor extends \WP_Customize_Control {
      */
     public function render_content() {
         ?>
-            <li class="dm-option">
+            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>

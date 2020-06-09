@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Icon;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class Icon extends \WP_Customize_Control {
+class Icon extends Structure {
 
-    public $label, $name, $desc, $icon_type, $icon_name;
+    public $label, $name, $desc, $icon_type, $icon_name, $default_attributes;
 
     /**
      * @access public
@@ -28,6 +26,9 @@ class Icon extends \WP_Customize_Control {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "dm-vue-app" );
     }
 
 
@@ -56,7 +57,7 @@ class Icon extends \WP_Customize_Control {
         $this->icon_type = $icon_value[1];
         $savedData = json_decode($this->value());
         ?>
-        <li  class="dm-vue-app dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>

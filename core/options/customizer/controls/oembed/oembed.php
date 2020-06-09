@@ -1,13 +1,12 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Oembed;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class Oembed extends \WP_Customize_Control {
+class Oembed extends Structure {
 
-    public $label, $name, $desc, $value, $data_preview;
+    public $label, $name, $desc, $value, $data_preview, $default_attributes;
+
 
     /**
 	 * The type of customize control being rendered.
@@ -45,6 +44,9 @@ class Oembed extends \WP_Customize_Control {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->data_preview  = isset( $args[0]['preview'] ) && is_array( $args[0]['preview'] ) ? json_encode( $args[0]['preview'] ) : [];
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /**
@@ -73,7 +75,7 @@ class Oembed extends \WP_Customize_Control {
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
         $wrapper_attr['data-preview'] = $this->data_preview;
         ?>
-            <li class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>

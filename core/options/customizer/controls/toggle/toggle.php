@@ -1,11 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Toggle;
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
 
+use Devmonsta\Options\Customizer\Structure;
 
-class Toggle extends \WP_Customize_Control {
+class Toggle extends Structure {
+    
+    public  $default_attributes;
     /**
      * The type of control being rendered
      */

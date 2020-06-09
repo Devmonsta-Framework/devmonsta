@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\DatePicker;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class DatePicker extends \WP_Customize_Control {
+class DatePicker extends Structure {
 
-    public $label, $name, $desc, $monday_first, $min_date, $max_date;
+    public $label, $name, $desc, $monday_first, $min_date, $max_date, $default_attributes;
 
     /**
      * @access public
@@ -31,6 +29,9 @@ class DatePicker extends \WP_Customize_Control {
         $this->monday_first = isset( $args[0]['monday-first'] ) ? 1 : 0;
         $this->min_date     = isset( $args[0]['min-date'] ) ? date( "Y-m-d", strtotime( $args[0]['min-date'] ) ) : "today";
         $this->max_date     = isset( $args[0]['max-date'] ) ? date( "Y-m-d", strtotime( $args[0]['max-date'] ) ) : false;
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /**
@@ -64,8 +65,7 @@ class DatePicker extends \WP_Customize_Control {
                 z-index: 999999;
             }
         </style>
-
-        <li  class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
