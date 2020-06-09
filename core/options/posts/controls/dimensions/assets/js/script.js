@@ -1,4 +1,4 @@
-jQuery(window).on('dimention.dm', function(){
+jQuery(window).on('dimensions.dm', function(){
     Vue.component('dm-dimensions', {
         props: ["dimension", "linkedName", "name"],
         template: `
@@ -70,42 +70,11 @@ jQuery(window).on('dimention.dm', function(){
         created: function(){
             this.inputValue = this.value;
         }
-    })
-
-   
+    });
 })
 
 
 
-jQuery(window).on('load',function($){
-    jQuery(window).trigger('dimention.dm')
-
-    // $(".dm-dimension-attachment-input").on("click", function(e){
-    //     e.preventDefault();
-    //     var current_div = $(this);
-    //     //toggle class on clicking isLinked button
-    //     current_div.toggleClass('clicked');
-
-    //     //change value of hidden field to store clicked value
-    //     current_div.hasClass('clicked') ?  
-    //             current_div.siblings(".dm-dimension-linked-input").val('1'):
-    //             current_div.siblings(".dm-dimension-linked-input").val('0'); 
-
-    //     //change isLinked button background color on clicking
-    //     current_div.hasClass('clicked') ?  
-    //             current_div.css("background-color","gray"):
-    //             current_div.css("background-color","white"); 
-       
-    //     // update values of all inputs on clickng isLinked button
-    //     if(current_div.hasClass('clicked')){
-    //         let fixed_value = parseInt(current_div.siblings(".input-top").val());
-    //         current_div.siblings(".input-top").val(fixed_value);
-    //         current_div.siblings(".input-right").val(fixed_value);
-    //         current_div.siblings(".input-bottom").val(fixed_value);
-    //         current_div.siblings(".input-left").val(fixed_value);
-    //     }
-    // });
-    
-
-
+jQuery(document).on('ready',function($){
+    jQuery(window).trigger('dimensions.dm')
 });

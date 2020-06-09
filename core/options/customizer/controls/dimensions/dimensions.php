@@ -49,16 +49,16 @@ class Dimensions extends \WP_Customize_Control {
         $savedData = json_decode($this->value());
         ?>
         
-        <li class="dm-option dm-box">
-        <style>
-            .dm-option {
-                clear: both;
-            }
-        </style>
+        <li class="dm-option">
+            <style>
+                .dm-option {
+                    clear: both;
+                }
+            </style>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
-            <div class="dm-option-column right dm-vue-app">
+            <div class="dm-option-column right dm-vue-app active-script">
                 <dm-dimensions
                     dimension="<?php echo isset( $savedData->isLinked ) ? esc_attr( $savedData->isLinked ) : 'false'; ?>"  
                     linked-name="<?php echo esc_attr( $this->name ); ?>[isLinked]"
