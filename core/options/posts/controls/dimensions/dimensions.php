@@ -55,7 +55,7 @@ class Dimensions extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
                 
         //generate attributes dynamically for parent tag
-        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app active-script" );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );

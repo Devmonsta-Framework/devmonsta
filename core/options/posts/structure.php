@@ -88,7 +88,7 @@ abstract class Structure {
             $condition_data = json_encode($content['conditions'], true);
             $default_attributes .= " data-dm_conditions='$condition_data' ";
         }
-        $class_attributes = "class='$additional_classes dm-option form-field $condition_class $dynamic_classes'";
+        $class_attributes = "class='$additional_classes dm-option form-field active-script $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
         return $default_attributes;
     }
