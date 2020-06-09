@@ -97,11 +97,6 @@ class WpEditor extends \WP_Customize_Control {
                         do_action('admin_footer');
                         do_action('admin_print_footer_scripts');
                         ?>
-                        <script>
-                            window.onbeforeunload = function(){
-                                jQuery('.wp-editor-tabs button').last().trigger('click')
-                            }
-                        </script>
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
