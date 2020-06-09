@@ -53,33 +53,22 @@ class WpEditor extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
         $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
         $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $settings );
-}
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
+        //generate markup for control
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $settings );
+    }
+
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -109,40 +98,41 @@ class WpEditor extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
+        //load scripts required for this control
         $this->load_wpeditor_scripts();
+
         $label                     = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name                      = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc                      = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs                     = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value                     = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $default_attributes        = "";
-        $dynamic_classes           = "";
+        
         $settings                  = [];
         $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
         $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
         $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
         
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $settings );
     }
 
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $settings
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $settings ) {
         
         ob_start();
@@ -153,7 +143,7 @@ class WpEditor extends Structure {
             </div>
 
             <div class="dm-option-column right">
-        <?php
+                <?php
                 wp_editor( $value, $name, $settings );
                 $editor_html = ob_get_contents();
                 $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";

@@ -44,10 +44,8 @@ class ImagePicker extends Structure {
      * @internal
      */
     public function render() {
-
         $content = $this->content;
         global $post;
-
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
                         && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
@@ -65,30 +63,18 @@ class ImagePicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $choices            = is_array( $this->content['choices'] ) && isset( $this->content['choices'] ) ? $this->content['choices'] : [];
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option active-script form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $choices );
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -119,39 +105,38 @@ class ImagePicker extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
+        //loads all scripts required for taxonomy edit field
         $this->enqueue_image_picker_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] )  ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] )  ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] )  ? $this->content['attr'] : '';
         $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
-    
-}
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
+
+        //generate markup for control
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $choices );
+    }
+
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $choices
+     * @return void
+     */
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?>>
                 <div class="dm-option-column left">
@@ -193,9 +178,7 @@ class ImagePicker extends Structure {
                                             <?php
                                         }
                                     }
-
                                 }
-
                             ?>
                         </ul>
                     </div>

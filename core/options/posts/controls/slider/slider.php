@@ -64,40 +64,20 @@ class Slider extends Structure {
      * @internal
      */
     public function output() {
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $condition_class    = "";
-        $condition_data     = "";
-        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
-            $condition_class = "dm-condition-active";
-            $condition_data = json_encode($this->content['conditions'], true);
-            $default_attributes .= " data-dm_conditions='$condition_data' ";
-        }
-        $class_attributes = "class='dm-option active-script form-field $condition_class $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
     }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -126,44 +106,36 @@ class Slider extends Structure {
             }, 10, 3 );
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
 
+        //loads scripts for taxonomy edit field
         $this->enqueue_slider_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
         
-        $condition_class    = "";
-        $condition_data     = "";
-        if( isset( $this->content['conditions'] ) && is_array( $this->content['conditions'] ) ){
-            $condition_class = "dm-condition-active";
-            $condition_data = json_encode($this->content['conditions'], true);
-            $default_attributes .= " data-dm_conditions='$condition_data' ";
-        }
-        $class_attributes = "class='dm-option active-script form-field $condition_class $dynamic_classes'";
-        $default_attributes .= $class_attributes;
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
-}
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
+        //generate markup for control
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
+    }
+
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >

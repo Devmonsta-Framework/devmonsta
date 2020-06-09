@@ -43,10 +43,10 @@ class RgbaColorPicker extends Structure {
         global $post;
         $data            = [];
         $data['default'] = (  ( $this->current_screen == "post" )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-        : $this->content['value'];
+                            && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                        : $this->content['value'];
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-rgba-handle', 'rgba_color_picker_config', $data );
     }
@@ -59,10 +59,10 @@ class RgbaColorPicker extends Structure {
         global $post;
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
-            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
+                            && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
         $this->output();
     }
 
@@ -73,29 +73,17 @@ class RgbaColorPicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option active-script form-field $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
-}
+    }
 
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -125,6 +113,9 @@ class RgbaColorPicker extends Structure {
 
     }
 
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
         //enqueue scripts and styles for color picker
         $this->dm_enqueue_color_picker();
@@ -133,29 +124,24 @@ class RgbaColorPicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs              = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-        $default_attributes = "";
-        $dynamic_classes    = "";
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option active-script term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
     }
 
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >

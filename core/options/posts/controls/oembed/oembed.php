@@ -53,32 +53,20 @@ class Oembed extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
-
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
         $wrapper_attr['data-preview'] = json_encode( $this->content['preview'] );
+        
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        $default_attributes = "";
-        $dynamic_classes    = "";
-
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-        $class_attributes = "class='dm-option $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $wrapper_attr );
-}
+    }
 
+
+    /**
+     * @internal
+     */
     public function columns() {
         $visible = false;
         $content = $this->content;
@@ -108,39 +96,39 @@ class Oembed extends Structure {
 
     }
 
+
+    /**
+     * @internal
+     */
     public function edit_fields( $term, $taxonomy ) {
         $this->enqueue_oembed_scripts();
         $label                        = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name                         = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc                         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs                        = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value                        = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $default_attributes           = "";
-        $dynamic_classes              = "";
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
         $wrapper_attr['data-preview'] = json_encode( $this->content['preview'] );
+        
+                
+        //generate attributes dynamically for parent tag
+        $default_attributes = $this->prepare_default_attributes( $this->content );
 
-        if ( is_array( $attrs ) && !empty( $attrs ) ) {
-
-            foreach ( $attrs as $key => $val ) {
-
-                if ( $key == "class" ) {
-                    $dynamic_classes .= $val . " ";
-                } else {
-                    $default_attributes .= $key . "='" . $val . "' ";
-                }
-
-            }
-
-        }
-
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
-        $default_attributes .= $class_attributes;
+        //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $wrapper_attr );
     }
 
+    /**
+     * Renders markup with given attributes
+     *
+     * @param [type] $default_attributes
+     * @param [type] $label
+     * @param [type] $name
+     * @param [type] $value
+     * @param [type] $desc
+     * @param [type] $wrapper_attr
+     * @return void
+     */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $wrapper_attr ) {
-        
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
@@ -158,6 +146,11 @@ class Oembed extends Structure {
     <?php
     }
 
+    /**
+     * Fetch data from url and returns to ajax request
+     *
+     * @return void
+     */
     public static function _action_get_oembed_response() {
 
         if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
