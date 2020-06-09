@@ -58,6 +58,12 @@ class DatePicker extends \WP_Customize_Control {
     
     public function render_content() {
         ?>
+        <style>
+            /* csss file nai tai akhane add korsi.. reza vai moved kore felbe. I will informed */
+            .flatpickr-calendar.open {
+                z-index: 999999;
+            }
+        </style>
 
         <li  class="dm-option">
             <div class="dm-option-column left">
