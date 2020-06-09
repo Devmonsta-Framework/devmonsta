@@ -5,7 +5,8 @@ use Devmonsta\Options\Customizer\Structure;
 
 class DatetimePicker extends Structure {
 
-    public $label, $name, $desc, $date_time_picker_config, $default_attributes;
+    public $label, $name, $desc, $date_time_picker_config, 
+            $default_attributes, $default_value, $value;
 
     private $allowed_date_formats = [
         'Y-m-d',
@@ -45,6 +46,7 @@ class DatetimePicker extends Structure {
         $this->label                   = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name                    = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc                    = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->default_value           = isset( $args[0]['value'] ) ? date( "Y-m-d h:m a", strtotime( $args[0]['value'] ) ): "";
         $this->date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
         //generate attributes dynamically for parent tag
@@ -66,13 +68,14 @@ class DatetimePicker extends Structure {
         $time_format                          = isset( $this->date_time_picker_config['time-format'] ) && in_array( $this->date_time_picker_config['time-format'], $this->allowed_time_formats ) ? $this->date_time_picker_config['time-format'] : 'H:i';
         $date_time_picker_data['format']      = $date_format . " " . $time_format;
         $date_time_picker_data['minDate']     = isset( $this->date_time_picker_config['min-date'] ) ? date( $date_time_picker_data['format'], strtotime( $this->date_time_picker_config['min-date'] ) ) : "today";
-        $date_time_picker_data['maxDate']     = isset( $this->date_time_picker_config['max-date'] ) ? date( $date_time_picker_data['format'], strtotime( $this->date_time_picker_config['max-date'] ) ) : false;
+        $date_time_picker_data['maxDate']     = isset( $this->date_time_picker_config['max-date'] ) ? date( $date_time_picker_data['format'], strtotime( $this->date_time_picker_config['max-date'] ) ) : "";
         $date_time_picker_data['timepicker']  = ( $this->date_time_picker_config['timepicker'] ) ? 1 : 0;
         $date_time_picker_data['defaultTime'] = isset( $this->date_time_picker_config['default-time'] ) ? $this->date_time_picker_config['default-time'] : '12:00';
         wp_localize_script( 'dm-customizer-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
     }
 
     public function render() {
+        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         $this->render_content();
     }
 
@@ -84,12 +87,8 @@ class DatetimePicker extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input <?php $this->link();?>
-                    type="text"
-                    id="dm-datetime-picker"
-                    class="dm-option-input dm-option-input-datetime-picker"
-                    name="<?php echo esc_attr( $this->name ); ?>"
-                    value="<?php echo esc_attr( $this->value() ); ?>">
+                <input <?php $this->link();?> type="text" class="dm-option-input dm-option-input-datetime-picker"
+                    value="<?php echo esc_attr( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
