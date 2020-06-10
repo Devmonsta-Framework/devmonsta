@@ -47,8 +47,8 @@ class DatetimeRange extends Structure {
         $this->name                    = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc                    = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value           = ( isset( $args[0]['value']['from'] ) && isset( $args[0]['value']['to'] ) )
-                                            ? ( date( "Y-m-d h:m a", strtotime( $args[0]['value']['from'] ) ) . " - " . date( "Y-m-d h:m a", strtotime( $args[0]['value']['to'] ) ) )
-                                            : ( date( "Y-m-d h:m a" ) . " - " . date( "Y-m-d h:m a" ) );
+                                            ? ( date( "Y-m-d H:m", strtotime( $args[0]['value']['from'] ) ) . " - " . date( "Y-m-d H:m", strtotime( $args[0]['value']['to'] ) ) )
+                                            : ( date( "Y-m-d H:m" ) . " - " . date( "Y-m-d H:m" ) );
         $date_time_picker_config       = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
         $date_format                   = isset( $date_time_picker_config['date-format'] ) && in_array( $date_time_picker_config['date-format'], $this->allowed_date_formats ) ? $date_time_picker_config['date-format'] : 'Y-m-d';
@@ -69,7 +69,8 @@ class DatetimeRange extends Structure {
     public function enqueue() {
         wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr'], false,true );
+        wp_enqueue_script( 'dm-date-time-range-from-post', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js' );
+        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'dm-date-time-range-from-post'], false,true );
         wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $this->date_time_picker_default_data );
     }
 
@@ -88,7 +89,7 @@ class DatetimeRange extends Structure {
 
             <div class="dm-option-column right">
                 <input type="text" class="dm-option-input dm-ctrl dm-option-input-datetime-range"
-                    <?php $this->link(); ?> value="<?php echo esc_attr( $this->value ); ?>">
+                    <?php $this->link(); ?> value="<?php echo esc_attr( $this->default_value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>

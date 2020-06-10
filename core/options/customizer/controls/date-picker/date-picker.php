@@ -5,7 +5,8 @@ use Devmonsta\Options\Customizer\Structure;
 
 class DatePicker extends Structure {
 
-    public $label, $name, $desc, $monday_first, $min_date, $max_date, $default_attributes;
+    public $label, $name, $desc, $value, $monday_first, $min_date, $max_date, 
+            $default_value, $default_attributes;
 
     /**
      * @access public
@@ -26,6 +27,7 @@ class DatePicker extends Structure {
         $this->label        = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name         = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc         = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->default_value= isset( $args[0]['value'] )  ? date( "Y-m-d h:m a", strtotime( $args[0]['value'] ) )  :  date( "Y-m-d h:m a" ) ;
         $this->monday_first = isset( $args[0]['monday-first'] ) ? 1 : 0;
         $this->min_date     = isset( $args[0]['min-date'] ) ? date( "Y-m-d", strtotime( $args[0]['min-date'] ) ) : "today";
         $this->max_date     = isset( $args[0]['max-date'] ) ? date( "Y-m-d", strtotime( $args[0]['max-date'] ) ) : false;
@@ -53,6 +55,7 @@ class DatePicker extends Structure {
      * @internal
      */
     public function render() {
+        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         $this->render_content();
     }
 
@@ -71,9 +74,9 @@ class DatePicker extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input <?php $this->link();?> type="date" name="<?php echo esc_attr( $this->name ); ?>"
+                <input <?php $this->link();?> type="text" name="<?php echo esc_attr( $this->name ); ?>"
                         class="dm-option-input dm-ctrl dm-option-input-date-picker"
-                        value="<?php echo esc_attr( $this->value() ); ?>">
+                        value="<?php echo esc_attr( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>

@@ -19,3 +19,8 @@ jQuery(document).ready(function($) {
         el.flatpickr( defaultConfig );
     }
 });
+
+// jQuery(document).ready(function($) {
+//     jQuery(window).trigger('dm-scripts.dm');
+
+// });

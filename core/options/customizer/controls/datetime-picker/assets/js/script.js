@@ -15,7 +15,6 @@ jQuery(document).ready(function($) {
             defaultTime: date_time_picker_config.defaultTime,
             enableTime: time_picker,
         }
-        console.log( defaultConfig );
         el.flatpickr( defaultConfig );
     }
 });
