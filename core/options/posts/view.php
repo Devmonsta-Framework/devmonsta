@@ -111,6 +111,8 @@ class View
          */
         if (isset($control_data['controls'])) {
 
+            $repeater_controls = get_post_meta( get_the_ID(), 'devmonsta_repeater_content_' . $control_data['name'],true);
+
             // add_thickbox();
 ?>
             <div id="<?php echo $control_data['name'] ;?>" class="dm-option form-field ">
@@ -140,9 +142,13 @@ class View
                         </div>
                     </div>
 
-                    <div class="dm-repeater-control-list"></div>
+                    <div id="dm-repeater-control-list-<?php echo $control_data['name']; ?>" class="dm-repeater-control-list">
+                        <?php echo $repeater_controls; ?>
+                    </div>
 
-
+                    <input type="hidden" value='<?php echo $repeater_controls; ?>' 
+                    name="devmonsta_repeater_content_<?php echo $control_data['name'];?>" 
+                    id="dm_repeater_content_<?php echo $control_data['name'];?>">
 
                     <br><br><a href='' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
                 </div>
@@ -232,7 +238,7 @@ class View
 
                     <div class="dm-repeater-control-list"></div>
 
-
+                    
 
                     <br><br><a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add New</a>
                 </div>
