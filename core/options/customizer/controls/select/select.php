@@ -80,7 +80,7 @@ class Select extends Structure {
                 </div>
 
                 <div class="dm-option-column right">
-                    <select <?php $this->link(); ?> class="dm-ctrl dm_select" name="<?php echo esc_attr( $this->name ); ?>">
+                    <select <?php $this->link(); ?> class="dm-option-input dm-ctrl dm_select" name="<?php echo esc_attr( $this->name ); ?>">
                         <?php
                             if ( is_array( $this->choices ) && !empty( $this->choices ) ) {
                                 foreach ( $this->choices as $key => $val ) {
