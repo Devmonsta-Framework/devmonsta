@@ -62,7 +62,7 @@ class Text extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input type="text" <?php $this->link();?> value="<?php echo esc_textarea( $this->value() ); ?>">
+                <input type="text" <?php $this->link();?> value="<?php echo esc_textarea( $this->value() ); ?>" class="dm-ctrl">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>

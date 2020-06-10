@@ -85,7 +85,7 @@ class CheckboxMultiple extends Structure {
 
                             <li>
                                 <label>
-                                    <input class="customize-control-checkbox-multiple" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
+                                    <input class="dm-ctrl customize-control-checkbox-multiple" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
                                     <?php echo esc_html( $label ); ?>
                                 </label>
                             </li>

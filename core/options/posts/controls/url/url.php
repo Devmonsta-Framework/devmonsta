@@ -95,7 +95,7 @@ class Url extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $condition_data );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
     }
 
     /**

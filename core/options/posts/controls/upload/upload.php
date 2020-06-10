@@ -126,12 +126,11 @@ class Upload extends Structure {
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name       = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $attrs      = isset( $this->content['attr'] ) ? $this->content['attr'] : '';
         $value      = ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $image_size = 'full';
         $display    = 'none';
         $multiple   = false;
-        $image      = '"dm_upload_image_button button">Upload image';
+        $image      = ' button">Upload image';
 
         if ( isset( $this->content['multiple'] ) && $this->content['multiple'] ) {
             $multiple = true;

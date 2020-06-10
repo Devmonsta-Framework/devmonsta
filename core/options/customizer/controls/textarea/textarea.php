@@ -63,7 +63,7 @@ class Textarea extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <textarea class="large-text" cols="20" rows="5" <?php $this->link();?>>
+                <textarea class="large-text dm-ctrl" cols="20" rows="5" <?php $this->link();?>>
                     <?php echo esc_textarea( $this->value() ); ?>
                 </textarea>
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>

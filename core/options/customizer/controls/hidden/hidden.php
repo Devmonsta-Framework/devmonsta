@@ -59,7 +59,7 @@ class Hidden extends Structure {
         ?>
         <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column right">
-                <input type="hidden" <?php $this->link();?> value="<?php echo esc_html( $this->value() ); ?>">
+                <input type="hidden" <?php $this->link();?> value="<?php echo esc_html( $this->value() ); ?>" class="dm-ctrl">
               
             </div>
         </li>

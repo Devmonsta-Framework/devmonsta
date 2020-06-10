@@ -75,6 +75,7 @@ class Typography extends Structure {
         $font_list             = $this->dm_getGoogleFonts();
         $data['font_list']     = $font_list;
         $data['selected_data'] = $this->value;
+        // var_dump($data['selected_data']);
         wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
 
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
@@ -228,11 +229,11 @@ class Typography extends Structure {
                                     <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
                                             </li>
                                                 <li>
-                                                    <select name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
+                                                    <select data-selected_value='<?php echo esc_attr( $value["weight"] ) ;?>' name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
                                                     <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
                                                 </li>
                                                 <li>
-                                                    <select name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
+                                                    <select data-selected_value='<?php echo esc_attr( $value["style"] ) ;?>' name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
                                                     </select>
                                                     <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
                                                 </li>

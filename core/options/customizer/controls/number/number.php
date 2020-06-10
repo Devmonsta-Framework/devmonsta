@@ -66,7 +66,7 @@ class Number extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input <?php $this->link();?> type="number" class="dm-option-input" min="<?php echo esc_attr( $this->min ); ?>"
+                <input <?php $this->link();?> type="number" class="dm-option-input dm-ctrl" min="<?php echo esc_attr( $this->min ); ?>"
                     max="<?php echo esc_attr( $this->max ); ?>" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_url( $this->value ); ?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>

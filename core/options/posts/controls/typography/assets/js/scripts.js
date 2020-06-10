@@ -19,6 +19,8 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
     el.on("change", function (e) {
         var self = jQuery(this),
             parent = self.parents('.dm-option-typography'),
+            weight = parent.find('.google-weight-list'),
+            styleField = parent.find('.google-style-list'),
             selected_value = self.val();
         if (typo_config.font_list.length > 0) {
             jQuery.each(typo_config.font_list, function (key, item) {
@@ -26,14 +28,16 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
                     parent.find('.google-weight-list, .google-style-list').html('');
                     // weight
                     jQuery.each(item.variants, function (i, variant) {
-                        parent.find('.google-weight-list').append(
-                            '<option value=' + variant + ' >' + variant + '</option>'
+                        let selected = weight.data('selected_value') == variant ? 'selected="selected"' : ''
+                        weight.append(
+                            '<option '+ selected +' value=' + variant + ' >' + variant + '</option>'
                         );
                     });
                     // style
                     jQuery.each(item.subsets, function (i, style) {
-                        parent.find('.google-style-list').append(
-                            '<option value=' + style + ' >' + style + '</option>'
+                        let selected = styleField.attr('data-selected_value') == style ? 'selected="selected"' : ''
+                        styleField.append(
+                            '<option '+ selected +' value=' + style + ' >' + style + '</option>'
                         )
                     });
                     return false

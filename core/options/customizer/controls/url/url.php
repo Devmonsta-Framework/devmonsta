@@ -66,7 +66,7 @@ class Url extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input <?php $this->link();?> class="dm-option-input dm-input-url" type="url" class="dm-option-input"
+                <input <?php $this->link();?> class="dm-ctrl dm-option-input dm-input-url" type="url" class="dm-option-input"
                     name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_url( $this->value );?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>

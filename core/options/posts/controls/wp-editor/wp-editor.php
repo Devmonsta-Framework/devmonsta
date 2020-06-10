@@ -134,7 +134,6 @@ class WpEditor extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $settings ) {
-        
         ob_start();
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
@@ -144,12 +143,12 @@ class WpEditor extends Structure {
 
             <div class="dm-option-column right">
                 <?php
-                wp_editor( $value, $name, $settings );
-                $editor_html = ob_get_contents();
-                $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
-                ob_end_clean();
+                    wp_editor( $value, $name, $settings );
+                    $editor_html = ob_get_contents();
+                    $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+                    ob_end_clean();
 
-                echo dm_render_markup( $editor_html );
+                    echo dm_render_markup( $editor_html );
                 ?>
             </div>
         </div>
