@@ -6,41 +6,45 @@ jQuery(document).ready(function ($) {
     };
 
 
-    $(".dm-oembed-url-input").on("keyup",
-        _.debounce(function () {
+    $(".dm-oembed-url-input").on("change",
+         function () {
             console.log("oembed keyup detected");
             var wrapper = $(this);
 
             var url_input = $(this).val();
-            console.log(url_input);
+            console.log($(this).val());
 
             var iframeWrapper = wrapper.siblings(".dm-oembed-preview");
-            if (url_input && is_url(url_input)) {
-                console.log("is a valid input");
-                var data = {
-                    action: "get_oembed_response",
-                    _nonce: wrapper.data('nonce'),
-                    preview: wrapper.data('preview'),
-                    url: url_input
-                };
+             setTimeout(function(){
+                if (url_input && is_url(url_input)) {
+                    console.log("is a valid input");
+                    var data = {
+                        action: "get_oembed_response",
+                        _nonce: wrapper.data('nonce'),
+                        preview: wrapper.data('preview'),
+                        url: url_input
+                    };
+    
+                    $.ajax({
+                        type: "POST",
+                        url: ajaxurl,
+                        data: data,
+                        success: function (response) {
+                            iframeWrapper.html(response);
+                            console.log("response received" + response);
+                        },
+                    });
+                } else {
+                    iframeWrapper.html('');
+                }
+             }, 300);
+            
 
-                $.ajax({
-                    type: "POST",
-                    url: ajaxurl,
-                    data: data,
-                    success: function (response) {
-                        iframeWrapper.html(response);
-                        console.log("response received" + response);
-                    },
-                });
-            } else {
-                iframeWrapper.html('');
-            }
-
-        }, 300)
+        }
     );
 
     //initial trigger of oembed
-    $(".dm-oembed-url-input").trigger("keyup");
+    $(".dm-oembed-url-input").trigger("change");
+    console.log("triggered first time");
 
 });
