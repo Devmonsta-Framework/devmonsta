@@ -242,6 +242,7 @@ class Posts
                     $key,
                     $_POST[$key]
                 );
+                error_log($key);
             }
 
             if (strpos($key, 'repeater_control_') !== false) {

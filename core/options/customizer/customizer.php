@@ -240,6 +240,11 @@ class Customizer {
 
         if ( in_array( $type, $this->default_controls ) ) {
 
+            /**
+             * Add Defaults controls to the customizer.
+             * Defaults controls list defined on @default_controls
+             */
+
             add_action( 'customize_register', function ( $wp_customize ) use ( $control ) {
                 $args             = $control;
                 $id               = $args['id'];
@@ -268,6 +273,10 @@ class Customizer {
             } );
 
         } else {
+
+            /**
+             * Build custom controls
+             */
 
             $this->build_custom_control( $type, $control );
 
@@ -300,6 +309,7 @@ class Customizer {
             foreach ( $fields as $field ) {
 
                 if ( in_array( $field['type'], $this->default_controls ) ) {
+
                     array_push( $field_controls, [
                         'key'     => $field['id'],
                         'control' => 'WP_Customize_Control',
@@ -319,6 +329,8 @@ class Customizer {
                         $class_name    = implode( '', $class_name );
                         $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
+                        // Register control type 
+                        
                         $wp_customize->register_control_type( $control_class );
 
                         if ( class_exists( $control_class ) ) {

@@ -30,6 +30,10 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         var id = $(this).data('id');
 
+        var repeaterContent      = $('#dm-repeater-control-list-' + id),
+            repeaterContentField = $('#dm_repeater_content_' + id);
+    
+
         var repeaterControl = $(this).closest('.dm-repeater-column').children('.dm-repeater-sample'),
             clonedElement = repeaterControl.clone().removeClass('dm-repeater-sample'),
             repeatCount = $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').children().length + 1;
@@ -47,9 +51,13 @@ jQuery(document).ready(function ($) {
         if(!isRemoved){
             clonedElement.children('.dm-repeater-inner-controls').children('.dm-repeater-inner-controls-inner').children('.dm-option:not(.dm-repeater-child)').addClass('active-script');
             $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').append(clonedElement);
+            // console.log(repeaterContent.html());
+            repeaterContentField.val(repeaterContent.html());
         } else {
+            
             repeatCount = repeatCount - 1;
             controlConfig.repeaterControl = $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').children();
+            repeaterContentField.val(repeaterContent.html());
         }
 
 
