@@ -137,7 +137,7 @@ class DatePicker extends Structure {
                 </div>
 
                 <div class="dm-option-column right">
-                    <input type="date" name="<?php echo esc_attr( $name ); ?>"
+                    <input type="text" name="<?php echo esc_attr( $name ); ?>"
                         class="dm-option-input dm-ctrl dm-option-input-date-picker"
                         value="<?php echo esc_attr( $value ); ?>">
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

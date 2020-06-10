@@ -2,7 +2,7 @@ jQuery(window).on('dm-scripts.dm', function(){
     var el = jQuery('.dm-option.active-script .dm-option-input-datetime-range');
     
     
-    if (el.length) {
+    if (el.length && !el.hasClass('flatpickr-input')) {
 
         var time_picker = (date_time_range_config.timepicker == "") ? false : true;
         var date_picker = (date_time_range_config.datepicker == "") ? false : true;
