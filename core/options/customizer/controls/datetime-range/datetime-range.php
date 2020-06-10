@@ -47,8 +47,8 @@ class DatetimeRange extends Structure {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = ( isset( $args[0]['value']['from'] ) && isset( $args[0]['value']['to'] ) )
-                                ? ( date( "Y-m-d H:m", strtotime( $args[0]['value']['from'] ) ) . " to " . date( "Y-m-d H:m", strtotime( $args[0]['value']['to'] ) ) )
-                                : ( date( "Y-m-d H:m" ) . " to " . date( "Y-m-d H:m" ) );
+                                ? ( date( "Y-m-d H:i", strtotime( $args[0]['value']['from'] ) ) . " to " . date( "Y-m-d H:i", strtotime( $args[0]['value']['to'] ) ) )
+                                : "";
         $date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
         $date_format                                        = isset( $date_time_picker_config['date-format'] ) && in_array( $date_time_picker_config['date-format'], $this->allowed_date_formats ) ? $date_time_picker_config['date-format'] : 'Y-m-d';
@@ -57,7 +57,7 @@ class DatetimeRange extends Structure {
         $this->date_time_range_default_data['minDate']     = isset( $date_time_picker_config['min-date'] ) ? date( $this->date_time_range_default_data['format'], strtotime( $date_time_picker_config['min-date'] ) ) : "today";
         $this->date_time_range_default_data['maxDate']     = isset( $date_time_picker_config['max-date'] ) ? date( $this->date_time_range_default_data['format'], strtotime( $date_time_picker_config['max-date'] ) ) : false;
         $this->date_time_range_default_data['timepicker']  = ( $date_time_picker_config['timepicker'] ) ? 1 : 0;
-        $this->date_time_range_default_data['defaultTime'] = isset( $date_time_picker_config['default-time'] ) ? $date_time_picker_config['default-time'] : '12:00';
+        $this->date_time_range_default_data['defaultTime'] =  isset( $date_time_picker_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_picker_config['defaultTime']) ? $date_time_picker_config['defaultTime'] : '12:00';
 
         //generate attributes dynamically for parent tag
         $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );

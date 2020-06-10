@@ -46,7 +46,7 @@ class DatetimePicker extends Structure {
         $this->label                   = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name                    = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc                    = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->default_value           = isset( $args[0]['value'] ) ? date( "Y-m-d h:m a", strtotime( $args[0]['value'] ) ): "";
+        $this->default_value           = isset( $args[0]['value'] ) ? date( "Y-m-d H:i", strtotime( $args[0]['value'] ) ): "";
         $this->date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
         //generate attributes dynamically for parent tag
@@ -71,7 +71,7 @@ class DatetimePicker extends Structure {
         $date_time_picker_data['minDate']     = isset( $this->date_time_picker_config['min-date'] ) ? date( $date_time_picker_data['format'], strtotime( $this->date_time_picker_config['min-date'] ) ) : "today";
         $date_time_picker_data['maxDate']     = isset( $this->date_time_picker_config['max-date'] ) ? date( $date_time_picker_data['format'], strtotime( $this->date_time_picker_config['max-date'] ) ) : "";
         $date_time_picker_data['timepicker']  = ( $this->date_time_picker_config['timepicker'] ) ? 1 : 0;
-        $date_time_picker_data['defaultTime'] = isset( $this->date_time_picker_config['default-time'] ) ? $this->date_time_picker_config['default-time'] : '12:00';
+        $date_time_picker_data['defaultTime'] = isset( $this->date_time_picker_config['default-time'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $this->date_time_picker_config['default-time'])? $this->date_time_picker_config['default-time'] : '12:00';
         wp_localize_script( 'dm-customizer-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
     }
 

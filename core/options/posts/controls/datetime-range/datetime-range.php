@@ -54,14 +54,14 @@ class DatetimeRange extends Structure {
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
         wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'], time() );
 
-        $date_time_range_config               = $this->content['datetime-pickers'];
+        $date_time_range_config               = $this->content['datetime-picker'];
         $date_format                           = isset( $date_time_range_config['date-format'] ) && in_array($date_time_range_config['date-format'], $this->allowed_date_formats) ? $date_time_range_config['date-format'] : 'Y-m-d';
         $time_format                           = isset( $date_time_range_config['time-format'] ) && in_array($date_time_range_config['time-format'], $this->allowed_time_formats) ? $date_time_range_config['time-format'] : 'H:i';
         $date_time_range_data['format']       = $date_format . " " . $time_format;
         $date_time_range_data['minDate']      = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
         $date_time_range_data['maxDate']      = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
         $date_time_range_data['timepicker']   = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
-        $date_time_range_data['defaultTime'] = isset( $date_time_range_config['defaultTime'] ) ? $date_time_range_config['defaultTime'] : '12:00';
+        $date_time_range_data['defaultTime'] = isset( $date_time_range_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_range_config['defaultTime']) ? $date_time_range_config['defaultTime'] : '12:00';
 
         wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $date_time_range_config );
 
@@ -74,9 +74,8 @@ class DatetimeRange extends Structure {
         $content       = $this->content;
         $default_value = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
                         ? ( date( "Y-m-d H:i", strtotime( $content['value']['from'] ) ) . " to " . date( "Y-m-d H:i", strtotime( $content['value']['to'] ) ) )
-                        : ( date( "Y-m-d H:i" ) . " to " . date( "Y-m-d H:i" ) );
+                        : "";
         global $post;
-
         $this->value = (  ( $this->current_screen == "post" )
                         && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                         && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )

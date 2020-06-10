@@ -27,7 +27,7 @@ class DatePicker extends Structure {
         $this->label        = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name         = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc         = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->default_value= isset( $args[0]['value'] )  ? date( "Y-m-d h:m a", strtotime( $args[0]['value'] ) )  :  date( "Y-m-d h:m a" ) ;
+        $this->default_value= isset( $args[0]['value'] )  ? date( "Y-m-d", strtotime( $args[0]['value'] ) )  :  "" ;
         $this->monday_first = isset( $args[0]['monday-first'] ) ? 1 : 0;
         $this->min_date     = isset( $args[0]['min-date'] ) ? date( "Y-m-d", strtotime( $args[0]['min-date'] ) ) : "today";
         $this->max_date     = isset( $args[0]['max-date'] ) ? date( "Y-m-d", strtotime( $args[0]['max-date'] ) ) : false;

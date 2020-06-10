@@ -3,6 +3,7 @@
 namespace Devmonsta\Options\Posts\Controls\DatePicker;
 
 use Devmonsta\Options\Posts\Structure;
+use Exception;
 
 class DatePicker extends Structure {
 
@@ -44,10 +45,9 @@ class DatePicker extends Structure {
      */
     public function render() {
         $content = $this->content;
-        global $post;
-
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
-
+        $default_value = isset( $content['value'] ) ? date('Y-m-d', strtotime($content['value'])) : "";
+        
+        global $post; 
         $this->value = (  ( $this->current_screen == "post" )
                             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
