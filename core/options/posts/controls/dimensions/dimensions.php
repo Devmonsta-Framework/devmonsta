@@ -36,7 +36,7 @@ class Dimensions extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : [];
+        $default_value = isset( $content['value'] ) && is_array( $content['value'] ) ? $content['value'] : [];
         $this->value   = (  ( $this->current_screen == "post" )
                         && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                         && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
@@ -133,6 +133,7 @@ class Dimensions extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        // var_dump($value['right']);
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
@@ -141,34 +142,34 @@ class Dimensions extends Structure {
 
             <div class="dm-option-column right">
                 <dm-dimensions
-                    :dimension="<?php echo isset( $value["isLinked"] ) ? esc_attr( $value["isLinked"] ) : 'false'; ?>" 
+                    :dimension="<?php echo isset( $value['isLinked'] ) ? esc_attr( $value['isLinked'] ) : 'false'; ?>" 
                     linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
                 >
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value["top"] ) ? esc_html( intval( $value["top"] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['top'] ) ? esc_attr( intval( $value['top'] ) ) : 0; ?>"
                         label="top"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[right]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value["right"] ) ? esc_html( intval( $value["right"] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['right'] ) ? esc_attr( intval( $value['right'] ) ) : 0; ?>"
                         label="right"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[bottom]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value["bottom"] ) ? esc_html( intval( $value["bottom"] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['bottom'] ) ? esc_attr( intval( $value['bottom'] ) ) : 0; ?>"
                         label="bottom"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[left]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value["left"] ) ? esc_html( intval( $value["left"] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['left'] ) ? esc_attr( intval( $value['left'] ) ) : 0; ?>"
                         label="left"
                     ></dm-dimensions-item>
                 </dm-dimensions>
