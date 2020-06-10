@@ -9,7 +9,7 @@ jQuery(window).on('dm-vue.dm', function(e, val){
         });
     });
 });
-jQuery(document).ready(function(){
+jQuery(window).on('load',function(){
     jQuery(window).trigger('dm-vue.dm');
 });
 

@@ -1,14 +1,12 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\RangeSlider;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class RangeSlider extends \WP_Customize_Control {
+class RangeSlider extends Structure {
     
     
-    public $label, $name, $desc, $default_value, $properties, $value;
+    public $label, $name, $desc, $default_value, $properties, $value, $default_attributes;
 
     /**
      * @access public
@@ -34,6 +32,9 @@ class RangeSlider extends \WP_Customize_Control {
         $from_val = isset( $args[0]['value']['from'] ) ? $args[0]['value']['from'] : "10";
         $to_val   = isset( $args[0]['value']['to'] ) ? $args[0]['value']['to'] : "20";
         $this->default_value = $from_val . "," . $to_val;
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
 
@@ -66,7 +67,7 @@ class RangeSlider extends \WP_Customize_Control {
 
     public function render_content() {
         ?>
-        <li  class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>

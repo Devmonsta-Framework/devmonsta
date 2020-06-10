@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\CheckboxMultiple;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class CheckboxMultiple extends \WP_Customize_Control {
+class CheckboxMultiple extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, $choices, $isInline;
+    public $label, $name, $desc, $default_value, $value, $choices, $isInline, $default_attributes;
 
     /**
 	 * The type of customize control being rendered.
@@ -48,6 +46,9 @@ class CheckboxMultiple extends \WP_Customize_Control {
         $this->isInline      = ( $args[0]['inline'] ) ? "inline" : "list";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : [];
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
@@ -70,7 +71,7 @@ class CheckboxMultiple extends \WP_Customize_Control {
      */
     public function render_content() {
         ?>
-            <li  class="dm-option">
+            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>

@@ -55,7 +55,7 @@ class Dimensions extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
                 
         //generate attributes dynamically for parent tag
-        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app active-script" );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
@@ -141,7 +141,8 @@ class Dimensions extends Structure {
 
             <div class="dm-option-column right">
                 <dm-dimensions
-                    :dimension="<?php echo isset( $value["isLinked"] ) ? esc_attr( $value["isLinked"] ) : 'false'; ?>" linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
+                    :dimension="<?php echo isset( $value["isLinked"] ) ? esc_attr( $value["isLinked"] ) : 'false'; ?>" 
+                    linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
                 >
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"

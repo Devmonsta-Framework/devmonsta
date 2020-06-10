@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Url;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class Url extends \WP_Customize_Control {
+class Url extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, $text;
+    public $label, $name, $desc, $default_value, $value, $text, $default_attributes;
 
     /**
      * @access public
@@ -37,6 +35,8 @@ class Url extends \WP_Customize_Control {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
@@ -59,14 +59,14 @@ class Url extends \WP_Customize_Control {
     
     public function render_content() {
         ?>
-        <li class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 
             </div>
 
             <div class="dm-option-column right">
-                <input <?php $this->link();?> class="dm-input-url" type="url" class="dm-option-input"
+                <input <?php $this->link();?> class="dm-option-input dm-input-url" type="url" class="dm-option-input"
                     name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_url( $this->value );?>" >
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>

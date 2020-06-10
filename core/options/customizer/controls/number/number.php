@@ -1,13 +1,11 @@
 <?php
 namespace Devmonsta\Options\Customizer\Controls\Number;
 
-if ( !class_exists( 'WP_Customize_Control' ) ) {
-    return NULL;
-}
+use Devmonsta\Options\Customizer\Structure;
 
-class Number extends \WP_Customize_Control {
+class Number extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, $min, $max;
+    public $label, $name, $desc, $default_value, $value, $min, $max, $default_attributes;
 
     /**
      * @access public
@@ -31,14 +29,16 @@ class Number extends \WP_Customize_Control {
      * @return void
      */
     private function prepare_values( $id, $args = [] ) {
-        // var_dump("asjdgasdkjashdasjkdhkasd");
-        // var_dump($args[0]);
+        
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) && is_numeric( $args[0]['value'] ) ? intval( $args[0]['value'] ) : 0;
         $this->min           = isset( $args[0]['min'] ) && is_numeric( $args[0]['min'] ) ? intval( $args[0]['min'] ) : 0;
         $this->max           = isset( $args[0]['max'] ) && is_numeric( $args[0]['max'] ) ? intval( $args[0]['max'] ) : 0;
+
+        //generate attributes dynamically for parent tag
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
@@ -58,9 +58,8 @@ class Number extends \WP_Customize_Control {
     }
 
     public function render_content() {
-        // var_dump($this->min);
         ?>
-        <li  class="dm-option">
+        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
 

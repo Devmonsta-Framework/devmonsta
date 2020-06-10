@@ -1,5 +1,6 @@
-// .dm-box,
-// .dm-taxonomy-wrapper{
+.dm-box,
+.dm-taxonomy-wrapper,
+.wp-customizer{
     .dm-option{
         display: flex;
         flex-wrap: wrap;
@@ -26,6 +27,7 @@
             font-style: normal;
             padding: 0;
             margin-bottom: 5px;
+            display: inline-block
         }
         &-input {
             box-shadow: 0 0 0 transparent;
@@ -123,6 +125,9 @@
                     padding-left: 0;
                 }
             }
+        }
+        .true_pre_image {
+            max-width: 120px !important;
         }
         .dm-dimension-attachment-input{
             cursor: pointer;
@@ -301,12 +306,14 @@
           }
         // end image picker
     }
-// }
-.dm-taxonomy-wrapper{
+}
+.dm-taxonomy-wrapper,
+.wp-customizer{
     .dm-option{
         display: block;
         border: none;
         padding: 0;
+        margin: 15px 0;
         &-column{
             &.left {
             }
@@ -321,10 +328,36 @@
             max-width: 100%;
         }
         .delimiter {
-            top: 17px;
+            top: 6px;
         }
         &-typography li {
             flex: 0 0 23%;
+        }
+    }
+}
+
+// customizer
+.wp-customizer{
+    .dm-option{
+        &-column{
+            &.right{
+                max-width: 100%;
+            }
+        }
+        &-dimensions  li {
+            flex: 0 0 50px;
+        }
+        &-typography li {
+            flex: 0 0 50%;
+            &:nth-child(2n+1) {
+                padding-left: 0;
+            }
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 4px;
         }
     }
 }

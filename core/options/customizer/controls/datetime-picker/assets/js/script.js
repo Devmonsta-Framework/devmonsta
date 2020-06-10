@@ -1,40 +1,21 @@
-// jQuery(window).on("load", function ($) {
-
-//     if (jQuery(".dm-option-input-datetime-picker").length) {
-
-//         var time_picker = (date_time_picker_config.timepicker == 0) ? false : true;
-
-//         jQuery(".dm-option-input-datetime-picker").flatpickr({
-//             dateFormat: date_time_picker_config.format,
-//             minDate: date_time_picker_config.minDate,
-//             maxDate: date_time_picker_config.maxDate,
-//             defaultTime: date_time_picker_config.defaultTime,
-//             enableTime: time_picker,
-//         });
-//     }
-// });
-
-// jQuery(window).on('dm-scripts.dm', function(){
-    
-
-// });
-
 
 jQuery(document).ready(function($) {
     var el = $('.dm-option-input-datetime-picker');
-    console.log("hello from the other side");
     
     //Initialize the datepicker and set the first day of the week as Monday
     if (el.length) {
 
         var time_picker = (date_time_picker_config.timepicker == 0) ? false : true;
-
-        el.flatpickr({
+        var min_date = (date_time_picker_config.minDate == "") ? false : date_time_picker_config.minDate;
+        var max_date = (date_time_picker_config.maxDate == "") ? false : date_time_picker_config.maxDate;
+        var defaultConfig = {
             dateFormat: date_time_picker_config.format,
-            minDate: date_time_picker_config.minDate,
-            maxDate: date_time_picker_config.maxDate,
+            minDate: min_date,
+            maxDate: max_date,
             defaultTime: date_time_picker_config.defaultTime,
             enableTime: time_picker,
-        });
+        }
+        console.log( defaultConfig );
+        el.flatpickr( defaultConfig );
     }
 });
