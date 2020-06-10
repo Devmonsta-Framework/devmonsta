@@ -33,7 +33,6 @@ class Dimensions extends Structure {
         wp_enqueue_style('element-ui', 'https://unpkg.com/element-ui/lib/theme-chalk/index.css', [], null, '');
         wp_enqueue_script( 'dm-dimensions-components', DM_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
         wp_enqueue_script( 'dm-dimentions-js',  DM_CORE . 'options/customizer/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
-        wp_enqueue_style( 'dm-dimensions-css', DM_CORE . 'options/customizer/controls/dimensions/assets/css/style.css', [], time(), true ); 
     }
 
 

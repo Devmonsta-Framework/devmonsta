@@ -807,3 +807,7 @@
        line-height: 21px;
        text-decoration: none;
    }
+
+   .flatpickr-calendar.open {
+        z-index: 999999;
+    }

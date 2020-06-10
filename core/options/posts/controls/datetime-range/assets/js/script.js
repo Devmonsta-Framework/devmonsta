@@ -1,28 +1,20 @@
 jQuery(window).on('dm-scripts.dm', function(){
     var el = jQuery('.dm-option.active-script .dm-option-input-datetime-range');
     
-    
+    // console.log(date_time_range_config);
     if (el.length && !el.hasClass('flatpickr-input')) {
 
-        var time_picker = (date_time_range_config.timepicker == "") ? false : true;
-        var date_picker = (date_time_range_config.datepicker == "") ? false : true;
-        var time_picker_24hour = (date_time_range_config.time24hours == "") ? false : true;
-        var min_date = (date_time_range_config.min_date == "") ? false :date_time_range_config.min_date;
-        var max_date = (date_time_range_config.max_date == "") ? false :date_time_range_config.max_date;
-
-
+        var time_picker = (date_time_range_config.timepicker == 0) ? false : true;
+        var min_date = (date_time_range_config.minDate == "") ? false : date_time_range_config.minDate;
+        var max_date = (date_time_range_config.maxDate == "") ? false : date_time_range_config.maxDate;
         el.flatpickr({
             mode: "range",
-            dateFormat: date_time_picker_config.format,
+            dateFormat: date_time_range_config.format,
             minDate: min_date,
             maxDate: max_date,
-            defaultTime: date_time_picker_config.default_time,
-            enableTime: true,
-            time_24hr: time_picker_24hour
+            defaultTime: date_time_range_config.default_time,
+            enableTime: time_picker,
         });
-
-
-
     }
 
 });

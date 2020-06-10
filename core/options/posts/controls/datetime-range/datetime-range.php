@@ -8,6 +8,25 @@ class DatetimeRange extends Structure {
 
     protected $current_screen;
 
+    private $allowed_date_formats = [
+        'Y-m-d',
+        'n/j/Y',
+        'm/d/Y',
+        'j/n/Y',
+        'd/m/Y',
+        'n-j-Y',
+        'm-d-Y',
+        'j-n-Y',
+        'd-m-Y',
+        'Y.m.d',
+        'm.d.Y',
+        'd.m.Y',
+    ];
+    private $allowed_time_formats = [
+        'H:i',
+        'h:i'
+    ];
+
     /**
      * @internal
      */
@@ -35,14 +54,16 @@ class DatetimeRange extends Structure {
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
         wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'], time() );
 
-        $date_time_range_config = $this->content['datetime-pickers'];
-        $data['min_date']       = isset( $date_time_range_config['minDate'] ) ? date( "YYYY-MM-DD", strtotime( $date_time_range_config['minDate'] ) ) : date( "YYYY-MM-DD" );
-        $data['max_date']       = isset( $date_time_range_config['maxDate'] ) ? date( "YYYY-MM-DD", strtotime( $date_time_range_config['maxDate'] ) ) : "";
-        $data['format']         = isset( $date_time_range_config['format'] ) ? $date_time_range_config['format'] : 'YYYY-MM-DD hh:mm a';
-        $data['datepicker']     = ( $date_time_range_config['datepicker'] ) ? "true" : "";
-        $data['timepicker']     = ( $date_time_range_config['timepicker'] ) ? "true" : "";
-        $data['time24hours']    = ( $date_time_range_config['time24hours'] ) ? "true" : "";
-        wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $data );
+        $date_time_range_config               = $this->content['datetime-pickers'];
+        $date_format                           = isset( $date_time_range_config['date-format'] ) && in_array($date_time_range_config['date-format'], $this->allowed_date_formats) ? $date_time_range_config['date-format'] : 'Y-m-d';
+        $time_format                           = isset( $date_time_range_config['time-format'] ) && in_array($date_time_range_config['time-format'], $this->allowed_time_formats) ? $date_time_range_config['time-format'] : 'H:i';
+        $date_time_range_data['format']       = $date_format . " " . $time_format;
+        $date_time_range_data['minDate']      = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
+        $date_time_range_data['maxDate']      = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
+        $date_time_range_data['timepicker']   = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
+        $date_time_range_data['defaultTime'] = isset( $date_time_range_config['defaultTime'] ) ? $date_time_range_config['defaultTime'] : '12:00';
+
+        wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $date_time_range_config );
 
     }
 
@@ -52,8 +73,8 @@ class DatetimeRange extends Structure {
     public function render() {
         $content       = $this->content;
         $default_value = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
-                        ? ( date( "Y-m-d h:m a", strtotime( $content['value']['from'] ) ) . " - " . date( "Y-m-d h:m a", strtotime( $content['value']['to'] ) ) )
-                        : ( date( "Y-m-d h:m a" ) . " - " . date( "Y-m-d h:m a" ) );
+                        ? ( date( "Y-m-d H:i", strtotime( $content['value']['from'] ) ) . " to " . date( "Y-m-d H:i", strtotime( $content['value']['to'] ) ) )
+                        : ( date( "Y-m-d H:i" ) . " to " . date( "Y-m-d H:i" ) );
         global $post;
 
         $this->value = (  ( $this->current_screen == "post" )

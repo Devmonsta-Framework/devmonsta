@@ -33,7 +33,7 @@ class DatePicker extends Structure {
         $this->max_date     = isset( $args[0]['max-date'] ) ? date( "Y-m-d", strtotime( $args[0]['max-date'] ) ) : false;
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
     }
 
     /**
@@ -42,7 +42,8 @@ class DatePicker extends Structure {
     public function enqueue() {
         wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-customizer-date-picker', DM_CORE . 'options/customizer/controls/date-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'dm-date-picker-from-post', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'dm-customizer-date-picker', DM_CORE . 'options/customizer/controls/date-picker/assets/js/script.js', ['jquery', 'flatpickr', 'dm-date-picker-from-post'], time(), true );
 
         $data                = [];
         $data['mondayFirst'] = $this->monday_first ? 1 : 0;
@@ -62,12 +63,6 @@ class DatePicker extends Structure {
     
     public function render_content() {
         ?>
-        <style>
-            /* csss file nai tai akhane add korsi.. reza vai moved kore felbe. I will informed */
-            .flatpickr-calendar.open {
-                z-index: 999999;
-            }
-        </style>
         <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>

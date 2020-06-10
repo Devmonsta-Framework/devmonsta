@@ -41,7 +41,9 @@ class Typography extends Structure {
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
-        wp_enqueue_script( 'dm-customizer-typo-script-handle', DM_CORE . 'options/customizer/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_style( 'select2-css', DM_CORE . 'options/customizer/controls/multiple-select/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DM_CORE . 'options/customizer/controls/multiple-select/assets/js/select2.min.js' );
+        wp_enqueue_script( 'dm-customizer-typo-script-handle', DM_CORE . 'options/customizer/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
         $this->value            = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
         $this->font_list        = $this->dm_getGoogleFonts();
         $data['font_list']      = $this->font_list;

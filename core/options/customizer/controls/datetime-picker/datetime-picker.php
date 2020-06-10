@@ -50,7 +50,7 @@ class DatetimePicker extends Structure {
         $this->date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
     }
 
     /*
@@ -61,7 +61,8 @@ class DatetimePicker extends Structure {
         if ( !wp_script_is( 'flatpickr', 'enqueued' ) ) {
             wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'], false, true );
         }
-        wp_enqueue_script( 'dm-customizer-date-time-picker', DM_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr'], false, true );
+        wp_enqueue_script( 'dm-date-time-picker-from-post', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'dm-customizer-date-time-picker', DM_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr', 'dm-date-time-picker-from-post'], false, true );
         
         $date_time_picker_data                = [];
         $date_format                          = isset( $this->date_time_picker_config['date-format'] ) && in_array( $this->date_time_picker_config['date-format'], $this->allowed_date_formats ) ? $this->date_time_picker_config['date-format'] : 'Y-m-d';
