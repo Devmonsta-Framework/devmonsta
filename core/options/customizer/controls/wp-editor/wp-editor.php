@@ -93,7 +93,7 @@ class WpEditor extends Structure {
                             'textarea_rows' => 5,
                         );
                         $this->filter_editor_setting_link();
-                        wp_editor($this->value(), $this->id, $settings );
+                        wp_editor($content, $this->id, $settings );
                         
                         do_action('admin_footer');
                         do_action('admin_print_footer_scripts');

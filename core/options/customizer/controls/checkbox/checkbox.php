@@ -61,7 +61,7 @@ class Checkbox extends Structure {
                 <input <?php $this->link();?> type="text" value="false" name="<?php echo esc_attr( $this->name ); ?>" style="display: none">
 
                 <label class="dm-option-label-list">
-                    <input <?php $this->link();?> type="checkbox" name="<?php echo esc_attr( $this->name ); ?>" value="true" <?php echo esc_attr( $is_checked ); ?>>
+                    <input <?php $this->link();?> type="checkbox" name="<?php echo esc_attr( $this->name ); ?>" value="true" <?php echo esc_attr( $is_checked ); ?> class="dm-ctrl ">
                     <?php echo esc_html( $this->text ); ?>
                 </label>
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
