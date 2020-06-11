@@ -67,7 +67,7 @@ class Gradient extends Structure {
 
         if ( is_array( $this->default_value ) && !empty( $this->default_value ) ) {
             foreach ( $this->default_value as $default_key => $default_value ) {
-                $default_value_array[$default_key] = $default_value;
+                $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
             }
         }
 

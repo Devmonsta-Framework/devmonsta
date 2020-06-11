@@ -46,7 +46,7 @@ class ColorPicker extends Structure {
         $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
                                 && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
                                 ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                                : ( isset( $content['value'] ) ? $content['value'] : "" );
+                                : ( isset( $content['value'] ) && ( preg_match('/^#[a-f0-9]{6}$/i', $content['value']) ) ? $content['value'] : "" );
 
         $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
         wp_localize_script( 'dm-script-handle', 'dm_color_picker_config', $data );
@@ -64,7 +64,7 @@ class ColorPicker extends Structure {
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
                             get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                            : ( isset( $content['value'] ) ? $content['value'] : "" );
+                            : ( isset( $content['value'] ) && ( preg_match('/^#[a-f0-9]{6}$/i', $content['value']) ) ? $content['value'] : "" );
 
         $this->output();
     }

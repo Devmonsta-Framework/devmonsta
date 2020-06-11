@@ -1,4 +1,5 @@
 jQuery(window).on('dm-scripts.dm', function(e,val){
+    // console.log(dm_color_picker_config.default);
     var dmColorOptions = {
         defaultColor: dm_color_picker_config.default,
         hide: true,
