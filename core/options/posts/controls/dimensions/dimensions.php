@@ -133,7 +133,6 @@ class Dimensions extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
-        // var_dump($value['right']);
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">

@@ -72,7 +72,7 @@ class Switcher extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $right_choice[$right_key] , $left_choice[$left_key]) ;
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $right_key , $left_key, $right_choice[$right_key], $left_choice[$left_key]) ;
     }
 
     /**
@@ -128,7 +128,7 @@ class Switcher extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $right_choice[$right_key] , $left_choice[$left_key]) ;
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $right_key , $left_key, $right_choice[$right_key], $left_choice[$left_key]) ;
     }
 
     /**
@@ -143,7 +143,7 @@ class Switcher extends Structure {
      * @param [type] $left_key
      * @return void
      */
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $right_key, $left_key) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $right_key, $left_key, $right_value, $left_value) {
         $is_checked = ( $value == $right_key ) ? 'checked' : '';
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
@@ -151,11 +151,11 @@ class Switcher extends Structure {
                 <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
             <div class="dm-option-column right dm_switcher_main_block" >
-                <div class='dm_switcher_item' date-right="<?php echo esc_attr( $right_key); ?>">
+                <div class='dm_switcher_item'>
                     <input type='text' class='dm-ctrl' style="display: none;" value='<?php echo esc_attr( $left_key ); ?>' name='<?php echo esc_attr( $name ); ?>' />
                     <label>
                         <input type='checkbox' class='dm-ctrl dm-control-input dm-control-switcher' value='<?php echo esc_attr( $right_key ); ?>' name='<?php echo esc_attr( $name ); ?>' <?php echo esc_attr( $is_checked ); ?>/>
-                        <div data-left="<?php echo esc_attr( $left_key ); ?>" data-right="<?php echo esc_attr( $right_key ); ?>" class='dm_switcher_label dm-option-label'></div>
+                        <div data-left="<?php echo esc_attr( $left_value ); ?>" data-right="<?php echo esc_attr( $right_value ); ?>" class='dm_switcher_label dm-option-label'></div>
                     </label>
                 </div>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

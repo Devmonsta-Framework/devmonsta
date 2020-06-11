@@ -73,11 +73,11 @@ class Switcher extends Structure {
                 <label  class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
             <div class="dm-option-column right dm_switcher_main_block" >
-                <div class='dm_switcher_item' date-right="<?php echo esc_attr( $this->right_key); ?>">
+                <div class='dm_switcher_item'>
                     <input <?php $this->link(); ?> type='text' class='dm-ctrl' style="display: none;" value='<?php echo esc_attr( $this->left_key ); ?>' name='<?php echo esc_attr( $this->name ); ?>' />
                     <label>
                         <input <?php $this->link(); ?> type='checkbox' class='dm-ctrl dm-control-input dm-control-switcher' value='<?php echo esc_attr( $this->right_key ); ?>' name='<?php echo esc_attr( $this->name ); ?>' <?php echo esc_attr( $this->is_checked ); ?>/>
-                        <div data-left="<?php echo esc_attr( $this->left_key ); ?>" data-right="<?php echo esc_attr( $this->right_key ); ?>" class='dm_switcher_label dm-option-label'></div>
+                        <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='dm_switcher_label dm-option-label'></div>
                     </label>
                 </div>
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
