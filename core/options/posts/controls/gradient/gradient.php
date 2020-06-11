@@ -177,24 +177,21 @@ class Gradient extends Structure {
                 <div class="dm-option-column right">
                     <?php
 
-                        if ( is_array( $value ) && !empty( $value ) ) {
-
-                            foreach ( $value as $id => $value ) {
-
-                                if ( $id == "secondary" ) {
-                                    ?>
-                                    <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
-                                    <?php
-                                }
-
+                        if ( is_array( $value ) && isset( $value['primary'] )  && isset( $value['secondary'] ) ) {
                                 ?>
-                                    <input type="text" class="dm-ctrl dm-gradient-field-<?php echo esc_attr( $id ); ?>"
-                                            name="<?php echo esc_html( $name . "[" . $id . "]" ); ?>"
-                                            value="<?php echo esc_attr( $value ); ?>"
-                                            data-default-color="<?php echo esc_attr( $value ); ?>" />
-                                <?php
-                            }
+                                    <input type="text" class="dm-ctrl dm-gradient-field-primary"
+                                            name="<?php echo esc_html( $name . "[primary]" ); ?>"
+                                            value="<?php echo esc_attr( $value['primary'] ); ?>"
+                                            data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
+                                            
+                                    <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
 
+                                    <input type="text" class="dm-ctrl dm-gradient-field-secondary"
+                                            name="<?php echo esc_html( $name . "[secondary]" ); ?>"
+                                            value="<?php echo esc_attr( $value['secondary'] ); ?>"
+                                            data-default-color="<?php echo esc_attr( $value['secondary'] ); ?>" />
+                                    
+                                <?php
                         }
 
             ?>

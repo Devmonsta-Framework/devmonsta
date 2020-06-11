@@ -1,7 +1,5 @@
 jQuery(document).ready(function ($) {
 
-    // console.log("from customizer color picker script");
-    
     for(color_id in gradient_picker_config.defaults){
         var single_color = '.dm-gradient-field-' + color_id ;
         let dmOptions = {

@@ -43,10 +43,10 @@ class Gradient extends Structure {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : [];
+        $this->default_value = isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ? $args[0]['value'] : ['primary'   => '#FF0000', 'secondary' => '#0000FF'];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
     }
 
     
@@ -58,21 +58,17 @@ class Gradient extends Structure {
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
-
         if ( !wp_script_is( 'dm-customizer-gradient-handle', 'enqueued' ) ) {
             wp_enqueue_script( 'dm-customizer-gradient-handle', DM_CORE . 'options/customizer/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
-
         }
 
         $data                = [];
         $default_value_array = [];
 
         if ( is_array( $this->default_value ) && !empty( $this->default_value ) ) {
-
             foreach ( $this->default_value as $default_key => $default_value ) {
                 $default_value_array[$default_key] = $default_value;
             }
-
         }
 
         $data['defaults'] = $default_value_array;
@@ -104,30 +100,24 @@ class Gradient extends Structure {
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
-
                 <div class="dm-option-column right gradient-parent">
                     <?php
-
-                        if ( is_array( $this->value ) && !empty( $this->value ) ) {
-                            foreach ( $this->value as $id => $value ) {
-                                if ( $id == "secondary" ) {
-                                    ?>
-                                    <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
-                                <?php
-                                }
-                                ?>
-                                    <input type="text" class="dm-ctrl dm-gradient-field-<?php echo esc_attr( $id ); ?>" 
-                                            value="<?php echo esc_attr( $value ); ?>"
-                                            data-default-color="<?php echo esc_attr( $value ); ?>" />
-                            <?php
-                            }
+                        if ( is_array( $this->value ) && isset( $this->value['primary'] )  && isset( $this->value['secondary'] )) {
                             ?>
+                                    <input type="text" class="dm-ctrl dm-gradient-field-primary" 
+                                            value="<?php echo esc_attr( $this->value['primary'] ); ?>"
+                                            data-default-color="<?php echo esc_attr( $this->value['primary'] ); ?>" />
+                                    
+                                    <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
+                                    
+                                    <input type="text" class="dm-ctrl dm-gradient-field-secondary" 
+                                            value="<?php echo esc_attr( $this->value['secondary'] ); ?>"
+                                            data-default-color="<?php echo esc_attr( $this->value['secondary'] ); ?>" />
+                                
                                     <input type="hidden" class="dm-ctrl dm-gradient-value" <?php $this->link(); ?> value="" >
                             <?php
                         }
-
                     ?>
-                    
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
