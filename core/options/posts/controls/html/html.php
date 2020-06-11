@@ -36,13 +36,13 @@ class Html extends Structure {
     public function output() {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $html  = isset( $this->content['html'] ) ? $this->content['html'] : '';
+        $default_value  = isset( $this->content['value'] ) ? $this->content['value'] : '';
         
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $html, $desc );
+        $this->generate_markup( $default_attributes, $label, $default_value, $desc );
 
     }
 
@@ -84,13 +84,13 @@ class Html extends Structure {
     public function edit_fields( $term, $taxonomy ) {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $html               = isset( $this->content['html'] ) ? $this->content['html'] : '';
+        $value               = isset( $this->content['value'] ) ? $this->content['value'] : '';
                 
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $html, $desc );
+        $this->generate_markup( $default_attributes, $label, $value, $desc );
     }
 
     
