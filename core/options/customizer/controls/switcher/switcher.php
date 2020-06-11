@@ -56,7 +56,7 @@ class Switcher extends Structure {
      */
     public function render() {
         $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
-        $this->is_checked = ( $this->value == $this->right_key ) ? 'checked' : '';
+        $this->is_checked = ( $this->value == $this->right_key ) ? true : false;
         $this->render_content();
     }
 
@@ -76,7 +76,7 @@ class Switcher extends Structure {
                 <div class='dm_switcher_item'>
                     <input <?php $this->link(); ?> type='text' class='dm-ctrl' style="display: none;" value='<?php echo esc_attr( $this->left_key ); ?>' name='<?php echo esc_attr( $this->name ); ?>' />
                     <label>
-                        <input <?php $this->link(); ?> type='checkbox' class='dm-ctrl dm-control-input dm-control-switcher' value='<?php echo esc_attr( $this->right_key ); ?>' name='<?php echo esc_attr( $this->name ); ?>' <?php echo esc_attr( $this->is_checked ); ?>/>
+                        <input <?php $this->link(); ?> type='checkbox' class='dm-ctrl dm-control-input dm-control-switcher' value='<?php echo esc_attr( $this->right_key ); ?>' name='<?php echo esc_attr( $this->name ); ?>' <?php checked( $this->is_checked ); ?> />
                         <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='dm_switcher_label dm-option-label'></div>
                     </label>
                 </div>

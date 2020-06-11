@@ -44,7 +44,19 @@ class CheckboxMultiple extends Structure {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->isInline      = ( $args[0]['inline'] ) ? "inline" : "list";
-        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : [];
+
+        $this->default_value = [];
+        if ( isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ) {
+
+            foreach ( $args[0]['value'] as $default_key => $default_value ) {
+
+                if ( $default_value ) {
+                    array_push( $this->default_value, $default_key );
+                }
+
+            }
+
+        }
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
 
         //generate attributes dynamically for parent tag
@@ -62,6 +74,7 @@ class CheckboxMultiple extends Structure {
      * @internal
      */
     public function render() {
+        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         $this->render_content();
     }
 
@@ -78,7 +91,7 @@ class CheckboxMultiple extends Structure {
 
                 <div class="dm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
                     
-                    <?php $multi_values = !is_array( $this->value() ) ? explode( ',', $this->value() ) : $this->value(); ?>
+                    <?php $multi_values = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
 
                     <ul class="customize-control">
                         <?php foreach ( $this->choices as $value => $label ) : ?>
