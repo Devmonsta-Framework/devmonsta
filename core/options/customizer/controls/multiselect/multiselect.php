@@ -1,9 +1,9 @@
 <?php
-namespace Devmonsta\Options\Customizer\Controls\MultipleSelect;
+namespace Devmonsta\Options\Customizer\Controls\Multiselect;
 
 use Devmonsta\Options\Customizer\Structure;
 
-class MultipleSelect extends Structure {
+class Multiselect extends Structure {
 
     public $label, $name, $desc, $value, $choices, $default_attributes, $default_value;
 
@@ -14,7 +14,7 @@ class MultipleSelect extends Structure {
 	 * @access public
 	 * @var    string
 	 */
-	public $type = 'multiple-select';
+	public $type = 'multiselect';
 
     public $statuses;
 
@@ -56,7 +56,7 @@ class MultipleSelect extends Structure {
         wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
         wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
         wp_enqueue_script( 'dm-multiselect-js-from-post', DM_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
-        wp_enqueue_script( 'dm-customizer-multiselect-js', DM_CORE . 'options/customizer/controls/multiple-select/assets/js/script.js', ['jquery', 'select2-js', 'dm-multiselect-js-from-post'], time(), true );
+        wp_enqueue_script( 'dm-customizer-multiselect-js', DM_CORE . 'options/customizer/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js', 'dm-multiselect-js-from-post'], time(), true );
     }
 
     /**
@@ -77,15 +77,14 @@ class MultipleSelect extends Structure {
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
-
                 <div class="dm-option-column right">
                     <select class="dm-ctrl dm_multi_select"  <?php $this->link(); ?> multiple="multiple" style="height: 100%;">
                         <?php
                         if(isset($this->choices) && is_array($this->choices)){
                             foreach ( $this->choices as $value => $label ) {
-                                ?>
+                            ?>
                                 <option value="<?php echo esc_attr( $value ); ?>" <?php selected( in_array( $value, $this->value ) )?>> <?php echo esc_html( $label );?></option>
-                                <?php
+                            <?php
                             }
                         }
                         ?>
