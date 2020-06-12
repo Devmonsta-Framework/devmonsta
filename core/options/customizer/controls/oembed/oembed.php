@@ -5,7 +5,7 @@ use Devmonsta\Options\Customizer\Structure;
 
 class Oembed extends Structure {
 
-    public $label, $name, $desc, $value, $data_preview, $default_attributes;
+    public $label, $name, $desc, $default_value, $value, $data_preview, $default_attributes;
 
 
     /**
@@ -44,6 +44,7 @@ class Oembed extends Structure {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->data_preview  = isset( $args[0]['preview'] ) && is_array( $args[0]['preview'] ) ? json_encode( $args[0]['preview'] ) : [];
+        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
 
         //generate attributes dynamically for parent tag
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
@@ -63,6 +64,7 @@ class Oembed extends Structure {
      * @internal
      */
     public function render() {
+        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         $this->render_content();
     }
 
@@ -83,7 +85,7 @@ class Oembed extends Structure {
                 <div class="dm-option-column right dm-oembed-input">
                     <input <?php echo dm_attr_to_html( $wrapper_attr ) ?> <?php $this->link(); ?>
                             type="url" name="<?php echo esc_attr( $this->name ); ?>"
-                            value="<?php echo esc_html( $this->value() ); ?>"
+                            value="<?php echo esc_html( $this->value ); ?>"
                             class="dm-option-input dm-ctrl dm-oembed-url-input"/>
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                     <div class="dm-oembed-preview"></div>

@@ -8,15 +8,11 @@ jQuery(document).ready(function ($) {
 
     $(".dm-oembed-url-input").on("keyup",
         _.debounce(function () {
-            // console.log("oembed keyup detected");
             var wrapper = $(this);
-
             var url_input = $(this).val();
-            // console.log(url_input);
-
             var iframeWrapper = wrapper.siblings(".dm-oembed-preview");
+
             if (url_input && is_url(url_input)) {
-                // console.log("is a valid input");
                 var data = {
                     action: "get_oembed_response",
                     _nonce: wrapper.data('nonce'),
@@ -30,7 +26,6 @@ jQuery(document).ready(function ($) {
                     data: data,
                     success: function (response) {
                         iframeWrapper.html(response);
-                        // console.log("response received" + response);
                     },
                 });
             } else {
@@ -42,5 +37,4 @@ jQuery(document).ready(function ($) {
 
     //initial trigger of oembed
     $(".dm-oembed-url-input").trigger("keyup");
-
 });
