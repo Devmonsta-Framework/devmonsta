@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
     };
 
 
-    $(".dm-oembed-url-input").on("change",
+    $(".dm-oembed-url-input").on("keyup",
          function () {
             var wrapper = $(this);
 
@@ -37,6 +37,6 @@ jQuery(document).ready(function ($) {
     );
 
     //initial trigger of oembed
-    $(".dm-oembed-url-input").trigger("change");
+    $(".dm-oembed-url-input").trigger("keyup");
 
 });

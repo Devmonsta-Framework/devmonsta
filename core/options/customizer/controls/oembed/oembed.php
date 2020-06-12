@@ -43,7 +43,7 @@ class Oembed extends Structure {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->data_preview  = isset( $args[0]['preview'] ) && is_array( $args[0]['preview'] ) ? json_encode( $args[0]['preview'] ) : [];
+        $this->data_preview  = isset( $args[0]['preview'] ) && is_array( $args[0]['preview'] ) ? json_encode( $args[0]['preview'] ) : "";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
 
         //generate attributes dynamically for parent tag
@@ -81,7 +81,6 @@ class Oembed extends Structure {
                 <div class="dm-option-column left">
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
-
                 <div class="dm-option-column right dm-oembed-input">
                     <input <?php echo dm_attr_to_html( $wrapper_attr ) ?> <?php $this->link(); ?>
                             type="url" name="<?php echo esc_attr( $this->name ); ?>"

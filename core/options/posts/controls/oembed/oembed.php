@@ -54,7 +54,7 @@ class Oembed extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
-        $wrapper_attr['data-preview'] = json_encode( $this->content['preview'] );
+        $wrapper_attr['data-preview'] = isset( $this->content['preview'] ) ? json_encode( $this->content['preview'] ) : "";
         
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
@@ -107,7 +107,7 @@ class Oembed extends Structure {
         $desc                         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value                        = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
-        $wrapper_attr['data-preview'] = json_encode( $this->content['preview'] );
+        $wrapper_attr['data-preview'] = isset( $this->content['preview'] ) ? json_encode( $this->content['preview'] ) : "";
         
                 
         //generate attributes dynamically for parent tag
