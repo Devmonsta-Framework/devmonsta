@@ -43,11 +43,11 @@ class RgbaColorPicker extends Structure {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "rgba(255,2555,255,0.99)";
+        $this->default_value = isset( $args[0]['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $args[0]['value']) ? $args[0]['value'] : "";
         $this->palettes      = isset( $args[0]['palettes'] ) && is_array( $args[0]['palettes'] )? $args[0]['palettes'] : [];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
     }
 
     /**
@@ -58,20 +58,20 @@ class RgbaColorPicker extends Structure {
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
-
-        wp_enqueue_script( 'dm-customizer-rgba-handle', DM_CORE . 'options/customizer/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_script( 'dm-rgba-handle-from-post', DM_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_script( 'dm-customizer-rgba-handle', DM_CORE . 'options/customizer/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker', 'dm-rgba-handle-from-post'], false, true );
 
         $data             = [];
         $data['default']  = $this->default_value;
         $data['palettes'] = $this->palettes;
         wp_localize_script( 'dm-customizer-rgba-handle', 'rgba_color_picker_config', $data );
-
     }
 
     /**
      * @internal
      */
     public function render() {
+        $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         $this->render_content();
     }
 
@@ -90,10 +90,10 @@ class RgbaColorPicker extends Structure {
                 <div class="dm-option-column right">
                     <input type="text" <?php $this->link(); ?>
                         name="<?php echo esc_attr( $this->name ); ?>"
-                        value="<?php echo esc_attr( $this->value() ); ?>"
+                        value="<?php echo esc_attr( $this->value ); ?>"
                         class="dm-ctrl dm-color-field color-picker-rgb"
                         data-alpha="true"
-                        data-default-color="<?php echo esc_attr( $this->value() ); ?>" />
+                        data-default-color="<?php echo esc_attr( $this->value ); ?>" />
                     
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>

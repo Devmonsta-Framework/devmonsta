@@ -6,7 +6,7 @@ use Devmonsta\Options\Posts\Structure;
 
 class RgbaColorPicker extends Structure {
 
-    protected $current_screen;
+    protected $current_screen, $default_value;
 
     /**
      * @internal
@@ -42,11 +42,12 @@ class RgbaColorPicker extends Structure {
 
         global $post;
         $data            = [];
+        $this->default_value = isset( $this->content['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $this->content['value'] ) ? $this->content['value'] : "";
         $data['default'] = (  ( $this->current_screen == "post" )
                             && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-                        ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                        : $this->content['value'];
+                            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                            : $this->default_value;
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         wp_localize_script( 'dm-rgba-handle', 'rgba_color_picker_config', $data );
     }
@@ -57,12 +58,11 @@ class RgbaColorPicker extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                        : $default_value;
+                            ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                            : $this->default_value;
         $this->output();
     }
 
