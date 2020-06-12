@@ -1,10 +1,10 @@
 <?php
 
-namespace Devmonsta\Options\Posts\Controls\Checkboxes;
+namespace Devmonsta\Options\Posts\Controls\CheckboxMultiple;
 
 use Devmonsta\Options\Posts\Structure;
 
-class Checkboxes extends Structure {
+class CheckboxMultiple extends Structure {
 
     protected $current_screen;
 
@@ -32,15 +32,11 @@ class Checkboxes extends Structure {
         $default_value_array = [];
 
         if ( isset( $content['value'] ) && is_array( $content['value'] ) ) {
-
             foreach ( $content['value'] as $default_key => $default_value ) {
-
                 if ( $default_value == true ) {
                     array_push( $default_value_array, $default_key );
                 }
-
             }
-
         }
 
         $this->value = (  ( $this->current_screen == "post" ) && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
@@ -138,17 +134,13 @@ class Checkboxes extends Structure {
 
                 <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
                     <?php
-
                         if ( is_array( $choices ) && !empty( $choices ) ) {
-
                             foreach ( $choices as $id => $element ) {
-
                                 if ( is_array( $value ) && in_array( $id, $value ) ) {
                                     $checked = 'checked="checked"';
                                 } else {
                                     $checked = null;
                                 }
-
                                 ?>
                                 <label class="dm-option-label-list">
                                     <input class="dm-ctrl" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
@@ -157,9 +149,7 @@ class Checkboxes extends Structure {
                                 </label>
                                 <?php
                             }
-
                         }
-
                     ?>
                     <input class="dm-ctrl" type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
@@ -167,6 +157,4 @@ class Checkboxes extends Structure {
             </div>
     <?php
     }
-
-
 }
