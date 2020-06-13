@@ -26,8 +26,8 @@ class Slider extends Structure {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : 0;
-        $this->properties    = isset( $args[0]['properties'] ) ? $args[0]['properties'] : [];
+        $this->default_value = isset( $args[0]['value'] ) && is_numeric( $args[0]['value'] ) ? $args[0]['value'] : 0;
+        $this->properties    = isset( $args[0]['properties'] ) && is_array( $args[0]['properties'] ) ? $args[0]['properties'] : [];
     
         //generate attributes dynamically for parent tag
         $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script dm-slider-holder" );
@@ -46,9 +46,9 @@ class Slider extends Structure {
 
         //get slider settings from theme
         $dm_slider_data_config  = $this->properties;
-        $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
-        $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
-        $dm_slider_data['step'] = isset( $dm_slider_data_config['step'] ) ? $dm_slider_data_config['step'] : 1;
+        $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) && is_numeric( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
+        $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) && is_numeric( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
+        $dm_slider_data['step'] = isset( $dm_slider_data_config['step'] ) && is_numeric( $dm_slider_data_config['step'] ) ? $dm_slider_data_config['step'] : 1;
         wp_localize_script( 'dm-customizer-slider-script', 'dm_slider_config', $dm_slider_data );
     }
 

@@ -35,10 +35,10 @@ class Slider extends Structure {
         wp_enqueue_script( 'dm-slider-script', DM_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
 
         //get slider settings from theme
-        $dm_slider_data_config  = $this->content['properties'];
-        $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
-        $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
-        $dm_slider_data['step'] = isset( $dm_slider_data_config['step'] ) ? $dm_slider_data_config['step'] : 1;
+        $dm_slider_data_config  = isset($this->content['properties']) && is_array($this->content['properties']) ? $this->content['properties'] : [];
+        $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) && is_numeric( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
+        $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) && is_numeric( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
+        $dm_slider_data['step'] = isset( $dm_slider_data_config['step'] ) && is_numeric( $dm_slider_data_config['step']  )? $dm_slider_data_config['step'] : 1;
         wp_localize_script( 'dm-slider-script', 'dm_slider_config', $dm_slider_data );
     }
 
@@ -50,7 +50,7 @@ class Slider extends Structure {
 
         global $post;
 
-        $default_value = isset( $content['value'] ) ? $content['value'] : "";
+        $default_value = isset( $content['value'] ) && is_numeric($content['value']) ? $content['value'] : 0;
         $this->value   = (  ( $this->current_screen == "post" )
                             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ) ?
