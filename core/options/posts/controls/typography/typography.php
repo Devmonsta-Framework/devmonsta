@@ -49,7 +49,6 @@ class Typography extends Structure {
         }
 
         wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker'], false, true );
-
     }
 
     /**
@@ -140,7 +139,7 @@ class Typography extends Structure {
 
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $components = isset( $this->content['components'] ) ? $this->content['components'] : [];
+        $components = isset( $this->content['components'] ) && is_array( $this->content['components'] ) ? $this->content['components'] : [];
 
                        
         //generate attributes dynamically for parent tag
@@ -218,7 +217,7 @@ class Typography extends Structure {
                                     <?php
 
                                     foreach ( $font_list as $key => $item ) {
-                                        $selected = $item->family == esc_html( $value["family"] ) ? 'selected' : '';
+                                        $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
                                         echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
                                     }
 
