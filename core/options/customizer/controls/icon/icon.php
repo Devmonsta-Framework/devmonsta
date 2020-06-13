@@ -69,7 +69,7 @@ class Icon extends Structure {
                         default_icon='<?php echo isset( $savedData['icon'] ) ? esc_attr( $savedData['icon'] ) : ""; ?>'
                     ></dm-icon-picker>
 
-                    <input type="hidden" <?php $this->link();?>  value="<?php echo esc_attr( implode( ',', $icon_value ) ); ?>" >
+                    <input type="hidden" <?php $this->link();?>  value="" >
                     
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
