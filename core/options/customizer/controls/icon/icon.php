@@ -23,10 +23,11 @@ class Icon extends Structure {
     }
 
     public function prepare_values( $id, $args = [] ) {
-        $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
-        $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
-        $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-
+        $this->label                        = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
+        $this->name                         = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
+        $this->desc                         = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->default_value['icon']        = is_array($args[0]['value']) && isset( $args[0]['value']['icon'] ) ? $args[0]['value']['icon'] : "fab fa-500px";
+        $this->default_value['iconType']    = is_array($args[0]['value']) && isset( $args[0]['value']['type'] ) ? $args[0]['value']['type'] : "dm-font-awesome";
         //generate attributes dynamically for parent tag
         $this->default_attributes = $this->prepare_default_attributes( $args[0], "dm-vue-app" );
     }
@@ -52,10 +53,7 @@ class Icon extends Structure {
     public function render_content() {
         include 'icon-data.php';
         $iconEncoded = json_encode( $iconList );
-        $icon_value = !empty( $this->value() ) && is_array( $this->value() ) ? explode(',', $this->value()) : ["fas fa-angle-right", "dm-font-awesome"];
-        $this->icon_name = $icon_value[0];
-        $this->icon_type = $icon_value[1];
-        $savedData = json_decode($this->value());
+        $savedData = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
         ?>
         <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
             <div class="dm-option-column left">
@@ -67,8 +65,8 @@ class Icon extends Structure {
                         name='<?php echo esc_attr( $this->name ); ?>'
                         class="dm-ctrl"
                         icon_list='<?php echo dm_render_markup($iconEncoded); ?>'
-                        default_icon_type='<?php echo isset( $savedData->iconType ) ? esc_attr( $savedData->iconType ) : "dm-font-awesome"; ?>'
-                        default_icon='<?php echo isset( $savedData->icon ) ? esc_attr( $savedData->icon ) : "fas fa-angle-right"; ?>'
+                        default_icon_type='<?php echo isset( $savedData['iconType'] ) ? esc_attr( $savedData['iconType'] ) : ""; ?>'
+                        default_icon='<?php echo isset( $savedData['icon'] ) ? esc_attr( $savedData['icon'] ) : ""; ?>'
                     ></dm-icon-picker>
 
                     <input type="hidden" <?php $this->link();?>  value="<?php echo esc_attr( implode( ',', $icon_value ) ); ?>" >

@@ -6,6 +6,7 @@ use Devmonsta\Options\Posts\Structure;
 
 class Icon extends Structure {
 
+    public $current_screen, $default_icon, $default_icon_type;
     /**
      * @internal
      */
@@ -34,17 +35,21 @@ class Icon extends Structure {
         $content = $this->content;
         global $post;
 
+        //grab default icon data from theme array
+        $this->default_icon = isset( $content['value']['icon'] ) ? $content['value']['icon'] : "fab fa-500px";
+        $this->default_icon_type = isset( $content['value']['type'] ) ? $content['value']['type'] : "dm-font-awesome";
+        
         $icon_data              = [];
         $icon_data['icon_name'] = (  ( $this->current_screen == "post" )
                                     && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
                                     && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-                                ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                                : "";
+                                    ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                                    : $this->default_icon;
 
         $icon_data['icon_type'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) )
                                     && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true ) ) )
                                 ? get_post_meta( $post->ID, $this->prefix . $this->content['name'] . "_type", true )
-                                : "dm-font-awesome";
+                                : $this->default_icon_type;
 
         $this->value = $icon_data;
         $this->output();
@@ -58,7 +63,7 @@ class Icon extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $iconEncoded = json_encode( $iconList );
+        $iconEncoded        = json_encode( $iconList );
 
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
@@ -143,8 +148,8 @@ class Icon extends Structure {
                     name='<?php echo esc_attr( $name ); ?>'
                     class="dm-ctrl"
                     icon_list='<?php echo dm_render_markup($iconEncoded); ?>'
-                    default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : "dm-font-awesome"; ?>'
-                    default_icon='<?php echo isset( $icon_name ) ? esc_attr( $icon_name ) : "fas fa-angle-right"; ?>'
+                    default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : ""; ?>'
+                    default_icon='<?php echo isset( $icon_name ) ? esc_attr( $icon_name ) : ""; ?>'
                 ></dm-icon-picker>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
