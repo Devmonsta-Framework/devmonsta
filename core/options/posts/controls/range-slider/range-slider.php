@@ -34,10 +34,10 @@ class RangeSlider extends Structure {
         wp_enqueue_script( 'asRange-js', DM_CORE . 'options/posts/controls/range-slider/assets/js/jquery-asRange.js' );
         wp_enqueue_script( 'dm-range-slider', DM_CORE . 'options/posts/controls/range-slider/assets/js/script.js', ['jquery', 'asRange-js'], time(), true );
 
-        $range_slider_config       = $this->content['properties'];
-        $range_slider_data['min']  = isset( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
-        $range_slider_data['max']  = isset( $range_slider_config['max'] ) ? $range_slider_config['max'] : 100;
-        $range_slider_data['step'] = isset( $range_slider_config['step'] ) ? $range_slider_config['step'] : 1;
+        $range_slider_config       = isset($this->content['properties']) && is_array( $this->content['properties'] ) ? $this->content['properties'] : [];
+        $range_slider_data['min']  = isset( $range_slider_config['min'] ) && is_numeric( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
+        $range_slider_data['max']  = isset( $range_slider_config['max'] )  && is_numeric( $range_slider_config['max'] )? $range_slider_config['max'] : 100;
+        $range_slider_data['step'] = isset( $range_slider_config['step'] )  && is_numeric( $range_slider_config['step'] )? $range_slider_config['step'] : 1;
 
         wp_localize_script( 'dm-range-slider', 'range_slider_config', $range_slider_data );
 
@@ -48,13 +48,13 @@ class RangeSlider extends Structure {
      */
     public function render() {
         $content  = $this->content;
-        $from_val = isset( $content['value']['from'] ) ? $content['value']['from'] : "10";
-        $to_val   = isset( $content['value']['to'] ) ? $content['value']['to'] : "20";
+        $from_val = isset( $content['value']['from'] ) && is_numeric( $content['value']['from'] ) ? $content['value']['from'] : 10;
+        $to_val   = isset( $content['value']['to'] ) && is_numeric( $content['value']['to'] ) ? $content['value']['to'] : 20;
         global $post;
         $this->value = (  ( $this->current_screen == "post" ) && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) !== "" ) ) ?
-        get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $from_val . "," . $to_val;
+                        && ( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) !== "" ) ) ?
+                    get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                    : $from_val . "," . $to_val;
 
         $this->output();
     }
@@ -65,7 +65,6 @@ class RangeSlider extends Structure {
     public function output() {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
-        $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         
         //generate attributes dynamically for parent tag

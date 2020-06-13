@@ -27,10 +27,10 @@ class RangeSlider extends Structure {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
-        $this->properties    = isset( $args[0]['properties'] ) ? $args[0]['properties'] : [];
+        $this->properties    = isset( $args[0]['properties'] ) && is_array( $args[0]['properties'] ) ? $args[0]['properties'] : [];
     
-        $from_val = isset( $args[0]['value']['from'] ) ? $args[0]['value']['from'] : "10";
-        $to_val   = isset( $args[0]['value']['to'] ) ? $args[0]['value']['to'] : "20";
+        $from_val = isset( $args[0]['value']['from'] ) && is_numeric( $args[0]['value']['from'] ) ? $args[0]['value']['from'] : "10";
+        $to_val   = isset( $args[0]['value']['to'] ) && is_numeric( $args[0]['value']['to'] ) ? $args[0]['value']['to'] : "20";
         $this->default_value = $from_val . "," . $to_val;
 
         //generate attributes dynamically for parent tag
@@ -49,9 +49,9 @@ class RangeSlider extends Structure {
         wp_enqueue_script( 'dm-customizer-range-slider', DM_CORE . 'options/customizer/controls/range-slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
 
         $range_slider_config       = $this->properties;
-        $range_slider_data['min']  = isset( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
-        $range_slider_data['max']  = isset( $range_slider_config['max'] ) ? $range_slider_config['max'] : 100;
-        $range_slider_data['step'] = isset( $range_slider_config['step'] ) ? $range_slider_config['step'] : 1;
+        $range_slider_data['min']  = isset( $range_slider_config['min'] ) && is_numeric(isset( $range_slider_config['min'] )) ? $range_slider_config['min'] : 0;
+        $range_slider_data['max']  = isset( $range_slider_config['max'] ) && is_numeric(isset( $range_slider_config['max'] )) ? $range_slider_config['max'] : 100;
+        $range_slider_data['step'] = isset( $range_slider_config['step'] ) && is_numeric( $range_slider_config['step'] ) ? $range_slider_config['step'] : 1;
 
         wp_localize_script( 'dm-customizer-range-slider', 'range_slider_config', $range_slider_data );
 
