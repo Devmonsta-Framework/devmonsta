@@ -39,7 +39,10 @@ class Taxonomies
         add_filter('admin_body_class', [$this, 'add_body_classes']);
 
         if (isset($_GET['taxonomy'])) {
-            $taxonomy_file = get_template_directory() . '/devmonsta/options/taxonomies/' . $_GET['taxonomy'] . '.php';
+
+            $taxonomy_file = get_template_directory() .
+                '/devmonsta/options/taxonomies/' .
+                $_GET['taxonomy'] . '.php';
 
             if (file_exists($taxonomy_file)) {
 
@@ -157,34 +160,33 @@ class Taxonomies
 
                 if (class_exists($control_class)) {
 
-                    $control_object = new $control_class($control, $taxonomy);
-
-                    $control_object->init();
-                    $control_object->enqueue($this->meta_owner);
-                    $control_object->columns();
-
-                    add_action($taxonomy . '_add_form_fields',
-                        function () use ($control_object) {
-                            $control_object->render();
-                        }, 10, 2);
+                    $this->build_taxonomy_content(
+                        $control,
+                        $control_class,
+                        $taxonomy
+                    );
 
                 } else {
 
-                    $file = DM_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
-                    include_once $file;
+                    $file = DM_DIR .
+                        '/core/options/posts/controls/' .
+                        $control['type'] . '/' .
+                        $control['type'] . '.php';
 
-                    if (class_exists($control_class)) {
+                    if (file_exists($file)) {
+                        include_once $file;
 
-                        $control = new $control_class($control, $taxonomy);
-                        $control->init();
-                        $control->enqueue($this->meta_owner);
-                        $control->columns();
+                        if (class_exists($control_class)) {
 
-                        add_action($taxonomy . '_add_form_fields', function () use ($control) {
-                            $control->render();
-                        }, 10, 2);
+                            $this->build_taxonomy_content(
+                                $control,
+                                $control_class,
+                                $taxonomy
+                            );
 
+                        }
                     }
+
 
                     // error_log( $control_class . ' does not exists' );
                 }
@@ -193,6 +195,18 @@ class Taxonomies
 
         }
 
+    }
+
+    protected function build_taxonomy_content($control, $control_class, $taxonomy)
+    {
+        $control = new $control_class($control, $taxonomy);
+        $control->init();
+        $control->enqueue($this->meta_owner);
+        $control->columns();
+
+        add_action($taxonomy . '_add_form_fields', function () use ($control) {
+            $control->render();
+        }, 10, 2);
     }
 
     /**
@@ -226,20 +240,25 @@ class Taxonomies
                     $control_object->init();
                     $control_object->enqueue($this->meta_owner);
                     $control_object->edit_fields($term, $taxonomy);
-                    
+
 
                 } else {
 
                     $file = DM_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
-                    include_once $file;
 
-                    if (class_exists($control_class)) {
-                        $control = new $control_class($control, $taxonomy);
-                        $control->init();
-                        $control->enqueue($this->meta_owner);
-                        $control->columns();
-                        $control->edit_fields($term, $taxonomy);
+                    if (file_exists($file)) {
+
+                        include_once $file;
+
+                        if (class_exists($control_class)) {
+                            $control = new $control_class($control, $taxonomy);
+                            $control->init();
+                            $control->enqueue($this->meta_owner);
+                            $control->columns();
+                            $control->edit_fields($term, $taxonomy);
+                        }
                     }
+
 
                 }
 
@@ -365,6 +384,8 @@ class Taxonomies
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
+        wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
 
     }
 
