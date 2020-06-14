@@ -20,7 +20,7 @@ class Taxonomies
     public function init()
     {
 
-        $t = get_option('dm_taxonomy'); // T for taxonomy name
+        $t = get_option('dm_taxonomy'); // $t for taxonomy name
 
         add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
         add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
@@ -361,6 +361,7 @@ class Taxonomies
     public function load_scripts()
     {
 
+        wp_enqueue_style('devmonsta-taxonomy-style', DM_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
