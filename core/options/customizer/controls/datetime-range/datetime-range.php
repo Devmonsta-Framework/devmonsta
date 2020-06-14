@@ -88,7 +88,7 @@ class DatetimeRange extends Structure {
 
             <div class="dm-option-column right">
                 <input type="text" class="dm-option-input dm-ctrl dm-option-input-datetime-range"
-                    <?php $this->link();?> value="<?php echo esc_attr( $this->default_value ); ?>">
+                    <?php $this->link();?> value="<?php echo esc_attr( $this->default_value ); ?>" data-value="<?php echo esc_html( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
