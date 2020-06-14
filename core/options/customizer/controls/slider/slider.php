@@ -30,7 +30,7 @@ class Slider extends Structure {
         $this->properties    = isset( $args[0]['properties'] ) && is_array( $args[0]['properties'] ) ? $args[0]['properties'] : [];
     
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script dm-slider-holder" );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "dm-slider-holder" );
     }
 
     /**
@@ -68,7 +68,7 @@ class Slider extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input <?php $this->link();?>  class="dm-ctrl dm-slider" type="range" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>" />
+                <input <?php $this->link();?> data-value="<?php echo esc_html( $this->value ); ?>" class="dm-ctrl dm-slider" type="range" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>" />
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>

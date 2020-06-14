@@ -47,7 +47,7 @@ class ColorPicker extends Structure {
         $this->palettes      = isset( $args[0]['palettes'] ) && is_array( $args[0]['palettes'] )? $args[0]['palettes'] : [];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "" );
     }
 
     
@@ -95,6 +95,7 @@ class ColorPicker extends Structure {
                 </div>
                 <div class="dm-option-column right">
                     <input <?php $this->link(); ?> type="text" class="dm-ctrl dm-color-picker-field"
+                    data-value="<?php echo esc_html( $this->value ); ?>"
                             value="<?php echo esc_attr( $this->value ); ?>" data-default-color="<?php echo esc_attr( $this->value ); ?>" />            
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
