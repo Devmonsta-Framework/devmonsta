@@ -1,7 +1,6 @@
 jQuery(window).on('load',function($){
-    console.log("global");
 
-    jQuery('input.dm-ctrl.dm-control-switcher').each(function(){
+    jQuery('input.dm-ctrl').each(function(){
         var name = jQuery(this).attr('data-customize-setting-link'),   
             value = jQuery(this).attr('data-value');
 
@@ -21,4 +20,8 @@ jQuery(window).on('load',function($){
         } );
     });
     
+    // console.log("dui bar");
+    jQuery(window).trigger('dm-scripts.oembed');
+
+
 });

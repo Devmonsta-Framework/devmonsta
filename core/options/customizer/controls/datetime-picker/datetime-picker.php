@@ -89,7 +89,7 @@ class DatetimePicker extends Structure {
 
             <div class="dm-option-column right">
                 <input <?php $this->link();?> type="text" class="dm-option-input dm-ctrl dm-option-input-datetime-picker"
-                    value="<?php echo esc_attr( $this->value ); ?>">
+                    value="<?php echo esc_attr( $this->value ); ?>"  data-value="<?php echo esc_html( $this->value ); ?>">
                 <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>

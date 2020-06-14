@@ -47,7 +47,7 @@ class Oembed extends Structure {
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "dm-slider-holder" );
     }
 
     /**
@@ -84,6 +84,7 @@ class Oembed extends Structure {
                 <div class="dm-option-column right dm-oembed-input">
                     <input <?php echo dm_attr_to_html( $wrapper_attr ) ?> <?php $this->link(); ?>
                             type="url" name="<?php echo esc_attr( $this->name ); ?>"
+                            data-value="<?php echo esc_html( $this->value ); ?>"
                             value="<?php echo esc_html( $this->value ); ?>"
                             class="dm-option-input dm-ctrl dm-oembed-url-input"
                             data-value="<?php echo esc_html( $this->value ); ?>"
