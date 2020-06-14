@@ -7,6 +7,7 @@ jQuery(document).ready(function($) {
         if ($(this).data('multiple')) {
             multiple = Boolean($(this).data('multiple'));
         }
+        console.log(multiple);
 
         var button = $(this),
             custom_uploader = wp.media({

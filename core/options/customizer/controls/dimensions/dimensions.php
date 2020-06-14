@@ -62,7 +62,7 @@ class Dimensions extends Structure {
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $this->name ); ?>[top]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $savedData['top'] ) ? esc_html( intval( $savedData['top'] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData['top'] ) && is_numeric( $savedData['top'] ) ? esc_html( intval( $savedData['top'] ) ) : 0; ?>"
                         label="top"
                     ></dm-dimensions-item>
 
@@ -70,7 +70,7 @@ class Dimensions extends Structure {
                         
                         name="<?php echo esc_attr( $this->name ); ?>[right]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $savedData['right'] ) ? esc_html( intval( $savedData['right'] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData['right'] ) && is_numeric( $savedData['right'] ) ? esc_html( intval( $savedData['right'] ) ) : 0; ?>"
                         label="right"
                     ></dm-dimensions-item>
 
@@ -78,7 +78,7 @@ class Dimensions extends Structure {
                         
                         name="<?php echo esc_attr( $this->name ); ?>[bottom]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $savedData['bottom'] ) ? esc_html( intval( $savedData['bottom'] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData['bottom'] ) && is_numeric( $savedData['bottom'] ) ? esc_html( intval( $savedData['bottom'] ) ) : 0; ?>"
                         label="bottom"
                     ></dm-dimensions-item>
 
@@ -86,7 +86,7 @@ class Dimensions extends Structure {
                         
                         name="<?php echo esc_attr( $this->name ); ?>[left]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $savedData['left'] ) ? esc_html( intval( $savedData['left'] ) ) : 0; ?>"
+                        value="<?php echo isset( $savedData['left'] ) && is_numeric( $savedData['left'] ) ? esc_html( intval( $savedData['left'] ) ) : 0; ?>"
                         label="left"
                     ></dm-dimensions-item>
                 </dm-dimensions>

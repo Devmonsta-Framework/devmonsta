@@ -147,28 +147,28 @@ class Dimensions extends Structure {
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value['top'] ) ? esc_attr( intval( $value['top'] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['top'] ) && is_numeric( $value['top'] ) ? esc_attr( intval( $value['top'] ) ) : 0; ?>"
                         label="top"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[right]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value['right'] ) ? esc_attr( intval( $value['right'] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['right'] ) && is_numeric( $value['right'] ) ? esc_attr( intval( $value['right'] ) ) : 0; ?>"
                         label="right"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[bottom]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value['bottom'] ) ? esc_attr( intval( $value['bottom'] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['bottom'] ) && is_numeric( $value['bottom'] ) ? esc_attr( intval( $value['bottom'] ) ) : 0; ?>"
                         label="bottom"
                     ></dm-dimensions-item>
 
                     <dm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[left]"
                         class="dm-ctrl"
-                        value="<?php echo isset( $value['left'] ) ? esc_attr( intval( $value['left'] ) ) : 0; ?>"
+                        value="<?php echo isset( $value['left'] ) && is_numeric( $value['left'] )? esc_attr( intval( $value['left'] ) ) : 0; ?>"
                         label="left"
                     ></dm-dimensions-item>
                 </dm-dimensions>

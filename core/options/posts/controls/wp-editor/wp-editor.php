@@ -39,10 +39,10 @@ class WpEditor extends Structure {
 
         $default_value = isset( $content['value'] ) ? $content['value'] : "";
         $this->value   = (  ( $this->current_screen == "post" )
-            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
-        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-        : $default_value;
+                            && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                            && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
+                        ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
+                        : $default_value;
         $this->output();
     }
 
@@ -55,9 +55,9 @@ class WpEditor extends Structure {
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         
         $settings                  = [];
-        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
-        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
-        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
+        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? (bool) $this->content['wpautop'] : false;
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) && is_numeric( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
+        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] == "false" ) ? false : true;
         
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
@@ -111,9 +111,9 @@ class WpEditor extends Structure {
         $value                     = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         
         $settings                  = [];
-        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? $this->content['wpautop'] : false;
-        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
-        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] === false ) ? false : true;
+        $settings["wpautop"]       = ( isset( $this->content['wpautop'] ) ) ? (bool) $this->content['wpautop'] : false;
+        $settings["editor_height"] = ( isset( $this->content['editor_height'] ) && is_numeric( $this->content['editor_height'] ) ) ? (int) $this->content['editor_height'] : 285;
+        $settings["tinymce"]       = ( isset( $this->content['editor_type'] ) && $this->content['editor_type'] == "false" ) ? false : true;
         
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
@@ -147,7 +147,6 @@ class WpEditor extends Structure {
                     $editor_html = ob_get_contents();
                     $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
                     ob_end_clean();
-
                     echo dm_render_markup( $editor_html );
                 ?>
             </div>
