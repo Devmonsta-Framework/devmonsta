@@ -49,31 +49,6 @@ jQuery(document).ready(function ($) {
                 }
             })
         }
-        // var selected_value = $(".google-fonts-list option:selected").text();
-        // $('.google-weight-list').html(" ");
-        // $('.google-style-list').html(" ");
-
-        // if (typo_config.font_list.length > 0) {
-        //     console.log("got font list"); 
-        //     $.each(typo_config.font_list, function (key, item) {
-        //         if (item.family == selected_value) {
-        //             // weight
-        //             $.each(item.variants, function (i, variant) {
-        //                 console.log($('.google-weight-list'));
-        //                 $('.google-weight-list').append(
-        //                     '<option value=' + variant + ' >' + variant + '</option>'
-        //                 );
-        //             });
-        //             // style
-        //             $.each(item.subsets, function (i, style) {
-        //                 $('.google-style-list').append(
-        //                     '<option value=' + style + ' >' + style + '</option>'
-        //                 )
-        //             });
-
-        //         }
-        //     })
-        // }
     });
 
     // select 2 on change weight
@@ -117,19 +92,16 @@ jQuery(document).ready(function ($) {
 
     // slide ranger
     $('.typo-font-size').on('change', function () {
-        // document.getElementById('size_value').value = $(this).val();
         //update value of value-holder
         var currentObject = $(this);
         updateValueHolder(currentObject);
     });
     $('.typo-font-line-height').on('change', function () {
-        // document.getElementById('line_height_value').value = $(this).val();
         //update value of value-holder
         var currentObject = $(this);
         updateValueHolder(currentObject);
     });
     $('.typo-font-letter-space').on('change', function () {
-        // document.getElementById('latter_spacing_value').value = $(this).val();
         //update value of value-holder
         var currentObject = $(this);
         updateValueHolder(currentObject);

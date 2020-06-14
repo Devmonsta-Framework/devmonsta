@@ -44,7 +44,7 @@ class Radio extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : [];
+        $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline           = ( $this->content['inline'] ) ? "inline" : "list";
         
         //generate attributes dynamically for parent tag
@@ -92,7 +92,7 @@ class Radio extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $choices            = isset( $this->content['choices'] ) ? $this->content['choices'] : [];
+        $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline           = ( $this->content['inline'] ) ? "inline" : "list";
         
         //generate attributes dynamically for parent tag
@@ -121,31 +121,23 @@ class Radio extends Structure {
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
+            <div class="dm-option-column right <?php echo isset( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
                 <?php
-
                     if ( is_array( $choices ) && !empty( $choices ) ) {
-
                         foreach ( $choices as $key => $val ) {
                             $is_checked = ( $key == $value ) ? 'checked' : '';
                             ?>
                                 <label class="dm-option-label-list">
                                     <input class="dm-ctrl" type="radio" name="<?php echo esc_attr( $name ); ?>"
-                                        value="<?php echo esc_attr( $key ); ?>"
-                                            <?php echo esc_html( $is_checked ); ?>>
-                                            <?php echo esc_html( $val ); ?>
+                                        value="<?php echo esc_attr( $key ); ?>" <?php echo esc_html( $is_checked ); ?>> <?php echo esc_html( $val ); ?>
                                 </label>
                             <?php
                         }
-
                     }
-
                 ?>
                  <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
-
         </div>
     <?php
     }
-
 }

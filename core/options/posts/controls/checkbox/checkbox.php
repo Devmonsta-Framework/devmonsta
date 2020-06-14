@@ -114,7 +114,7 @@ class Checkbox extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $is_checked, $text, $desc ) {
-        ?>
+    ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
@@ -132,8 +132,7 @@ class Checkbox extends Structure {
                         type="checkbox"
                         class="dm-ctrl"
                         name="<?php echo esc_attr( $name ); ?>"
-                        value="true" <?php echo esc_attr( $is_checked );
-        ?>>
+                        value="true" <?php echo esc_attr( $is_checked ); ?>>
                     <?php echo esc_html( $text ); ?>
                 </label>
                 <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>

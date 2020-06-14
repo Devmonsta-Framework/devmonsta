@@ -579,5 +579,6 @@ class Customizer {
         wp_enqueue_style( 'devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css' );
         wp_enqueue_script( 'vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false );
         wp_enqueue_script( 'dm-vue', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true );
+        wp_enqueue_script( 'customizer-script', DM_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true );
     }
 }
