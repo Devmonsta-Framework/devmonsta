@@ -17,34 +17,63 @@ jQuery(document).ready(function ($) {
 
     // select 2 on change style and weight
     $('.google-fonts-list').on("change", function (e) {
-        
+        console.log("typo family changed");
         //update value of value-holder
         var currentObject = $(this);
         updateValueHolder(currentObject);
 
-        var selected_value = $(".google-fonts-list option:selected").text();
-        $('.google-weight-list').html(" ");
-        $('.google-style-list').html(" ");
-
+        var self = jQuery(this),
+            parent = self.parents('.dm-option-typography'),
+            weight = parent.find('.google-weight-list'),
+            styleField = parent.find('.google-style-list'),
+            selected_value = self.val();
         if (typo_config.font_list.length > 0) {
-            $.each(typo_config.font_list, function (key, item) {
+            jQuery.each(typo_config.font_list, function (key, item) {
                 if (item.family == selected_value) {
+                    parent.find('.google-weight-list, .google-style-list').html('');
                     // weight
-                    $.each(item.variants, function (i, variant) {
-                        $('.google-weight-list').append(
-                            '<option value=' + variant + ' >' + variant + '</option>'
+                    jQuery.each(item.variants, function (i, variant) {
+                        let selected = weight.data('selected_value') == variant ? 'selected="selected"' : ''
+                        weight.append(
+                            '<option '+ selected +' value=' + variant + ' >' + variant + '</option>'
                         );
                     });
                     // style
-                    $.each(item.subsets, function (i, style) {
-                        $('.google-style-list').append(
-                            '<option value=' + style + ' >' + style + '</option>'
+                    jQuery.each(item.subsets, function (i, style) {
+                        let selected = styleField.attr('data-selected_value') == style ? 'selected="selected"' : ''
+                        styleField.append(
+                            '<option '+ selected +' value=' + style + ' >' + style + '</option>'
                         )
                     });
-
+                    return false
                 }
             })
         }
+        // var selected_value = $(".google-fonts-list option:selected").text();
+        // $('.google-weight-list').html(" ");
+        // $('.google-style-list').html(" ");
+
+        // if (typo_config.font_list.length > 0) {
+        //     console.log("got font list"); 
+        //     $.each(typo_config.font_list, function (key, item) {
+        //         if (item.family == selected_value) {
+        //             // weight
+        //             $.each(item.variants, function (i, variant) {
+        //                 console.log($('.google-weight-list'));
+        //                 $('.google-weight-list').append(
+        //                     '<option value=' + variant + ' >' + variant + '</option>'
+        //                 );
+        //             });
+        //             // style
+        //             $.each(item.subsets, function (i, style) {
+        //                 $('.google-style-list').append(
+        //                     '<option value=' + style + ' >' + style + '</option>'
+        //                 )
+        //             });
+
+        //         }
+        //     })
+        // }
     });
 
     // select 2 on change weight

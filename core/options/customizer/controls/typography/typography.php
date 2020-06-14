@@ -41,8 +41,8 @@ class Typography extends Structure {
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
-        wp_enqueue_style( 'select2-css', DM_CORE . 'options/customizer/controls/multiple-select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DM_CORE . 'options/customizer/controls/multiple-select/assets/js/select2.min.js' );
+        wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
         wp_enqueue_script( 'dm-customizer-typo-script-handle', DM_CORE . 'options/customizer/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
         $this->value            = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
         $this->font_list        = $this->dm_getGoogleFonts();
@@ -80,11 +80,13 @@ class Typography extends Structure {
                                     <?php
                                     if ( is_array($this->font_list) && count( $this->font_list ) > 0 ): ?>
                                         <div class="google-fonts">
-                                            <select class="dm-ctrl google-fonts-list" name="<?php echo esc_attr( $this->name ) ?>[family]">
+                                            <select class="dm-ctrl google-fonts-list" name="<?php echo esc_html( $this->name ) ?>[family]">
                                             <?php
                                             foreach ( $this->font_list as $key => $item ) {
                                                 $selected = ( $item->family == esc_html( $this->value["family"] ) ) ? 'selected' : '';
-                                                echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                                                ?>
+                                                <option value="<?php echo esc_html( $item->family ); ?>" <?php echo esc_html( $selected  ); ?>> <?php echo esc_html( $item->family ); ?> </option>
+                                                <?php
                                             }
                                             ?>
                                             </select>
@@ -93,11 +95,11 @@ class Typography extends Structure {
                                     <?php echo esc_html_e( 'Family', 'devmonsta' ); ?>
                                 </li>
                                 <li class="typo-font-weight">
-                                    <select name="<?php echo esc_attr( $this->name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
+                                    <select name="<?php echo esc_html( $this->name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
                                     <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
                                 </li>
                                 <li class="typo-font-style">
-                                    <select name="<?php echo esc_attr( $this->name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
+                                    <select name="<?php echo esc_html( $this->name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
                                     </select>
                                     <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
                                 </li>
@@ -106,7 +108,7 @@ class Typography extends Structure {
                             case 'size':
                                 ?>
                                 <li class="typo-font-size">
-                                    <input type="number" value="<?php echo isset( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>" class="dm-option-input dm-ctrl typo-font-size" />
+                                    <input type="number" value="<?php echo isset( $this->value["size"] ) && is_numeric( $this->value["size"] ) ? esc_html( trim( $this->value["size"] ) ) : 0.00; ?>" class="dm-option-input dm-ctrl typo-font-size" />
                                     <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -114,7 +116,7 @@ class Typography extends Structure {
                             case 'line-height':
                                 ?>
                                 <li class="typo-font-lineheight">
-                                    <input type="number" value="<?php echo isset( $this->value["line_height"] ) ? esc_html( trim( $this->value["line_height"] ) ) : 0.00; ?>" class="dm-option-input dm-ctrl typo-font-line-height" />
+                                    <input type="number" value="<?php echo isset( $this->value["line_height"] ) && is_numeric( $this->value["line_height"] ) ? esc_html( trim( $this->value["line_height"] ) ) : 0.00; ?>" class="dm-option-input dm-ctrl typo-font-line-height" />
                                     <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -122,7 +124,7 @@ class Typography extends Structure {
                             case 'letter-spacing':
                                 ?>
                                 <li class="typo-font-laterspace">
-                                    <input type="number" value="<?php echo isset( $this->value["letter_spacing"] ) ? esc_html( trim( $this->value["letter_spacing"] ) ) : 0.00; ?>" class="dm-option-input dm-ctrl typo-font-letter-space" />
+                                    <input type="number" value="<?php echo isset( $this->value["letter_spacing"] ) && is_numeric( $this->value["letter_spacing"] ) ? esc_html( trim( $this->value["letter_spacing"] ) ) : 0.00; ?>" class="dm-option-input dm-ctrl typo-font-letter-space" />
                                     <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -131,9 +133,9 @@ class Typography extends Structure {
                                 ?>
                                 <li class="typo-font-color">
                                     <input  type="text" name="<?php echo esc_attr( $this->name ) ?>[color]"
-                                            value="<?php echo isset( $this->value["color"] ) ? esc_html( $this->value["color"] ) : ""; ?>"
+                                            value="<?php echo isset( $this->value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $this->value["color"]) ? esc_html( $this->value["color"] ) : ""; ?>"
                                             class="dm-ctrl dm-typography-color-field"
-                                            data-default-color="<?php echo esc_attr( $this->value["color"] ); ?>" />
+                                            data-default-color="<?php echo isset( $this->value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $this->value["color"]) ? esc_html( $this->value["color"] ) : ""; ?>" />
                                     <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php

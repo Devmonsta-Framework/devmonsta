@@ -74,7 +74,7 @@ class Typography extends Structure {
         $font_list             = $this->dm_getGoogleFonts();
         $data['font_list']     = $font_list;
         $data['selected_data'] = $this->value;
-        // var_dump($data['selected_data']);
+        
         wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
 
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
@@ -140,14 +140,13 @@ class Typography extends Structure {
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $components = isset( $this->content['components'] ) && is_array( $this->content['components'] ) ? $this->content['components'] : [];
-
-                       
+      
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
         
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list );
-}
+    }
 
     /**
      * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
@@ -200,81 +199,72 @@ class Typography extends Structure {
                 <?php
 
                 if ( is_array( $components ) && !empty( $components ) ) {
-
                     foreach ( $components as $key => $item ) {
-
                         if ( $key ) {
-
                             switch ( $key ) {
                             case 'family':
                                 ?>
-                                            <li>
-                                            <?php
-
-                                if ( count( $font_list ) > 0 ): ?>
+                                <li>
+                                <?php
+                                if ( is_array( $font_list ) && count( $font_list ) > 0 ): ?>
                                     <div class="google-fonts">
                                         <select class="dm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
                                     <?php
-
                                     foreach ( $font_list as $key => $item ) {
                                         $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
-                                        echo '<option value="' . $item->family . '" ' . $selected . '>' . $item->family . '</option>';
+                                        ?>
+                                            <option value="<?php echo esc_attr( $item->family ); ?>" <?php echo esc_attr( $selected ); ?> ><?php echo esc_html( $item->family ); ?></option>
+                                        <?php
                                     }
-
                                     ?>
                                         </select>
                                     </div>
                                 <?php endif;?>
                                     <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
-                                            </li>
-                                                <li>
-                                                    <select data-selected_value='<?php echo esc_attr( $value["weight"] ) ;?>' name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
-                                                    <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
-                                                </li>
-                                                <li>
-                                                    <select data-selected_value='<?php echo esc_attr( $value["style"] ) ;?>' name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list">
-                                                    </select>
-                                                    <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
+                                </li>
+                                <li>
+                                    <select data-selected_value='<?php echo isset( $value["weight"] )  ? esc_attr( $value["weight"] ) : "" ;?>' name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
+                                    <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
+                                </li>
+                                <li>
+                                    <select data-selected_value='<?php echo isset( $value["weight"] ) ? esc_attr( $value["style"] ) : "" ;?>' name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list"></select>
+                                    <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
+                                </li>
+                                <?php
+                            break;
                             case 'size':
                                 ?>
-                                                <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[size]"
-                                                        value="<?php echo isset( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input dm-ctrl font-size" />
-                                                        <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
+                                <li>
+                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[size]" value="<?php echo isset( $value["size"] ) && is_numeric( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input dm-ctrl font-size" />
+                                    <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
+                                </li>
+                                <?php
+                            break;
                             case 'line-height':
                                 ?>
-                                                <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input dm-ctrl " />
-                                                    <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
+                                <li>
+                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) && is_numeric( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input dm-ctrl " />
+                                    <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
+                                </li>
+                                <?php
+                            break;
                             case 'letter-spacing':
                                 ?>
-                                                <li>
-                                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input dm-ctrl " />
-                                                    <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
+                                <li>
+                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) && is_numeric( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input dm-ctrl " />
+                                    <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
+                                </li>
+                                <?php
+                            break;
                             case 'color':
                                 ?>
-                                                <li>
-                                                    <input  type="text"
-                                                    name="<?php echo esc_attr( $name ) ?>[color]"
-                                                    value="<?php echo isset( $value["color"] ) ? esc_html( $value["color"] ) : ""; ?>"
-                                                    class="dm-ctrl dm-typography-color-field"
-                                                    data-default-color="<?php echo esc_attr( $value["color"] ); ?>" />
-                                                    <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
-                                                </li>
-                                            <?php
-                                break;
+                                <li>
+                                    <input  type="text" name="<?php echo esc_attr( $name ) ?>[color]" value="<?php echo isset( $value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $value["color"]) ? esc_html( $value["color"] ) : ""; ?>"
+                                            class="dm-ctrl dm-typography-color-field" data-default-color="<?php echo isset( $value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $value["color"]) ? esc_html( $value["color"] ) : ""; ?>" />
+                                    <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
+                                </li>
+                                <?php
+                            break;
 
                             default:
                                 # code...
