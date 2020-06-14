@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
     };
 
 
-    $(".dm-oembed-url-input").on("keyup",
+    $(document).on("keyup",".dm-oembed-url-input",
          function () {
             var wrapper = $(this);
 
