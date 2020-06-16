@@ -29,6 +29,7 @@ jQuery(document).ready(function($){
     }
 
     $(document).on('input change','.dm-ctrl', function(){
+
         var currentControlValue = $(this).val(),
             conditionalInputs = $('.dm-condition-active'),
             currentControlName = $(this).attr('name');
@@ -36,22 +37,24 @@ jQuery(document).ready(function($){
         conditionalInputs.each(function(){
             var conditions = $(this).data('dm_conditions'),
                 conditionField =  $(this);
+                conditionField.removeClass('applied');
 
-            conditions.every(function(item){
+            conditions.forEach(function(item){
                 var condition = item,
                     name = 'devmonsta_' + condition.control_name,
                     oparator = condition.operator,
                     value = condition.value;
-                    
+
+                if(conditionField.hasClass('applied')){ return false; }
+
                 if(currentControlName === name){
                     if(operators(currentControlValue, value, oparator)){
                         conditionField.addClass('open');
-                        return false;
+                        conditionField.addClass('applied');
                     }
                     else {
                         conditionField.removeClass('open');
                     }
-                    return true;
                 } 
             });
         });
