@@ -11,7 +11,7 @@ jQuery(window).on('dm-scripts.dm', function(){
             dateFormat: date_time_range_config.format,
             minDate: min_date,
             maxDate: max_date,
-            defaultTime: date_time_range_config.default_time,
+            defaultTime: date_time_range_config.defaultTime,
             enableTime: time_picker,
         });
     }
