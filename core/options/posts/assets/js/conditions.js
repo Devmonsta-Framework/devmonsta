@@ -28,9 +28,9 @@ jQuery(document).ready(function($){
         }
     }
 
-    $(document).on('input change','.dm-ctrl', function(){
+    $(document).on('input change','.dm-ctrl', function(e, val){
 
-        var currentControlValue = $(this).val(),
+        var currentControlValue = val ? val : $(this).val(),
             conditionalInputs = $('.dm-condition-active'),
             currentControlName = $(this).attr('name');
 
