@@ -1060,3 +1060,18 @@ function dm_oembed_get($url, $args = array())
 	return $html;
 }
 
+function dm_meta($post_id, $option_id, $default_value= null){
+    $prefix = 'devmonsta_';
+    $option_id = $prefix . $option_id;
+    $post_id = intval($post_id);
+    return get_post_meta($post_id, $option_id, true);
+}
+
+function dm_taxonomy(){
+
+}
+
+function dm_theme_option(){
+
+}
+
