@@ -1,5 +1,10 @@
-jQuery(window).on('dm-scripts.dm', function(){
+jQuery(window).on('dm-scripts.datetimePicker', function(e, repeater){
     var el = jQuery('.dm-option.active-script .dm-option-input-datetime-picker');
+    
+    // update repeater element
+    if(repeater) {
+        el = repeater.find('.dm-option-input-datetime-picker');
+    }
 
     //Initialize the datepicker and set the first day of the week as Monday
     if (el.length && !el.hasClass('flatpickr-input')) {
@@ -20,5 +25,5 @@ jQuery(window).on('dm-scripts.dm', function(){
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('dm-scripts.datetimePicker');
 });
