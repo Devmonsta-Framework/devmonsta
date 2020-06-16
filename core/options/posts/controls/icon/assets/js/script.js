@@ -86,6 +86,10 @@ jQuery(document).ready(function(){
                 this.tempiconType = value;
             }
         },
+        mounted: function(){
+            console.log(this.pickedIcon);
+            jQuery(this.$el).find('.dm-ctrl').trigger('change', [this.pickedIcon])
+        },
         created: function () {
             this.iconList = JSON.parse(this.icon_list);
             this.savedIconClass = this.default_icon ? this.default_icon : '';
