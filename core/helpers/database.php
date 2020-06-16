@@ -486,7 +486,7 @@ new DM_Db_Options_Model_Customizer();
  *
  * @return void
  */
-function dm_p() {
+function dm_post() {
 	static $DM_POST = null;
 
 	if ($DM_POST === null) {
