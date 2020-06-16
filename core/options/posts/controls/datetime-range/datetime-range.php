@@ -6,7 +6,7 @@ use Devmonsta\Options\Posts\Structure;
 
 class DatetimeRange extends Structure {
 
-    protected $current_screen;
+    protected $current_screen, $date_time_range_format;
 
     private $allowed_date_formats = [
         'Y-m-d',
@@ -57,13 +57,13 @@ class DatetimeRange extends Structure {
         $date_time_range_config                = $this->content['datetime-picker'];
         $date_format                           = isset( $date_time_range_config['date-format'] ) && in_array($date_time_range_config['date-format'], $this->allowed_date_formats) ? $date_time_range_config['date-format'] : 'Y-m-d';
         $time_format                           = isset( $date_time_range_config['time-format'] ) && in_array($date_time_range_config['time-format'], $this->allowed_time_formats) ? $date_time_range_config['time-format'] : 'H:i';
-        $date_time_range_data['format']        = $date_format . " " . $time_format;
+        $date_time_range_data['format']        = $this->date_time_range_format = $date_format . " " . $time_format;
         $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
         $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
         $date_time_range_data['timepicker']    = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
         $date_time_range_data['defaultTime']   = isset( $date_time_range_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_range_config['defaultTime']) ? $date_time_range_config['defaultTime'] : '12:00';
 
-        wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $date_time_range_config );
+        wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $date_time_range_data );
 
     }
 
@@ -73,7 +73,7 @@ class DatetimeRange extends Structure {
     public function render() {
         $content       = $this->content;
         $default_value = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
-                        ? ( date( "Y-m-d H:i", strtotime( $content['value']['from'] ) ) . " to " . date( "Y-m-d H:i", strtotime( $content['value']['to'] ) ) )
+                        ? ( date( $this->date_time_range_format, strtotime( $content['value']['from'] ) ) . " - " . date( $this->date_time_range_format, strtotime( $content['value']['to'] ) ) )
                         : "";
         global $post;
         $this->value = (  ( $this->current_screen == "post" )

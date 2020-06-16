@@ -1,6 +1,7 @@
 jQuery(window).on('dm-scripts.datetimeRange', function(){
     var el = jQuery('.dm-option.active-script .dm-option-input-datetime-range');
     
+    console.log(date_time_range_config.format);
     if (el.length && !el.hasClass('flatpickr-input')) {
 
         var time_picker = (date_time_range_config.timepicker == 0) ? false : true;
