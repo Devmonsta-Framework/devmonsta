@@ -143,7 +143,7 @@ class CheckboxMultiple extends Structure {
                                 }
                                 ?>
                                 <label class="dm-option-label-list">
-                                    <input class="dm-ctrl" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
+                                    <input class="dm-ctrl oka" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
                                         value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
                                         <?php echo esc_html( $element ); ?>
                                 </label>

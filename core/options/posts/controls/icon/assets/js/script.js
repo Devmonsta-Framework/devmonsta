@@ -87,7 +87,6 @@ jQuery(document).ready(function(){
             }
         },
         mounted: function(){
-            console.log(this.pickedIcon);
             jQuery(this.$el).find('.dm-ctrl').trigger('change', [this.pickedIcon])
         },
         created: function () {
