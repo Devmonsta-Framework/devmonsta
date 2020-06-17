@@ -42,11 +42,13 @@ class RangeSlider extends Structure {
      * @internal
      */
     public function enqueue( ) {
-        wp_enqueue_style( 'dm-range-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
+        wp_enqueue_style( 'dm-range-slider-asrange-css', DM_CORE . 'options/posts/controls/range-slider/assets/css/asRange.css' );
         if ( !wp_script_is( 'dm-slider-asrange', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
+            wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/range-slider/assets/js/jquery-asRange.min.js' );
         }
-        wp_enqueue_script( 'dm-customizer-range-slider', DM_CORE . 'options/customizer/controls/range-slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
+        wp_enqueue_script( 'dm-range-slider-from-post', DM_CORE . 'options/posts/controls/range-slider/assets/js/script.js', ['jquery'], time(), true );
+
+        wp_enqueue_script( 'dm-customizer-range-slider', DM_CORE . 'options/customizer/controls/range-slider/assets/js/script.js', ['jquery'], time(), true );
 
         $range_slider_config       = $this->properties;
         $range_slider_data['min']  = isset( $range_slider_config['min'] ) && is_numeric(isset( $range_slider_config['min'] )) ? $range_slider_config['min'] : 0;

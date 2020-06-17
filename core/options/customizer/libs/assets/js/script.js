@@ -1,8 +1,8 @@
 jQuery(window).on('load',function($){
 
-    jQuery('input.dm-ctrl').each(function(){
+    jQuery('.dm-ctrl').each(function(){
         var name = jQuery(this).attr('data-customize-setting-link'),   
-            value = jQuery(this).attr('data-value');
+            value = jQuery(this).data('value');
 
             var self = jQuery(this);
         wp.customize( name, function ( obj ) {

@@ -31,16 +31,30 @@ jQuery(document).ready(function($){
     $(document).on('input change','.dm-ctrl', function(e, val){
         var currentControlValue = val ? val : $(this).val(),
             conditionalInputs = $('.dm-condition-active'),
-            currentControlName = $(this).attr('name');
-            var self = $(this);
-            var values = [];
+            currentControlName = $(this).attr('name'),
+            self = $(this),
+            values = Array.isArray(currentControlValue) ? currentControlValue : [];
 
+            // checkbox
             if(self.attr('type') == 'checkbox'){
                 $(this).parents('.dm-option-column').find('input:checked').each(function(item){
                     values.push($(this).val());
                 });
                 currentControlValue = $(this).parents('.dm-option-column').find('input:checked').val();
             }
+            // radio
+            if(self.attr('type') == 'radio'){
+                currentControlValue = $(this).parents('.dm-option-column').find('input:checked').val();
+            }
+            // for switcher
+            if(self.hasClass('dm-control-switcher')) {
+                if(self.is(':checked')) {
+                    currentControlValue = self.data('right_key')
+                } else {
+                    currentControlValue = self.data('left_key')
+                }
+                
+             }
            
         conditionalInputs.each(function(){
             var conditions = $(this).data('dm_conditions'),
@@ -66,6 +80,9 @@ jQuery(document).ready(function($){
                     name = 'devmonsta_' + condition.control_name,
                     oparator = condition.operator,
                     value = condition.value;
+                    if(typeof value === 'boolean'){
+                        value = String(value);
+                    }
 
                 if(conditionField.hasClass('applied')){ return false; }
 
@@ -74,12 +91,11 @@ jQuery(document).ready(function($){
                     if(is_same && values.length){
                         currentControlValue = values[0];
                     }
-
+                    
                     if(operators(currentControlValue, value, oparator)){
                         conditionField.addClass('open');
                         conditionField.addClass('applied');
-                    }
-                    else if(!operators(currentControlValue, value, oparator)){
+                    } else {
                         conditionField.removeClass('open');
                     }
                 } 
