@@ -1,6 +1,5 @@
 jQuery(window).on('dm-scripts.dm', function(){
     var el = jQuery('.dm-option.active-script .dm-range-slider');
-    console.log("as range loaded");
     if (el.length) {
         el.asRange({
             max: range_slider_config.max,
