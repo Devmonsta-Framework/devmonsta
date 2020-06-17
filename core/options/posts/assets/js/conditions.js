@@ -31,16 +31,26 @@ jQuery(document).ready(function($){
     $(document).on('input change','.dm-ctrl', function(e, val){
         var currentControlValue = val ? val : $(this).val(),
             conditionalInputs = $('.dm-condition-active'),
-            currentControlName = $(this).attr('name');
-            var self = $(this);
-            var values = Array.isArray(currentControlValue) ? currentControlValue : [];
+            currentControlName = $(this).attr('name'),
+            self = $(this),
+            values = Array.isArray(currentControlValue) ? currentControlValue : [];
 
+            // checkbox
             if(self.attr('type') == 'checkbox'){
                 $(this).parents('.dm-option-column').find('input:checked').each(function(item){
                     values.push($(this).val());
                 });
                 currentControlValue = $(this).parents('.dm-option-column').find('input:checked').val();
             }
+            // for switcher
+            if(self.hasClass('dm-control-switcher')) {
+                if(self.is(':checked')) {
+                    currentControlValue = self.data('right_key')
+                } else {
+                    currentControlValue = self.data('left_key')
+                }
+                
+             }
            
         conditionalInputs.each(function(){
             var conditions = $(this).data('dm_conditions'),
