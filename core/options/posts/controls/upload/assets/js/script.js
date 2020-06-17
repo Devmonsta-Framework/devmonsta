@@ -33,6 +33,7 @@ jQuery(document).ready(function($) {
      */
     $('body').on('click', '.dm_remove_image_button', function() {
         $(this).hide().prev().val('').prev().addClass('button').html('Upload image');
+        $(this).parent().find('.dm-upload').trigger('input');
         return false;
     });
 });
