@@ -1,6 +1,5 @@
 jQuery(window).on('dm-scripts.dm', function(){
     var el = jQuery('.dm-option.active-script .dm-range-slider');
-    
     if (el.length) {
         el.asRange({
             max: range_slider_config.max,
@@ -14,6 +13,10 @@ jQuery(window).on('dm-scripts.dm', function(){
             scale: true,
             format(value) {
               return value;
+            },
+            onChange(instance) {
+                console.log("changed");
+                jQuery(this)[0].$element.trigger("change");
             }
         }); 
     }
