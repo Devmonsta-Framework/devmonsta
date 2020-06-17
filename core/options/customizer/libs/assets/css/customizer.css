@@ -449,14 +449,14 @@
    }
    
    .toggle-switch-inner:before {
-       content: "ON";
+       /*content: "ON";*/
        padding-left: 8px;
        background-color: #2885bb;
        color: #FFFFFF;
    }
    
    .toggle-switch-inner:after {
-       content: "OFF";
+       /*content: "OFF";*/
        padding-right: 8px;
        background-color: #eeeeee;
        color: #999999;

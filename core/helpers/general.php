@@ -1066,7 +1066,7 @@ function dm_oembed_get($url, $args = array())
     return $html;
 }
 
-function dm_meta($post_id, $option_id, $default_value = null)
+function dm_meta_option($post_id, $option_id, $default_value = null)
 {
     $prefix = 'devmonsta_';
     $option_id = $prefix . $option_id;
