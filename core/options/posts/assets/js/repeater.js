@@ -90,6 +90,8 @@ function resetRepeater(clonedElement){
     jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
     jQuery(window).trigger('dm-vue.dm', [clonedElement]);
     jQuery(window).trigger('dm-scripts-typo.dm', [clonedElement]);
+    // gradient
+    jQuery(window).trigger('dm-scripts.gradient', [clonedElement]);
     // datetime Range
     jQuery(window).trigger('dm-scripts.datetimeRange', [clonedElement]);
     // Date Picker
