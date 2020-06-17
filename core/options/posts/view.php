@@ -143,7 +143,7 @@ class View
                     </div>
 
                     <div id="dm-repeater-control-list-<?php echo $control_data['name']; ?>" class="dm-repeater-control-list">
-                        <?php echo $repeater_controls; ?>
+
                     </div>
 
                     <input type="hidden" value='<?php echo $repeater_controls; ?>' 
