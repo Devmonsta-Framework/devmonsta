@@ -1079,8 +1079,8 @@ function dm_taxonomy($term_id, $key = '', $single = true)
     return get_term_meta($term_id, $key, $single);
 }
 
-function dm_theme_option($option_name)
+function dm_theme_option($option_name, $default = null)
 {
-    return get_theme_mod($option_name);
+    return get_theme_mod($option_name, $default);
 }
 
