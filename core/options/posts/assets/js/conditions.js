@@ -77,12 +77,11 @@ jQuery(document).ready(function($){
                     if(is_same && values.length){
                         currentControlValue = values[0];
                     }
-
+                    
                     if(operators(currentControlValue, value, oparator)){
                         conditionField.addClass('open');
                         conditionField.addClass('applied');
-                    }
-                    else if(!operators(currentControlValue, value, oparator)){
+                    } else {
                         conditionField.removeClass('open');
                     }
                 } 
