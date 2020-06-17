@@ -86,18 +86,16 @@ class Switcher extends Structure {
 
                 <div class="dm-option-column right dm-switcher">
                     
-                    <?php $multi_values = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
+                    <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
 
-                    <ul class="customize-control">
-                        <?php foreach ( $this->choices as $value => $label ) : ?>
+                    <ul class="customize-control dm-switcher">
                             <li >
                                 <label>
-                                    <input class="dm-ctrl customize-control-switcher" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
-                                    <?php echo esc_html( $label ); ?>
+                                    <input class="dm-ctrl customize-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
+                                    <?php echo esc_html( $this->right_choice[$this->right_key] ); ?>
                                 </label>
                             </li>
-                        <?php endforeach; ?>
-                        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $multi_values ) ); ?>" />
+                        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $saved_value ) ); ?>" />
                     </ul>
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
