@@ -1079,7 +1079,7 @@ function dm_taxonomy($term_id, $key = '', $single = true)
     return get_term_meta($term_id, $key, $single);
 }
 
-function dm_theme_option($option_name, $default = null)
+function dm_theme_option($option_name, $default = false )
 {
     return get_theme_mod($option_name, $default);
 }
