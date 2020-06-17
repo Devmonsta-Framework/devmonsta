@@ -33,7 +33,7 @@ jQuery(document).ready(function($){
             conditionalInputs = $('.dm-condition-active'),
             currentControlName = $(this).attr('name');
             var self = $(this);
-            var values = [];
+            var values = Array.isArray(currentControlValue) ? currentControlValue : [];
 
             if(self.attr('type') == 'checkbox'){
                 $(this).parents('.dm-option-column').find('input:checked').each(function(item){
@@ -66,6 +66,9 @@ jQuery(document).ready(function($){
                     name = 'devmonsta_' + condition.control_name,
                     oparator = condition.operator,
                     value = condition.value;
+                    if(typeof value === 'boolean'){
+                        value = String(value);
+                    }
 
                 if(conditionField.hasClass('applied')){ return false; }
 
