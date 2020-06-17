@@ -7,7 +7,7 @@ jQuery(window).on('dm-scripts.datetimePicker', function(e, repeater){
     }
 
     //Initialize the datepicker and set the first day of the week as Monday
-    if (el.length && !el.hasClass('flatpickr-input')) {
+    if (el.length) {
         var time_picker = (date_time_picker_config.timepicker == 0) ? false : true;
         var min_date = (date_time_picker_config.minDate == "") ? false : date_time_picker_config.minDate;
         var max_date = (date_time_picker_config.maxDate == "") ? false : date_time_picker_config.maxDate;
