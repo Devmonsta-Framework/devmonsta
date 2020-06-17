@@ -3,11 +3,11 @@ jQuery(document).ready(function($) {
     $('body').on('click', '.dm_upload_image_button', function(e) {
 
         e.preventDefault();
-        var multiple = false;
+        var multiple = false,
+            self = $(this);
         if ($(this).data('multiple')) {
             multiple = Boolean($(this).data('multiple'));
         }
-        console.log(multiple);
 
         var button = $(this),
             custom_uploader = wp.media({
@@ -21,8 +21,8 @@ jQuery(document).ready(function($) {
                 multiple: multiple
             }).on('select', function() {
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
-
                 $(button).removeClass('button').html('<img class="true_pre_image" src="' + attachment.url + '" style="max-width:95%;display:block;" />').next().val(attachment.id).next().show();
+                self.parent().find('.dm-upload').trigger('input');
 
             })
             .open();
