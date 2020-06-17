@@ -66,6 +66,9 @@ jQuery(document).ready(function($){
                     name = 'devmonsta_' + condition.control_name,
                     oparator = condition.operator,
                     value = condition.value;
+                    if(typeof value === 'boolean'){
+                        value = String(value);
+                    }
 
                 if(conditionField.hasClass('applied')){ return false; }
 
