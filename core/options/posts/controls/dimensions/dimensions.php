@@ -133,6 +133,7 @@ class Dimensions extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
@@ -141,7 +142,7 @@ class Dimensions extends Structure {
 
             <div class="dm-option-column right">
                 <dm-dimensions
-                    :dimension="<?php echo isset( $value['isLinked'] ) ? esc_attr( $value['isLinked'] ) : 'false'; ?>" 
+                    :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>" 
                     linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
                 >
                     <dm-dimensions-item
