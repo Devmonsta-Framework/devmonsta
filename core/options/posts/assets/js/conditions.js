@@ -42,6 +42,10 @@ jQuery(document).ready(function($){
                 });
                 currentControlValue = $(this).parents('.dm-option-column').find('input:checked').val();
             }
+            // radio
+            if(self.attr('type') == 'radio'){
+                currentControlValue = $(this).parents('.dm-option-column').find('input:checked').val();
+            }
             // for switcher
             if(self.hasClass('dm-control-switcher')) {
                 if(self.is(':checked')) {
