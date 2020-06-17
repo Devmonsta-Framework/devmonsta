@@ -28,32 +28,64 @@ jQuery(document).ready(function($){
         }
     }
 
-    $(document).on('input change','.dm-ctrl', function(){
-        var currentControlValue = $(this).val(),
+    $(document).on('input change','.dm-ctrl', function(e, val){
+        var currentControlValue = val ? val : $(this).val(),
             conditionalInputs = $('.dm-condition-active'),
             currentControlName = $(this).attr('name');
+            var self = $(this);
+            var values = [];
 
+            if(self.attr('type') == 'checkbox'){
+                $(this).parents('.dm-option-column').find('input:checked').each(function(item){
+                    values.push($(this).val());
+                });
+                currentControlValue = $(this).parents('.dm-option-column').find('input:checked').val();
+            }
+           
         conditionalInputs.each(function(){
             var conditions = $(this).data('dm_conditions'),
                 conditionField =  $(this);
+                conditionField.removeClass('applied');
+                if( self.parents('.dm-option-column').hasClass('done')){ return false }
+                // if value is array
+                if(values.length){
+                    var conditionValue = conditions.map(item => item.value),
+                    is_same = false;
+                    values.forEach(function(item){
+                        if(conditionValue.indexOf(item) != -1){
+                            is_same = true;
+                        } else {
+                            is_same = false;
+                        }
+                    });
+                }
+                // end if value is array
 
-            conditions.every(function(item){
+            conditions.forEach(function(item){
                 var condition = item,
                     name = 'devmonsta_' + condition.control_name,
                     oparator = condition.operator,
                     value = condition.value;
-                    
+
+                if(conditionField.hasClass('applied')){ return false; }
+
                 if(currentControlName === name){
+                    // if value is array
+                    if(is_same && values.length){
+                        currentControlValue = values[0];
+                    }
+
                     if(operators(currentControlValue, value, oparator)){
                         conditionField.addClass('open');
-                        return false;
+                        conditionField.addClass('applied');
                     }
-                    else {
+                    else if(!operators(currentControlValue, value, oparator)){
                         conditionField.removeClass('open');
                     }
-                    return true;
                 } 
             });
         });
     });
+
+    $('.dm-ctrl').trigger('change');
 })

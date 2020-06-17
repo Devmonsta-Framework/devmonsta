@@ -16,7 +16,7 @@ jQuery(document).ready(function(){
                        <div class="dm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
                     </div>
                     <button class="dm-add-icon-btn button" @click.prevent="openModal">{{ iconBtnText }}</button>
-                    <input v-if="!wp.customize" type="hidden" :name="name" v-model="savedIconClass">
+                    <input v-if="!wp.customize" class="dm-ctrl" type="hidden" :name="name" v-model="savedIconClass">
                     <input v-if="!wp.customize" type="hidden" :name="name + '_type'" :value="iconType">
                     
                     <input v-if="wp.customize" type="hidden" v-model="customizerdata" :data-customize-setting-link="name"  />
@@ -80,10 +80,14 @@ jQuery(document).ready(function(){
                 this.savedIconClass = this.pickedIcon;
                 this.iconType = this.tempiconType;
                 this.customizerdata = JSON.stringify({iconType: this.iconType, icon: this.pickedIcon});
+                jQuery(this.$el).find('.dm-ctrl').trigger('change', [this.pickedIcon])
             },
             changeIconType: function (value) {
                 this.tempiconType = value;
             }
+        },
+        mounted: function(){
+            jQuery(this.$el).find('.dm-ctrl').trigger('change', [this.pickedIcon])
         },
         created: function () {
             this.iconList = JSON.parse(this.icon_list);

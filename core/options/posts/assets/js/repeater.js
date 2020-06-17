@@ -64,9 +64,7 @@ jQuery(document).ready(function ($) {
         // resetting repeater name
         controlNameChanging(controlConfig)
         // resetting data
-        jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
-        jQuery(window).trigger('dm-vue.dm', [clonedElement]);
-        jQuery(window).trigger('dm-scripts-typo.dm', [clonedElement]);
+        resetRepeater(clonedElement);
     });
     
     // open and closing popup
@@ -86,3 +84,18 @@ jQuery(document).ready(function ($) {
         jQuery('.dm-repeater-add-new').trigger('click', [true]);
     })
 });
+
+// reset repeater func
+function resetRepeater(clonedElement){
+    jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
+    jQuery(window).trigger('dm-vue.dm', [clonedElement]);
+    jQuery(window).trigger('dm-scripts-typo.dm', [clonedElement]);
+    // datetime Range
+    jQuery(window).trigger('dm-scripts.datetimeRange', [clonedElement]);
+    // Date Picker
+    jQuery(window).trigger('dm-scripts.datePicker', [clonedElement]);
+    // colorpicker
+    jQuery(window).trigger('dm-scripts.colorPicker', [clonedElement]);
+    // datetime picker
+    jQuery(window).trigger('dm-scripts.datetimePicker', [clonedElement]);
+}

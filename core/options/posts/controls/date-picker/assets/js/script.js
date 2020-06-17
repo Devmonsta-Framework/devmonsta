@@ -1,4 +1,4 @@
-jQuery(window).on('dm-scripts.dm', function(){
+jQuery(window).on('dm-scripts.datePicker', function(){
     
     var el = jQuery('.dm-option.active-script .dm-option-input-date-picker');
     var mondayFirst = (dm_date_picker_config.mondayFirst == 1) ? true : false;
@@ -18,5 +18,5 @@ jQuery(window).on('dm-scripts.dm', function(){
 });
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('dm-scripts.datePicker');
 });
