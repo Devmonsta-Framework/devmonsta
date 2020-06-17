@@ -78,7 +78,7 @@ class Multiselect extends Structure {
                     <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
                 <div class="dm-option-column right">
-                    <select class="dm-ctrl dm_multi_select"  <?php $this->link(); ?> multiple="multiple" style="height: 100%;">
+                    <select class="dm-ctrl dm_multi_select" <?php $this->link(); ?> multiple="multiple" style="height: 100%;" data-value="<?php echo esc_html( json_encode($this->value) ); ?>">
                         <?php
                         if(isset($this->choices) && is_array($this->choices)){
                             foreach ( $this->choices as $value => $label ) {
