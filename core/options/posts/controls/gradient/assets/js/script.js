@@ -1,4 +1,4 @@
-jQuery(window).on('dm-scripts.gradient', function(){    
+jQuery(window).on('dm-scripts.dm', function(){    
     for(color_id in gradient_picker_config.defaults){
         let single_color = '.dm-option.active-script .dm-gradient-field-' + color_id ;
         let dmOptions = {
@@ -10,10 +10,9 @@ jQuery(window).on('dm-scripts.gradient', function(){
         };
         jQuery(single_color).wpColorPicker(dmOptions);
     }
-
 });
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.gradient');
+    jQuery(window).trigger('dm-scripts.dm');
 });

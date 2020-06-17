@@ -1,9 +1,11 @@
-jQuery(window).on('dm-scripts.datetimeRange', function(){
+jQuery(window).on('dm-scripts.datetimeRange', function(e, val){
     var el = jQuery('.dm-option.active-script .dm-option-input-datetime-range');
-    
-    console.log(date_time_range_config.format);
-    if (el.length && !el.hasClass('flatpickr-input')) {
 
+    if(val){
+        el = val.find('.dm-option-input-datetime-range');
+    }
+
+    if (el.length) {
         var time_picker = (date_time_range_config.timepicker == 0) ? false : true;
         var min_date = (date_time_range_config.minDate == "") ? false : date_time_range_config.minDate;
         var max_date = (date_time_range_config.maxDate == "") ? false : date_time_range_config.maxDate;
