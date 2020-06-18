@@ -427,14 +427,33 @@
 }
 
 // taxonomy after save
-.dm-taxonomy-wrapper.post-type-post{
+.dm-taxonomy-wrapper.dm-taxonomy-edit-wrapper{
     .dm-option i,
     .dm-option{
         display: flex;
     }
-    .dm-option-column.left{
-        width: 100%;
-        min-width: 225px;
+    .dm-option-column{
+        &.left{
+            width: 100%;
+            min-width: 225px;
+        }
+        &.right{
+            margin-right: 40px;
+        }
+    }
+    #edittag{
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        > i:last-child {
+            order: 2;
+        }
+    }
+    > .form-table{
+        order: 0;
+    }
+    .dm-option{
+        order: 1;
     }
 }
 
