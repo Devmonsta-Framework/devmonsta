@@ -336,6 +336,16 @@
     }
 }
 
+.dm-taxonomy-wrapper{
+    .dm-option.dm-condition-active{
+        display: none;
+        &.open{
+            display: block;
+        }
+    }
+}
+
+
 // customizer
 .wp-customizer{
     .dm-option{
