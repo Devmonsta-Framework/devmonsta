@@ -113,7 +113,13 @@ class Taxonomies
 
     public function add_body_classes($classes)
     {
-        $classes = 'dm-taxonomy-wrapper';
+        global $pagenow;
+
+        $classes = 'dm-taxonomy-wrapper ';
+
+        if ($pagenow == 'term.php')
+            $classes .= 'dm-taxonomy-edit-wrapper';
+
         return $classes;
     }
 
@@ -385,7 +391,7 @@ class Taxonomies
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
-        wp_enqueue_script( 'dm-conditions', DM_PATH.'core/options/posts/assets/js/conditions.js', [], null, true );
+        wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
 
     }
