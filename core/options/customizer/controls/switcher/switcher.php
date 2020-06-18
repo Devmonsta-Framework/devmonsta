@@ -91,7 +91,7 @@ class Switcher extends Structure {
                     <ul class="customize-control dm-switcher">
                             <li >
                                 <label>
-                                    <input class="dm-ctrl customize-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
+                                    <input data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>"  class="dm-ctrl dm-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
                                     <?php echo esc_html( $this->right_choice[$this->right_key] ); ?>
                                 </label>
                             </li>

@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
 
     /* === Script For Switcher Control === */
 
-    $('.customize-control-switcher').on(
+    $('.dm-control-switcher').on(
         'change',
         function () {
             var checked = $(this).parents('.dm-switcher').find('input[type="checkbox"]:checked');
