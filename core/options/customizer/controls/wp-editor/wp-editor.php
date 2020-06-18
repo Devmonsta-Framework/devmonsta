@@ -5,7 +5,8 @@ use Devmonsta\Options\Customizer\Structure;
 
 class WpEditor extends Structure {
 
-    public $label, $name, $desc, $value, $default_attributes;
+    public $label, $name, $desc, $value, $default_value, 
+            $default_attributes, $editor_height, $editor_wpautop;
 
     /**
 	 * The type of customize control being rendered.
@@ -42,6 +43,10 @@ class WpEditor extends Structure {
         $this->label         = isset( $args[0]['label'] ) ? $args[0]['label'] : "";
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
+        $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
+
+        $this->editor_height = isset($args[0]["editor_height"]) && is_numeric($args[0]["editor_height"]) ? $args[0]["editor_height"] : 200;
+        $this->editor_wpautop = isset($args[0]["wpautop"]) ? (bool) $args[0]['wpautop'] : false;
 
         //generate attributes dynamically for parent tag
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
@@ -56,8 +61,6 @@ class WpEditor extends Structure {
      */
     public function enqueue() {
         add_action( 'customize_controls_enqueue_scripts', [$this, 'editor_customizer_script'] );
-         
-        // wp_enqueue_script( 'dm-customizer-wpeditor-handle', DM_CORE . 'options/customizer/controls/wp-editor/assets/js/script.js', ['jquery'], false, true );
     }
 
     /**
@@ -82,15 +85,13 @@ class WpEditor extends Structure {
                     
                     <input class="wp-editor-area" type="hidden" <?php $this->link(); ?> value="<?php echo esc_textarea( $this->value() ); ?>">
                         <?php
-                        $content = $this->value();
+                        $content = !empty( $this->value() ) && !is_null( $this->value() ) ? $this->value() : $this->default_value;
                         $editor_id = $this->name;
                         $settings = array(
                             'textarea_name' => $this->name,
-                            'media_buttons' => true,
-                            'drag_drop_upload' => false,
-                            'teeny' => true,
-                            'quicktags' => true,
-                            'textarea_rows' => 5,
+                            "wpautop" => $this->editor_wpautop,
+                            "editor_height" => $this->editor_height,
+                            "tinymce" => false
                         );
                         $this->filter_editor_setting_link();
                         wp_editor($content, $this->id, $settings );
