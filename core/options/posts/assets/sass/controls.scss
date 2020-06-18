@@ -416,12 +416,6 @@
     top: 150px;
 }
 
-@media only screen and (max-width: 767px) {
-    .dm-repeater-inner-controls-inner{
-        margin-left: 100px;
-    }
-}
-
 // conditional
 .dm-box{
     .dm-condition-active{
@@ -431,3 +425,23 @@
         }
     }
 }
+
+// taxonomy after save
+.dm-taxonomy-wrapper.post-type-post{
+    .dm-option i,
+    .dm-option{
+        display: flex;
+    }
+    .dm-option-column.left{
+        width: 100%;
+        min-width: 225px;
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+    .dm-repeater-inner-controls-inner{
+        margin-left: 100px;
+    }
+}
+
