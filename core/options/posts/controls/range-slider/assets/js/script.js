@@ -15,7 +15,6 @@ jQuery(window).on('dm-scripts.dm', function(){
               return value;
             },
             onChange(instance) {
-                console.log("changed");
                 jQuery(this)[0].$element.trigger("change");
             }
         }); 

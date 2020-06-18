@@ -17,7 +17,6 @@ jQuery(document).ready(function ($) {
 
     // select 2 on change style and weight
     $('.google-fonts-list').on("change", function (e) {
-        console.log("typo family changed");
         //update value of value-holder
         var currentObject = $(this);
         updateValueHolder(currentObject);

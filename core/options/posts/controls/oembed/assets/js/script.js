@@ -12,9 +12,7 @@ jQuery(window).on('dm-scripts.oembed', function(){
             var url_input = jQuery(this).val();
 
             var iframeWrapper = wrapper.siblings(".dm-oembed-preview");
-            console.log(url_input);
                 if (url_input) {
-                    console.log("entered if");
                     var data = {
                         action: "get_oembed_response",
                         _nonce: wrapper.data('nonce'),
@@ -28,11 +26,9 @@ jQuery(window).on('dm-scripts.oembed', function(){
                         data: data,
                         success: function (response) {
                             iframeWrapper.html(response);
-                            console.log("response received" + response);
                         },
                     });
                 } else {
-                    console.log("entered else");
                     iframeWrapper.html('');
                 }
         }
