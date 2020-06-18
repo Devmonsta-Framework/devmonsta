@@ -31,7 +31,7 @@ class Switcher extends Structure {
      */
     public function load_switcher_scripts() {
         //css
-        wp_enqueue_style( 'dm-switcher', plugins_url( 'switcher/assets/css/dm-switcher.css', dirname( __FILE__ ) ) );
+        wp_enqueue_style( 'dm-switcher', DM_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
     }
 
     /**
