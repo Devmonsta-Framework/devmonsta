@@ -62,6 +62,7 @@ class Switcher extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
+        wp_enqueue_style( 'dm-switcher', DM_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
         wp_enqueue_script( 'dm-customizer-switcher', DM_CORE . 'options/customizer/controls/switcher/assets/js/script.js', ['jquery'], time(), true );
     }
 
@@ -88,11 +89,12 @@ class Switcher extends Structure {
                     
                     <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
 
-                    <ul class="dm-switcher">
+                    <ul class="dm-switcher dm_switcher_item">
                             <li >
                                 <label>
                                     <input data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>"  class="dm-ctrl dm-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
-                                    <?php echo esc_html( $this->right_choice[$this->right_key] ); ?>
+                                    
+                                    <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='dm_switcher_label dm-option-label'></div>
                                 </label>
                             </li>
                         <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $saved_value ) ); ?>" />
