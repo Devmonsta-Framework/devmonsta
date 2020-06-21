@@ -64,7 +64,7 @@ class Posts
             /** Get all the properties defined in post file */
 
             $post_lib = new LibsPosts;
-            
+
 
             foreach ($post_file_class as $child_class) {
 
@@ -148,10 +148,10 @@ class Posts
      * =========================================================
      *       Load scripts and style files form the controls
      *
-     *                      @return  void
+     * @return  void
      * =========================================================
      */
-    
+
     public function load_enqueue($all_controls)
     {
 
@@ -242,19 +242,17 @@ class Posts
                     $key,
                     $_POST[$key]
                 );
-                error_log($key);
+
             }
 
-            if (strpos($key, 'repeater_control_') !== false) {
-              
-              
+            if($key == 'dm_options'){
+                error_log(serialize($value));
             }
+
+
 
         }
 
-    
-
-       
 
     }
 
@@ -266,14 +264,14 @@ class Posts
     public function load_scripts()
     {
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_script( 'vue-js', DM_PATH.'core/options/posts/assets/js/vue.min.js', [], null, false );
-        wp_enqueue_script( 'dm-color-picker', DM_PATH.'core/options/posts/assets/js/script.js', [], null, true );
-        wp_enqueue_script( 'dm-conditions', DM_PATH.'core/options/posts/assets/js/conditions.js', [], null, true );
+        wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script("jquery-ui-draggable");
-        wp_enqueue_script( 'dm-repeater', DM_PATH.'core/options/posts/assets/js/repeater.js', ['jquery'], null, true );
-        wp_localize_script( 'dm-repeater', 'ajax_object', [
+        wp_enqueue_script('dm-repeater', DM_PATH . 'core/options/posts/assets/js/repeater.js', ['jquery'], null, true);
+        wp_localize_script('dm-repeater', 'ajax_object', [
             'ajax_url' => admin_url('admin-ajax.php')
-        ] );
+        ]);
 
     }
 
@@ -282,8 +280,9 @@ class Posts
      *
      * @return void
      */
-    public function register_ajax_callbacks(){
-        add_action( 'wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", '_action_get_oembed_response'] );
+    public function register_ajax_callbacks()
+    {
+        add_action('wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", '_action_get_oembed_response']);
     }
 
 }
