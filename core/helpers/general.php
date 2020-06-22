@@ -1,6 +1,8 @@
-<?php if (!defined('DM')) {
-    die('Forbidden');
+<?php
+if ( !defined( 'DM' ) ) {
+    die( 'Forbidden' );
 }
+
 // Useful functions
 
 /**
@@ -9,11 +11,10 @@
  * @param mixed $value Value to debug
  * @since 1.0.0
  */
-function dm_print($value)
-{
+function dm_print( $value ) {
     static $first_time = true;
 
-    if ($first_time) {
+    if ( $first_time ) {
         ob_start();
         echo '<style type="text/css">
 			div.dm_print_r {
@@ -55,22 +56,24 @@ function dm_print($value)
 				border-width: 0;
 			}
 			</style>';
-        echo str_replace(array('  ', "\n"), '', ob_get_clean());
+        echo str_replace( [ '  ', "\n" ], '', ob_get_clean() );
 
         $first_time = false;
     }
 
-    if (func_num_args() == 1) {
+    if ( func_num_args() == 1 ) {
         echo '<div class="dm_print_r"><pre>';
-        echo dm_htmlspecialchars(Dm_Dumper::dump($value));
+        echo dm_htmlspecialchars( Dm_Dumper::dump( $value ) );
         echo '</pre></div>';
     } else {
         echo '<div class="dm_print_r_group">';
-        foreach (func_get_args() as $param) {
-            dm_print($param);
+        foreach ( func_get_args() as $param ) {
+            dm_print( $param );
         }
+
         echo '</div>';
     }
+
 }
 
 /**
@@ -79,13 +82,12 @@ function dm_print($value)
  * @see dm_print()
  * @since 1.0.0
  */
-if (!function_exists('debug')) {
-    function debug()
-    {
-        call_user_func_array('dm_print', func_get_args());
+if ( !function_exists( 'debug' ) ) {
+    function debug() {
+        call_user_func_array( 'dm_print', func_get_args() );
     }
-}
 
+}
 
 /**
  * Use this id do not need to enter every time same last two parameters
@@ -96,11 +98,9 @@ if (!function_exists('debug')) {
  * @return string
  * @since 1.0.0
  */
-function dm_htmlspecialchars($string)
-{
-    return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+function dm_htmlspecialchars( $string ) {
+    return htmlspecialchars( $string, ENT_QUOTES, 'UTF-8' );
 }
-
 
 /**
  * Recursively find a key's value in array
@@ -113,44 +113,49 @@ function dm_htmlspecialchars($string)
  * @return null|mixed
  * @since 1.0.0
  */
-function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
+function dm_array_key_get( $keys, $array_or_object, $default_value = null, $keys_delimiter = '/' ) {
+    if ( !is_array( $keys ) ) {
+        $keys = explode( $keys_delimiter, (string) $keys );
     }
 
-    $array_or_object = dm_call($array_or_object);
+    $array_or_object = dm_call( $array_or_object );
 
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null) {
-        return dm_call($default_value);
+    $key_or_property = array_shift( $keys );
+    if ( $key_or_property === null ) {
+        return dm_call( $default_value );
     }
 
-    $is_object = is_object($array_or_object);
+    $is_object = is_object( $array_or_object );
 
-    if ($is_object) {
-        if (!property_exists($array_or_object, $key_or_property)) {
-            return dm_call($default_value);
+    if ( $is_object ) {
+        if ( !property_exists( $array_or_object, $key_or_property ) ) {
+            return dm_call( $default_value );
         }
+
     } else {
-        if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-            return dm_call($default_value);
+        if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
+            return dm_call( $default_value );
         }
+
     }
 
-    if (isset($keys[0])) { // not used count() for performance reasons
-        if ($is_object) {
-            return dm_array_key_get($keys, $array_or_object->{$key_or_property}, $default_value);
+    if ( isset( $keys[0] ) ) {
+// not used count() for performance reasons
+        if ( $is_object ) {
+            return dm_array_key_get( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
-            return dm_array_key_get($keys, $array_or_object[$key_or_property], $default_value);
+            return dm_array_key_get( $keys, $array_or_object[$key_or_property], $default_value );
         }
+
     } else {
-        if ($is_object) {
+        if ( $is_object ) {
             return $array_or_object->{$key_or_property};
         } else {
             return $array_or_object[$key_or_property];
         }
+
     }
+
 }
 
 /**
@@ -164,72 +169,81 @@ function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_
  * @return array|object
  * @since 1.0.0
  */
-function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
+function dm_array_key_set( $keys, $value, &$array_or_object, $keys_delimiter = '/' ) {
+    if ( !is_array( $keys ) ) {
+        $keys = explode( $keys_delimiter, (string) $keys );
     }
 
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null) {
+    $key_or_property = array_shift( $keys );
+    if ( $key_or_property === null ) {
         return $array_or_object;
     }
 
-    $is_object = is_object($array_or_object);
+    $is_object = is_object( $array_or_object );
 
-    if ($is_object) {
+    if ( $is_object ) {
         if (
-            !property_exists($array_or_object, $key_or_property)
-            || !(is_array($array_or_object->{$key_or_property}) || is_object($array_or_object->{$key_or_property}))
+            !property_exists( $array_or_object, $key_or_property )
+            || !( is_array( $array_or_object->{$key_or_property} ) || is_object( $array_or_object->{$key_or_property} ) )
         ) {
-            if ($key_or_property === '') {
+            if ( $key_or_property === '' ) {
                 // this happens when use 'empty keys' like: abc/d/e////i/j//foo/
-                trigger_error('Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING);
+                trigger_error( 'Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING );
             } else {
-                $array_or_object->{$key_or_property} = array();
+                $array_or_object->{$key_or_property}
+                = [];
             }
+
         }
+
     } else {
-        if (!is_array($array_or_object)) {
-            $array_or_object = array();
+
+        if ( !is_array( $array_or_object ) ) {
+            $array_or_object = [];
         }
 
         if (
             !array_key_exists(
                 $key_or_property,
                 $array_or_object
-            ) || !is_array($array_or_object[$key_or_property])
+            ) || !is_array( $array_or_object[$key_or_property] )
         ) {
-            if ($key_or_property === '') {
+
+            if ( $key_or_property === '' ) {
                 // this happens when use 'empty keys' like: abc.d.e....i.j..foo.
-                $array_or_object[] = array();
+                $array_or_object[] = [];
 
                 // get auto created key (last)
-                end($array_or_object);
-                $key_or_property = key($array_or_object);
+                end( $array_or_object );
+                $key_or_property = key( $array_or_object );
             } else {
-                $array_or_object[$key_or_property] = array();
+                $array_or_object[$key_or_property] = [];
             }
+
         }
+
     }
 
-    if (isset($keys[0])) { // not used count() for performance reasons
-        if ($is_object) {
-            dm_array_key_set($keys, $value, $array_or_object->{$key_or_property});
+    if ( isset( $keys[0] ) ) {
+// not used count() for performance reasons
+        if ( $is_object ) {
+            dm_array_key_set( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
-            dm_array_key_set($keys, $value, $array_or_object[$key_or_property]);
+            dm_array_key_set( $keys, $value, $array_or_object[$key_or_property] );
         }
+
     } else {
-        if ($is_object) {
-            $array_or_object->{$key_or_property} = $value;
+        if ( $is_object ) {
+            $array_or_object->{$key_or_property}
+            = $value;
         } else {
             $array_or_object[$key_or_property] = $value;
         }
+
     }
 
     return $array_or_object;
 }
-
 
 /**
  * Unset specified key in some array level
@@ -239,41 +253,45 @@ function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/
  * @return array|object
  * @since 1.0.0
  */
-function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
+function dm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' ) {
+    if ( !is_array( $keys ) ) {
+        $keys = explode( $keys_delimiter, (string) $keys );
     }
 
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null || $key_or_property === '') {
+    $key_or_property = array_shift( $keys );
+    if ( $key_or_property === null || $key_or_property === '' ) {
         return $array_or_object;
     }
 
-    $is_object = is_object($array_or_object);
+    $is_object = is_object( $array_or_object );
 
-    if ($is_object) {
-        if (!property_exists($array_or_object, $key_or_property)) {
+    if ( $is_object ) {
+        if ( !property_exists( $array_or_object, $key_or_property ) ) {
             return $array_or_object;
         }
+
     } else {
-        if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
+        if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
             return $array_or_object;
         }
+
     }
 
-    if (isset($keys[0])) { // not used count() for performance reasons
-        if ($is_object) {
-            dm_array_key_unset($keys, $array_or_object->{$key_or_property});
+    if ( isset( $keys[0] ) ) {
+// not used count() for performance reasons
+        if ( $is_object ) {
+            dm_array_key_unset( $keys, $array_or_object->{$key_or_property} );
         } else {
-            dm_array_key_unset($keys, $array_or_object[$key_or_property]);
+            dm_array_key_unset( $keys, $array_or_object[$key_or_property] );
         }
+
     } else {
-        if ($is_object) {
-            unset($array_or_object->{$key_or_property});
+        if ( $is_object ) {
+            unset( $array_or_object->{$key_or_property} );
         } else {
-            unset($array_or_object[$key_or_property]);
+            unset( $array_or_object[$key_or_property] );
         }
+
     }
 
     return $array_or_object;
@@ -289,15 +307,14 @@ function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
  *
  * @since 1.0.0
  */
-function dm_call($value)
-{
-    if (!dm_is_callback($value)) {
+function dm_call( $value ) {
+    if ( !dm_is_callback( $value ) ) {
         return $value;
     }
 
-    return (is_object($value) && get_class($value) == 'Closure')
-        ? $value()
-        : $value->execute();
+    return ( is_object( $value ) && get_class( $value ) == 'Closure' )
+    ? $value()
+    : $value->execute();
 }
 
 /**
@@ -308,9 +325,8 @@ function dm_call($value)
  * @return bool
  * @since 1.0.0
  */
-function dm_is_callback($value)
-{
-    return $value instanceof Dm_Callback || (is_object($value) && get_class($value) == 'Closure');
+function dm_is_callback( $value ) {
+    return $value instanceof Dm_Callback || ( is_object( $value ) && get_class( $value ) == 'Closure' );
 }
 
 /**
@@ -320,36 +336,34 @@ function dm_is_callback($value)
  * @return string
  * @since 1.0.0
  */
-function dm_human_bytes($bytes, $precision = 2)
-{
+function dm_human_bytes( $bytes, $precision = 2 ) {
     $kilobyte = 1024;
     $megabyte = $kilobyte * 1024;
     $gigabyte = $megabyte * 1024;
     $terabyte = $gigabyte * 1024;
 
-    if (($bytes >= 0) && ($bytes < $kilobyte)) {
+    if (  ( $bytes >= 0 ) && ( $bytes < $kilobyte ) ) {
         return $bytes . ' B';
-    } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-        return round($bytes / $kilobyte, $precision) . ' KB';
-    } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-        return round($bytes / $megabyte, $precision) . ' MB';
-    } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-        return round($bytes / $gigabyte, $precision) . ' GB';
-    } elseif ($bytes >= $terabyte) {
-        return round($bytes / $terabyte, $precision) . ' TB';
+    } elseif (  ( $bytes >= $kilobyte ) && ( $bytes < $megabyte ) ) {
+        return round( $bytes / $kilobyte, $precision ) . ' KB';
+    } elseif (  ( $bytes >= $megabyte ) && ( $bytes < $gigabyte ) ) {
+        return round( $bytes / $megabyte, $precision ) . ' MB';
+    } elseif (  ( $bytes >= $gigabyte ) && ( $bytes < $terabyte ) ) {
+        return round( $bytes / $gigabyte, $precision ) . ' GB';
+    } elseif ( $bytes >= $terabyte ) {
+        return round( $bytes / $terabyte, $precision ) . ' TB';
     } else {
         return $bytes . ' B';
     }
-}
 
+}
 
 /**
  * Generate random unique md5
  * @since 1.0.0
  */
-function dm_rand()
-{
-    return md5(time() . '-' . uniqid(rand(), true) . '-' . mt_rand(1, 1000));
+function dm_rand() {
+    return md5( time() . '-' . uniqid( rand(), true ) . '-' . mt_rand( 1, 1000 ) );
 }
 
 /**
@@ -358,15 +372,15 @@ function dm_rand()
  * @return string URI
  * @since 1.0.0
  */
-function dm_theme_path_uri($rel_path)
-{
-    if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
+function dm_theme_path_uri( $rel_path ) {
+    if ( is_child_theme() && file_exists( get_stylesheet_directory() . $rel_path ) ) {
         return get_stylesheet_directory_uri() . $rel_path;
-    } elseif (file_exists(get_template_directory() . $rel_path)) {
+    } elseif ( file_exists( get_template_directory() . $rel_path ) ) {
         return get_template_directory_uri() . $rel_path;
     } else {
         return 'about:blank#theme-file-not-found:' . $rel_path;
     }
+
 }
 
 /**
@@ -375,36 +389,35 @@ function dm_theme_path_uri($rel_path)
  * @return string URI
  * @since 1.0.0
  */
-function dm_theme_path($rel_path)
-{
-    if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
+function dm_theme_path( $rel_path ) {
+    if ( is_child_theme() && file_exists( get_stylesheet_directory() . $rel_path ) ) {
         return get_stylesheet_directory() . $rel_path;
-    } elseif (file_exists(get_template_directory() . $rel_path)) {
+    } elseif ( file_exists( get_template_directory() . $rel_path ) ) {
         return get_template_directory() . $rel_path;
     } else {
         return false;
     }
+
 }
 
 /**
  * Convert to Unix style directory separators
  * @since 1.0.0
  */
-function dm_fix_path($path)
-{
-    $windows_network_path = isset($_SERVER['windir']) && in_array(
-            substr($path, 0, 2),
-            array('//', '\\\\'),
-            true
-        );
-    $fixed_path = untrailingslashit(str_replace(array('//', '\\'), array('/', '/'), $path));
+function dm_fix_path( $path ) {
+    $windows_network_path = isset( $_SERVER['windir'] ) && in_array(
+        substr( $path, 0, 2 ),
+        [ '//', '\\\\' ],
+        true
+    );
+    $fixed_path = untrailingslashit( str_replace( [ '//', '\\' ], [ '/', '/' ], $path ) );
 
-    if (empty($fixed_path) && !empty($path)) {
+    if ( empty( $fixed_path ) && !empty( $path ) ) {
         $fixed_path = '/';
     }
 
-    if ($windows_network_path) {
-        $fixed_path = '//' . ltrim($fixed_path, '/');
+    if ( $windows_network_path ) {
+        $fixed_path = '//' . ltrim( $fixed_path, '/' );
     }
 
     return $fixed_path;
@@ -416,16 +429,15 @@ function dm_fix_path($path)
  * @return string
  * @since 1.0.0
  */
-function dm_get_framework_directory($rel_path = '')
-{
+function dm_get_framework_directory( $rel_path = '' ) {
     try {
-        $dir = Dm_Cache::get($cache_key = 'dm_framework_dir');
-    } catch (Dm_Cache_Not_Found_Exception $e) {
+        $dir = Dm_Cache::get( $cache_key = 'dm_framework_dir' );
+    } catch ( Dm_Cache_Not_Found_Exception $e ) {
         Dm_Cache::set(
             $cache_key,
             $dir = apply_filters(
                 'dm_framework_directory',
-                dm_fix_path(dirname(dirname(__FILE__))) // double dirname() to remove '/helpers', use parent dir
+                dm_fix_path( dirname( dirname( __FILE__ ) ) ) // double dirname() to remove '/helpers', use parent dir
             )
         );
     }
@@ -441,16 +453,15 @@ function dm_get_framework_directory($rel_path = '')
  * @return string
  * @since 1.0.0
  */
-function dm_get_framework_directory_uri($rel_path = '')
-{
+function dm_get_framework_directory_uri( $rel_path = '' ) {
     try {
-        $uri = Dm_Cache::get($cache_key = 'dm_framework_dir_uri');
-    } catch (Dm_Cache_Not_Found_Exception $e) {
+        $uri = Dm_Cache::get( $cache_key = 'dm_framework_dir_uri' );
+    } catch ( Dm_Cache_Not_Found_Exception $e ) {
         Dm_Cache::set(
             $cache_key,
             $uri = apply_filters(
                 'dm_framework_directory_uri',
-                ($uri = dm_get_path_url(dm_get_framework_directory())) ? $uri : get_template_directory_uri()
+                ( $uri = dm_get_path_url( dm_get_framework_directory() ) ) ? $uri : get_template_directory_uri()
             )
         );
     }
@@ -465,158 +476,158 @@ function dm_get_framework_directory_uri($rel_path = '')
  * @return string
  * @since 1.0.0
  */
-function dm_kses($raw)
-{
-    $allowed_tags = array(
-        'a' => array(
-            'class' => array(),
-            'href' => array(),
-            'rel' => array(),
-            'title' => array(),
-            'target' => array(),
-        ),
-        'upload' => array(),
-        'input' => [
-            'value' => [],
-            'type' => [],
-            'size' => [],
-            'name' => [],
-            'checked' => [],
+function dm_kses( $raw ) {
+    $allowed_tags = [
+        'a'                             => [
+            'class'  => [],
+            'href'   => [],
+            'rel'    => [],
+            'title'  => [],
+            'target' => [],
+        ],
+        'upload'                        => [],
+        'input'                         => [
+            'value'       => [],
+            'type'        => [],
+            'size'        => [],
+            'name'        => [],
+            'checked'     => [],
             'placeholder' => [],
-            'id' => [],
-            'class' => [],
+            'id'          => [],
+            'class'       => [],
         ],
 
-        'select' => [
-            'value' => [],
-            'type' => [],
-            'size' => [],
-            'name' => [],
+        'select'                        => [
+            'value'       => [],
+            'type'        => [],
+            'size'        => [],
+            'name'        => [],
             'placeholder' => [],
-            'id' => [],
-            'class' => [],
-            'option' => [
-                'value' => [],
+            'id'          => [],
+            'class'       => [],
+            'option'      => [
+                'value'   => [],
                 'checked' => [],
-            ]
+            ],
         ],
 
-        'textarea' => [
-            'value' => [],
-            'type' => [],
-            'size' => [],
-            'name' => [],
-            'rows' => [],
-            'cols' => [],
+        'textarea'                      => [
+            'value'       => [],
+            'type'        => [],
+            'size'        => [],
+            'name'        => [],
+            'rows'        => [],
+            'cols'        => [],
 
             'placeholder' => [],
-            'id' => [],
-            'class' => []
+            'id'          => [],
+            'class'       => [],
         ],
-        'abbr' => array(
-            'title' => array(),
-        ),
-        'b' => array(),
-        'blockquote' => array(
-            'cite' => array(),
-        ),
-        'cite' => array(
-            'title' => array(),
-        ),
-        'code' => array(),
-        'del' => array(
-            'datetime' => array(),
-            'title' => array(),
-        ),
-        'dd' => array(),
-        'div' => array(
-            'id' => array(),
-            'class' => array(),
-            'title' => array(),
-            'style' => array(),
-            'data-attid' => array(),
-        ),
-        'dl' => array(),
-        'dt' => array(),
-        'em' => array(),
-        'h1' => array(
-            'class' => array(),
-        ),
-        'h2' => array(
-            'class' => array(),
-        ),
-        'h3' => array(
-            'class' => array(),
-        ),
-        'h4' => array(
-            'class' => array(),
-        ),
-        'h5' => array(
-            'class' => array(),
-        ),
-        'h6' => array(
-            'class' => array(),
-        ),
-        'i' => array(
-            'class' => array(),
-        ),
-        'img' => array(
-            'id' => array(),
-            'alt' => array(),
-            'class' => array(),
-            'height' => array(),
-            'src' => array(),
-            'width' => array(),
-        ),
-        'li' => array(
-            'class' => array(),
-        ),
-        'ol' => array(
-            'class' => array(),
-        ),
-        'p' => array(
-            'class' => array(),
-        ),
-        'q' => array(
-            'cite' => array(),
-            'title' => array(),
-        ),
-        'span' => array(
-            'class' => array(),
-            'title' => array(),
-            'style' => array(),
-        ),
-        'iframe' => array(
-            'width' => array(),
-            'height' => array(),
-            'scrolling' => array(),
-            'frameborder' => array(),
-            'allow' => array(),
-            'src' => array(),
-        ),
-        'strike' => array(),
-        'br' => array(
-            'class' => array()
-        ),
-        'strong' => array(),
-        'data-wow-duration' => array(),
-        'data-wow-delay' => array(),
-        'data-wallpaper-options' => array(),
-        'data-stellar-background-ratio' => array(),
-        'ul' => array(
-            'class' => array(),
-        ),
-        'label' => array(
-            'class' => array(),
-            'for' => array(),
-        )
-    );
+        'abbr'                          => [
+            'title' => [],
+        ],
+        'b'                             => [],
+        'blockquote'                    => [
+            'cite' => [],
+        ],
+        'cite'                          => [
+            'title' => [],
+        ],
+        'code'                          => [],
+        'del'                           => [
+            'datetime' => [],
+            'title'    => [],
+        ],
+        'dd'                            => [],
+        'div'                           => [
+            'id'         => [],
+            'class'      => [],
+            'title'      => [],
+            'style'      => [],
+            'data-attid' => [],
+        ],
+        'dl'                            => [],
+        'dt'                            => [],
+        'em'                            => [],
+        'h1'                            => [
+            'class' => [],
+        ],
+        'h2'                            => [
+            'class' => [],
+        ],
+        'h3'                            => [
+            'class' => [],
+        ],
+        'h4'                            => [
+            'class' => [],
+        ],
+        'h5'                            => [
+            'class' => [],
+        ],
+        'h6'                            => [
+            'class' => [],
+        ],
+        'i'                             => [
+            'class' => [],
+        ],
+        'img'                           => [
+            'id'     => [],
+            'alt'    => [],
+            'class'  => [],
+            'height' => [],
+            'src'    => [],
+            'width'  => [],
+        ],
+        'li'                            => [
+            'class' => [],
+        ],
+        'ol'                            => [
+            'class' => [],
+        ],
+        'p'                             => [
+            'class' => [],
+        ],
+        'q'                             => [
+            'cite'  => [],
+            'title' => [],
+        ],
+        'span'                          => [
+            'class' => [],
+            'title' => [],
+            'style' => [],
+        ],
+        'iframe'                        => [
+            'width'       => [],
+            'height'      => [],
+            'scrolling'   => [],
+            'frameborder' => [],
+            'allow'       => [],
+            'src'         => [],
+        ],
+        'strike'                        => [],
+        'br'                            => [
+            'class' => [],
+        ],
+        'strong'                        => [],
+        'data-wow-duration'             => [],
+        'data-wow-delay'                => [],
+        'data-wallpaper-options'        => [],
+        'data-stellar-background-ratio' => [],
+        'ul'                            => [
+            'class' => [],
+        ],
+        'label'                         => [
+            'class' => [],
+            'for'   => [],
+        ]
+    ];
 
-    if (function_exists('wp_kses')) { // WP is here
-        return wp_kses($raw, $allowed_tags);
+    if ( function_exists( 'wp_kses' ) ) { // WP is here
+        return wp_kses( $raw, $allowed_tags );
     } else {
         return $raw;
     }
+
 }
 
 /**
@@ -625,9 +636,8 @@ function dm_kses($raw)
  * @return string
  * @since 1.0.0
  */
-function dm_kspan($text)
-{
-    return str_replace(['{', '}'], ['<span>', '</span>'], dm_kses($text));
+function dm_kspan( $text ) {
+    return str_replace( ['{', '}'], ['<span>', '</span>'], dm_kses( $text ) );
 }
 
 /**
@@ -639,55 +649,54 @@ function dm_kspan($text)
  * @return string
  * @since 1.0.0
  */
-function dm_render_markup($content)
-{
-    if ($content == "") {
+function dm_render_markup( $content ) {
+
+    if ( $content == "" ) {
         return null;
     }
+
     return $content;
 }
-
 
 /**
  * @return string Current url
  * @since 1.0.0
  */
-function dm_current_url()
-{
+function dm_current_url() {
     static $url = null;
 
-    if ($url === null) {
-        if (is_multisite() && !(defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL)) {
-            switch_to_blog(1);
-            $url = get_option('home');
+    if ( $url === null ) {
+
+        if ( is_multisite() && !( defined( 'SUBDOMAIN_INSTALL' ) && SUBDOMAIN_INSTALL ) ) {
+            switch_to_blog( 1 );
+            $url = get_option( 'home' );
             restore_current_blog();
         } else {
-            $url = get_option('home');
+            $url = get_option( 'home' );
         }
 
         //Remove the "//" before the domain name
-        $url = ltrim(dm_get_url_without_scheme($url), '/');
+        $url = ltrim( dm_get_url_without_scheme( $url ), '/' );
 
         //Remove the ulr subdirectory in case it has one
-        $split = explode('/', $url);
+        $split = explode( '/', $url );
 
         //Remove end slash
-        $url = rtrim($split[0], '/');
+        $url = rtrim( $split[0], '/' );
 
-        $url .= '/' . ltrim(dm_array_key_get('REQUEST_URI', $_SERVER, ''), '/');
-        $url = set_url_scheme('//' . $url); // https fix
+        $url .= '/' . ltrim( dm_array_key_get( 'REQUEST_URI', $_SERVER, '' ), '/' );
+        $url = set_url_scheme( '//' . $url ); // https fix
     }
 
     return $url;
 }
 
 /*
-* Return URI without scheme
+ * Return URI without scheme
  * @since 1.0.0
-*/
-function dm_get_url_without_scheme($url)
-{
-    return preg_replace('/^[^:]+:\/\//', '//', $url);
+ */
+function dm_get_url_without_scheme( $url ) {
+    return preg_replace( '/^[^:]+:\/\//', '//', $url );
 }
 
 /**
@@ -698,15 +707,16 @@ function dm_get_url_without_scheme($url)
  * @return null|string
  * @since 1.0.0
  */
-function dm_get_stylesheet_directory($rel_path = '')
-{
-    if (is_child_theme()) {
+function dm_get_stylesheet_directory( $rel_path = '' ) {
+
+    if ( is_child_theme() ) {
         return get_stylesheet_directory() .
-            dm_get_customizations_dir_rel_path($rel_path);
+        dm_get_customizations_dir_rel_path( $rel_path );
     } else {
         // check is_child_theme() before using this function
         return null;
     }
+
 }
 
 /**
@@ -717,15 +727,16 @@ function dm_get_stylesheet_directory($rel_path = '')
  * @return null|string
  * @since 1.0.0
  */
-function dm_get_stylesheet_directory_uri($rel_path = '')
-{
-    if (is_child_theme()) {
+function dm_get_stylesheet_directory_uri( $rel_path = '' ) {
+
+    if ( is_child_theme() ) {
         return get_stylesheet_directory_uri() .
-            dm_get_customizations_dir_rel_path($rel_path);
+        dm_get_customizations_dir_rel_path( $rel_path );
     } else {
         // check is_child_theme() before using this function
         return null;
     }
+
 }
 
 /**
@@ -734,14 +745,13 @@ function dm_get_stylesheet_directory_uri($rel_path = '')
  * @return string
  * @since 1.0.0
  */
-function dm_get_customizations_dir_rel_path($append = '')
-{
+function dm_get_customizations_dir_rel_path( $append = '' ) {
     try {
-        $dir = Dm_Cache::get($cache_key = 'dm_customizations_dir_rel_path');
-    } catch (Dm_Cache_Not_Found_Exception $e) {
+        $dir = Dm_Cache::get( $cache_key = 'dm_customizations_dir_rel_path' );
+    } catch ( Dm_Cache_Not_Found_Exception $e ) {
         Dm_Cache::set(
             $cache_key,
-            $dir = apply_filters('dm_customizations_dir_rel_path', '/devmonsta')
+            $dir = apply_filters( 'dm_customizations_dir_rel_path', '/devmonsta' )
         );
     }
 
@@ -754,17 +764,20 @@ function dm_get_customizations_dir_rel_path($append = '')
  * @return string
  * @since 1.0.0
  */
-function dm_post_img_alt($image_id)
-{
-    if (!empty($image_id)) {
-        $alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
-        if (!empty($alt)) {
+function dm_post_img_alt( $image_id ) {
+
+    if ( !empty( $image_id ) ) {
+        $alt = get_post_meta( $image_id, '_wp_attachment_image_alt', true );
+
+        if ( !empty( $alt ) ) {
             $alt = $alt;
         } else {
-            $alt = get_the_title($image_id);
+            $alt = get_the_title( $image_id );
         }
+
         return $alt;
     }
+
 }
 
 /**
@@ -776,41 +789,49 @@ function dm_post_img_alt($image_id)
  *
  * @return array|object
  */
-function dm_aku($keys, &$array_or_object, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
+function dm_aku( $keys, &$array_or_object, $keys_delimiter = '/' ) {
+
+    if ( !is_array( $keys ) ) {
+        $keys = explode( $keys_delimiter, (string) $keys );
     }
 
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null || $key_or_property === '') {
+    $key_or_property = array_shift( $keys );
+
+    if ( $key_or_property === null || $key_or_property === '' ) {
         return $array_or_object;
     }
 
-    $is_object = is_object($array_or_object);
+    $is_object = is_object( $array_or_object );
 
-    if ($is_object) {
-        if (!property_exists($array_or_object, $key_or_property)) {
+    if ( $is_object ) {
+
+        if ( !property_exists( $array_or_object, $key_or_property ) ) {
             return $array_or_object;
         }
+
     } else {
-        if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
+
+        if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
             return $array_or_object;
         }
+
     }
 
-    if (isset($keys[0])) { // not used count() for performance reasons
-        if ($is_object) {
-            dm_aku($keys, $array_or_object->{$key_or_property});
+    if ( isset( $keys[0] ) ) {
+// not used count() for performance reasons
+        if ( $is_object ) {
+            dm_aku( $keys, $array_or_object->{$key_or_property} );
         } else {
-            dm_aku($keys, $array_or_object[$key_or_property]);
+            dm_aku( $keys, $array_or_object[$key_or_property] );
         }
+
     } else {
-        if ($is_object) {
-            unset($array_or_object->{$key_or_property});
+        if ( $is_object ) {
+            unset( $array_or_object->{$key_or_property} );
         } else {
-            unset($array_or_object[$key_or_property]);
+            unset( $array_or_object[$key_or_property] );
         }
+
     }
 
     return $array_or_object;
@@ -826,67 +847,77 @@ function dm_aku($keys, &$array_or_object, $keys_delimiter = '/')
  *
  * @return array|object
  */
-function dm_aks($keys, $value, &$array_or_object, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
+function dm_aks( $keys, $value, &$array_or_object, $keys_delimiter = '/' ) {
+    if ( !is_array( $keys ) ) {
+        $keys = explode( $keys_delimiter, (string) $keys );
     }
 
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null) {
+    $key_or_property = array_shift( $keys );
+    if ( $key_or_property === null ) {
         return $array_or_object;
     }
 
-    $is_object = is_object($array_or_object);
+    $is_object = is_object( $array_or_object );
 
-    if ($is_object) {
+    if ( $is_object ) {
         if (
-            !property_exists($array_or_object, $key_or_property)
-            || !(is_array($array_or_object->{$key_or_property}) || is_object($array_or_object->{$key_or_property}))
+            !property_exists( $array_or_object, $key_or_property )
+            || !( is_array( $array_or_object->{$key_or_property} ) || is_object( $array_or_object->{$key_or_property} ) )
         ) {
-            if ($key_or_property === '') {
+            if ( $key_or_property === '' ) {
                 // this happens when use 'empty keys' like: abc/d/e////i/j//foo/
-                trigger_error('Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING);
+                trigger_error( 'Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING );
             } else {
-                $array_or_object->{$key_or_property} = array();
+                $array_or_object->{$key_or_property}
+                = [];
             }
+
         }
+
     } else {
-        if (!is_array($array_or_object)) {
-            $array_or_object = array();
+
+        if ( !is_array( $array_or_object ) ) {
+            $array_or_object = [];
         }
 
         if (
             !array_key_exists(
                 $key_or_property,
                 $array_or_object
-            ) || !is_array($array_or_object[$key_or_property])
+            ) || !is_array( $array_or_object[$key_or_property] )
         ) {
-            if ($key_or_property === '') {
+
+            if ( $key_or_property === '' ) {
                 // this happens when use 'empty keys' like: abc.d.e....i.j..foo.
-                $array_or_object[] = array();
+                $array_or_object[] = [];
 
                 // get auto created key (last)
-                end($array_or_object);
-                $key_or_property = key($array_or_object);
+                end( $array_or_object );
+                $key_or_property = key( $array_or_object );
             } else {
-                $array_or_object[$key_or_property] = array();
+                $array_or_object[$key_or_property] = [];
             }
+
         }
+
     }
 
-    if (isset($keys[0])) { // not used count() for performance reasons
-        if ($is_object) {
-            dm_aks($keys, $value, $array_or_object->{$key_or_property});
+    if ( isset( $keys[0] ) ) {
+// not used count() for performance reasons
+        if ( $is_object ) {
+            dm_aks( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
-            dm_aks($keys, $value, $array_or_object[$key_or_property]);
+            dm_aks( $keys, $value, $array_or_object[$key_or_property] );
         }
+
     } else {
-        if ($is_object) {
-            $array_or_object->{$key_or_property} = $value;
+        if ( $is_object ) {
+            $array_or_object->{$key_or_property}
+            = $value;
         } else {
             $array_or_object[$key_or_property] = $value;
         }
+
     }
 
     return $array_or_object;
@@ -902,44 +933,49 @@ function dm_aks($keys, $value, &$array_or_object, $keys_delimiter = '/')
  *
  * @return null|mixed
  */
-function dm_akg($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
+function dm_akg( $keys, $array_or_object, $default_value = null, $keys_delimiter = '/' ) {
+    if ( !is_array( $keys ) ) {
+        $keys = explode( $keys_delimiter, (string) $keys );
     }
 
-    $array_or_object = dm_call($array_or_object);
+    $array_or_object = dm_call( $array_or_object );
 
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null) {
-        return dm_call($default_value);
+    $key_or_property = array_shift( $keys );
+    if ( $key_or_property === null ) {
+        return dm_call( $default_value );
     }
 
-    $is_object = is_object($array_or_object);
+    $is_object = is_object( $array_or_object );
 
-    if ($is_object) {
-        if (!property_exists($array_or_object, $key_or_property)) {
-            return dm_call($default_value);
+    if ( $is_object ) {
+        if ( !property_exists( $array_or_object, $key_or_property ) ) {
+            return dm_call( $default_value );
         }
+
     } else {
-        if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-            return dm_call($default_value);
+        if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
+            return dm_call( $default_value );
         }
+
     }
 
-    if (isset($keys[0])) { // not used count() for performance reasons
-        if ($is_object) {
-            return dm_akg($keys, $array_or_object->{$key_or_property}, $default_value);
+    if ( isset( $keys[0] ) ) {
+// not used count() for performance reasons
+        if ( $is_object ) {
+            return dm_akg( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
-            return dm_akg($keys, $array_or_object[$key_or_property], $default_value);
+            return dm_akg( $keys, $array_or_object[$key_or_property], $default_value );
         }
+
     } else {
-        if ($is_object) {
+        if ( $is_object ) {
             return $array_or_object->{$key_or_property};
         } else {
             return $array_or_object[$key_or_property];
         }
+
     }
+
 }
 
 /**
@@ -953,11 +989,9 @@ function dm_akg($keys, $array_or_object, $default_value = null, $keys_delimiter 
  *
  * @since 2.6.14
  */
-function dm_callback($callback, array $args = array(), $cache = true)
-{
-    return new Dm_Callback($callback, $args, $cache);
+function dm_callback( $callback, array $args = [], $cache = true ) {
+    return new Dm_Callback( $callback, $args, $cache );
 }
-
 
 /**
  * Generate html tag
@@ -968,13 +1002,12 @@ function dm_callback($callback, array $args = array(), $cache = true)
  *
  * @return string The tag's html
  */
-function dm_html_tag($tag, $attr = [], $end = false)
-{
-    $html = '<' . $tag . ' ' . dm_attr_to_html($attr);
+function dm_html_tag( $tag, $attr = [], $end = false ) {
+    $html = '<' . $tag . ' ' . dm_attr_to_html( $attr );
 
-    if ($end === true) {
+    if ( $end === true ) {
         $html .= '></' . $tag . '>';
-    } elseif ($end === false) {
+    } elseif ( $end === false ) {
         $html .= '/>';
     } else {
         $html .= '>' . $end . '</' . $tag . '>';
@@ -990,50 +1023,51 @@ function dm_html_tag($tag, $attr = [], $end = false)
  *
  * @return string 'href="/" title="Test"'
  */
-function dm_attr_to_html(array $attr_array)
-{
+function dm_attr_to_html( array $attr_array ) {
     $html_attr = '';
 
-    foreach ($attr_array as $attr_name => $attr_val) {
-        if ($attr_val === false) {
+    foreach ( $attr_array as $attr_name => $attr_val ) {
+        if ( $attr_val === false ) {
             continue;
         }
 
-        $html_attr .= $attr_name . '="' . dm_htmlspecialchars($attr_val) . '" ';
+        $html_attr .= $attr_name . '="' . dm_htmlspecialchars( $attr_val ) . '" ';
     }
 
     return $html_attr;
 }
 
-
 /**
  * Strip slashes from values, and from keys if magic_quotes_gpc = On
  */
-function dm_stripslashes_deep_keys($value)
-{
+function dm_stripslashes_deep_keys( $value ) {
     static $magic_quotes = null;
-    if ($magic_quotes === null) {
+    if ( $magic_quotes === null ) {
         $magic_quotes = get_magic_quotes_gpc();
     }
 
-    if (is_array($value)) {
-        if ($magic_quotes) {
-            $new_value = array();
-            foreach ($value as $key => $val) {
-                $new_value[is_string($key) ? stripslashes($key) : $key] = dm_stripslashes_deep_keys($val);
+    if ( is_array( $value ) ) {
+        if ( $magic_quotes ) {
+            $new_value = [];
+            foreach ( $value as $key => $val ) {
+                $new_value[is_string( $key ) ? stripslashes( $key ) : $key] = dm_stripslashes_deep_keys( $val );
             }
+
             $value = $new_value;
-            unset($new_value);
+            unset( $new_value );
         } else {
-            $value = array_map('dm_stripslashes_deep_keys', $value);
+            $value = array_map( 'dm_stripslashes_deep_keys', $value );
         }
-    } elseif (is_object($value)) {
-        $vars = get_object_vars($value);
-        foreach ($vars as $key => $data) {
-            $value->{$key} = dm_stripslashes_deep_keys($data);
+
+    } elseif ( is_object( $value ) ) {
+        $vars = get_object_vars( $value );
+        foreach ( $vars as $key => $data ) {
+            $value->{$key}
+            = dm_stripslashes_deep_keys( $data );
         }
-    } elseif (is_string($value)) {
-        $value = stripslashes($value);
+
+    } elseif ( is_string( $value ) ) {
+        $value = stripslashes( $value );
     }
 
     return $value;
@@ -1047,40 +1081,106 @@ function dm_stripslashes_deep_keys($value)
  *
  * @return bool|string
  */
-function dm_oembed_get($url, $args = array())
-{
-    $html = wp_oembed_get($url, $args);
+function dm_oembed_get( $url, $args = [] ) {
+    $html = wp_oembed_get( $url, $args );
 
-    if (!empty($args['width']) and !empty($args['height']) and class_exists('DOMDocument') and !empty($html)) {
+    if ( !empty( $args['width'] ) and !empty( $args['height'] ) and class_exists( 'DOMDocument' ) and !empty( $html ) ) {
         $dom_element = new DOMDocument();
-        @$dom_element->loadHTML($html);
+        @$dom_element->loadHTML( $html );
 
-        if ($obj = $dom_element->getElementsByTagName('iframe')->item(0)) {
-            $obj->setAttribute('width', $args['width']);
-            $obj->setAttribute('height', $args['height']);
+        if ( $obj = $dom_element->getElementsByTagName( 'iframe' )->item( 0 ) ) {
+            $obj->setAttribute( 'width', $args['width'] );
+            $obj->setAttribute( 'height', $args['height'] );
             //saveXml instead of SaveHTML for php version compatibility
-            $html = $dom_element->saveXML($obj, LIBXML_NOEMPTYTAG);
+            $html = $dom_element->saveXML( $obj, LIBXML_NOEMPTYTAG );
         }
+
     }
 
     return $html;
 }
 
-function dm_meta_option($post_id, $option_id, $default_value = null)
-{
-    $prefix = 'devmonsta_';
+function dm_meta_option( $post_id, $option_id, $default_value = null ) {
+    $prefix    = 'devmonsta_';
     $option_id = $prefix . $option_id;
-    $post_id = intval($post_id);
-    return get_post_meta($post_id, $option_id, true);
+    $post_id   = intval( $post_id );
+    return get_post_meta( $post_id, $option_id, true );
 }
 
-function dm_taxonomy($term_id, $key = '', $single = true)
+function dm_taxonomy( $term_id, $key = '', $single = true ) {
+    return get_term_meta( $term_id, $key, $single );
+}
+
+function dm_theme_option( $option_name, $default = false ) {
+    return get_theme_mod( $option_name, $default );
+}
+
+function dm_backups_destination_directory() {
+    $uploads = wp_upload_dir();
+    return dm_fix_path( $uploads['basedir'] . "/elementor/css/" );
+}
+
+function dm_widgets_export()
 {
-    return get_term_meta($term_id, $key, $single);
+
+	$available_widgets = dm_available_widgets();
+	$widget_instances = array();
+	// Loop widgets.
+	foreach ($available_widgets as $widget_data) {
+		// Get all instances for this ID base.
+		$instances = get_option('widget_' . $widget_data['id_base']);
+		// Have instances.
+		if (!empty($instances)) {
+			// Loop instances.
+			foreach ($instances as $instance_id => $instance_data) {
+				// Key is ID (not _multiwidget).
+				if (is_numeric($instance_id)) {
+					$unique_instance_id = $widget_data['id_base'] . '-' . $instance_id;
+					$widget_instances[$unique_instance_id] = $instance_data;
+				}
+			}
+		}
+	}
+	// Gather sidebars with their widget instances.
+	$sidebars_widgets = get_option('sidebars_widgets');
+	$sidebars_widget_instances = array();
+	foreach ($sidebars_widgets as $sidebar_id => $widget_ids) {
+		// Skip inactive widgets.
+		if ('wp_inactive_widgets' === $sidebar_id) {
+			continue;
+		}
+		if (!is_array($widget_ids) || empty($widget_ids)) {
+			continue;
+		}
+		foreach ($widget_ids as $widget_id) {
+			if (isset($widget_instances[$widget_id])) {
+				$sidebars_widget_instances[$sidebar_id][$widget_id] = $widget_instances[$widget_id];
+			}
+		}
+	}
+
+	// Filter pre-encoded data.
+	$data = apply_filters('dm_unencoded_export_data', $sidebars_widget_instances);
+
+	// Encode the data for file contents.
+	$encoded_data = wp_json_encode($data);
+
+	// Return contents.
+	return apply_filters('dm_generate_export_data', $encoded_data);
 }
 
-function dm_theme_option($option_name, $default = false )
+
+function dm_available_widgets()
 {
-    return get_theme_mod($option_name, $default);
+	global $wp_registered_widget_controls;
+	$widget_controls = $wp_registered_widget_controls;
+	$available_widgets = array();
+	foreach ($widget_controls as $widget) {
+		// No duplicates.
+		if (!empty($widget['id_base']) && !isset($available_widgets[$widget['id_base']])) {
+			$available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
+			$available_widgets[$widget['id_base']]['name']    = $widget['name'];
+		}
+	}
+	return $available_widgets;
 }
-

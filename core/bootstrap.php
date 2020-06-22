@@ -47,6 +47,8 @@ final class Bootstrap
         \Devmonsta\Options\Posts\Posts::instance()->init();
         \Devmonsta\Options\Taxonomies\Taxonomies::instance()->init();
         \Devmonsta\Rest::instance()->init();
-        
+
+        //include file to backup data
+        require dirname(__FILE__) . '/backup/export.php';
     }
 }
