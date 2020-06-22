@@ -138,7 +138,7 @@ class Oembed extends Structure {
                     <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
                             type="url" name="<?php echo esc_attr( $name ); ?>"
                             value="<?php echo esc_html( $value ); ?>"
-                            class="dm-ctrl dm-oembed-url-input"/>
+                            class="dm-ctrl dm-oembed-url-input dm-option-input"/>
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                     <div class="dm-oembed-preview"></div>
                 </div>

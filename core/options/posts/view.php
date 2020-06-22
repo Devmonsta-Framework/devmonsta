@@ -125,19 +125,24 @@ class View
                 <div class='dm-option-column dm-repeater-column right'>
 
                     <div class="dm-repeater-control dm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control</a>
-                        <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link">Delete</button>
+                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link"><span class="dashicons dashicons-dismiss"></span></button></a>
 
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
-                                <span class="dm-repeater-popup-close dashicons dashicons-dismiss" data-id="<?php echo $control_data['name']; ?>"></span>
-                                <?php 
-                                ob_start();
-                                    $this->repeater_controls($control_data);
-                                $output = ob_get_clean();
-                            
-                                echo str_replace("active-script", '', $output);
-                                ?>
+                                <div class="dm-repeater-popup-heading">
+                                    <span class="dm-repeater-popup-close dashicons dashicons-no-alt"></span>
+                                </div>
+                                <div class="dm-repeater-popup-data">
+                                    <?php 
+                                    ob_start();
+                                        $this->repeater_controls($control_data);
+                                    $output = ob_get_clean();
+                                
+                                    echo str_replace("active-script", '', $output);
+                                    ?>
+                                </div>
+                                <div class="dm-repeater-popup-footer">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,7 +155,7 @@ class View
                     name="devmonsta_repeater_content_<?php echo $control_data['name'];?>" 
                     id="dm_repeater_content_<?php echo $control_data['name'];?>">
 
-                    <br><br><a href='' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
+                    <a href='' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
                 </div>
             </div>
 
@@ -219,28 +224,30 @@ class View
                 <div class='dm-option-column dm-repeater-column right'>
 
                     <div class="dm-repeater-control dm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_content['name']; ?>" class="dm-repeater-control-action">Control</a>
-                        <button type="button" data-id="<?php echo $control_content['name']; ?>" class="components-button dm-editor-post-trash is-link">Delete</button>
-
+                        <a href="#" data-id="<?php echo $control_content['name']; ?>" class="dm-repeater-control-action">Control <button type="button" data-id="<?php echo $control_content['name']; ?>" class="components-button dm-editor-post-trash is-link"><span class="dashicons dashicons-dismiss"></span></button></a>
+                        
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_content['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
-                                <span class="dm-repeater-popup-close dashicons dashicons-dismiss" data-id="<?php echo $control_content['name']; ?>"></span>
-                                <?php 
-                                ob_start();
-                                $this->sub_repeater_controls($control_content['controls']);
-                                $output = ob_get_clean();
-                            
-                                echo str_replace("active-script", '', $output);
-                                ?>
+                                <div class="dm-repeater-popup-heading">
+                                    <span class="dm-repeater-popup-close dashicons dashicons-no-alt"></span>
+                                </div>
+                                <div class="dm-repeater-popup-data">
+                                    <?php 
+                                    ob_start();
+                                    $this->sub_repeater_controls($control_content['controls']);
+                                    $output = ob_get_clean();
+                                
+                                    echo str_replace("active-script", '', $output);
+                                    ?>
+                                </div>
+                                <div class="dm-repeater-popup-footer"></div>
                             </div>
                         </div>
                     </div>
 
                     <div class="dm-repeater-control-list"></div>
 
-                    
-
-                    <br><br><a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add New</a>
+                    <a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add New</a>
                 </div>
             </div>
         </div>

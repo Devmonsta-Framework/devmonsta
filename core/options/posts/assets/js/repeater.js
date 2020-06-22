@@ -49,7 +49,7 @@ jQuery(document).ready(function ($) {
             'repeatCount': repeatCount
         };
         if(!isRemoved){
-            clonedElement.children('.dm-repeater-inner-controls').children('.dm-repeater-inner-controls-inner').children('.dm-option:not(.dm-repeater-child)').addClass('active-script');
+            clonedElement.children('.dm-repeater-inner-controls').children('.dm-repeater-inner-controls-inner').children('.dm-repeater-popup-data').children('.dm-option:not(.dm-repeater-child)').addClass('active-script');
             $(this).closest('.dm-repeater-column').children('.dm-repeater-control-list').append(clonedElement);
             // console.log(repeaterContent.html());
             repeaterContentField.val(repeaterContent.html());
@@ -60,6 +60,8 @@ jQuery(document).ready(function ($) {
             repeaterContentField.val(repeaterContent.html());
         }
 
+        // open popup after added the repeated item
+        jQuery(this).closest('.dm-repeater-column').find('.dm-repeater-control-list > .dm-repeater-control > .dm-repeater-control-action').last().trigger('click');
 
         // resetting repeater name
         controlNameChanging(controlConfig)
