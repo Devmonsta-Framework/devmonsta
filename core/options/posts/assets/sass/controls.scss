@@ -267,7 +267,7 @@
                 line-height: 0;
                 position: relative;
                 padding: 2px;
-                flex: 0 0 140px;
+                flex: 0 0 105px;
                 display: block;
                 margin: 0;
                 &.selected{
@@ -536,6 +536,7 @@
     .dm-option i,
     .dm-option{
         display: flex;
+        width: 100%;
     }
     .dm-option-column{
         &.left{
@@ -559,6 +560,9 @@
     }
     .dm-option{
         order: 1;
+        &.dm-condition-active.open{
+            display: flex;
+        }
     }
 }
 
