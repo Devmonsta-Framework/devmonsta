@@ -27,7 +27,8 @@
             font-style: normal;
             padding: 0;
             margin-bottom: 5px;
-            display: inline-block
+            display: inline-block;
+            padding-right: 10px;
         }
         &-input {
             box-shadow: 0 0 0 transparent;
@@ -126,8 +127,33 @@
                 }
             }
         }
+        &-upload-wrapper{
+            display: inline-block;
+            position: relative;
+            .dm_remove_image_button{
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                display: block;
+                opacity: 0;
+                visibility: hidden;
+                transition: all .4s;
+                i{
+                    color: #AAAAAA;
+                    &:hover{
+                        color: #CC0000;
+                    }
+                }
+            }
+            &:hover{
+                .dm_remove_image_button{
+                    opacity: 1;
+                    visibility: visible;
+                } 
+            }
+        }
         .true_pre_image {
-            max-width: 120px !important;
+            max-width: 50px !important;
         }
         .dm-dimension-attachment-input{
             cursor: pointer;
@@ -157,7 +183,7 @@
             }
         }
         .select2-container{
-            max-width: 428px;
+            // max-width: 428px;
             width: 100% !important;
             line-height: 15px;
             .select2-selection--multiple {
@@ -218,7 +244,7 @@
                 padding: 2px;
                 flex: 0 0 150px;
                 display: block;
-                margin: 0 5px 5px 0;
+                margin: 0;
               }
               .dm-option-image-picker-input:checked + .dm-img-list {
                 border: 3px solid #64bd1f;
@@ -239,12 +265,11 @@
               }
             li{
                 line-height: 0;
-                border: 3px solid transparent;
                 position: relative;
                 padding: 2px;
-                flex: 0 0 150px;
+                flex: 0 0 140px;
                 display: block;
-                margin: 0 5px 5px 0;
+                margin: 0;
                 &.selected{
                     border: 3px solid #64bd1f;
                     &:after {
@@ -273,7 +298,7 @@
                 }
                 .dm-img-picker-preview {
                     position: absolute;
-                    top: -114%;
+                    top: -118%;
                     border: 3px solid #333;
                     border-radius: 3px;
                     left: 50%;
@@ -354,7 +379,7 @@
             }
         }
         &-dimensions  li {
-            flex: 0 0 50px;
+            flex: 0 0 16%;
         }
         &-typography li {
             flex: 0 0 50%;
@@ -374,8 +399,11 @@
 .wp-customizer .dm-option .dm-option-image_picker_selector li {
     border: 0px solid transparent;
     padding: 1px;
-    flex: 0 0 32.5%;
+    flex: 0 0 73px;
     margin: 0;
+    .dm-img-picker-preview{
+        top: -126%;
+    }
 }
 
 // repeater
@@ -474,7 +502,7 @@
 }
 
 .dm-repeater-popup-data .dm-option .dm-option-image_picker_selector li{
-    flex: 0 0 31.9%;
+    flex: 0 0 80px;
     margin: 0;
     padding: 0;
 }

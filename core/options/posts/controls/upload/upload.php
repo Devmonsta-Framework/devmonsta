@@ -169,10 +169,10 @@ class Upload extends Structure {
                     <label  class="dm-option-label"> <?php echo esc_html( $label ); ?> </label>
                 </div>
                 <div class="dm-option-column right">
-                    <div>
+                    <div class="dm-option-upload-wrapper">
                         <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="dm_upload_image_button<?php echo dm_render_markup( $image ); ?> </a>
                         <input class='dm-ctrl dm-upload' type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
-                        <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <?php echo esc_html__( 'Remove image', 'devmonsta' ); ?></a>
+                        <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <i class='fas fa-times-circle'></i></a>
                     </div>
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
