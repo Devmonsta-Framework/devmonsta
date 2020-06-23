@@ -404,6 +404,11 @@
     .dm-img-picker-preview{
         top: -126%;
     }
+    .dm-img-list{
+        &:after{
+            font-size: 15px !important;
+        }
+    }
 }
 
 // repeater
@@ -641,6 +646,9 @@
 }
 .dm-oembed-preview {
     padding-top: 10px;
+    iframe{
+        width: 100%;
+    }
 }
 
 // @media only screen and (max-width: 767px) {
