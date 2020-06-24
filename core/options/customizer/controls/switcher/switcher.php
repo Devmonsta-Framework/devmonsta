@@ -87,7 +87,8 @@ class Switcher extends Structure {
 
                 <div class="dm-option-column right dm-switcher">
                     
-                    <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
+                    <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; 
+        ?>
 
                     <ul class="dm-switcher dm_switcher_item">
                             <li >
@@ -97,7 +98,7 @@ class Switcher extends Structure {
                                     <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='dm_switcher_label dm-option-label'></div>
                                 </label>
                             </li>
-                        <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $saved_value ) ); ?>" />
+                        <input data-unchecked_value="<?php echo esc_attr($this->left_key); ?>" type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $saved_value ) ); ?>" />
                     </ul>
                     <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
