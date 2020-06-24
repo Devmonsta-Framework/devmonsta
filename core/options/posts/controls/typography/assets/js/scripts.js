@@ -1,15 +1,14 @@
 jQuery(window).on('dm-scripts-typo.dm', function(e,val){
-    var dmColorOptions = {
-        defaultColor: dm_color_picker_config.default,
-        hide: true,
-        palettes: dm_color_picker_config.palettes
-    };
+    
+    //get the selector for typography
     var el = jQuery('.dm-option.active-script .google-fonts-list');
-   // for color
+   
+    // configuration for color
    var dmOptions = {
         defaultColor: typo_config.selected_data.color,
         hide: true,
     };
+    
     jQuery('.dm-option.active-script .dm-typography-color-field').wpColorPicker(dmOptions);
 
     // for select2 
