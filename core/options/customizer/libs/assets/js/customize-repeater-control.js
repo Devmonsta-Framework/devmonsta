@@ -34,14 +34,14 @@
 
             // on sortable change
 
-            $('.customize-control-content').sortable({
-                axis: 'y',
-                update: function() {
-
-                    control.saveData();
-
-                }
-            });
+            // $('.customize-control-content').sortable({
+            //     axis: 'y',
+            //     update: function() {
+            //
+            //         control.saveData();
+            //
+            //     }
+            // });
 
 
         },
