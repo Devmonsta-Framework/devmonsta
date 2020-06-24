@@ -480,33 +480,3 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
 }
 
 new DM_Db_Options_Model_Customizer();
-
-/**
- * returns instance of post helper class
- *
- * @return void
- */
-function dm_post() {
-	static $DM_POST = null;
-
-	if ($DM_POST === null) {
-		$DM_POST = new DM_Db_Options_Model_Post();
-	}
-
-	return $DM_POST;
-}
-
-/**
- * returns instance of customizer helper class
- *
- * @return void
- */
-function dm_c() {
-	static $DM_CUSTOMIZER = null;
-
-	if ($DM_CUSTOMIZER === null) {
-		$DM_CUSTOMIZER = new DM_Db_Options_Model_Customizer();
-	}
-
-	return $DM_CUSTOMIZER;
-}
