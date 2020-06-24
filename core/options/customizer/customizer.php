@@ -589,7 +589,7 @@ class Customizer
             'number',
             'hidden',
             'date',
-            'color',
+            // 'color',
         ];
     }
 

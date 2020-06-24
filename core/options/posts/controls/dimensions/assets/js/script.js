@@ -5,7 +5,7 @@ jQuery(window).on('dimensions.dm', function(){
             <ul class="dm-option-dimensions">
                 <slot></slot>
                 <li>
-                    <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><i class="fas fa-link"></i></button>
+                    <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><span class="dashicons dashicons-admin-links"></span></button>
                     <input type="hidden" :name="linkedName" v-model="isDimension" />
                     <input v-if="name" type="hidden" v-model="message" :data-customize-setting-link="name"  />
                     <label>&nbsp;</label>
