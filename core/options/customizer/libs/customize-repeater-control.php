@@ -32,6 +32,8 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 
     public $args;
 
+    protected $title_field;
+
     /*
      ** Constructor
      */
@@ -51,8 +53,12 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
             $this->prepareFields($this->fields);
         }
 
+        error_log(serialize($args));
+
         // Force control type to 'repeater'
         $this->type = 'repeater';
+
+        $this->title_field = $args['title_field'];
     }
 
     /*
@@ -113,6 +119,8 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
         $this->json['fields'] = $fields;
         $this->json['labelField'] = $this->labelField;
         $this->json['developer'] = 'Xpeedstudio';
+        $this->json['title_field'] = $this->title_field;
+
     }
 
     /*
@@ -163,7 +171,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
     public function content_template()
     {
         ?>
-	
+
 		<# if (data.label) { #>
 			<span class="customize-control-title">{{{ data.label }}}</span>
 		<# } #>
@@ -176,7 +184,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 					<div class="menu-item-bar">
 						<div class="customize-control-repeater-field-handle menu-item-handle">
 							<span class="item-title" aria-hidden="true">
-                                <span class="menu-item-title"><?php _e('Key')?> </span>
+                                <span class="menu-item-title"> {{{ data.title_field }}} </span>
 
 							</span>
 							<span class="item-controls ">
@@ -191,9 +199,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 						<ul class="customize-control-repeater-field-settings">
 
                         </ul>
-                        <div class="menu-item-actions description-thin submitbox">
-							<button type="button" class="button-link  item-duplicate customize-duplicate-repeater-field"><?php _e('Duplicate')?></button>
-						</div>
+
 						<div class="menu-item-actions description-thin submitbox">
 							<button type="button" class="button-link button-link-delete item-delete submitdelete deletion"><?php _e('Delete')?></button>
 						</div>

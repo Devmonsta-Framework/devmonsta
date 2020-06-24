@@ -297,12 +297,12 @@ jQuery(document).ready(function () {
 
     /*Drag and drop to change icons order*/
 
-    jQuery('.customizer-repeater-general-control-droppable').sortable({
-        axis: 'y',
-        update: function () {
-            customizer_repeater_refresh_general_control_values();
-        }
-    });
+    // jQuery('.customizer-repeater-general-control-droppable').sortable({
+    //     axis: 'y',
+    //     update: function () {
+    //         customizer_repeater_refresh_general_control_values();
+    //     }
+    // });
 
 
     /*----------------- Socials Repeater ---------------------*/
