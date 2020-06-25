@@ -11,7 +11,7 @@ use Devmonsta\Libs\Customizer as LibsCustomizer;
  * @package Devmonsta\Options\Customizer
  */
 
-class Controls {
+class Controls extends Customizer {
 
     public function get_controls(){
 
@@ -57,24 +57,11 @@ class Controls {
 
             }
 
-
-
             return $customizer->all_controls();
-
-
-
 
         }
     }
 
-    protected function get_customizer_file()
-    {
-        /**
-         * Return the customizer file
-         *
-         * @link https://developer.wordpress.org/reference/functions/get_template_directory
-         */
-        return get_template_directory() . '/devmonsta/options/customizer.php';
-    }
+
 
 }
