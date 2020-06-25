@@ -32,7 +32,7 @@ class DatePicker extends Structure {
     public function enqueue_date_time_picker_scripts() {
         wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
-        // wp_enqueue_script( 'dm-date-picker', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'dm-date-picker', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
        
         $data['mondayFirst'] = $this->content['monday-first'] ? 1 : 0;
         $data['minDate'] = isset( $this->content['min-date'] ) ? date("Y-m-d", strtotime($this->content['min-date'])) : "today";
