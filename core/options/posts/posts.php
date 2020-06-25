@@ -20,6 +20,35 @@ class Posts
 
     protected $data;
 
+    public $controls_list = [
+        'rgba-color-picker',
+        'checkbox-multiple',
+        'datetime-picker',
+        'datetime-range',
+        'color-picker',
+        'image-picker',
+        'range-slider',
+        'date-picker',
+//        'multiselect',
+//        'typography',
+        'dimensions',
+        'wp-editor',
+        'textarea',
+        'switcher',
+        'gradient',
+        'checkbox',
+        'hidden',
+        'oembed',
+        'upload',
+//        'select',
+        'slider',
+        'radio',
+        'html',
+        'icon',
+        'text',
+        'url',
+    ];
+
     /**
      * =============================
      * Bootstrap post functionality
@@ -155,23 +184,45 @@ class Posts
     public function load_enqueue($all_controls)
     {
 
-        foreach ($all_controls as $control_content) {
+//        foreach ($all_controls as $control_content) {
+//
+//            if (isset($control_content['type'])) {
+//                $class_name = explode('-', $control_content['type']);
+//                $class_name = array_map('ucfirst', $class_name);
+//                $class_name = implode('', $class_name);
+//                $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+//
+//                if (class_exists($control_class)) {
+//                    $meta_owner = "post";
+//                    $control = new $control_class($control_content);
+//                    $control->enqueue($meta_owner);
+//                }
+//
+//            }
+//
+//        }
+//
 
-            if (isset($control_content['type'])) {
-                $class_name = explode('-', $control_content['type']);
-                $class_name = array_map('ucfirst', $class_name);
-                $class_name = implode('', $class_name);
-                $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+        foreach ($this->controls_list as $control) {
 
-                if (class_exists($control_class)) {
-                    $meta_owner = "post";
-                    $control = new $control_class($control_content);
-                    $control->enqueue($meta_owner);
-                }
 
+            $class_name = explode('-', $control);
+            $class_name = array_map('ucfirst', $class_name);
+            $class_name = implode('', $class_name);
+            $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+
+            if (class_exists($control_class)) {
+                $meta_owner = "post";
+                $control = new $control_class([
+                    'id' => '',
+                    'value' => '',
+                ]);
+                $control->enqueue($meta_owner);
             }
 
+
         }
+
 
     }
 
@@ -265,6 +316,8 @@ class Posts
     {
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-vendor-js',DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',[],null,true);
+        wp_enqueue_script('dm-init-js',DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js',[],null,true);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script("jquery-ui-draggable");

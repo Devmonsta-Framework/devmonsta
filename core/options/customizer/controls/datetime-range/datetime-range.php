@@ -9,22 +9,18 @@ class DatetimeRange extends Structure {
     $default_value, $value;
 
     private $allowed_date_formats = [
-        'Y-m-d',
-        'n/j/Y',
-        'm/d/Y',
-        'j/n/Y',
-        'd/m/Y',
-        'n-j-Y',
-        'm-d-Y',
-        'j-n-Y',
-        'd-m-Y',
-        'Y.m.d',
-        'm.d.Y',
-        'd.m.Y',
-    ];
-    private $allowed_time_formats = [
-        'H:i',
-        'h:i',
+        'y-m-d h:i',
+        'n/j/y h:i',
+        'm/d/y h:i',
+        'j/n/y h:i',
+        'd/m/y h:i',
+        'n-j-y h:i',
+        'm-d-y h:i',
+        'j-n-y h:i',
+        'd-m-y h:i',
+        'y.m.d h:i',
+        'm.d.y h:i',
+        'd.m.y h:i',
     ];
 
     /**
@@ -51,9 +47,8 @@ class DatetimeRange extends Structure {
                                 : "";
         $date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
-        $date_format                                        = isset( $date_time_picker_config['date-format'] ) && in_array( $date_time_picker_config['date-format'], $this->allowed_date_formats ) ? $date_time_picker_config['date-format'] : 'Y-m-d';
-        $time_format                                        = isset( $date_time_picker_config['time-format'] ) && in_array( $date_time_picker_config['time-format'], $this->allowed_time_formats ) ? $date_time_picker_config['time-format'] : 'H:i';
-        $this->date_time_range_default_data['format']      = $date_format . " " . $time_format;
+        $this->date_time_range_default_data['format']      = isset( $date_time_picker_config['date-format'] ) && in_array( strtolower(  $date_time_picker_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_picker_config['date-format'] : 'Y-m-d H:i';
+        $this->date_time_range_default_data['is24Format']  = isset( $date_time_picker_config['time-24'] ) &&  $date_time_picker_config['time-24'] ? 1 : 0;
         $this->date_time_range_default_data['minDate']     = isset( $date_time_picker_config['min-date'] ) ? date( $this->date_time_range_default_data['format'], strtotime( $date_time_picker_config['min-date'] ) ) : "today";
         $this->date_time_range_default_data['maxDate']     = isset( $date_time_picker_config['max-date'] ) ? date( $this->date_time_range_default_data['format'], strtotime( $date_time_picker_config['max-date'] ) ) : false;
         $this->date_time_range_default_data['timepicker']  = ( $date_time_picker_config['timepicker'] ) ? 1 : 0;

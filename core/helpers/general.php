@@ -1155,15 +1155,21 @@ function dm_theme_option($option_name, $default = false)
 
 }
 
-/**
- * Get theme controls as array
- *
- * @return mixed
- */
-function dm_get_all_theme_controls()
-{
-    $controls = new Devmonsta\Options\Customizer\Controls();
-    return $controls->get_controls();
+function dm_theme_control_default_control($control_name){
+
+    $control = dm_get_theme_control($control_name);
+    if($control != false){
+        $default = '';
+        if(isset($control['default'])){
+            $default = $control['default'];
+        }
+
+        if(isset($control['value'])){
+            $default = $control['value'];
+        }
+
+        return $default;
+    }
 }
 
 function dm_get_theme_control($control_name)
@@ -1180,22 +1186,12 @@ function dm_get_theme_control($control_name)
     return false;
 }
 
-function dm_theme_control_default_control($control_name){
-
-    $control = dm_get_theme_control($control_name);
-    if($control != false){
-        $default = '';
-        if(isset($control['default'])){
-            $default = $control['default'];
-        }
-
-        if(isset($control['value'])){
-            $default = $control['value'];
-        }
-
-       return $default;
-    }
+function dm_get_all_theme_controls()
+{
+    $controls = new Devmonsta\Options\Customizer\Controls();
+    return $controls->get_controls();
 }
+
 
 function dm_backups_destination_directory()
 {

@@ -11,6 +11,8 @@ class View
 
     protected $meta_owner = "post";
 
+
+
     /**
      * Build the metbox for the post
      *
@@ -20,6 +22,7 @@ class View
 
     public function build($box_id, $controls)
     {
+
 
         echo '<div class="dm-box">'; // This html for wrapper purpose
 
@@ -46,6 +49,7 @@ class View
      */
     public function render($control_content)
     {
+
 
         if (isset($control_content['type'])) {
 

@@ -9,22 +9,18 @@ class DatetimeRange extends Structure {
     protected $current_screen, $date_time_range_format;
 
     private $allowed_date_formats = [
-        'Y-m-d',
-        'n/j/Y',
-        'm/d/Y',
-        'j/n/Y',
-        'd/m/Y',
-        'n-j-Y',
-        'm-d-Y',
-        'j-n-Y',
-        'd-m-Y',
-        'Y.m.d',
-        'm.d.Y',
-        'd.m.Y',
-    ];
-    private $allowed_time_formats = [
-        'H:i',
-        'h:i'
+        'y-m-d h:i',
+        'n/j/y h:i',
+        'm/d/y h:i',
+        'j/n/y h:i',
+        'd/m/y h:i',
+        'n-j-y h:i',
+        'm-d-y h:i',
+        'j-n-y h:i',
+        'd-m-y h:i',
+        'y.m.d h:i',
+        'm.d.y h:i',
+        'd.m.y h:i',
     ];
 
     /**
@@ -55,9 +51,8 @@ class DatetimeRange extends Structure {
         wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'], time() );
 
         $date_time_range_config                = $this->content['datetime-picker'];
-        $date_format                           = isset( $date_time_range_config['date-format'] ) && in_array($date_time_range_config['date-format'], $this->allowed_date_formats) ? $date_time_range_config['date-format'] : 'Y-m-d';
-        $time_format                           = isset( $date_time_range_config['time-format'] ) && in_array($date_time_range_config['time-format'], $this->allowed_time_formats) ? $date_time_range_config['time-format'] : 'H:i';
-        $date_time_range_data['format']        = $this->date_time_range_format = $date_format . " " . $time_format;
+        $date_time_range_data['format']        = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
+        $date_time_range_data['is24Format']    = isset( $date_time_range_config['time-24'] ) && $date_time_range_config['time-24'] ? 1 : 0;
         $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
         $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
         $date_time_range_data['timepicker']    = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
