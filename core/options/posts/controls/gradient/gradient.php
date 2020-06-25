@@ -195,7 +195,7 @@ class Gradient extends Structure {
                         }
 
             ?>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </small>
+                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p> </small>
                 </div>
             </div>
     <?php
