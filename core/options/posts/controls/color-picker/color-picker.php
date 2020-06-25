@@ -38,7 +38,7 @@ class ColorPicker extends Structure {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+        // wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
         $data = [];
         global $post;

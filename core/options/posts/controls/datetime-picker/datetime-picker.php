@@ -54,7 +54,7 @@ class DatetimePicker extends Structure {
     public function enqueue_date_time_picker_scripts() {
         wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
         wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
+        // wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
 
         $date_time_picker_config               = $this->content['datetime-picker'];
         $date_format                           = isset( $date_time_picker_config['date-format'] ) && in_array($date_time_picker_config['date-format'], $this->allowed_date_formats) ? $date_time_picker_config['date-format'] : 'Y-m-d';
