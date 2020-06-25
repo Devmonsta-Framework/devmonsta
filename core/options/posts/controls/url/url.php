@@ -8,6 +8,8 @@ class Url extends Structure {
 
     protected $value;
 
+    protected $current_screen;
+
     /**
      * @internal
      */

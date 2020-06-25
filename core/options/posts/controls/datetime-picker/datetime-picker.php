@@ -43,6 +43,7 @@ class DatetimePicker extends Structure {
         if ( $this->current_screen == "post" ) {
 
             $this->enqueue_date_time_picker_scripts();
+
         } elseif ( $this->current_screen == "taxonomy" ) {
             add_action( 'init', [$this, 'enqueue_date_time_picker_scripts'] );
 

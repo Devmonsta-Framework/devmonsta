@@ -38,7 +38,7 @@ class View
 
     /**
      * Render markup view for the control
-     * defined in teme. It will pass the data according to the
+     * defined in theme. It will pass the data according to the
      * control type
      *
      * @access      public
@@ -111,11 +111,11 @@ class View
          */
         if (isset($control_data['controls'])) {
 
-            $repeater_controls = get_post_meta( get_the_ID(), 'devmonsta_repeater_content_' . $control_data['name'],true);
+            $repeater_controls = get_post_meta(get_the_ID(), 'devmonsta_repeater_content_' . $control_data['name'], true);
 
             // add_thickbox();
-?>
-            <div id="<?php echo $control_data['name'] ;?>" class="dm-option form-field ">
+            ?>
+            <div id="<?php echo $control_data['name']; ?>" class="dm-option form-field ">
 
                 <div class='dm-option-column left'>
                     <label class="dm-option-label"><?php echo $control_data['label']; ?> </label>
@@ -125,7 +125,11 @@ class View
                 <div class='dm-option-column dm-repeater-column right'>
 
                     <div class="dm-repeater-control dm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control <button type="button" data-id="<?php echo $control_data['name']; ?>" class="components-button dm-editor-post-trash is-link"><span class="dashicons dashicons-dismiss"></span></button></a>
+                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control
+                            <button type="button" data-id="<?php echo $control_data['name']; ?>"
+                                    class="components-button dm-editor-post-trash is-link"><span
+                                        class="dashicons dashicons-dismiss"></span></button>
+                        </a>
 
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
@@ -133,11 +137,11 @@ class View
                                     <span class="dm-repeater-popup-close dashicons dashicons-no-alt"></span>
                                 </div>
                                 <div class="dm-repeater-popup-data">
-                                    <?php 
+                                    <?php
                                     ob_start();
-                                        $this->repeater_controls($control_data);
+                                    $this->repeater_controls($control_data);
                                     $output = ob_get_clean();
-                                
+
                                     echo str_replace("active-script", '', $output);
                                     ?>
                                 </div>
@@ -147,19 +151,18 @@ class View
                         </div>
                     </div>
 
-                    <div id="dm-repeater-control-list-<?php echo $control_data['name']; ?>" class="dm-repeater-control-list">
+                    <div id="dm-repeater-control-list-<?php echo $control_data['name']; ?>"
+                         class="dm-repeater-control-list">
 
                     </div>
 
-                    <input type="hidden" value='<?php echo $repeater_controls; ?>' 
-                    name="devmonsta_repeater_content_<?php echo $control_data['name'];?>" 
-                    id="dm_repeater_content_<?php echo $control_data['name'];?>">
 
-                    <a href='' data-id='<?php echo $control_data['name']; ?>' class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
+                    <a href='' data-id='<?php echo $control_data['name']; ?>'
+                       class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
                 </div>
             </div>
 
-        <?php
+            <?php
         }
     }
 
@@ -177,7 +180,7 @@ class View
 
             $name = $control_content['name'];
             unset($control_content['name']);
-            $control_content['name'] =  $name;
+            $control_content['name'] = $name;
             $class_name = explode('-', $control_content['type']);
             $class_name = array_map('ucfirst', $class_name);
             $class_name = implode('', $class_name);
@@ -187,7 +190,7 @@ class View
 
                 $control = new $control_class($control_content);
                 $control->init();
-                $control->enqueue($this->meta_owner);
+//                $control->enqueue($this->meta_owner);
                 $control->render();
             } else {
 
@@ -201,7 +204,7 @@ class View
 
                         $control = new $control_class($control_content);
                         $control->init();
-                        $control->enqueue($this->meta_owner);
+//                        $control->enqueue($this->meta_owner);
                         $control->render();
                     }
                 }
@@ -210,33 +213,37 @@ class View
     }
 
 
-
     public function repeater_control_markup($control_content)
     {
 
-     ?>
+        ?>
         <div class='dm-option form-field dm-repeater-child'>
             <div class='dm-option-column left'>
                 <label class='dm-option-label'><?php echo $control_content['lable']; ?> </label>
             </div>
             <div class='dm-option-column right'>
-                
+
                 <div class='dm-option-column dm-repeater-column right'>
 
                     <div class="dm-repeater-control dm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_content['name']; ?>" class="dm-repeater-control-action">Control <button type="button" data-id="<?php echo $control_content['name']; ?>" class="components-button dm-editor-post-trash is-link"><span class="dashicons dashicons-dismiss"></span></button></a>
-                        
+                        <a href="#" data-id="<?php echo $control_content['name']; ?>"
+                           class="dm-repeater-control-action">Control
+                            <button type="button" data-id="<?php echo $control_content['name']; ?>"
+                                    class="components-button dm-editor-post-trash is-link"><span
+                                        class="dashicons dashicons-dismiss"></span></button>
+                        </a>
+
                         <div class="dm-repeater-inner-controls" id="<?php echo $control_content['name']; ?>">
                             <div class="dm-repeater-inner-controls-inner">
                                 <div class="dm-repeater-popup-heading">
                                     <span class="dm-repeater-popup-close dashicons dashicons-no-alt"></span>
                                 </div>
                                 <div class="dm-repeater-popup-data">
-                                    <?php 
+                                    <?php
                                     ob_start();
                                     $this->sub_repeater_controls($control_content['controls']);
                                     $output = ob_get_clean();
-                                
+
                                     echo str_replace("active-script", '', $output);
                                     ?>
                                 </div>
@@ -247,22 +254,23 @@ class View
 
                     <div class="dm-repeater-control-list"></div>
 
-                    <a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add New</a>
+                    <a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add
+                        New</a>
                 </div>
             </div>
         </div>
 
-    <?php
-    
+        <?php
+
     }
 
     public function sub_repeater_controls($control_contents)
     {
-        foreach($control_contents as $control_content){
-            
+        foreach ($control_contents as $control_content) {
+
             $this->build_controls($control_content);
 
         }
-        
+
     }
 }
