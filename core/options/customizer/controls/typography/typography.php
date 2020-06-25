@@ -72,7 +72,7 @@ class Typography extends Structure {
 
                 if ( is_array( $this->components ) && !empty( $this->components ) ) {
                     foreach ( $this->components as $key => $item ) {
-                        if ( $key ) {
+                        if ( $item ) {
                             switch ( $key ) {
                             case 'family':
                                 ?>
