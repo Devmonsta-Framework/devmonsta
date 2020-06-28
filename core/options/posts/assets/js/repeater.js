@@ -91,6 +91,8 @@ jQuery(document).ready(function ($) {
 function resetRepeater(clonedElement){
     jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
     jQuery(window).trigger('dm-vue.dm', [clonedElement]);
+    // multi-step
+    jQuery(window).trigger('dm-scripts.multiSelect', [clonedElement]);
     // select
     jQuery(window).trigger('dm-scripts.select', [clonedElement]);
     // typography
