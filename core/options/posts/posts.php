@@ -317,7 +317,7 @@ class Posts
         wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_style('dm-main-style', DM_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-       wp_enqueue_script('dm-vendor-js',DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',[],null,true);
+       wp_enqueue_script('dm-vendor-js',DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',['jquery'],null,true);
        wp_enqueue_script('dm-init-js',DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js',[],null,true);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);

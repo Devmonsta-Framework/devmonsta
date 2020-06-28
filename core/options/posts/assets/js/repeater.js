@@ -91,6 +91,9 @@ jQuery(document).ready(function ($) {
 function resetRepeater(clonedElement){
     jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
     jQuery(window).trigger('dm-vue.dm', [clonedElement]);
+    // select
+    jQuery(window).trigger('dm-scripts.select', [clonedElement]);
+    // typography
     jQuery(window).trigger('dm-scripts-typo.dm', [clonedElement]);
     // gradient
     jQuery(window).trigger('dm-scripts.gradient', [clonedElement]);

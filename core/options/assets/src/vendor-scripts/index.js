@@ -1,3 +1,1 @@
-const init = () => {
-    console.log('init')
-}
+import './select2.min.js';
