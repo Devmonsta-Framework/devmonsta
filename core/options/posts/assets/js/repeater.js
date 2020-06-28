@@ -91,22 +91,6 @@ jQuery(document).ready(function ($) {
 function resetRepeater(clonedElement){
     jQuery(window).trigger('dm-scripts.dm', [clonedElement]);
     jQuery(window).trigger('dm-vue.dm', [clonedElement]);
-    // slider
-    jQuery(window).trigger('dm-scripts.slider', [clonedElement]);
-    // multi-step
-    jQuery(window).trigger('dm-scripts.multiSelect', [clonedElement]);
-    // select
-    jQuery(window).trigger('dm-scripts.select', [clonedElement]);
-    // typography
-    jQuery(window).trigger('dm-scripts-typo.dm', [clonedElement]);
-    // gradient
-    jQuery(window).trigger('dm-scripts.gradient', [clonedElement]);
-    // datetime Range
-    jQuery(window).trigger('dm-scripts.datetimeRange', [clonedElement]);
-    // Date Picker
-    jQuery(window).trigger('dm-scripts.datePicker', [clonedElement]);
-    // colorpicker
-    jQuery(window).trigger('dm-scripts.colorPicker', [clonedElement]);
-    // datetime picker
-    jQuery(window).trigger('dm-scripts.datetimePicker', [clonedElement]);
+    
+    jQuery(window).trigger('dm-scripts', [clonedElement]);
 }
