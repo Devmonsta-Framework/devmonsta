@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
   entry: {
       'dm-init-scripts': __dirname + '/core/options/assets/src/init-scripts/index.js',
       'dm-vendor-scripts': __dirname + '/core/options/assets/src/vendor-scripts/index.js'
