@@ -43,5 +43,6 @@ jQuery(window).on('dm-scripts.oembed', function(){
 
 
 jQuery(document).ready(function($) {
+    console.log('hello world')
     jQuery(window).trigger('dm-scripts.oembed');
 });
