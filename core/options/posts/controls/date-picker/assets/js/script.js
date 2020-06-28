@@ -8,10 +8,11 @@ jQuery(window).on('dm-scripts.datePicker', function(e, val){
     if(el.length){
         var datePickerConfig = {
             dateFormat: "Y-m-d",
-            minDate: dm_date_picker_config.minDate,
-            maxDate:  dm_date_picker_config.maxDate,
-            "locale": {
-                "firstDayOfWeek": mondayFirst
+            mondeyFirst: true,
+            onReady: function(a,b,c){
+                
+                this.config.mondeyFirst = true;
+                console.log(this);
             }
         }
 

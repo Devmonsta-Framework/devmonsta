@@ -130,6 +130,9 @@ class DatePicker extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        $data['mondayFirst'] = $this->content['monday-first'] ? 1 : 0;
+        $data['minDate'] = isset( $this->content['min-date'] ) ? date("Y-m-d", strtotime($this->content['min-date'])) : "today";
+        $data['maxDate'] = isset( $this->content['max-date'] ) ? date("Y-m-d", strtotime($this->content['max-date'])) : false;
         ?>
             <div <?php echo dm_render_markup( $default_attributes ); ?> >
                 <div class="dm-option-column left">
@@ -137,7 +140,7 @@ class DatePicker extends Structure {
                 </div>
 
                 <div class="dm-option-column right">
-                    <input type="text" name="<?php echo esc_attr( $name ); ?>"
+                    <input type="text" name="<?php echo esc_attr( $name ); ?>" data-min-Date="<?php echo $data['minDate']; ?>" data-max-Date="<?php echo $data['maxDate']; ?>"  data-mondey-first="false"
                         class="dm-option-input dm-ctrl dm-option-input-date-picker"
                         value="<?php echo esc_attr( $value ); ?>">
                     <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
