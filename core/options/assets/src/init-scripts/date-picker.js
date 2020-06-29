@@ -1,5 +1,4 @@
 jQuery(window).on('dm-scripts.datePicker', function(e, val){
-    
     var el = jQuery('.dm-option.active-script .dm-option-input-date-picker');
     if(val){
         el = val.find('.dm-option-input-date-picker');
