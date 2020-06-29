@@ -107,7 +107,7 @@ class Posts
 
             }
 
-            // error_log( serialize($repeater->all_controls()));
+
 
             /** Get all the metaboxed that has been defined */
 
@@ -297,7 +297,7 @@ class Posts
             }
 
             if($key == 'dm_options'){
-                error_log(serialize($value));
+
             }
 
 

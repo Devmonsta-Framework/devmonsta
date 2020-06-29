@@ -253,7 +253,7 @@ class Customizer
              * Defaults controls list defined on @default_controls
              */
 
-            add_action('customize_register', function ($wp_customize) use ($control) {
+            add_action('customize_register', function ($wp_customize) use ($control, $type) {
                 $args = $control;
                 $id = $args['id'];
                 $args['settings'] = $id;
@@ -270,13 +270,25 @@ class Customizer
                     ]);
                 }
 
-                $wp_customize->add_control(
-                    new \WP_Customize_Control(
-                        $wp_customize,
-                        $id,
-                        $args
-                    )
-                );
+                if ($type == 'media') {
+                    error_log('Media detected');
+                    $wp_customize->add_control(
+                        new \WP_Customize_Media_Control(
+                            $wp_customize,
+                            $id,
+                            $args
+                        )
+                    );
+                } else {
+                    $wp_customize->add_control(
+                        new \WP_Customize_Control(
+                            $wp_customize,
+                            $id,
+                            $args
+                        )
+                    );
+                }
+
 
             });
 
@@ -357,7 +369,6 @@ class Customizer
 
             }
 
-            // error_log(serialize($field_controls));
 
             $wp_customize->add_setting($control['id'], [
                 'default' => '',
@@ -426,7 +437,6 @@ class Customizer
 
             }
 
-            // error_log(serialize($field_controls));
 
             $wp_customize->add_setting($control['id'], [
                 'default' => '',
@@ -589,6 +599,7 @@ class Customizer
             'number',
             'hidden',
             'date',
+            'media',
             // 'color',
         ];
     }
