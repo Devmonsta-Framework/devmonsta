@@ -55,12 +55,12 @@ class DatetimePicker extends Structure {
 
         $date_time_picker_config               = $this->content['datetime-picker'];
         $date_time_picker_data['format']       = isset( $date_time_picker_config['date-format'] ) && in_array( strtolower( $date_time_picker_config['date-format'] ), $this->allowed_date_formats ) ? $date_time_picker_config['date-format'] : 'Y-m-d H:i';
-        $date_time_picker_data['abc']   = isset( $date_time_picker_config['time-24'] ) && $date_time_picker_config['time-24'] ? 1 : 0;
+        $date_time_picker_data['is24Format']   = isset( $date_time_picker_config['time-24'] ) && $date_time_picker_config['time-24'] ? 1 : 0;
         $date_time_picker_data['minDate']      = isset( $date_time_picker_config['min-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['min-date'])) : "today";
         $date_time_picker_data['maxDate']      = isset( $date_time_picker_config['max-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['max-date'])) : false;
         $date_time_picker_data['timepicker']   = ( $date_time_picker_config['timepicker'] ) ? 1 : 0;
         $date_time_picker_data['defaultTime']  =  isset( $date_time_picker_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_picker_config['defaultTime']) ? $date_time_picker_config['defaultTime'] : '12:00';
-
+        
         wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
 
     }
