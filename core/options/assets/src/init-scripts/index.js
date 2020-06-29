@@ -7,3 +7,4 @@ import './slider.js';
 import './range-slider.js';
 import './date-picker.js';
 import './datetime-picker.js';
+import './datetime-range.js';

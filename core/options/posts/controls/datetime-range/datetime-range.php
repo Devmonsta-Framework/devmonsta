@@ -46,19 +46,19 @@ class DatetimeRange extends Structure {
 
     public function enqueue_date_time_range_scripts() {
 
-        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'], time() );
+        // wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        // wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        // wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'], time() );
 
-        $date_time_range_config                = $this->content['datetime-picker'];
-        $date_time_range_data['format']        = $this->date_time_range_format = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
-        $date_time_range_data['is24Format']    = isset( $date_time_range_config['time-24'] ) && $date_time_range_config['time-24'] ? 1 : 0;
-        $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
-        $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
-        $date_time_range_data['timepicker']    = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
-        $date_time_range_data['defaultTime']   = isset( $date_time_range_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_range_config['defaultTime']) ? $date_time_range_config['defaultTime'] : '12:00';
+        // $date_time_range_config                = $this->content['datetime-picker'];
+        // $date_time_range_data['format']        = $this->date_time_range_format = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
+        // $date_time_range_data['is24Format']    = isset( $date_time_range_config['time-24'] ) && $date_time_range_config['time-24'] ? 1 : 0;
+        // $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
+        // $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
+        // $date_time_range_data['timepicker']    = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
+        // $date_time_range_data['defaultTime']   = isset( $date_time_range_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_range_config['defaultTime']) ? $date_time_range_config['defaultTime'] : '12:00';
 
-        wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $date_time_range_data );
+        // wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $date_time_range_data );
 
     }
 
@@ -155,6 +155,13 @@ class DatetimeRange extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        $date_time_range_config                = $this->content['datetime-picker'];
+        $date_time_range_data['format']        = $this->date_time_range_format = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
+        $date_time_range_data['is24Format']    = isset( $date_time_range_config['time-24'] ) && $date_time_range_config['time-24'] ? 1 : 0;
+        $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
+        $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
+        $date_time_range_data['timepicker']    = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
+        $date_time_range_data['defaultTime']   = isset( $date_time_range_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_range_config['defaultTime']) ? $date_time_range_config['defaultTime'] : '12:00';
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
@@ -162,7 +169,7 @@ class DatetimeRange extends Structure {
             </div>
 
             <div class="dm-option-column right">
-                <input type="text"
+                <input type="text" data-config='<?php echo json_encode($date_time_range_data); ?>'
                         class="dm-option-input dm-ctrl dm-option-input-datetime-range"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $value ); ?>">
