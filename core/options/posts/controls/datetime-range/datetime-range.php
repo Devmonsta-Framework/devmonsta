@@ -51,7 +51,7 @@ class DatetimeRange extends Structure {
         wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'], time() );
 
         $date_time_range_config                = $this->content['datetime-picker'];
-        $date_time_range_data['format']        = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
+        $date_time_range_data['format']        = $this->date_time_range_format = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
         $date_time_range_data['is24Format']    = isset( $date_time_range_config['time-24'] ) && $date_time_range_config['time-24'] ? 1 : 0;
         $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
         $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
