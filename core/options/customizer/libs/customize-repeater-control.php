@@ -53,12 +53,18 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
             $this->prepareFields($this->fields);
         }
 
-        error_log(serialize($args));
+
 
         // Force control type to 'repeater'
         $this->type = 'repeater';
 
-        $this->title_field = $args['title_field'];
+        $title_field = '';
+
+        if(isset($args['title_field'])){
+            $title_field = $args['title_field'];
+        }
+
+        $this->title_field = $title_field;
     }
 
     /*
@@ -93,7 +99,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
             $Control = new $field['control']($this->manager, $this->_settings, $field['args']);
 
             $field['control'] = str_replace(array('WP_Customize', '_'), '', $field['control']);
-            // error_log(serialize($Control->json()));
+
             $field['args'] = $Control->json();
 
             if ('image' === $Control->type) {

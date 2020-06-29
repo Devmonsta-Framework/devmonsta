@@ -78,7 +78,6 @@ class Taxonomies
 
                     $this->controls = $controls;
 
-                    // error_log('Taxonomy : ' . $taxonomy . ' and data ' . serialize($controls));
 
                     $this->build_taxonomoy($taxonomy, $controls);
 
@@ -194,7 +193,7 @@ class Taxonomies
                     }
 
 
-                    // error_log( $control_class . ' does not exists' );
+
                 }
 
             }
