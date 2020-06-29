@@ -62,7 +62,7 @@ class RgbaColorPicker extends Structure {
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                             ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                            : $this->default_value;
+                            : ( isset( $this->content['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $this->content['value'] ) ? $this->content['value'] : "" );
         $this->output();
     }
 
