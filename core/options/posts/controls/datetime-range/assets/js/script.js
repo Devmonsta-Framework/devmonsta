@@ -7,7 +7,7 @@ jQuery(window).on('dm-scripts.datetimeRange', function (e, val) {
 
     if (el.length) {
         var time_picker = (date_time_range_config.timepicker == 0) ? false : true;
-        var is_24format = (date_time_range_config.is24Format == 0) ? false : true;
+        var is_24format = (date_time_picker_config.is24Format == 0) ? false : true;
         var min_date = (date_time_range_config.minDate == "") ? false : date_time_range_config.minDate;
         var max_date = (date_time_range_config.maxDate == "") ? false : date_time_range_config.maxDate;
         el.flatpickr({
