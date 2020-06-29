@@ -3,6 +3,7 @@ jQuery(window).on('dm-scripts.datePicker', function(e, val){
     if(val){
         el = val.find('.dm-option-input-date-picker');
     }
+    if(!el.length){ return false; }
     el.each(function(){
         var mondayFirst = (jQuery(this).data('mondey-first') == 1) ? true : false;
         
