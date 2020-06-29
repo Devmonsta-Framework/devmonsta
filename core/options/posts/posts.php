@@ -320,9 +320,9 @@ class Posts
        wp_enqueue_script('dm-vendor-js',DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',['jquery'],null,true);
        wp_enqueue_script('dm-init-js',DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js',['jquery'],null,true);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
-        wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
+        // wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script("jquery-ui-draggable");
-        wp_enqueue_script('dm-repeater', DM_PATH . 'core/options/posts/assets/js/repeater.js', ['jquery'], null, true);
+        // wp_enqueue_script('dm-repeater', DM_PATH . 'core/options/posts/assets/js/repeater.js', ['jquery'], null, true);
         wp_localize_script('dm-repeater', 'ajax_object', [
             'ajax_url' => admin_url('admin-ajax.php')
         ]);
