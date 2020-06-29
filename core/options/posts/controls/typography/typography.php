@@ -44,13 +44,11 @@ class Typography extends Structure {
      */
     public function dm_enqueue_color_picker() {
 
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
+        // wp_enqueue_style( 'wp-color-picker' );
 
-        wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
+        // wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        // wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        // wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
     }
 
     /**
@@ -183,14 +181,14 @@ class Typography extends Structure {
         $data                  = [];
         $data['font_list']     = $font_list;
         $data['selected_data'] = $value;
-        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
+        // wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
         ?>
         <div <?php echo dm_render_markup( $default_attributes ); ?> >
             <div class="dm-option-column left">
                 <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
             </div>
             <div class="dm-option-column right full-width">
-                <ul class="dm-option-typography">
+                <ul class="dm-option-typography" data-config='<?php echo json_encode($data); ?>'>
                 <?php
 
                 if ( is_array( $components ) && !empty( $components ) ) {

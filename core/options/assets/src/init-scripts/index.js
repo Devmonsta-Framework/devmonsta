@@ -15,3 +15,4 @@ import './color-picker.js';
 import './gradient.js';
 import './rgba-color-picker.js';
 import './dimensions.js';
+import './typography.js';
