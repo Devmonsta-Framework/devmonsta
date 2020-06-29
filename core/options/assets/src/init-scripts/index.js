@@ -10,3 +10,4 @@ import './datetime-picker.js';
 import './datetime-range.js';
 import './color-picker.js';
 import './gradient.js';
+import './rgba-color-picker.js';
