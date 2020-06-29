@@ -67,6 +67,7 @@ class DatetimeRange extends Structure {
      */
     public function render() {
         $content       = $this->content;
+        $this->date_time_range_format = isset( $content['datetime-picker']['date-format'] ) && in_array( strtolower(  $content['datetime-picker']['date-format'] ), $this->allowed_date_formats ) ?  $content['datetime-picker']['date-format'] : 'Y-m-d H:i';
         $default_value = ( isset( $content['value']['from'] ) && isset( $content['value']['to'] ) )
                         ? ( date( $this->date_time_range_format, strtotime( $content['value']['from'] ) ) . " - " . date( $this->date_time_range_format, strtotime( $content['value']['to'] ) ) )
                         : "";
@@ -156,7 +157,7 @@ class DatetimeRange extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         $date_time_range_config                = $this->content['datetime-picker'];
-        $date_time_range_data['format']        = $this->date_time_range_format = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
+        $date_time_range_data['format']        = isset( $date_time_range_config['date-format'] ) && in_array( strtolower(  $date_time_range_config['date-format'] ), $this->allowed_date_formats ) ?  $date_time_range_config['date-format'] : 'Y-m-d H:i';
         $date_time_range_data['is24Format']    = isset( $date_time_range_config['time-24'] ) && $date_time_range_config['time-24'] ? 1 : 0;
         $date_time_range_data['minDate']       = isset( $date_time_range_config['min-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['min-date'])) : "today";
         $date_time_range_data['maxDate']       = isset( $date_time_range_config['max-date'] ) ? date( $date_time_range_data['format'], strtotime($date_time_range_config['max-date'])) : false;
