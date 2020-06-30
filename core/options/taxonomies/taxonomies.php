@@ -384,9 +384,10 @@ class Taxonomies
      */
     public function load_scripts()
     {
-
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('wp-color-picker');
         wp_enqueue_style('devmonsta-taxonomy-style', DM_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
-        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_style('dm-main-style', DM_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
