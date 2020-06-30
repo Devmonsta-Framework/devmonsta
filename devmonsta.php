@@ -1,13 +1,13 @@
 <?php
 /**
  * Plugin Name: Devmonsta
- * Description: Freamwork
+ * Plugin URI: http://devmonsta.com/
+ * Description: A free WordPress custimiser with post meta options with Demo content installation that will help you develop premium themes fast & easy.
  * Version: 1.0.0
- * Author: Xpeedstudio
- * Author URI:  https://xpeedstudio.com
- * Text Domain: devmonsta
- * License:  GPL-2.0+
- * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Author: 	devmonsta
+ * Author URI: http://devmonsta.com
+ * License: GPL3+
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.txt
  */
 
 
