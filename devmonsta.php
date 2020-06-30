@@ -10,7 +10,7 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-use Devmonsta\Bootstrap;
+
 
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -70,7 +70,7 @@ final class Devmonsta {
      */
     public function init_plugin() {
 
-        Bootstrap::instance()->init();
+        Devmonsta\Bootstrap::instance()->init();
 
     }
 
