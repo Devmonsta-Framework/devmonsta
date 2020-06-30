@@ -620,5 +620,8 @@ class Customizer
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-vue', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('customizer-script', DM_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true);
+        wp_enqueue_script('dm-vendor-js', DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-init-js', DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
+
     }
 }
