@@ -29,8 +29,8 @@ class Posts
         'image-picker',
         'range-slider',
         'date-picker',
-       'multiselect',
-       'typography',
+        'multiselect',
+        'typography',
         'dimensions',
         'wp-editor',
         'textarea',
@@ -40,7 +40,7 @@ class Posts
         'hidden',
         'oembed',
         'upload',
-       'select',
+        'select',
         'slider',
         'radio',
         'html',
@@ -106,7 +106,6 @@ class Posts
                 }
 
             }
-
 
 
             /** Get all the metaboxed that has been defined */
@@ -296,10 +295,9 @@ class Posts
 
             }
 
-            if($key == 'dm_options'){
+            if ($key == 'dm_options') {
 
             }
-
 
 
         }
@@ -314,13 +312,14 @@ class Posts
      */
     public function load_scripts()
     {
-        wp_enqueue_style( 'wp-color-picker' );
-        wp_enqueue_script( 'wp-color-picker' );
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('wp-color-picker');
         // wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_style('dm-main-style', DM_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-       wp_enqueue_script('dm-vendor-js',DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',['jquery'],null,true);
-       wp_enqueue_script('dm-init-js',DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js',['jquery'],null,true);
+        wp_enqueue_script('dm-vendor-js', DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-init-js', DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
+
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         // wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script("jquery-ui-draggable");
