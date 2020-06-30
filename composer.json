@@ -7,6 +7,9 @@
     "autoload": {
         "psr-4": {
             "Devmonsta\\": "core/"
-        }
+        },
+        "classmap": [
+            "core/"
+        ]
     }
 }
