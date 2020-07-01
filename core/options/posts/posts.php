@@ -65,6 +65,7 @@ class Posts
         }
 
         add_action('admin_init', [$this, 'load_scripts']);
+        add_action('init', [$this, 'load_enqueue']);
 
         /** Check if post files exists in active theme directory */
 
@@ -133,7 +134,6 @@ class Posts
                     if ($post_type == $args['post_type']) {
                         $this->data = $args;
 
-                        $this->load_enqueue($all_controls);
                         $this->add_meta_box($post_type, $args, $all_controls);
                     }
 
@@ -181,7 +181,7 @@ class Posts
      * =========================================================
      */
 
-    public function load_enqueue($all_controls)
+    public function load_enqueue()
     {
 
 //        foreach ($all_controls as $control_content) {
@@ -201,8 +201,8 @@ class Posts
 //            }
 //
 //        }
-//
 
+//
         foreach ($this->controls_list as $control) {
 
 
