@@ -17,7 +17,7 @@ class ImagePicker extends Structure {
 
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -44,7 +44,7 @@ class ImagePicker extends Structure {
      */
     public function enqueue() {
         // css
-        wp_enqueue_style( 'dm-image-picker-css', DM_CORE . 'options/posts/controls/image-picker/assets/css/image-picker.css' );
+        wp_enqueue_style( 'devm-image-picker-css', DEVMONSTA_CORE . 'options/posts/controls/image-picker/assets/css/image-picker.css' );
     }
 
     
@@ -55,14 +55,14 @@ class ImagePicker extends Structure {
 
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right full-width">
-                <div class="thumbnails dm-option-image_picker_selector">
-                        <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
+            <div class="devm-option-column right full-width">
+                <div class="thumbnails devm-option-image_picker_selector">
+                        <input class="devm-ctrl devm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>">
                         <ul>
                             <?php
                                 if ( is_array( $this->choices ) && isset( $this->choices ) ) {
@@ -76,10 +76,10 @@ class ImagePicker extends Structure {
                                                 ?>
                                                 <li data-image_name='<?php echo esc_attr( $item_key ); ?>'>
                                                     <label>
-                                                        <input <?php $this->link(); ?> <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $this->name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
-                                                        <div class="dm-img-list" for="<?php echo esc_attr( $this->name ) . $item_key; ?>">
+                                                        <input <?php $this->link(); ?> <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $this->name ) . $item_key; ?>" class="devm-ctrl devm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
+                                                        <div class="devm-img-list" for="<?php echo esc_attr( $this->name ) . $item_key; ?>">
                                                             <?php if ( !empty( $large_image ) ): ?>
-                                                            <div class="dm-img-picker-preview">
+                                                            <div class="devm-img-picker-preview">
                                                                 <img src="<?php echo esc_attr( $large_image ); ?>" />
                                                             </div>
                                                             <?php endif;?>
@@ -97,7 +97,7 @@ class ImagePicker extends Structure {
                             ?>
                         </ul>
                     </div>
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
         <?php

@@ -59,10 +59,10 @@ final class Devmonsta {
         define( 'DEVMONSTA', true );
         define( 'DEVMONSTA_VERSION', self::version );
 
-        define( 'DM_PATH', plugin_dir_url( __FILE__ ) );
-        define( 'DM_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
-        define( 'DM_CORE', DM_PATH . 'core/' );
-        define( 'DM_OPTIONS', DM_CORE . 'options/' );
+        define( 'DEVMONSTA_PATH', plugin_dir_url( __FILE__ ) );
+        define( 'DEVMONSTA_DIR', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
+        define( 'DEVMONSTA_CORE', DEVMONSTA_PATH . 'core/' );
+        define( 'DEVMONSTA_OPTIONS', DEVMONSTA_CORE . 'options/' );
     }
 
     /**

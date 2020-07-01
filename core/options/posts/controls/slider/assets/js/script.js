@@ -1,11 +1,11 @@
-jQuery(window).on('dm-scripts.dm', function(){
-    var el = jQuery('.dm-option.active-script .dm-slider');
+jQuery(window).on('devm-scripts.dm', function(){
+    var el = jQuery('.devm-option.active-script .devm-slider');
     
     if (el.length) {
         el.asRange({
-            max: dm_slider_config.max,
-            min: dm_slider_config.min,
-            step: dm_slider_config.step,
+            max: devm_slider_config.max,
+            min: devm_slider_config.min,
+            step: devm_slider_config.step,
             limit: true,
             range: false,
             direction: 'h', // 'v' or 'h'
@@ -25,5 +25,5 @@ jQuery(window).on('dm-scripts.dm', function(){
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('devm-scripts.dm');
 });

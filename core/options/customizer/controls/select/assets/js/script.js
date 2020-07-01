@@ -1,5 +1,5 @@
-jQuery(window).on('dm-scripts.dm', function(){
-    var el = jQuery('.dm_select');
+jQuery(window).on('devm-scripts.dm', function(){
+    var el = jQuery('.devm_select');
     el.removeClass('.select2-hidden-accessible');
     el.parent().find('.select2').remove();
     el.select2();
@@ -8,5 +8,5 @@ jQuery(window).on('dm-scripts.dm', function(){
 jQuery(document).ready(function($) {
     
     //Initialize the datepicker and set the first day of the week as Monday
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('devm-scripts.dm');
 });

@@ -23,21 +23,21 @@ class Gradient extends Structure {
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
 
-        add_action( 'init', [$this, 'dm_enqueue_gradient_picker'] );
+        add_action( 'init', [$this, 'devm_enqueue_gradient_picker'] );
 
     }
 
     /**
      * @internal
      */
-    public function dm_enqueue_gradient_picker() {
+    public function devm_enqueue_gradient_picker() {
 
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        if ( !wp_script_is( 'dm-gradient-handle', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+        if ( !wp_script_is( 'devm-gradient-handle', 'enqueued' ) ) {
+            wp_enqueue_script( 'devm-gradient-handle', DEVMONSTA_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
         }
 
@@ -55,7 +55,7 @@ class Gradient extends Structure {
 
         $data['defaults'] = $default_value_array;
 
-        wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
+        wp_localize_script( 'devm-gradient-handle', 'gradient_picker_config', $data );
     }
 
     /**
@@ -111,7 +111,7 @@ class Gradient extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -144,7 +144,7 @@ class Gradient extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-        $this->dm_enqueue_gradient_picker();
+        $this->devm_enqueue_gradient_picker();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
@@ -170,23 +170,23 @@ class Gradient extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc  ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
-                <div class="dm-option-column right">
+                <div class="devm-option-column right">
                     <?php
 
                         if ( is_array( $value ) && isset( $value['primary'] )  && isset( $value['secondary'] ) ) {
                                 ?>
-                                    <input type="text" class="dm-ctrl dm-gradient-field-primary"
+                                    <input type="text" class="devm-ctrl devm-gradient-field-primary"
                                             name="<?php echo esc_html( $name . "[primary]" ); ?>"
                                             value="<?php echo esc_attr( $value['primary'] ); ?>"
                                             data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
                                             
                                     <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
 
-                                    <input type="text" class="dm-ctrl dm-gradient-field-secondary"
+                                    <input type="text" class="devm-ctrl devm-gradient-field-secondary"
                                             name="<?php echo esc_html( $name . "[secondary]" ); ?>"
                                             value="<?php echo esc_attr( $value['secondary'] ); ?>"
                                             data-default-color="<?php echo esc_attr( $value['secondary'] ); ?>" />
@@ -195,7 +195,7 @@ class Gradient extends Structure {
                         }
 
             ?>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p> </small>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p> </small>
                 </div>
             </div>
     <?php

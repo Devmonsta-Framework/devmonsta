@@ -3,7 +3,7 @@
 $iconList = [
     [
         "name" => "Font Awesome v5.0.1",
-        "id"   => "dm-font-awesome",
+        "id"   => "devm-font-awesome",
         "icons" => [
             "fab fa-500px",
             "fab fa-accessible-icon",
@@ -793,7 +793,7 @@ $iconList = [
     ],
     [
         "name" => "Dashicons",
-        "id"   => "dm-dashicons",
+        "id"   => "devm-dashicons",
         "icons" => [
             'dashicons dashicons-menu',
             'dashicons dashicons-menu-alt',

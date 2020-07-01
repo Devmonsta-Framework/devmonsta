@@ -37,7 +37,7 @@ class Color extends \WP_Customize_Control {
      *                                      on accepted arguments. Default empty array.
      */
     public function __construct( $manager, $id, $args = array() ) {
-        $this->statuses = array( '' => __( 'Default' ) );
+        $this->statuses = array( '' =>esc_html__( 'Default' ) );
         parent::__construct( $manager, $id, $args );
     }
  

@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'DM' ) ) {
+<?php if ( ! defined( 'DEVM' ) ) {
 	die( 'Forbidden' );
 }
 

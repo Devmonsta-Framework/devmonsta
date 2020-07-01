@@ -44,7 +44,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 
         if (isset($args['add_button_text'])) {
 
-            update_option('dm_add_button_text', $args['add_button_text']);
+            update_option('devm_add_button_text', $args['add_button_text']);
         }
 
         $this->_settings = isset($args['settings']) ? $args['settings'] : $this->id;
@@ -218,7 +218,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 
 
 			<button type="button" class="button customize-add-repeater-field" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
-				<?php _e(get_option('dm_add_button_text'))?>
+				<?php _e(get_option('devm_add_button_text'))?>
 			</button>
 		</div>
 		<?php

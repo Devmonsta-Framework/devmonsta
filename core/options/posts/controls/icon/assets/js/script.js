@@ -1,28 +1,28 @@
 jQuery(document).ready(function(){
-    Vue.component('dm-icon-picker', {
+    Vue.component('devm-icon-picker', {
         props: ["icon_list", "name", "default_icon_type", "default_icon"],
         template: `
-            <div class="dm-icon-control">
-                <div class="dm-select-icon">
-                    <div class="dm-icon-box">
+            <div class="devm-icon-control">
+                <div class="devm-select-icon">
+                    <div class="devm-icon-box">
                         <div :class="iconBox" @click="openModal">
-                            <span :class="'dm-icon ' + savedIconClass"></span>
-                            <div class="dm-placeholder-icons">
+                            <span :class="'devm-icon ' + savedIconClass"></span>
+                            <div class="devm-placeholder-icons">
                                     <i class="fas fa-ad"></i>
                                     <i class="far fa-address-book"></i>
                                     <i class="fab fa-affiliatetheme"></i>
                             </div>
                        </div>
-                       <div class="dm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
+                       <div class="devm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
                     </div>
-                    <button class="dm-add-icon-btn button" @click.prevent="openModal">{{ iconBtnText }}</button>
-                    <input v-if="!wp.customize" class="dm-ctrl" type="hidden" :name="name" v-model="savedIconClass">
+                    <button class="devm-add-icon-btn button" @click.prevent="openModal">{{ iconBtnText }}</button>
+                    <input v-if="!wp.customize" class="devm-ctrl" type="hidden" :name="name" v-model="savedIconClass">
                     <input v-if="!wp.customize" type="hidden" :name="name + '_type'" :value="iconType">
                     
                     <input v-if="wp.customize" type="hidden" v-model="customizerdata" :data-customize-setting-link="name"  />
                 </div>
                 <transition name="fade">
-                    <dm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @icon-type="changeIconType"></dm-icon-modal>
+                    <devm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @icon-type="changeIconType"></devm-icon-modal>
                 </transition>
             </div>
         `,
@@ -80,14 +80,14 @@ jQuery(document).ready(function(){
                 this.savedIconClass = this.pickedIcon;
                 this.iconType = this.tempiconType;
                 this.customizerdata = JSON.stringify({iconType: this.iconType, icon: this.pickedIcon});
-                jQuery(this.$el).find('.dm-ctrl').trigger('change', [this.pickedIcon])
+                jQuery(this.$el).find('.devm-ctrl').trigger('change', [this.pickedIcon])
             },
             changeIconType: function (value) {
                 this.tempiconType = value;
             }
         },
         mounted: function(){
-            jQuery(this.$el).find('.dm-ctrl').trigger('change', [this.pickedIcon])
+            jQuery(this.$el).find('.devm-ctrl').trigger('change', [this.pickedIcon])
         },
         created: function () {
             this.iconList = JSON.parse(this.icon_list);
@@ -96,25 +96,25 @@ jQuery(document).ready(function(){
         }
     });
     
-    Vue.component('dm-icon-modal', {
+    Vue.component('devm-icon-modal', {
         props: ["iconList", "default_icon_type", "default_icon"],
         template: `
-            <div class="dm-icon-modal-container">
-                <div class="dm-icon-modal-data">
-                    <div class="dm-icon-modal-header">
+            <div class="devm-icon-modal-container">
+                <div class="devm-icon-modal-data">
+                    <div class="devm-icon-modal-header">
                         <ul>
                             <li>Icon Fonts</li>
                         </ul>
-                        <div class="dm-icon-modal-close" @click="$emit('close-modal')"><i class="fas fa-times"></i></div>
+                        <div class="devm-icon-modal-close" @click="$emit('close-modal')"><i class="fas fa-times"></i></div>
                     </div>
-                    <div class="dm-icon-modal-selection">
-                        <select class="dm-icon-type" v-if="iconList.length" v-model="iconType">
+                    <div class="devm-icon-modal-selection">
+                        <select class="devm-icon-type" v-if="iconList.length" v-model="iconType">
                             <option :value="icon.id" v-for="icon in iconList">{{ icon.name }}</option>
                         </select>
-                        <input type="text" placeholder="serach..." class="dm-icon-search" v-model="search">
+                        <input type="text" placeholder="serach..." class="devm-icon-search" v-model="search">
                     </div>
-                    <dm-icon-list v-if="icons.length" :icons="icons" :search="search" @picked-icon="pickedIcon" :default_icon="default_icon"></dm-icon-list>
-                    <div class="dm-icon-modal-footer">
+                    <devm-icon-list v-if="icons.length" :icons="icons" :search="search" @picked-icon="pickedIcon" :default_icon="default_icon"></devm-icon-list>
+                    <div class="devm-icon-modal-footer">
                         <button class="button media-button button-primary button-large media-button-0" @click.prevent="$emit('save-icon')">Save</button>
                     </div>
                 </div>
@@ -147,10 +147,10 @@ jQuery(document).ready(function(){
         }
     });
     
-    Vue.component('dm-icon-list', {
+    Vue.component('devm-icon-list', {
         props: ["icons", "search", "default_icon"],
         template: `
-            <div class="dm-list-icon">
+            <div class="devm-list-icon">
                 <ul>
                     <li :data-icon="icon" v-for="icon in finalIcon" @click="pickIcon(icon)" :class="{ 'active': pickedIcon ==  icon}"><span :class="icon"></span></li>
                 </ul>

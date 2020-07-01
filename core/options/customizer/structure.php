@@ -31,11 +31,11 @@ class Structure extends \WP_Customize_Control {
         $condition_class    = "";
         $condition_data     = "";
         if( isset( $content['conditions'] ) && is_array( $content['conditions'] ) ){
-            $condition_class = "dm-condition-active";
+            $condition_class = "devm-condition-active";
             $condition_data = json_encode($content['conditions'], true);
-            $default_attributes .= " data-dm_conditions='$condition_data' ";
+            $default_attributes .= " data-devm_conditions='$condition_data' ";
         }
-        $class_attributes = "class='$additional_classes dm-option form-field $condition_class $dynamic_classes'";
+        $class_attributes = "class='$additional_classes devm-option form-field $condition_class $dynamic_classes'";
         $default_attributes .= $class_attributes;
         return $default_attributes;
     }

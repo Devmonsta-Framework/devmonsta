@@ -12,7 +12,7 @@ class Dimensions extends Structure {
     public function __construct( $manager, $id, $args = [] ) {
 
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -31,7 +31,7 @@ class Dimensions extends Structure {
      */
     public function enqueue() {
         wp_enqueue_style('element-ui', 'https://unpkg.com/element-ui/lib/theme-chalk/index.css', [], null, '');
-        wp_enqueue_script( 'dm-dimensions-components', DM_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_script( 'devm-dimensions-components', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     }
 
 
@@ -44,53 +44,53 @@ class Dimensions extends Structure {
         $savedData = $this->value;
         // var_dump( $savedData );
         ?>
-            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
+            <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
             <style>
-                .dm-option {
+                .devm-option {
                     clear: both;
                 }
             </style>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
-            <div class="dm-option-column right dm-vue-app active-script">
-                <dm-dimensions
+            <div class="devm-option-column right devm-vue-app active-script">
+                <devm-dimensions
                     dimension="<?php echo ( isset( $savedData['isLinked'] ) && true ==$savedData['isLinked'] ) ? "true" : "false"; ?>"  
                     linked-name="<?php echo esc_attr( $this->name ); ?>[isLinked]"
                     name="<?php echo esc_attr( $this->name ); ?>"
                 >
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         name="<?php echo esc_attr( $this->name ); ?>[top]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $savedData['top'] ) && is_numeric( $savedData['top'] ) ? esc_html( intval( $savedData['top'] ) ) : 0; ?>"
                         label="top"
-                    ></dm-dimensions-item>
+                    ></devm-dimensions-item>
 
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         
                         name="<?php echo esc_attr( $this->name ); ?>[right]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $savedData['right'] ) && is_numeric( $savedData['right'] ) ? esc_html( intval( $savedData['right'] ) ) : 0; ?>"
                         label="right"
-                    ></dm-dimensions-item>
+                    ></devm-dimensions-item>
 
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         
                         name="<?php echo esc_attr( $this->name ); ?>[bottom]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $savedData['bottom'] ) && is_numeric( $savedData['bottom'] ) ? esc_html( intval( $savedData['bottom'] ) ) : 0; ?>"
                         label="bottom"
-                    ></dm-dimensions-item>
+                    ></devm-dimensions-item>
 
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         
                         name="<?php echo esc_attr( $this->name ); ?>[left]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $savedData['left'] ) && is_numeric( $savedData['left'] ) ? esc_html( intval( $savedData['left'] ) ) : 0; ?>"
                         label="left"
-                    ></dm-dimensions-item>
-                </dm-dimensions>
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    ></devm-dimensions-item>
+                </devm-dimensions>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
         <?php

@@ -24,9 +24,9 @@ class Oembed extends Structure {
     }
 
     public function enqueue_oembed_scripts() {
-        wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
-        wp_localize_script( 'dm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
-        wp_enqueue_script( 'dm-oembed' );
+        wp_register_script( 'devm-oembed', DEVMONSTA_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
+        wp_localize_script( 'devm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
+        wp_enqueue_script( 'devm-oembed' );
         add_action( 'wp_ajax_get_oembed_response', [$this, '_action_get_oembed_response'] );
     }
 
@@ -76,7 +76,7 @@ class Oembed extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -130,17 +130,17 @@ class Oembed extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $wrapper_attr ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
-                <div class="dm-option-column right dm-oembed-input">
-                    <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
+                <div class="devm-option-column right devm-oembed-input">
+                    <input <?php echo devm_attr_to_html( $wrapper_attr ) ?>
                             type="url" name="<?php echo esc_attr( $name ); ?>"
                             value="<?php echo esc_html( $value ); ?>"
-                            class="dm-ctrl dm-oembed-url-input dm-option-input"/>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                    <div class="dm-oembed-preview"></div>
+                            class="devm-ctrl devm-oembed-url-input devm-option-input"/>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <div class="devm-oembed-preview"></div>
                 </div>
             </div>
     <?php
@@ -153,25 +153,25 @@ class Oembed extends Structure {
      */
     public static function _action_get_oembed_response() {
 
-        if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
+        if ( wp_verify_nonce( \DEVM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
     
-            require_once DM_DIR . '/core/helpers/class-dm-request.php';
+            require_once DEVMONSTA_DIR . '/core/helpers/class-devm-request.php';
             
-            $url = \DM_Request::POST( 'url' );
+            $url = \DEVM_Request::POST( 'url' );
     
-            $width = \DM_Request::POST( 'preview/width' );
+            $width = \DEVM_Request::POST( 'preview/width' );
     
-            $height = \DM_Request::POST( 'preview/height' );
+            $height = \DEVM_Request::POST( 'preview/height' );
     
-            $keep_ratio = ( \DM_Request::POST( 'preview/keep_ratio' ) === 'true' );
+            $keep_ratio = ( \DEVM_Request::POST( 'preview/keep_ratio' ) === 'true' );
     
             $iframe = empty( $keep_ratio ) ?
     
-            dm_oembed_get( $url, compact( 'width', 'height' ) ) :
+            devm_oembed_get( $url, compact( 'width', 'height' ) ) :
     
             wp_oembed_get( $url, compact( 'width', 'height' ) );
     
-            echo dm_render_markup($iframe) ;
+            echo devm_render_markup($iframe) ;
             die();
     
         } else {

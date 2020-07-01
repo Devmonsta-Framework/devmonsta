@@ -14,7 +14,7 @@ class Toggle extends Structure {
      * Enqueue our scripts and styles
      */
     public function enqueue(){
-        wp_enqueue_style( 'devmonsta-customizer', DM_CORE . '/options/customizer/libs/assets/css/customizer.css', [], null, 'all' );
+        wp_enqueue_style( 'devmonsta-customizer', DEVMONSTA_CORE . '/options/customizer/libs/assets/css/customizer.css', [], null, 'all' );
     }
     /**
      * Render the control in the customizer

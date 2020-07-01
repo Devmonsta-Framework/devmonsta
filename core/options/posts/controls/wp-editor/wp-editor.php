@@ -27,7 +27,7 @@ class WpEditor extends Structure {
      * @internal
      */
     public function load_wpeditor_scripts() {
-        wp_enqueue_script( 'dm-wpeditor-js', DM_CORE . 'options/posts/controls/wp-editor/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'devm-wpeditor-js', DEVMONSTA_CORE . 'options/posts/controls/wp-editor/assets/js/script.js', ['jquery'] );
     }
 
     /**
@@ -78,7 +78,7 @@ class WpEditor extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -136,18 +136,18 @@ class WpEditor extends Structure {
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $settings ) {
         ob_start();
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="devm-option-column right">
                 <?php
                     wp_editor( $value, $name, $settings );
                     $editor_html = ob_get_contents();
-                    $editor_html .= "<p class='dm-option-desc'>" . esc_html( $desc ) . " </p>";
+                    $editor_html .= "<p class='devm-option-desc'>" . esc_html( $desc ) . " </p>";
                     ob_end_clean();
-                    echo dm_render_markup( $editor_html );
+                    echo devm_render_markup( $editor_html );
                 ?>
             </div>
         </div>

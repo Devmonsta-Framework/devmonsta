@@ -1,11 +1,11 @@
-<?php if (!defined('DM')) die('Forbidden');
+<?php if (!defined('DEVM')) die('Forbidden');
 
 /**
  * Lets you create easy functions for get/set database option values
- * it will handle all clever logic with default values, multikeys and processing options dm-storage parameter
+ * it will handle all clever logic with default values, multikeys and processing options devm-storage parameter
  * @since 2.5.9
  */
-abstract class DM_Db_Options_Model {
+abstract class DEVM_Db_Options_Model {
 	/**
 	 * @return string Must not contain '/'
 	 */
@@ -37,9 +37,9 @@ abstract class DM_Db_Options_Model {
 	 * @param null|int|string $item_id
 	 * @param array $extra_data
 	 * @return array E.g. for post options {'post-id': $item_id}
-	 * @see dm_db_option_storage_type()
+	 * @see devm_db_option_storage_type()
 	 */
-	abstract protected function get_dm_storage_params($item_id, array $extra_data = array());
+	abstract protected function get_devm_storage_params($item_id, array $extra_data = array());
 
 	abstract protected function _init();
 
@@ -70,7 +70,7 @@ abstract class DM_Db_Options_Model {
 
 	/**
 	 * @param string $id
-	 * @return DM_Db_Options_Model
+	 * @return DEVM_Db_Options_Model
 	 * @internal
 	 */
 	final public static function _get_instance($id) {
@@ -82,7 +82,7 @@ abstract class DM_Db_Options_Model {
 	 * @since 2.6.7
 	 */
 	final public function get_main_cache_key() {
-		return 'dm-options-model:'. $this->get_id();
+		return 'devm-options-model:'. $this->get_id();
 	}
 
 	final public function __construct() {
@@ -131,11 +131,11 @@ abstract class DM_Db_Options_Model {
 
 		try {
 			
-			$values = DM_Cache::get( $cache_key_values = $this->get_cache_key( 'values', $item_id, $extra_data ) );
+			$values = DEVM_Cache::get( $cache_key_values = $this->get_cache_key( 'values', $item_id, $extra_data ) );
 
-		} catch ( DM_Cache_Not_Found_Exception $e ) {
+		} catch ( DEVM_Cache_Not_Found_Exception $e ) {
 
-			DM_Cache::set(
+			DEVM_Cache::set(
 				$cache_key_values,
 				$values = ( is_array( $values = $this->get_values( $item_id, $extra_data ) ) ? $values : array() )
 			);
@@ -148,54 +148,54 @@ abstract class DM_Db_Options_Model {
 				     && (
 					     is_array( $default_value )
 					     ||
-					     dm_is_callback( is_array( $default_value ) )
+					     devm_is_callback( is_array( $default_value ) )
 				     )
 				) {
-					return dm_call( $default_value );
+					return devm_call( $default_value );
 				}
 			} else {
 				if ( is_null( $sub_keys ) ) {
 					if ( ! isset( $values[ $option_id ] ) ) {
-						return dm_call( $default_value );
+						return devm_call( $default_value );
 					}
 				} else {
-					if ( ! isset( $values[ $option_id ] ) || is_null( dm_akg( $sub_keys, $values[ $option_id ] ) ) ) {
-						return dm_call( $default_value );
+					if ( ! isset( $values[ $option_id ] ) || is_null( devm_akg( $sub_keys, $values[ $option_id ] ) ) ) {
+						return devm_call( $default_value );
 					}
 				}
 			}
 		}
 
 		try {
-			$options = DM_Cache::get( $cache_key = $this->get_cache_key( 'options', $item_id, $extra_data ) );
-		} catch ( DM_Cache_Not_Found_Exception $e ) {
-			DM_Cache::set( $cache_key, array() ); // prevent recursion
-			DM_Cache::set( $cache_key, $options = dm_extract_only_options( $this->get_options( $item_id, $extra_data ) ) );
+			$options = DEVM_Cache::get( $cache_key = $this->get_cache_key( 'options', $item_id, $extra_data ) );
+		} catch ( DEVM_Cache_Not_Found_Exception $e ) {
+			DEVM_Cache::set( $cache_key, array() ); // prevent recursion
+			DEVM_Cache::set( $cache_key, $options = devm_extract_only_options( $this->get_options( $item_id, $extra_data ) ) );
 		}
 
 		if ( $options ) {
 			try {
-				DM_Cache::get(
+				DEVM_Cache::get(
 				
 					$cache_key_values_processed = $this->get_cache_key( 'values:processed', $item_id, $extra_data )
 				);
-			} catch ( DM_Cache_Not_Found_Exception $e ) {
+			} catch ( DEVM_Cache_Not_Found_Exception $e ) {
 				
-				DM_Cache::set( $cache_key_values_processed, true );
+				DEVM_Cache::set( $cache_key_values_processed, true );
 
 				
 				{
 					try {
-						$skip_types_process = DM_Cache::get( $cache_key = 'dm:options-default-values:skip-types' );
-					} catch ( DM_Cache_Not_Found_Exception $e ) {
-						DM_Cache::set(
+						$skip_types_process = DEVM_Cache::get( $cache_key = 'dm:options-default-values:skip-types' );
+					} catch ( DEVM_Cache_Not_Found_Exception $e ) {
+						DEVM_Cache::set(
 							$cache_key,
 							$skip_types_process = apply_filters( 'dm:options-default-values:skip-types', array(// 'type' => true
 							) )
 						);
 					}
 
-					foreach ( array_diff_key( dm_extract_only_options( $options ), $values ) as $id => $option ) {
+					foreach ( array_diff_key( devm_extract_only_options( $options ), $values ) as $id => $option ) {
 						$values[ $id ] = isset( $skip_types_process[ $option['type'] ] )
 							? (
 							isset( $option['value'] )
@@ -211,40 +211,40 @@ abstract class DM_Db_Options_Model {
 						$id,
 						$option,
 						isset( $values[ $id ] ) ? $values[ $id ] : null,
-						$this->get_dm_storage_params( $item_id, $extra_data )
+						$this->get_devm_storage_params( $item_id, $extra_data )
 					);
 				}
 
-				DM_Cache::set( $cache_key_values, $values );
+				DEVM_Cache::set( $cache_key_values, $values );
 			}
 		}
 
 		if ( empty( $option_id ) ) {
-			return ( empty( $values ) && ( is_array( $default_value ) || dm_is_callback( $default_value ) ) )
-				? dm_call( $default_value )
+			return ( empty( $values ) && ( is_array( $default_value ) || devm_is_callback( $default_value ) ) )
+				? devm_call( $default_value )
 				: $values;
 		} else {
 			if ( is_null( $sub_keys ) ) {
 				return isset( $values[ $option_id ] )
 					? $values[ $option_id ]
-					: dm_call( $default_value );
+					: devm_call( $default_value );
 			} else {
 				return isset( $values[ $option_id ] )
-					? dm_akg( $sub_keys, $values[ $option_id ], $default_value )
-					: dm_call( $default_value );
+					? devm_akg( $sub_keys, $values[ $option_id ], $default_value )
+					: devm_call( $default_value );
 			}
 		}
 	}
 
 	final public function set( $item_id = null, $option_id = null, $value, array $extra_data = array() ) {
-		DM_Cache::del($cache_key_values = $this->get_cache_key('values', $item_id, $extra_data));
-		DM_Cache::del($cache_key_values_processed = $this->get_cache_key('values:processed', $item_id, $extra_data));
+		DEVM_Cache::del($cache_key_values = $this->get_cache_key('values', $item_id, $extra_data));
+		DEVM_Cache::del($cache_key_values_processed = $this->get_cache_key('values:processed', $item_id, $extra_data));
 
 		try {
-			$options = DM_Cache::get($cache_key = $this->get_cache_key('options', $item_id, $extra_data));
-		} catch (DM_Cache_Not_Found_Exception $e) {
-			DM_Cache::set($cache_key, array()); // prevent recursion
-			DM_Cache::set($cache_key, $options = dm_extract_only_options($this->get_options($item_id, $extra_data)));
+			$options = DEVM_Cache::get($cache_key = $this->get_cache_key('options', $item_id, $extra_data));
+		} catch (DEVM_Cache_Not_Found_Exception $e) {
+			DEVM_Cache::set($cache_key, array()); // prevent recursion
+			DEVM_Cache::set($cache_key, $options = devm_extract_only_options($this->get_options($item_id, $extra_data)));
 		}
 
 		$sub_keys = null;
@@ -261,11 +261,11 @@ abstract class DM_Db_Options_Model {
 
 			if ($sub_keys) { // update sub_key in old_value and use the entire value
 				$new_value = $old_value;
-				dm_aks($sub_keys, $value, $new_value);
+				devm_aks($sub_keys, $value, $new_value);
 				$value = $new_value;
 				unset($new_value);
 
-				$old_value = dm_akg($sub_keys, $old_value);
+				$old_value = devm_akg($sub_keys, $old_value);
 			}
 
 			if (isset($options[$option_id])) {
@@ -273,7 +273,7 @@ abstract class DM_Db_Options_Model {
 					$option_id,
 					$options[$option_id],
 					$value,
-					$this->get_dm_storage_params($item_id, $extra_data)
+					$this->get_devm_storage_params($item_id, $extra_data)
 				);
 			}
 
@@ -297,7 +297,7 @@ abstract class DM_Db_Options_Model {
 						$_option_id,
 						$_option,
 						dm()->backend->option_type($options[$_option_id]['type'])->get_defaults('value'),
-						$this->get_dm_storage_params($item_id, $extra_data)
+						$this->get_devm_storage_params($item_id, $extra_data)
 					);
 				}
 			} else {
@@ -307,7 +307,7 @@ abstract class DM_Db_Options_Model {
 							$_option_id,
 							$options[$_option_id],
 							$_option_value,
-							$this->get_dm_storage_params($item_id, $extra_data)
+							$this->get_devm_storage_params($item_id, $extra_data)
 						);
 					}
 				}
@@ -316,8 +316,8 @@ abstract class DM_Db_Options_Model {
 			$this->set_values($item_id, $value, $extra_data);
 		}
 
-		DM_Cache::del($cache_key_values);
-		DM_Cache::del($cache_key_values_processed);
+		DEVM_Cache::del($cache_key_values);
+		DEVM_Cache::del($cache_key_values_processed);
 
 		$this->_after_set($item_id, $option_id, $sub_keys, $old_value, $extra_data);
 	}

@@ -24,7 +24,7 @@ class View
     {
 
 
-        echo '<div class="dm-box">'; // This html for wrapper purpose
+        echo '<div class="devm-box">'; // This html for wrapper purpose
 
         foreach ($controls as $control) {
 
@@ -119,28 +119,28 @@ class View
 
             // add_thickbox();
             ?>
-            <div id="<?php echo $control_data['name']; ?>" class="dm-option form-field ">
+            <div id="<?php echo $control_data['name']; ?>" class="devm-option form-field ">
 
-                <div class='dm-option-column left'>
-                    <label class="dm-option-label"><?php echo $control_data['label']; ?> </label>
+                <div class='devm-option-column left'>
+                    <label class="devm-option-label"><?php echo $control_data['label']; ?> </label>
                 </div>
 
 
-                <div class='dm-option-column dm-repeater-column right'>
+                <div class='devm-option-column devm-repeater-column right'>
 
-                    <div class="dm-repeater-control dm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="dm-repeater-control-action">Control
+                    <div class="devm-repeater-control devm-repeater-sample">
+                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="devm-repeater-control-action">Control
                             <button type="button" data-id="<?php echo $control_data['name']; ?>"
-                                    class="components-button dm-editor-post-trash is-link"><span
+                                    class="components-button devm-editor-post-trash is-link"><span
                                         class="dashicons dashicons-dismiss"></span></button>
                         </a>
 
-                        <div class="dm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
-                            <div class="dm-repeater-inner-controls-inner">
-                                <div class="dm-repeater-popup-heading">
-                                    <span class="dm-repeater-popup-close dashicons dashicons-no-alt"></span>
+                        <div class="devm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
+                            <div class="devm-repeater-inner-controls-inner">
+                                <div class="devm-repeater-popup-heading">
+                                    <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
                                 </div>
-                                <div class="dm-repeater-popup-data">
+                                <div class="devm-repeater-popup-data">
                                     <?php
                                     ob_start();
                                     $this->repeater_controls($control_data);
@@ -149,20 +149,20 @@ class View
                                     echo str_replace("active-script", '', $output);
                                     ?>
                                 </div>
-                                <div class="dm-repeater-popup-footer">
+                                <div class="devm-repeater-popup-footer">
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="dm-repeater-control-list-<?php echo $control_data['name']; ?>"
-                         class="dm-repeater-control-list">
+                    <div id="devm-repeater-control-list-<?php echo $control_data['name']; ?>"
+                         class="devm-repeater-control-list">
 
                     </div>
 
 
                     <a href='' data-id='<?php echo $control_data['name']; ?>'
-                       class='dm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
+                       class='devm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
                 </div>
             </div>
 
@@ -221,28 +221,28 @@ class View
     {
 
         ?>
-        <div class='dm-option form-field dm-repeater-child'>
-            <div class='dm-option-column left'>
-                <label class='dm-option-label'><?php echo $control_content['lable']; ?> </label>
+        <div class='devm-option form-field devm-repeater-child'>
+            <div class='devm-option-column left'>
+                <label class='devm-option-label'><?php echo $control_content['lable']; ?> </label>
             </div>
-            <div class='dm-option-column right'>
+            <div class='devm-option-column right'>
 
-                <div class='dm-option-column dm-repeater-column right'>
+                <div class='devm-option-column devm-repeater-column right'>
 
-                    <div class="dm-repeater-control dm-repeater-sample">
+                    <div class="devm-repeater-control devm-repeater-sample">
                         <a href="#" data-id="<?php echo $control_content['name']; ?>"
-                           class="dm-repeater-control-action">Control
+                           class="devm-repeater-control-action">Control
                             <button type="button" data-id="<?php echo $control_content['name']; ?>"
-                                    class="components-button dm-editor-post-trash is-link"><span
+                                    class="components-button devm-editor-post-trash is-link"><span
                                         class="dashicons dashicons-dismiss"></span></button>
                         </a>
 
-                        <div class="dm-repeater-inner-controls" id="<?php echo $control_content['name']; ?>">
-                            <div class="dm-repeater-inner-controls-inner">
-                                <div class="dm-repeater-popup-heading">
-                                    <span class="dm-repeater-popup-close dashicons dashicons-no-alt"></span>
+                        <div class="devm-repeater-inner-controls" id="<?php echo $control_content['name']; ?>">
+                            <div class="devm-repeater-inner-controls-inner">
+                                <div class="devm-repeater-popup-heading">
+                                    <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
                                 </div>
-                                <div class="dm-repeater-popup-data">
+                                <div class="devm-repeater-popup-data">
                                     <?php
                                     ob_start();
                                     $this->sub_repeater_controls($control_content['controls']);
@@ -251,14 +251,14 @@ class View
                                     echo str_replace("active-script", '', $output);
                                     ?>
                                 </div>
-                                <div class="dm-repeater-popup-footer"></div>
+                                <div class="devm-repeater-popup-footer"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="dm-repeater-control-list"></div>
+                    <div class="devm-repeater-control-list"></div>
 
-                    <a href='' data-id='<?php echo $control_content['name']; ?>' class='dm-repeater-add-new button'>Add
+                    <a href='' data-id='<?php echo $control_content['name']; ?>' class='devm-repeater-add-new button'>Add
                         New</a>
                 </div>
             </div>

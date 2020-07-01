@@ -30,14 +30,14 @@ class DatePicker extends Structure {
     }
 
     public function enqueue_date_time_picker_scripts() {
-        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-picker', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_script( 'devm-date-picker', DEVMONSTA_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
        
         $data['mondayFirst'] = $this->content['monday-first'] ? 1 : 0;
         $data['minDate'] = isset( $this->content['min-date'] ) ? date("Y-m-d", strtotime($this->content['min-date'])) : "today";
         $data['maxDate'] = isset( $this->content['max-date'] ) ? date("Y-m-d", strtotime($this->content['max-date'])) : false;
-        wp_localize_script( 'dm-date-picker', 'dm_date_picker_config', $data );
+        wp_localize_script( 'devm-date-picker', 'devm_date_picker_config', $data );
     }
 
     /**
@@ -83,7 +83,7 @@ class DatePicker extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -131,16 +131,16 @@ class DatePicker extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right">
+                <div class="devm-option-column right">
                     <input type="text" name="<?php echo esc_attr( $name ); ?>"
-                        class="dm-option-input dm-ctrl dm-option-input-date-picker"
+                        class="devm-option-input devm-ctrl devm-option-input-date-picker"
                         value="<?php echo esc_attr( $value ); ?>">
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>
     <?php

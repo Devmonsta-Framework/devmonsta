@@ -482,8 +482,8 @@
 }( jQuery ) );
 
 // Auto Call plugin is class is color-picker
-jQuery(window).on('dm-scripts.dm', function(){
-    var el = jQuery('.dm-option.active-script .color-picker-rgb');
+jQuery(window).on('devm-scripts.dm', function(){
+    var el = jQuery('.devm-option.active-script .color-picker-rgb');
     
     var dmRgbaOptions = {
         defaultColor: rgba_color_picker_config.default,
@@ -494,5 +494,5 @@ jQuery(window).on('dm-scripts.dm', function(){
 });
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('devm-scripts.dm');
 });

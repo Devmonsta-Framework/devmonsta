@@ -1,6 +1,6 @@
-jQuery(window).on('dm-scripts.dm', function(){    
+jQuery(window).on('devm-scripts.dm', function(){    
     for(color_id in gradient_picker_config.defaults){
-        let single_color = '.dm-option.active-script .dm-gradient-field-' + color_id ;
+        let single_color = '.devm-option.active-script .devm-gradient-field-' + color_id ;
         let dmOptions = {
             defaultColor: gradient_picker_config.defaults[color_id],
             hide: true,
@@ -14,5 +14,5 @@ jQuery(window).on('dm-scripts.dm', function(){
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('devm-scripts.dm');
 });

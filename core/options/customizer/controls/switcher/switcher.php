@@ -28,7 +28,7 @@ class Switcher extends Structure {
 	 */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -62,8 +62,8 @@ class Switcher extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'dm-switcher', DM_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
-        wp_enqueue_script( 'dm-customizer-switcher', DM_CORE . 'options/customizer/controls/switcher/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/devm-switcher.css');
+        wp_enqueue_script( 'devm-customizer-switcher', DEVMONSTA_CORE . 'options/customizer/controls/switcher/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -80,27 +80,27 @@ class Switcher extends Structure {
      */
     public function render_content() {
         ?>
-            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+            <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right dm-switcher">
+                <div class="devm-option-column right devm-switcher">
                     
                     <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; 
         ?>
 
-                    <ul class="dm-switcher dm_switcher_item">
+                    <ul class="devm-switcher devm_switcher_item">
                             <li >
                                 <label>
-                                    <input class="dm-ctrl dm-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
+                                    <input class="devm-ctrl devm-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
                                     
-                                    <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='dm_switcher_label dm-option-label'></div>
+                                    <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='devm_switcher_label devm-option-label'></div>
                                 </label>
                             </li>
                         <input data-unchecked_value="<?php echo esc_attr($this->left_key); ?>" type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $saved_value ) ); ?>" />
                     </ul>
-                    <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
     <?php

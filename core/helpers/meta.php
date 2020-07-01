@@ -1,9 +1,9 @@
-<?php if ( ! defined( 'DM' ) ) {
+<?php if ( ! defined( 'DEVM' ) ) {
 	die( 'Forbidden' );
 }
 
 
-function dm_add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique = false ) {
+function devm_add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $unique = false ) {
 
 	/**
 	 * @var WPDB $wpdb
@@ -116,7 +116,7 @@ function dm_add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $uniqu
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
  */
-function dm_update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_value = '' ) {
+function devm_update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $prev_value = '' ) {
 	global $wpdb;
 
 	if ( ! $meta_type || ! $meta_key || ! is_numeric( $object_id ) ) {
@@ -173,7 +173,7 @@ function dm_update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $pr
 	}
 
 	if ( ! $meta_id = $wpdb->get_var( $wpdb->prepare( "SELECT $id_column FROM $table WHERE meta_key = %s AND $column = %d LIMIT 1", $meta_key, $object_id ) ) ) {
-		return dm_add_metadata( $meta_type, $object_id, $meta_key, $passed_value );
+		return devm_add_metadata( $meta_type, $object_id, $meta_key, $passed_value );
 	}
 
 	$_meta_value = $meta_value;
@@ -265,7 +265,7 @@ function dm_update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $pr
  *
  * @return bool True on successful delete, false on failure.
  */
-function dm_delete_metadata( $meta_type, $object_id, $meta_key, $meta_value = '', $delete_all = false ) {
+function devm_delete_metadata( $meta_type, $object_id, $meta_key, $meta_value = '', $delete_all = false ) {
 	/**
 	 * @var WPDB $wpdb
 	 */
@@ -410,8 +410,8 @@ function dm_delete_metadata( $meta_type, $object_id, $meta_key, $meta_value = ''
  *
  * @return int|bool Meta ID on success, false on failure.
  */
-function dm_add_user_meta( $user_id, $meta_key, $meta_value, $unique = false ) {
-	return dm_add_metadata( 'user', $user_id, $meta_key, $meta_value, $unique );
+function devm_add_user_meta( $user_id, $meta_key, $meta_value, $unique = false ) {
+	return devm_add_metadata( 'user', $user_id, $meta_key, $meta_value, $unique );
 }
 
 /**
@@ -429,8 +429,8 @@ function dm_add_user_meta( $user_id, $meta_key, $meta_value, $unique = false ) {
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
  */
-function dm_update_user_meta( $user_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return dm_update_metadata( 'user', $user_id, $meta_key, $meta_value, $prev_value );
+function devm_update_user_meta( $user_id, $meta_key, $meta_value, $prev_value = '' ) {
+	return devm_update_metadata( 'user', $user_id, $meta_key, $meta_value, $prev_value );
 }
 
 /**
@@ -446,8 +446,8 @@ function dm_update_user_meta( $user_id, $meta_key, $meta_value, $prev_value = ''
  *
  * @return bool True on success, false on failure.
  */
-function dm_delete_user_meta( $user_id, $meta_key, $meta_value = '' ) {
-	return dm_delete_metadata( 'user', $user_id, $meta_key, $meta_value );
+function devm_delete_user_meta( $user_id, $meta_key, $meta_value = '' ) {
+	return devm_delete_metadata( 'user', $user_id, $meta_key, $meta_value );
 }
 
 /**
@@ -463,13 +463,13 @@ function dm_delete_user_meta( $user_id, $meta_key, $meta_value = '' ) {
  *
  * @return int|bool Meta ID on success, false on failure.
  */
-function dm_add_post_meta( $post_id, $meta_key, $meta_value, $unique = false ) {
+function devm_add_post_meta( $post_id, $meta_key, $meta_value, $unique = false ) {
 	// Make sure meta is added to the post, not a revision. // fixme: why this is needed?
 	/*if ( $the_post = wp_is_post_revision( $post_id ) ) {
 		$post_id = $the_post;
 	}*/
 
-	return dm_add_metadata( 'post', $post_id, $meta_key, $meta_value, $unique );
+	return devm_add_metadata( 'post', $post_id, $meta_key, $meta_value, $unique );
 }
 
 /**
@@ -489,13 +489,13 @@ function dm_add_post_meta( $post_id, $meta_key, $meta_value, $unique = false ) {
  * @return int|bool Meta ID if the key didn't exist, true on successful update,
  *                  false on failure.
  */
-function dm_update_post_meta( $post_id, $meta_key, $meta_value, $prev_value = '' ) {
+function devm_update_post_meta( $post_id, $meta_key, $meta_value, $prev_value = '' ) {
 	// Make sure meta is added to the post, not a revision. fixme: why this is needed?
 	/*if ( $the_post = wp_is_post_revision( $post_id ) ) {
 		$post_id = $the_post;
 	}*/
 
-	return dm_update_metadata( 'post', $post_id, $meta_key, $meta_value, $prev_value );
+	return devm_update_metadata( 'post', $post_id, $meta_key, $meta_value, $prev_value );
 }
 
 /**
@@ -512,7 +512,7 @@ function dm_update_post_meta( $post_id, $meta_key, $meta_value, $prev_value = ''
  *
  * @return bool True on success, false on failure.
  */
-function dm_delete_post_meta( $post_id, $meta_key, $meta_value = '' ) {
+function devm_delete_post_meta( $post_id, $meta_key, $meta_value = '' ) {
 	// Make sure meta is added to the post, not a revision. // fixme: why this is needed?
 	/*if ( $the_post = wp_is_post_revision( $post_id ) ) {
 		$post_id = $the_post;
@@ -535,8 +535,8 @@ function dm_delete_post_meta( $post_id, $meta_key, $meta_value = '' ) {
  *
  * @return int|bool Meta ID on success, false on failure.
  */
-function dm_add_comment_meta( $comment_id, $meta_key, $meta_value, $unique = false ) {
-	return dm_add_metadata( 'comment', $comment_id, $meta_key, $meta_value, $unique );
+function devm_add_comment_meta( $comment_id, $meta_key, $meta_value, $unique = false ) {
+	return devm_add_metadata( 'comment', $comment_id, $meta_key, $meta_value, $unique );
 }
 
 /**
@@ -554,8 +554,8 @@ function dm_add_comment_meta( $comment_id, $meta_key, $meta_value, $unique = fal
  *
  * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
  */
-function dm_update_comment_meta( $comment_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return dm_update_metadata( 'comment', $comment_id, $meta_key, $meta_value, $prev_value );
+function devm_update_comment_meta( $comment_id, $meta_key, $meta_value, $prev_value = '' ) {
+	return devm_update_metadata( 'comment', $comment_id, $meta_key, $meta_value, $prev_value );
 }
 
 /**
@@ -571,8 +571,8 @@ function dm_update_comment_meta( $comment_id, $meta_key, $meta_value, $prev_valu
  *
  * @return bool True on success, false on failure.
  */
-function dm_delete_comment_meta( $comment_id, $meta_key, $meta_value = '' ) {
-	return dm_delete_metadata( 'comment', $comment_id, $meta_key, $meta_value );
+function devm_delete_comment_meta( $comment_id, $meta_key, $meta_value = '' ) {
+	return devm_delete_metadata( 'comment', $comment_id, $meta_key, $meta_value );
 }
 
 //
@@ -588,8 +588,8 @@ function dm_delete_comment_meta( $comment_id, $meta_key, $meta_value = '' ) {
  * @param bool $unique Optional, default is false. Whether the same key should not be added.
  * @return bool False for failure. True for success.
  */
-function dm_add_term_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
-	return dm_add_metadata( 'dm_term', $term_id, $meta_key, $meta_value, $unique );
+function devm_add_term_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
+	return devm_add_metadata( 'devm_term', $term_id, $meta_key, $meta_value, $unique );
 }
 
 /**
@@ -605,8 +605,8 @@ function dm_add_term_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
  *
  * @return bool False for failure. True for success.
  */
-function dm_delete_term_meta( $term_id, $meta_key, $meta_value = '' ) {
-	return dm_delete_metadata( 'dm_term', $term_id, $meta_key, $meta_value );
+function devm_delete_term_meta( $term_id, $meta_key, $meta_value = '' ) {
+	return devm_delete_metadata( 'devm_term', $term_id, $meta_key, $meta_value );
 }
 
 /**
@@ -619,8 +619,8 @@ function dm_delete_term_meta( $term_id, $meta_key, $meta_value = '' ) {
  * @return mixed Will be an array if $single is false. Will be value of meta data field if $single
  *  is true.
  */
-function dm_get_term_meta( $term_id, $key, $single = false ) {
-	return get_metadata( 'dm_term', $term_id, $key, $single );
+function devm_get_term_meta( $term_id, $key, $single = false ) {
+	return get_metadata( 'devm_term', $term_id, $key, $single );
 }
 
 /**
@@ -638,6 +638,6 @@ function dm_get_term_meta( $term_id, $key, $single = false ) {
  *
  * @return bool False on failure, true if success.
  */
-function dm_update_term_meta( $term_id, $meta_key, $meta_value, $prev_value = '' ) {
-	return dm_update_metadata( 'dm_term', $term_id, $meta_key, $meta_value, $prev_value );
+function devm_update_term_meta( $term_id, $meta_key, $meta_value, $prev_value = '' ) {
+	return devm_update_metadata( 'devm_term', $term_id, $meta_key, $meta_value, $prev_value );
 }

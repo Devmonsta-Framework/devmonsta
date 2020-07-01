@@ -1,7 +1,7 @@
-jQuery(window).on('dm-scripts-typo.dm', function(e,val){
+jQuery(window).on('devm-scripts-typo.dm', function(e,val){
     
     //get the selector for typography
-    var el = jQuery('.dm-option.active-script .google-fonts-list');
+    var el = jQuery('.devm-option.active-script .google-fonts-list');
    
     // configuration for color
    var dmOptions = {
@@ -9,7 +9,7 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
         hide: true,
     };
     
-    jQuery('.dm-option.active-script .dm-typography-color-field').wpColorPicker(dmOptions);
+    jQuery('.devm-option.active-script .devm-typography-color-field').wpColorPicker(dmOptions);
 
     // for select2 
     el.select2();
@@ -17,7 +17,7 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
     // select 2 on change style and weight
     el.on("change", function (e) {
         var self = jQuery(this),
-            parent = self.parents('.dm-option-typography'),
+            parent = self.parents('.devm-option-typography'),
             weight = parent.find('.google-weight-list'),
             styleField = parent.find('.google-style-list'),
             selected_value = self.val();
@@ -50,5 +50,5 @@ jQuery(window).on('dm-scripts-typo.dm', function(e,val){
 });
 
 jQuery(document).ready(function($){
-    jQuery(window).trigger('dm-scripts-typo.dm');
+    jQuery(window).trigger('devm-scripts-typo.dm');
 });

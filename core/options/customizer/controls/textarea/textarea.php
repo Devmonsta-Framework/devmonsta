@@ -17,7 +17,7 @@ class Textarea extends Structure {
 
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -57,16 +57,16 @@ class Textarea extends Structure {
 
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
-                <textarea class="large-text dm-ctrl" cols="20" rows="5" <?php $this->link();?>>
+            <div class="devm-option-column right">
+                <textarea class="large-text devm-ctrl" cols="20" rows="5" <?php $this->link();?>>
                     <?php echo esc_textarea( $this->value() ); ?>
                 </textarea>
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 		<?php

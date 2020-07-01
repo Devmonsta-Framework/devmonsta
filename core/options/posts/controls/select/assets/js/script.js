@@ -1,8 +1,8 @@
-jQuery(window).on('dm-scripts.dm', function(){
-    var el = jQuery('.dm-option.active-script .dm_select');
+jQuery(window).on('devm-scripts.dm', function(){
+    var el = jQuery('.devm-option.active-script .devm_select');
     el.select2();
 });
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('devm-scripts.dm');
 });

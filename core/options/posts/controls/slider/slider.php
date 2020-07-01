@@ -28,18 +28,18 @@ class Slider extends Structure {
      * @internal
      */
     public function enqueue_slider_scripts() {
-        wp_enqueue_style( 'dm-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
-        if ( !wp_script_is( 'dm-slider-asrange', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
+        wp_enqueue_style( 'devm-slider-asrange-css', DEVMONSTA_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
+        if ( !wp_script_is( 'devm-slider-asrange', 'enqueued' ) ) {
+            wp_enqueue_script( 'devm-slider-asrange', DEVMONSTA_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
         }
-        wp_enqueue_script( 'dm-slider-script', DM_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
+        wp_enqueue_script( 'devm-slider-script', DEVMONSTA_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'devm-slider-asrange'], time(), true );
 
         //get slider settings from theme
-        $dm_slider_data_config  = isset($this->content['properties']) && is_array($this->content['properties']) ? $this->content['properties'] : [];
-        $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) && is_numeric( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
-        $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) && is_numeric( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
-        $dm_slider_data['step'] = isset( $dm_slider_data_config['step'] ) && is_numeric( $dm_slider_data_config['step']  )? $dm_slider_data_config['step'] : 1;
-        wp_localize_script( 'dm-slider-script', 'dm_slider_config', $dm_slider_data );
+        $devm_slider_data_config  = isset($this->content['properties']) && is_array($this->content['properties']) ? $this->content['properties'] : [];
+        $devm_slider_data['min']  = isset( $devm_slider_data_config['min'] ) && is_numeric( $devm_slider_data_config['min'] ) ? $devm_slider_data_config['min'] : 0;
+        $devm_slider_data['max']  = isset( $devm_slider_data_config['max'] ) && is_numeric( $devm_slider_data_config['max'] ) ? $devm_slider_data_config['max'] : 100;
+        $devm_slider_data['step'] = isset( $devm_slider_data_config['step'] ) && is_numeric( $devm_slider_data_config['step']  )? $devm_slider_data_config['step'] : 1;
+        wp_localize_script( 'devm-slider-script', 'devm_slider_config', $devm_slider_data );
     }
 
     /**
@@ -87,7 +87,7 @@ class Slider extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -138,14 +138,14 @@ class Slider extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
-                <input class="dm-ctrl dm-slider" type="range" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            <div class="devm-option-column right">
+                <input class="devm-ctrl devm-slider" type="range" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
     <?php

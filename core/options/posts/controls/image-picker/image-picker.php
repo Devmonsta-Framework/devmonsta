@@ -33,7 +33,7 @@ class ImagePicker extends Structure {
 
     public function enqueue_image_picker_scripts() {
         // css
-        wp_enqueue_style( 'dm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) );
+        wp_enqueue_style( 'devm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) );
 
     }
 
@@ -81,7 +81,7 @@ class ImagePicker extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -135,15 +135,15 @@ class ImagePicker extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right full-width">
+                <div class="devm-option-column right full-width">
 
-                    <div class="thumbnails dm-option-image_picker_selector">
-                        <input class="dm-ctrl dm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+                    <div class="thumbnails devm-option-image_picker_selector">
+                        <input class="devm-ctrl devm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
                         <ul>
                             <?php
                                 if ( is_array( $choices ) && isset( $choices ) ) {
@@ -158,11 +158,11 @@ class ImagePicker extends Structure {
                                                 <li data-image_name='<?php echo esc_attr( $item_key ); ?>' >
     
                                                     <label>
-                                                        <input <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $name ) . $item_key; ?>" class="dm-ctrl dm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
+                                                        <input <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $name ) . $item_key; ?>" class="devm-ctrl devm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
     
-                                                        <div class="dm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
+                                                        <div class="devm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
                                                             <?php if ( !empty( $large_image ) ): ?>
-                                                            <div class="dm-img-picker-preview">
+                                                            <div class="devm-img-picker-preview">
                                                                 <img src="<?php echo esc_attr( $large_image ); ?>" />
                                                             </div>
                                                             <?php endif;?>
@@ -181,7 +181,7 @@ class ImagePicker extends Structure {
                             ?>
                         </ul>
                     </div>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>
     <?php

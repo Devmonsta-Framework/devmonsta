@@ -13,12 +13,12 @@ if (typeof Object['create'] != 'undefined') {
 /**
  * URI to framework directory
  */
-dm.DM_URI = _dm_localized.DM_URI;
-dm.SITE_URI = _dm_localized.SITE_URI;
+dm.DEVM_URI = _devm_localized.DEVM_URI;
+dm.SITE_URI = _devm_localized.SITE_URI;
 /**
  * Load ajax.php
  */
-dm.AJAX_URL = _dm_localized.AJAX_URL;
+dm.AJAX_URL = _devm_localized.AJAX_URL;
 
 /**
  * parseInt() alternative
@@ -236,13 +236,13 @@ dm.md5 = (function(){
 		$getEl: function(){
 			if (this.$el === null) { // lazy init
 				this.$el = $(
-					'<div id="dm-loading" style="display: none;">'+
+					'<div id="devm-loading" style="display: none;">'+
 						'<table width="100%" height="100%"><tbody><tr><td valign="middle" align="center">'+
 							'<img src="'+ dm.img.logoSvg +'"'+
 								' width="30"'+
-								' class="dm-animation-rotate-reverse-180"'+
+								' class="devm-animation-rotate-reverse-180"'+
 								' alt="Loading"' +
-								' onerror="this.onerror=null; this.src=\''+ dm.dm_URI +'/static/img/logo-100.png\';"'+
+								' onerror="this.onerror=null; this.src=\''+ dm.devm_URI +'/static/img/logo-100.png\';"'+
 								' />'+
 						'</td></tr></tbody></table>'+
 					'</div>'

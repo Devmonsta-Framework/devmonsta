@@ -13,19 +13,19 @@ class Rest
     public function init()
     {
 
-        add_action('wp_ajax_dm_repeater_controls', [$this, 'dm_repeater_controls']);
-        add_action('wp_ajax_dm_get_control', [$this, 'dm_get_control']);
+        add_action('wp_ajax_devm_repeater_controls', [$this, 'devm_repeater_controls']);
+        add_action('wp_ajax_devm_get_control', [$this, 'devm_get_control']);
 
     }
 
-    public function dm_repeater_controls()
+    public function devm_repeater_controls()
     {
         // $all_controls = $this->get_all_controls();
         print_r($this->get_control('repeater', 'repeater_xxx'));
         wp_die();
     }
 
-    public function dm_get_control()
+    public function devm_get_control()
     {
         $control = $this->get_control($_POST['type'], $_POST['name']);
         echo json_encode($control);
@@ -103,7 +103,7 @@ class Rest
         } else {
 
 
-            $file = DM_DIR . '/core/options/posts/controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
+            $file = DEVMONSTA_DIR . '/core/options/posts/controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
 
             if (file_exists($file)) {
 

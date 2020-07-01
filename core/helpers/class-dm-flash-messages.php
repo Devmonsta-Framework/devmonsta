@@ -1,11 +1,11 @@
-<?php if (!defined('DM')) die('Forbidden');
+<?php if (!defined('DEVM')) die('Forbidden');
 
 /**
  * Set flash messages
  **
  * Store messages in session (to not be lost between redirects) and remove them after they were shown to the user
  */
-class DM_Flash_Messages
+class DEVM_Flash_Messages
 {
 	private static $available_types = array(
 		// 'type' => 'backend class/type' (only 2 backend types exists: error and updated)
@@ -15,13 +15,13 @@ class DM_Flash_Messages
 		'success' => 'updated'
 	);
 
-	private static $session_key = 'dm_flash_messages';
+	private static $session_key = 'devm_flash_messages';
 
 	private static $frontend_printed = false;
 
 	private static function get_messages()
 	{
-		$messages = DM_Session::get(self::$session_key);
+		$messages = DEVM_Session::get(self::$session_key);
 
 		if (empty($messages) || !is_array($messages)) {
 			$messages = array_fill_keys(array_keys(self::$available_types), array());
@@ -32,7 +32,7 @@ class DM_Flash_Messages
 
 	private static function set_messages(array $messages)
 	{
-		DM_Session::set(self::$session_key, $messages);
+		DEVM_Session::set(self::$session_key, $messages);
 	}
 
 	/**
@@ -127,14 +127,14 @@ class DM_Flash_Messages
 			if (!empty($messages)) {
 				foreach ($messages as $id => $data) {
 					$html[$type] .=
-						'<div class="'. self::$available_types[$type] .' dm-flash-message">'.
+						'<div class="'. self::$available_types[$type] .' devm-flash-message">'.
 							'<p data-id="'. esc_attr($id) .'">'. $data['message'] .'</p>'.
 						'</div>';
 
 					unset($all_messages[$type][$id]);
 				}
 
-				$html[$type] = '<div class="dm-flash-type-'. $type .'">'. $html[$type] .'</div>';
+				$html[$type] = '<div class="devm-flash-type-'. $type .'">'. $html[$type] .'</div>';
 			}
 		}
 
@@ -142,7 +142,7 @@ class DM_Flash_Messages
 
 		self::set_messages($all_messages);
 
-		echo '<div class="dm-flash-messages">'. dm_kses(implode("\n\n", $html)) .'</div>';
+		echo '<div class="devm-flash-messages">'. devm_kses(implode("\n\n", $html)) .'</div>';
 	}
 
 	/**
@@ -164,12 +164,12 @@ class DM_Flash_Messages
 			}
 
 			foreach ($messages as $id => $data) {
-				$html[$type] .= '<li class="dm-flash-message">'. nl2br($data['message']) .'</li>';
+				$html[$type] .= '<li class="devm-flash-message">'. nl2br($data['message']) .'</li>';
 
 				unset($all_messages[$type][$id]);
 			}
 
-			$html[$type] = '<ul class="dm-flash-type-'. $type .'">'. $html[$type] .'</ul>';
+			$html[$type] = '<ul class="devm-flash-type-'. $type .'">'. $html[$type] .'</ul>';
 
 			$messages_exists = true;
 		}
@@ -179,8 +179,8 @@ class DM_Flash_Messages
 		self::$frontend_printed = true;
 
 		if ($messages_exists) {
-			echo '<div class="dm-flash-messages">';
-			echo dm_kses(implode("\n\n", $html));
+			echo '<div class="devm-flash-messages">';
+			echo devm_kses(implode("\n\n", $html));
 			echo '</div>';
 
 			return true;
@@ -208,7 +208,7 @@ class DM_Flash_Messages
 	}
 
 	/**
-	 * Clear the DM_Flash_Messages messages
+	 * Clear the DEVM_Flash_Messages messages
 	 *
 	 * @since 2.6.15
 	 */

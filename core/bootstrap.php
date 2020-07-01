@@ -19,21 +19,21 @@ final class Bootstrap
 
     public function init()
     {
-        define('DM', true);
+        define('DEVM', true);
 
         //Make all the helper functions available
         $helper_files = [
-            'class-dm-db-options-model',
-            'class-dm-dumper',
+            'class-devm-db-options-model',
+            'class-devm-dumper',
             'meta',
-            'class-dm-cache',
-            'class-dm-callback',
-            'class-dm-wp-meta',
+            'class-devm-cache',
+            'class-devm-callback',
+            'class-devm-wp-meta',
             'database',
-            'class-dm-resize',
-            'class-dm-request',
-            'class-dm-session',
-            'class-dm-flash-messages',
+            'class-devm-resize',
+            'class-devm-request',
+            'class-devm-session',
+            'class-devm-flash-messages',
             'general',
             'repeater',
         ];

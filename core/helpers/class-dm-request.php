@@ -1,5 +1,5 @@
 <?php
-class DM_Request
+class DEVM_Request
 {
 	protected static function prepare_key($key)
 	{
@@ -11,9 +11,9 @@ class DM_Request
 		$multikey = self::prepare_key($multikey);
 
 		if ($set_value === null) { // get
-			return dm_stripslashes_deep_keys($multikey === null ? $value : dm_array_key_get($multikey, $value));
+			return devm_stripslashes_deep_keys($multikey === null ? $value : devm_array_key_get($multikey, $value));
 		} else { // set
-			dm_array_key_set($multikey, dm_addslashes_deep_keys($set_value), $value);
+			devm_array_key_set($multikey, devm_addslashes_deep_keys($set_value), $value);
 		}
 
 		return '';
@@ -21,19 +21,19 @@ class DM_Request
 
 	public static function GET($multikey = null, $default_value = null)
 	{
-		return dm_stripslashes_deep_keys(
+		return devm_stripslashes_deep_keys(
 			$multikey === null
 				? $_GET
-				: dm_array_key_get($multikey, $_GET, $default_value)
+				: devm_array_key_get($multikey, $_GET, $default_value)
 		);
 	}
 
 	public static function POST($multikey = null, $default_value = null)
 	{
-		return dm_stripslashes_deep_keys(
+		return devm_stripslashes_deep_keys(
 			$multikey === null
 				? $_POST
-				: dm_array_key_get($multikey, $_POST, $default_value)
+				: devm_array_key_get($multikey, $_POST, $default_value)
 		);
 	}
 
@@ -55,10 +55,10 @@ class DM_Request
 
 	public static function REQUEST($multikey = null, $default_value = null)
 	{
-		return dm_stripslashes_deep_keys(
+		return devm_stripslashes_deep_keys(
 			$multikey === null
 				? $_REQUEST
-				: dm_array_key_get($multikey, $_REQUEST, $default_value)
+				: devm_array_key_get($multikey, $_REQUEST, $default_value)
 		);
 	}
 }

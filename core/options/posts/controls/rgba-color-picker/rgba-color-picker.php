@@ -22,9 +22,9 @@ class RgbaColorPicker extends Structure {
         $this->current_screen = $meta_owner;
 
         if ( $this->current_screen == "post" ) {
-            $this->dm_enqueue_color_picker();
+            $this->devm_enqueue_color_picker();
         } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+            add_action( 'init', [$this, 'devm_enqueue_color_picker'] );
         }
 
     }
@@ -32,13 +32,13 @@ class RgbaColorPicker extends Structure {
     /**
      * @internal
      */
-    function dm_enqueue_color_picker() {
+    function devm_enqueue_color_picker() {
 
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        wp_enqueue_script( 'dm-rgba-handle', DM_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_script( 'devm-rgba-handle', DEVMONSTA_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
 
         global $post;
         $data            = [];
@@ -49,7 +49,7 @@ class RgbaColorPicker extends Structure {
                             ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
                             : $this->default_value;
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
-        wp_localize_script( 'dm-rgba-handle', 'rgba_color_picker_config', $data );
+        wp_localize_script( 'devm-rgba-handle', 'rgba_color_picker_config', $data );
     }
 
     /**
@@ -93,7 +93,7 @@ class RgbaColorPicker extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -118,7 +118,7 @@ class RgbaColorPicker extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
         //enqueue scripts and styles for color picker
-        $this->dm_enqueue_color_picker();
+        $this->devm_enqueue_color_picker();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
@@ -144,19 +144,19 @@ class RgbaColorPicker extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="devm-option-column right">
                 <input  type="text"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $value ); ?>"
-                        class="dm-ctrl dm-color-field color-picker-rgb"
+                        class="devm-ctrl devm-color-field color-picker-rgb"
                         data-alpha="true"
                         data-default-color="<?php echo esc_attr( $value ); ?>" />
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
     <?php
