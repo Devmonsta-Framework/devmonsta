@@ -6,7 +6,6 @@ Tested up to: 5.4
 Stable tag: 1.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
-Credits: Options idea from unyson.
 
 A simple and easy way to use customizer and demo content install.
 
