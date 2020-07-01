@@ -105,7 +105,7 @@ class Oembed extends Structure {
 
         if ( wp_verify_nonce( \DEVM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
     
-            require_once DEVMONSTA_DIR . '/core/helpers/class-devm-request.php';
+            require_once DEVMONSTA_DIR . '/core/helpers/class-dm-request.php';
             
             $url = \DEVM_Request::POST( 'url' );
     

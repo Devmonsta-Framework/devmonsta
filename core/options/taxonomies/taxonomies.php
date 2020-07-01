@@ -388,9 +388,9 @@ class Taxonomies
         wp_enqueue_style('devmonsta-taxonomy-style', DEVMONSTA_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
         wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-        wp_enqueue_script('devm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_script('devmonsta-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
-        wp_enqueue_script('devm-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
+        wp_enqueue_script('devmonsta-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
 
     }

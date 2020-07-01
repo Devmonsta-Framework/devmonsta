@@ -446,7 +446,7 @@ class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
      * @internal
      */
     public function _reset_cache() {
-        DEVM_Cache::del( $this->get_main_cache_key() );
+        Dm_Cache::del( $this->get_main_cache_key() );
     }
 
     protected function _init() {

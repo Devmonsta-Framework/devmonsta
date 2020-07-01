@@ -62,7 +62,7 @@ class Switcher extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/devm-switcher.css');
+        wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
         wp_enqueue_script( 'devm-customizer-switcher', DEVMONSTA_CORE . 'options/customizer/controls/switcher/assets/js/script.js', ['jquery'], time(), true );
     }
 

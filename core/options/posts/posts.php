@@ -316,8 +316,8 @@ class Posts
     {
         wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-//        wp_enqueue_script('devm-vendor-js',DEVMONSTA_PATH . 'core/options/assets/js/devm-vendor-scripts.bundle.js',[],null,true);
-//        wp_enqueue_script('devm-init-js',DEVMONSTA_PATH . 'core/options/assets/js/devm-init-scripts.bundle.js',[],null,true);
+//        wp_enqueue_script('devm-vendor-js',DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',[],null,true);
+//        wp_enqueue_script('devm-init-js',DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js',[],null,true);
         wp_enqueue_script('devm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('devm-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script("jquery-ui-draggable");
