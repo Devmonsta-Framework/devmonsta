@@ -207,7 +207,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
                         </ul>
 
 						<div class="menu-item-actions description-thin submitbox">
-							<button type="button" class="button-link button-link-delete item-delete submitdelete deletion"><?php _e('Delete')?></button>
+							<button type="button" class="button-link button-link-delete item-delete submitdelete deletion"><?php esc_html_e('Delete', 'devmonsta')?></button>
 						</div>
 					</div>
 				</div>
@@ -218,7 +218,7 @@ class Theme_Customize_Repeater_Control extends WP_Customize_Control
 
 
 			<button type="button" class="button customize-add-repeater-field" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
-				<?php _e(get_option('devm_add_button_text'))?>
+				<?php echo esc_html(get_option('devm_add_button_text'))?>
 			</button>
 		</div>
 		<?php
