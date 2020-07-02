@@ -29,7 +29,7 @@ class Posts
         'image-picker',
         'range-slider',
         'date-picker',
-       'multiselect',
+//       'multiselect',
        'typography',
         'dimensions',
         'wp-editor',
@@ -65,7 +65,7 @@ class Posts
         }
 
         add_action('admin_init', [$this, 'load_scripts']);
-        add_action('init', [$this, 'load_enqueue']);
+        $this->load_enqueue();
 
         /** Check if post files exists in active theme directory */
 
@@ -184,25 +184,7 @@ class Posts
     public function load_enqueue()
     {
 
-//        foreach ($all_controls as $control_content) {
-//
-//            if (isset($control_content['type'])) {
-//                $class_name = explode('-', $control_content['type']);
-//                $class_name = array_map('ucfirst', $class_name);
-//                $class_name = implode('', $class_name);
-//                $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
-//
-//                if (class_exists($control_class)) {
-//                    $meta_owner = "post";
-//                    $control = new $control_class($control_content);
-//                    $control->enqueue($meta_owner);
-//                }
-//
-//            }
-//
-//        }
 
-//
         foreach ($this->controls_list as $control) {
 
 

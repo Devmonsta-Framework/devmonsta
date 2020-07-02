@@ -9,7 +9,20 @@
             "Devmonsta\\": "core/"
         },
         "classmap": [
-            "core/"
+            "core/libs",
+            "core/bootstrap.php",
+            "core/rest.php",
+            "core/traits/singleton.php",
+            "core/options/posts/posts.php",
+            "core/options/posts/view.php",
+            "core/options/posts/structure.php",
+            "core/options/posts/validator.php",
+            "core/options/taxonomies/taxonomies.php",
+            "core/options/taxonomies/structure.php",
+            "core/options/customizer/customizer.php",
+            "core/options/customizer/structure.php",
+            "core/options/customizer/controls.php",
+            "core/options/customizer/libs"
         ]
     }
 }
