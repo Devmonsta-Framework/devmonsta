@@ -64,7 +64,7 @@ function devm_print( $value ) {
 
     if ( func_num_args() == 1 ) {
         echo '<div class="devm_print_r"><pre>';
-        echo devm_htmlspecialchars( Dm_Dumper::dump( $value ) );
+        echo devm_htmlspecialchars( Devm_Dumper::dump( $value ) );
         echo '</pre></div>';
     } else {
         echo '<div class="devm_print_r_group">';
@@ -142,7 +142,7 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             return devm_array_key_get( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
@@ -229,7 +229,7 @@ function devm_array_key_set( $keys, $value, &$array_or_object, $keys_delimiter =
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_set( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
@@ -284,7 +284,7 @@ function devm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' )
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_unset( $keys, $array_or_object->{$key_or_property} );
         } else {
@@ -304,10 +304,10 @@ function devm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' )
 }
 
 /**
- * If the value is instance of Dm_Callback class then it is executed and returns the callback value
+ * If the value is instance of Devm_Callback class then it is executed and returns the callback value
  * In other case function returns the provided value
  *
- * @param mixed|Dm_Callback $value
+ * @param mixed|Devm_Callback $value
  *
  * @return mixed
  *
@@ -324,7 +324,7 @@ function devm_call( $value ) {
 }
 
 /**
- * Check if the current value is instance of Dm_Callback class
+ * Check if the current value is instance of Devm_Callback class
  *
  * @param mixed $value
  *
@@ -332,7 +332,7 @@ function devm_call( $value ) {
  * @since 1.0.0
  */
 function devm_is_callback( $value ) {
-    return $value instanceof Dm_Callback || ( is_object( $value ) && get_class( $value ) == 'Closure' );
+    return $value instanceof Devm_Callback || ( is_object( $value ) && get_class( $value ) == 'Closure' );
 }
 
 /**
@@ -437,9 +437,9 @@ function devm_fix_path( $path ) {
  */
 function devm_get_framework_directory( $rel_path = '' ) {
     try {
-        $dir = Dm_Cache::get( $cache_key = 'devm_framework_dir' );
-    } catch ( Dm_Cache_Not_Found_Exception $e ) {
-        Dm_Cache::set(
+        $dir = Devm_Cache::get( $cache_key = 'devm_framework_dir' );
+    } catch ( Devm_Cache_Not_Found_Exception $e ) {
+        Devm_Cache::set(
             $cache_key,
             $dir = apply_filters(
                 'devm_framework_directory',
@@ -461,9 +461,9 @@ function devm_get_framework_directory( $rel_path = '' ) {
  */
 function devm_get_framework_directory_uri( $rel_path = '' ) {
     try {
-        $uri = Dm_Cache::get( $cache_key = 'devm_framework_dir_uri' );
-    } catch ( Dm_Cache_Not_Found_Exception $e ) {
-        Dm_Cache::set(
+        $uri = Devm_Cache::get( $cache_key = 'devm_framework_dir_uri' );
+    } catch ( Devm_Cache_Not_Found_Exception $e ) {
+        Devm_Cache::set(
             $cache_key,
             $uri = apply_filters(
                 'devm_framework_directory_uri',
@@ -753,9 +753,9 @@ function devm_get_stylesheet_directory_uri( $rel_path = '' ) {
  */
 function devm_get_customizations_dir_rel_path( $append = '' ) {
     try {
-        $dir = Dm_Cache::get( $cache_key = 'devm_customizations_dir_rel_path' );
-    } catch ( Dm_Cache_Not_Found_Exception $e ) {
-        Dm_Cache::set(
+        $dir = Devm_Cache::get( $cache_key = 'devm_customizations_dir_rel_path' );
+    } catch ( Devm_Cache_Not_Found_Exception $e ) {
+        Devm_Cache::set(
             $cache_key,
             $dir = apply_filters( 'devm_customizations_dir_rel_path', '/devmonsta' )
         );
@@ -825,7 +825,7 @@ function devm_aku( $keys, &$array_or_object, $keys_delimiter = '/' ) {
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_aku( $keys, $array_or_object->{$key_or_property} );
         } else {
@@ -912,7 +912,7 @@ function devm_aks( $keys, $value, &$array_or_object, $keys_delimiter = '/' ) {
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_aks( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
@@ -971,7 +971,7 @@ function devm_akg( $keys, $array_or_object, $default_value = null, $keys_delimit
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             return devm_akg( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
@@ -1001,7 +1001,7 @@ function devm_akg( $keys, $array_or_object, $default_value = null, $keys_delimit
  * @since 2.6.14
  */
 function devm_callback( $callback, array $args = [], $cache = true ) {
-    return new Dm_Callback( $callback, $args, $cache );
+    return new Devm_Callback( $callback, $args, $cache );
 }
 
 /**
@@ -1182,18 +1182,18 @@ function devm_widgets_export() {
     $available_widgets = devm_available_widgets();
     $widget_instances  = [];
 
-    // Loop widgets.
+// Loop widgets.
     foreach ( $available_widgets as $widget_data ) {
         // Get all instances for this ID base.
         $instances = get_option( 'widget_' . $widget_data['id_base'] );
 
-        // Have instances.
+// Have instances.
         if ( !empty( $instances ) ) {
 
-            // Loop instances.
+// Loop instances.
             foreach ( $instances as $instance_id => $instance_data ) {
 
-                // Key is ID (not _multiwidget).
+// Key is ID (not _multiwidget).
                 if ( is_numeric( $instance_id ) ) {
                     $unique_instance_id                    = $widget_data['id_base'] . '-' . $instance_id;
                     $widget_instances[$unique_instance_id] = $instance_data;
@@ -1211,7 +1211,7 @@ function devm_widgets_export() {
 
     foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
 
-        // Skip inactive widgets.
+// Skip inactive widgets.
         if ( 'wp_inactive_widgets' === $sidebar_id ) {
             continue;
         }
@@ -1246,7 +1246,7 @@ function devm_available_widgets() {
 
     foreach ( $widget_controls as $widget ) {
 
-        // No duplicates.
+// No duplicates.
         if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name']    = $widget['name'];

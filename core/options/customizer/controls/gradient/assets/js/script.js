@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
 
     for(color_id in gradient_picker_config.defaults){
         var single_color = '.devm-gradient-field-' + color_id ;
-        let dmOptions = {
+        let devmOptions = {
             defaultColor: gradient_picker_config.defaults[color_id],
             hide: true,
             change: function(event, ui){
@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
                 $(this).parents(".gradient-parent").find(".devm-gradient-value").val(final_color).trigger('change');
               } 
         };
-        $(single_color).wpColorPicker(dmOptions);
+        $(single_color).wpColorPicker(devmOptions);
      }
 
      /**

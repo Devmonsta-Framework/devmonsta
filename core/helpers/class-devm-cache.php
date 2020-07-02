@@ -3,7 +3,7 @@ if ( !defined( 'DEVM' ) ) {
     die( 'Forbidden' );
 }
 
-class Dm_Cache {
+class Devm_Cache {
     /**
      * The actual cache
      * @var array
@@ -45,7 +45,7 @@ class Dm_Cache {
      * @internal
      */
     public static function init_static() {
-        self::$not_found_value = new Dm_Cache_Not_Found_Exception();
+        self::$not_found_value = new Devm_Cache_Not_Found_Exception();
 
         foreach ( [
             'query'                     => true,
@@ -175,7 +175,7 @@ class Dm_Cache {
      * @param $keys
      * @param $keys_delimiter
      * @return mixed
-     * @throws Dm_Cache_Not_Found_Exception
+     * @throws Devm_Cache_Not_Found_Exception
      */
     public static function get( $keys, $keys_delimiter = '/' ) {
         $keys     = (string) $keys;
@@ -197,7 +197,7 @@ class Dm_Cache {
         if ( $value === self::$not_found_value ) {
             ++self::$misses;
 
-            throw new Dm_Cache_Not_Found_Exception();
+            throw new Devm_Cache_Not_Found_Exception();
         } else {
             ++self::$hits;
 
@@ -222,7 +222,7 @@ class Dm_Cache {
 
     /**
      * Debug information
-     * <?php add_action('admin_footer', function(){ Dm_Cache::stats(); });
+     * <?php add_action('admin_footer', function(){ Devm_Cache::stats(); });
      * @since 2.4.17
      */
     public static function stats() {
@@ -247,6 +247,6 @@ class Dm_Cache {
 
 }
 
-class Dm_Cache_Not_Found_Exception extends Exception {}
+class Devm_Cache_Not_Found_Exception extends Exception {}
 
-Dm_Cache::init_static();
+Devm_Cache::init_static();

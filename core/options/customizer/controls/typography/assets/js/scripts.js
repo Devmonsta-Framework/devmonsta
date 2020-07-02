@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     // for color
-    var dmOptions = {
+    var devmOptions = {
         defaultColor: typo_config.selected_data.color,
         hide: true,
         change: function (event, ui) {
@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
             updateValueHolder(currentObject);
         }
     };
-    $('.devm-typography-color-field').wpColorPicker(dmOptions);
+    $('.devm-typography-color-field').wpColorPicker(devmOptions);
 
     // for select2 
     $('.google-fonts-list').select2();

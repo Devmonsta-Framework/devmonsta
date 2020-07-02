@@ -1,9 +1,10 @@
 <?php
+
 if ( !defined( 'DEVM' ) ) {
     die( 'Forbidden' );
 }
 
-final class _Dm {
+final class _Devm {
     /** @var bool If already loaded */
     private static $loaded = false;
 
@@ -31,15 +32,15 @@ final class _Dm {
             require $devm_dir . '/manifest.php';
             /** @var array $manifest */
 
-            $this->manifest = new DMS_Framework_Manifest( $manifest );
+            $this->manifest = new DEVM_Framework_Manifest( $manifest );
 
-            add_action( 'devm_init', [ $this, 'check_requirements' ], 1 );
+            add_action( 'devm_init', [$this, 'check_requirements'], 1 );
         }
 
         // components
         {
-            $this->backend = new _DMS_Component_Backend();
-            $this->theme   = new _DMS_Component_Theme();
+            $this->backend = new _DEVM_Component_Backend();
+            $this->theme   = new _DEVM_Component_Theme();
         }
 
     }
@@ -52,7 +53,7 @@ final class _Dm {
         if ( is_admin() && !$this->manifest->check_requirements() ) {
             DEVM_Flash_Messages::add(
                 'devm_requirements',
-                __( 'Framework requirements not met:', 'dm' ) . ' ' . $this->manifest->get_not_met_requirement_text(),
+                __( 'Framework requirements not met:', 'devmonsta' ) . ' ' . $this->manifest->get_not_met_requirement_text(),
                 'warning'
             );
         }
@@ -62,15 +63,15 @@ final class _Dm {
 }
 
 /**
- * @return _DM Framework instance
+ * @return _DEVM Framework instance
  */
-function dm() {
-	static $DM = null;
-	
-	// cache
-    if ( $DM === null ) {
-        $DM = new _Dm();
+function devm() {
+    static $DEVM = null;
+
+    // cache
+    if ( $DEVM === null ) {
+        $DEVM = new _Devm();
     }
 
-    return $DM;
+    return $DEVM;
 }

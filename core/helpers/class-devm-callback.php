@@ -3,11 +3,11 @@
 }
 
 /**
- * Class Dm_Callback
+ * Class Devm_Callback
  *
  * @since 1.0.0
  */
-class Dm_Callback {
+class Devm_Callback {
 	/**
 	 * @var $callback string|array
 	 */
@@ -29,7 +29,7 @@ class Dm_Callback {
 	private $id;
 
 	/**
-	 * Dm_Callback constructor.
+	 * Devm_Callback constructor.
 	 *
 	 * @param string|array|Closure $callback Callback function
 	 * @param array $args Callback arguments
@@ -67,9 +67,9 @@ class Dm_Callback {
 	public function execute() {
 		if ( $this->cache ) {
 			try {
-				return Dm_Cache::get( $this->get_id() );
-			} catch ( Dm_Cache_Not_Found_Exception $e ) {
-				Dm_Cache::set(
+				return Devm_Cache::get( $this->get_id() );
+			} catch ( Devm_Cache_Not_Found_Exception $e ) {
+				Devm_Cache::set(
 					$this->get_id(),
 					$value = $this->get_value()
 				);
@@ -85,7 +85,7 @@ class Dm_Callback {
 	 * Whenever you want to clear the cached value or the function
 	 */
 	public function clear_cache() {
-		Dm_Cache::del( $this->get_id() );
+		Devm_Cache::del( $this->get_id() );
 	}
 
 	/**

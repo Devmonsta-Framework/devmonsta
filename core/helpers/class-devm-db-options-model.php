@@ -200,11 +200,11 @@ abstract class DEVM_Db_Options_Model {
 
                 {
                     try {
-                        $skip_types_process = DEVM_Cache::get( $cache_key = 'dm:options-default-values:skip-types' );
+                        $skip_types_process = DEVM_Cache::get( $cache_key = 'devm:options-default-values:skip-types' );
                     } catch ( DEVM_Cache_Not_Found_Exception $e ) {
                         DEVM_Cache::set(
                             $cache_key,
-                            $skip_types_process = apply_filters( 'dm:options-default-values:skip-types', [ // 'type' => true
+                            $skip_types_process = apply_filters( 'devm:options-default-values:skip-types', [ // 'type' => true
                             ] )
                         );
                     }
@@ -214,15 +214,15 @@ abstract class DEVM_Db_Options_Model {
                         ? (
                             isset( $option['value'] )
                             ? $option['value']
-                            : dm()->backend->option_type( $option['type'] )->get_defaults( 'value' )
+                            : devm()->backend->option_type( $option['type'] )->get_defaults( 'value' )
                         )
-                        : dm()->backend->option_type( $option['type'] )->get_value_from_input( $option, null );
+                        : devm()->backend->option_type( $option['type'] )->get_value_from_input( $option, null );
                     }
 
                 }
 
                 foreach ( $options as $id => $option ) {
-                    $values[$id] = dm()->backend->option_type( $option['type'] )->storage_load(
+                    $values[$id] = devm()->backend->option_type( $option['type'] )->storage_load(
                         $id,
                         $option,
                         isset( $values[$id] ) ? $values[$id] : null,
@@ -288,7 +288,7 @@ abstract class DEVM_Db_Options_Model {
             }
 
             if ( isset( $options[$option_id] ) ) {
-                $value = dm()->backend->option_type( $options[$option_id]['type'] )->storage_save(
+                $value = devm()->backend->option_type( $options[$option_id]['type'] )->storage_save(
                     $option_id,
                     $options[$option_id],
                     $value,
@@ -311,10 +311,10 @@ abstract class DEVM_Db_Options_Model {
             if ( empty( $value ) ) {
 
                 foreach ( $options as $_option_id => $_option ) {
-                    dm()->backend->option_type( $options[$_option_id]['type'] )->storage_save(
+                    devm()->backend->option_type( $options[$_option_id]['type'] )->storage_save(
                         $_option_id,
                         $_option,
-                        dm()->backend->option_type( $options[$_option_id]['type'] )->get_defaults( 'value' ),
+                        devm()->backend->option_type( $options[$_option_id]['type'] )->get_defaults( 'value' ),
                         $this->get_devm_storage_params( $item_id, $extra_data )
                     );
                 }
@@ -324,7 +324,7 @@ abstract class DEVM_Db_Options_Model {
                 foreach ( $value as $_option_id => $_option_value ) {
 
                     if ( isset( $options[$_option_id] ) ) {
-                        $value[$_option_id] = dm()->backend->option_type( $options[$_option_id]['type'] )->storage_save(
+                        $value[$_option_id] = devm()->backend->option_type( $options[$_option_id]['type'] )->storage_save(
                             $_option_id,
                             $options[$_option_id],
                             $_option_value,
