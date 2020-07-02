@@ -30,8 +30,6 @@ final class Bootstrap {
             'database',
             'class-devm-resize',
             'class-devm-request',
-            'class-devm-session',
-            'class-devm-flash-messages',
             'general',
             'repeater',
         ];

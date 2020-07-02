@@ -27,7 +27,7 @@ class DEVM_WP_Meta {
 			devm_update_metadata( $meta_type, $object_id, $key, $set_value );
 		} else { // Change only specified key
 			$value = self::get( $meta_type, $object_id, $key, true );
-			devm_aks( $multi_key, $set_value, $value );
+			devm_array_key_set( $multi_key, $set_value, $value );
 			devm_update_metadata( $meta_type, $object_id, $key, $value );
 		}
 	}
@@ -51,7 +51,7 @@ class DEVM_WP_Meta {
 		if ( empty( $multi_key ) && $multi_key !== '0' ) {
 			return $value;
 		} else {
-			return devm_akg($multi_key, $value, $default_value);
+			return devm_array_key_get($multi_key, $value, $default_value);
 		}
 	}
 }

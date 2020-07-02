@@ -4,8 +4,6 @@ if ( !defined( 'DEVM' ) ) {
     die( 'Forbidden' );
 }
 
-// Useful functions
-
 /**
  * print_r() alternative
  *
@@ -78,19 +76,6 @@ function devm_print( $value ) {
 }
 
 /**
- * Alias for devm_print
- *
- * @see devm_print()
- * @since 1.0.0
- */
-if ( !function_exists( 'debug' ) ) {
-    function debug() {
-        call_user_func_array( 'devm_print', func_get_args() );
-    }
-
-}
-
-/**
  * Use this id do not need to enter every time same last two parameters
  * Info: Cannot use default parameters because in php 5.2 encoding is not UTF-8 by default
  *
@@ -102,6 +87,8 @@ if ( !function_exists( 'debug' ) ) {
 function devm_htmlspecialchars( $string ) {
     return htmlspecialchars( $string, ENT_QUOTES, 'UTF-8' );
 }
+
+
 
 /**
  * Recursively find a key's value in array
@@ -142,7 +129,7 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
 
     if ( isset( $keys[0] ) ) {
 
-// not used count() for performance reasons
+        // not used count() for performance reasons
         if ( $is_object ) {
             return devm_array_key_get( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
@@ -159,6 +146,21 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
     }
 
 }
+
+
+/**
+ * Alias for devm_print
+ *
+ * @see devm_print()
+ * @since 1.0.0
+ */
+if ( !function_exists( 'debug' ) ) {
+    function debug() {
+        call_user_func_array( 'devm_print', func_get_args() );
+    }
+
+}
+
 
 /**
  * Set (or create if not exists) value for specified key in some array level
@@ -229,7 +231,7 @@ function devm_array_key_set( $keys, $value, &$array_or_object, $keys_delimiter =
 
     if ( isset( $keys[0] ) ) {
 
-// not used count() for performance reasons
+        // not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_set( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
@@ -284,7 +286,7 @@ function devm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' )
 
     if ( isset( $keys[0] ) ) {
 
-// not used count() for performance reasons
+        // not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_unset( $keys, $array_or_object->{$key_or_property} );
         } else {
@@ -786,208 +788,7 @@ function devm_post_img_alt( $image_id ) {
 
 }
 
-/**
- * Unset specified key in some array level
- *
- * @param string $keys 'a/b/c' -> unset($arr['a']['b']['c']);
- * @param array|object $array_or_object
- * @param string $keys_delimiter
- *
- * @return array|object
- */
-function devm_aku( $keys, &$array_or_object, $keys_delimiter = '/' ) {
 
-    if ( !is_array( $keys ) ) {
-        $keys = explode( $keys_delimiter, (string) $keys );
-    }
-
-    $key_or_property = array_shift( $keys );
-
-    if ( $key_or_property === null || $key_or_property === '' ) {
-        return $array_or_object;
-    }
-
-    $is_object = is_object( $array_or_object );
-
-    if ( $is_object ) {
-
-        if ( !property_exists( $array_or_object, $key_or_property ) ) {
-            return $array_or_object;
-        }
-
-    } else {
-
-        if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
-            return $array_or_object;
-        }
-
-    }
-
-    if ( isset( $keys[0] ) ) {
-
-// not used count() for performance reasons
-        if ( $is_object ) {
-            devm_aku( $keys, $array_or_object->{$key_or_property} );
-        } else {
-            devm_aku( $keys, $array_or_object[$key_or_property] );
-        }
-
-    } else {
-        if ( $is_object ) {
-            unset( $array_or_object->{$key_or_property} );
-        } else {
-            unset( $array_or_object[$key_or_property] );
-        }
-
-    }
-
-    return $array_or_object;
-}
-
-/**
- * Set (or create if not exists) value for specified key in some array level
- *
- * @param string $keys 'a/b/c', or 'a/b/c/' equivalent to: $arr['a']['b']['c'][] = $val;
- * @param mixed $value
- * @param array|object $array_or_object
- * @param string $keys_delimiter
- *
- * @return array|object
- */
-function devm_aks( $keys, $value, &$array_or_object, $keys_delimiter = '/' ) {
-    if ( !is_array( $keys ) ) {
-        $keys = explode( $keys_delimiter, (string) $keys );
-    }
-
-    $key_or_property = array_shift( $keys );
-    if ( $key_or_property === null ) {
-        return $array_or_object;
-    }
-
-    $is_object = is_object( $array_or_object );
-
-    if ( $is_object ) {
-        if (
-            !property_exists( $array_or_object, $key_or_property )
-            || !( is_array( $array_or_object->{$key_or_property} ) || is_object( $array_or_object->{$key_or_property} ) )
-        ) {
-            if ( $key_or_property === '' ) {
-                // this happens when use 'empty keys' like: abc/d/e////i/j//foo/
-                trigger_error( 'Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING );
-            } else {
-                $array_or_object->{$key_or_property}
-
-                = [];
-            }
-
-        }
-
-    } else {
-
-        if ( !is_array( $array_or_object ) ) {
-            $array_or_object = [];
-        }
-
-        if (
-            !array_key_exists(
-                $key_or_property,
-                $array_or_object
-            ) || !is_array( $array_or_object[$key_or_property] )
-        ) {
-
-            if ( $key_or_property === '' ) {
-                // this happens when use 'empty keys' like: abc.d.e....i.j..foo.
-                $array_or_object[] = [];
-
-                // get auto created key (last)
-                end( $array_or_object );
-                $key_or_property = key( $array_or_object );
-            } else {
-                $array_or_object[$key_or_property] = [];
-            }
-
-        }
-
-    }
-
-    if ( isset( $keys[0] ) ) {
-
-// not used count() for performance reasons
-        if ( $is_object ) {
-            devm_aks( $keys, $value, $array_or_object->{$key_or_property} );
-        } else {
-            devm_aks( $keys, $value, $array_or_object[$key_or_property] );
-        }
-
-    } else {
-        if ( $is_object ) {
-            $array_or_object->{$key_or_property}
-
-            = $value;
-        } else {
-            $array_or_object[$key_or_property] = $value;
-        }
-
-    }
-
-    return $array_or_object;
-}
-
-/**
- * Recursively find a key's value in array
- *
- * @param string $keys 'a/b/c'
- * @param array|object $array_or_object
- * @param null|mixed $default_value
- * @param string $keys_delimiter
- *
- * @return null|mixed
- */
-function devm_akg( $keys, $array_or_object, $default_value = null, $keys_delimiter = '/' ) {
-    if ( !is_array( $keys ) ) {
-        $keys = explode( $keys_delimiter, (string) $keys );
-    }
-
-    $array_or_object = devm_call( $array_or_object );
-
-    $key_or_property = array_shift( $keys );
-    if ( $key_or_property === null ) {
-        return devm_call( $default_value );
-    }
-
-    $is_object = is_object( $array_or_object );
-
-    if ( $is_object ) {
-        if ( !property_exists( $array_or_object, $key_or_property ) ) {
-            return devm_call( $default_value );
-        }
-
-    } else {
-        if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
-            return devm_call( $default_value );
-        }
-
-    }
-
-    if ( isset( $keys[0] ) ) {
-
-// not used count() for performance reasons
-        if ( $is_object ) {
-            return devm_akg( $keys, $array_or_object->{$key_or_property}, $default_value );
-        } else {
-            return devm_akg( $keys, $array_or_object[$key_or_property], $default_value );
-        }
-
-    } else {
-        if ( $is_object ) {
-            return $array_or_object->{$key_or_property};
-        } else {
-            return $array_or_object[$key_or_property];
-        }
-
-    }
-
-}
 
 /**
  * @param string|array $callback Callback function
@@ -1182,27 +983,24 @@ function devm_widgets_export() {
     $available_widgets = devm_available_widgets();
     $widget_instances  = [];
 
-// Loop widgets.
+    // Loop widgets.
     foreach ( $available_widgets as $widget_data ) {
         // Get all instances for this ID base.
         $instances = get_option( 'widget_' . $widget_data['id_base'] );
 
-// Have instances.
+            // Have instances.
         if ( !empty( $instances ) ) {
 
-// Loop instances.
+            // Loop instances.
             foreach ( $instances as $instance_id => $instance_data ) {
 
-// Key is ID (not _multiwidget).
+                // Key is ID (not _multiwidget).
                 if ( is_numeric( $instance_id ) ) {
                     $unique_instance_id                    = $widget_data['id_base'] . '-' . $instance_id;
                     $widget_instances[$unique_instance_id] = $instance_data;
                 }
-
             }
-
         }
-
     }
 
     // Gather sidebars with their widget instances.
@@ -1211,7 +1009,7 @@ function devm_widgets_export() {
 
     foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
 
-// Skip inactive widgets.
+        // Skip inactive widgets.
         if ( 'wp_inactive_widgets' === $sidebar_id ) {
             continue;
         }
@@ -1246,7 +1044,7 @@ function devm_available_widgets() {
 
     foreach ( $widget_controls as $widget ) {
 
-// No duplicates.
+        // No duplicates.
         if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name']    = $widget['name'];

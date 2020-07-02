@@ -171,7 +171,7 @@ abstract class DEVM_Db_Options_Model {
 
                 } else {
 
-                    if ( !isset( $values[$option_id] ) || is_null( devm_akg( $sub_keys, $values[$option_id] ) ) ) {
+                    if ( !isset( $values[$option_id] ) || is_null( devm_array_key_get( $sub_keys, $values[$option_id] ) ) ) {
                         return devm_call( $default_value );
                     }
 
@@ -247,7 +247,7 @@ abstract class DEVM_Db_Options_Model {
                 : devm_call( $default_value );
             } else {
                 return isset( $values[$option_id] )
-                ? devm_akg( $sub_keys, $values[$option_id], $default_value )
+                ? devm_array_key_get( $sub_keys, $values[$option_id], $default_value )
                 : devm_call( $default_value );
             }
 
@@ -280,11 +280,11 @@ abstract class DEVM_Db_Options_Model {
 
             if ( $sub_keys ) { // update sub_key in old_value and use the entire value
                 $new_value = $old_value;
-                devm_aks( $sub_keys, $value, $new_value );
+                devm_array_key_set( $sub_keys, $value, $new_value );
                 $value = $new_value;
                 unset( $new_value );
 
-                $old_value = devm_akg( $sub_keys, $old_value );
+                $old_value = devm_array_key_get( $sub_keys, $old_value );
             }
 
             if ( isset( $options[$option_id] ) ) {
