@@ -335,7 +335,7 @@ class Posts
      */
     public function register_ajax_callbacks()
     {
-        add_action('wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", '_action_get_oembed_response']);
+        add_action('wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", 'action_get_oembed_response']);
     }
 
 }
