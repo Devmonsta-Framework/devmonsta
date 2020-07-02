@@ -23,9 +23,9 @@ class Icon extends Structure {
     }
 
     public function enqueue_icon_scripts() {
-        wp_enqueue_style( 'dm-fontawesome-css', DM_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
-        wp_enqueue_style( 'dm-main-css', DM_CORE . 'options/posts/controls/icon/assets/css/main.css' );
-        wp_enqueue_script( 'dm-asicon', DM_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_style( 'devm-fontawesome-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
+        wp_enqueue_style( 'devm-main-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/main.css' );
+        wp_enqueue_script( 'devm-asicon', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -37,7 +37,7 @@ class Icon extends Structure {
 
         //grab default icon data from theme array
         $this->default_icon = isset( $content['value']['icon'] ) ? $content['value']['icon'] : "fab fa-500px";
-        $this->default_icon_type = isset( $content['value']['type'] ) ? $content['value']['type'] : "dm-font-awesome";
+        $this->default_icon_type = isset( $content['value']['type'] ) ? $content['value']['type'] : "devm-font-awesome";
         
         $icon_data              = [];
         $icon_data['icon_name'] = (  ( $this->current_screen == "post" )
@@ -66,7 +66,7 @@ class Icon extends Structure {
         $iconEncoded        = json_encode( $iconList );
 
         //generate attributes dynamically for parent tag
-        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
         
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $this->value['icon_type'], $this->value['icon_name'] );
@@ -85,7 +85,7 @@ class Icon extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -121,7 +121,7 @@ class Icon extends Structure {
         $iconEncoded = json_encode( $iconList );
 
         //generate attributes dynamically for parent tag
-        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
         
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon );
@@ -139,18 +139,18 @@ class Icon extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon_name ) {
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?></label>
             </div>
-            <div class="dm-option-column right dm-vue-app">
-                <dm-icon-picker
+            <div class="devm-option-column right devm-vue-app">
+                <devm-icon-picker
                     name='<?php echo esc_attr( $name ); ?>'
-                    icon_list='<?php echo dm_render_markup($iconEncoded); ?>'
+                    icon_list='<?php echo devm_render_markup($iconEncoded); ?>'
                     default_icon_type='<?php echo isset( $icon_type ) ? esc_attr( $icon_type ) : ""; ?>'
                     default_icon='<?php echo isset( $icon_name ) ? esc_attr( $icon_name ) : ""; ?>'
-                ></dm-icon-picker>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                ></devm-icon-picker>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
         <?php

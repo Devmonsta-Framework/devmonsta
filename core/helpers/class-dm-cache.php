@@ -1,4 +1,4 @@
-<?php if (!defined('DM')) die('Forbidden');
+<?php if (!defined('DEVM')) die('Forbidden');
 
 
 class Dm_Cache
@@ -81,7 +81,7 @@ class Dm_Cache
 			'wp_footer' => true,
 			'wp' => true,
 			'wp_init' => true,
-			'dm_init' => true,
+			'devm_init' => true,
 			'init' => true,
 			'updated_postmeta' => true,
 			'deleted_postmeta' => true,
@@ -161,7 +161,7 @@ class Dm_Cache
 
 		self::free_memory();
 
-		dm_array_key_set($keys, $value, self::$cache, $keys_delimiter);
+		devm_array_key_set($keys, $value, self::$cache, $keys_delimiter);
 
 		self::free_memory();
 	}
@@ -173,7 +173,7 @@ class Dm_Cache
 	 */
 	public static function del($keys, $keys_delimiter = '/')
 	{
-		dm_array_key_unset($keys, self::$cache, $keys_delimiter);
+		devm_array_key_unset($keys, self::$cache, $keys_delimiter);
 
 		self::free_memory();
 	}
@@ -198,7 +198,7 @@ class Dm_Cache
 
 		self::free_memory();
 
-		$value = dm_array_key_get($keys, self::$cache, self::$not_found_value, $keys_delimiter);
+		$value = devm_array_key_get($keys, self::$cache, self::$not_found_value, $keys_delimiter);
 
 		self::free_memory();
 
@@ -239,7 +239,7 @@ class Dm_Cache
 		echo '<strong>Cache Hits:</strong> '. esc_html(self::$hits) .'<br />';
 		echo '<strong>Cache Misses:</strong> '. esc_html(self::$misses) .'<br />';
 		echo '<strong>Cache Freed:</strong> '. esc_html(self::$freed) .'<br />';
-		echo '<strong>PHP Memory Peak Usage:</strong> '. dm_human_bytes(memory_get_peak_usage(false)) .'<br />';
+		echo '<strong>PHP Memory Peak Usage:</strong> '. devm_human_bytes(memory_get_peak_usage(false)) .'<br />';
 		echo '</p>';
 		echo '<ul>';
 		foreach (self::$cache as $group => $cache) {

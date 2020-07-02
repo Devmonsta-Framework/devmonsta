@@ -29,9 +29,9 @@ class Select extends Structure {
      * @internal
      */
     public function load_select_scripts() {
-        wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-select-js', DM_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        wp_enqueue_script( 'devm-select-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
     }
 
     /**
@@ -74,7 +74,7 @@ class Select extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -141,13 +141,13 @@ class Select extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right">
-                    <select class="dm-ctrl dm_select" name="<?php echo esc_attr( $name ); ?>">
+                <div class="devm-option-column right">
+                    <select class="devm-ctrl devm_select" name="<?php echo esc_attr( $name ); ?>">
                         <?php
                             if ( is_array( $choices ) && !empty( $choices ) ) {
                                 foreach ( $choices as $key => $val ) {
@@ -161,7 +161,7 @@ class Select extends Structure {
                             }
                         ?>
                     </select>
-                    <span class="dm-option-desc"><?php echo esc_html( $desc ); ?> </span>
+                    <span class="devm-option-desc"><?php echo esc_html( $desc ); ?> </span>
                 </div>
             </div>
         <?php

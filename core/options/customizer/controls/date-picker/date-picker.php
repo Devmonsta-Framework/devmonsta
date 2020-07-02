@@ -19,7 +19,7 @@ class DatePicker extends Structure {
     public function __construct( $manager, $id, $args = [] ) {
 
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -40,16 +40,16 @@ class DatePicker extends Structure {
      * @internal
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-picker-from-post', DM_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
-        wp_enqueue_script( 'dm-customizer-date-picker', DM_CORE . 'options/customizer/controls/date-picker/assets/js/script.js', ['jquery', 'flatpickr', 'dm-date-picker-from-post'], time(), true );
+        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/date-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/date-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_script( 'devm-date-picker-from-post', DEVMONSTA_CORE . 'options/posts/controls/date-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'devm-customizer-date-picker', DEVMONSTA_CORE . 'options/customizer/controls/date-picker/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-picker-from-post'], time(), true );
 
         $data                = [];
         $data['mondayFirst'] = $this->monday_first ? 1 : 0;
         $data['minDate']     = $this->min_date;
         $data['maxDate']     = $this->max_date;
-        wp_localize_script( 'dm-customizer-date-picker', 'dm_date_picker_config', $data );
+        wp_localize_script( 'devm-customizer-date-picker', 'devm_date_picker_config', $data );
     }
 
     /**
@@ -63,16 +63,16 @@ class DatePicker extends Structure {
     
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="devm-option-column right">
                 <input <?php $this->link();?> type="text" name="<?php echo esc_attr( $this->name ); ?>"
-                        class="dm-option-input dm-ctrl dm-option-input-date-picker"
+                        class="devm-option-input devm-ctrl devm-option-input-date-picker"
                         value="<?php echo esc_attr( $this->value ); ?>"  data-value="<?php echo esc_html( $this->value ); ?>">
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 

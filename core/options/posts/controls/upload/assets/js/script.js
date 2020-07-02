@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
 
-    $('body').on('click', '.dm_upload_image_button', function(e) {
+    $('body').on('click', '.devm_upload_image_button', function(e) {
 
         e.preventDefault();
         var multiple = false,
@@ -22,7 +22,7 @@ jQuery(document).ready(function($) {
             }).on('select', function() {
                 var attachment = custom_uploader.state().get('selection').first().toJSON();
                 $(button).removeClass('button').html('<img class="true_pre_image" src="' + attachment.url + '" style="max-width:95%;display:block;" />').next().val(attachment.id).next().show();
-                self.parent().find('.dm-upload').trigger('input');
+                self.parent().find('.devm-upload').trigger('input');
 
             })
             .open();
@@ -31,9 +31,9 @@ jQuery(document).ready(function($) {
     /*
      * Remove image
      */
-    $('body').on('click', '.dm_remove_image_button', function() {
+    $('body').on('click', '.devm_remove_image_button', function() {
         $(this).hide().prev().val('').prev().addClass('button').html('Upload image');
-        $(this).parent().find('.dm-upload').trigger('input');
+        $(this).parent().find('.devm-upload').trigger('input');
         return false;
     });
 });

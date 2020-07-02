@@ -14,7 +14,7 @@ class Customizer extends \Devmonsta\Libs\Customizer {
         $this->add_control([
 
             'name'       => 'link_color',
-            'label'      => __('Link Color', 'devmonsta'),
+            'label'      =>esc_html__('Link Color', 'devmonsta'),
             'section'    => 'colors',
             'settings'   => 'devmonsta_link_color',
             'default'    => '#00c3ff',
@@ -25,7 +25,7 @@ class Customizer extends \Devmonsta\Libs\Customizer {
         $this->add_control([
 
             'name'       => 'cool_color',
-            'label'      => __('Cool Color', 'devmonsta'),
+            'label'      =>esc_html__('Cool Color', 'devmonsta'),
             'section'    => 'colors',
             'settings'   => 'devmonsta_cool_color',
             'default'    => '#00c3ff',

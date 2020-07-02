@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'DM' ) ) {
+<?php if ( ! defined( 'DEVM' ) ) {
 	die( 'Forbidden' );
 }
 
@@ -6,7 +6,7 @@
  * Features:
  * - Works with "multi keys"
  */
-class DM_WP_Meta {
+class DEVM_WP_Meta {
 	/**
 	 * @param string $meta_type
 	 * @param int $object_id
@@ -24,11 +24,11 @@ class DM_WP_Meta {
 		$multi_key = implode( '/', $multi_key );
 
 		if ( empty( $multi_key ) && $multi_key !== '0' ) { // Replace entire meta
-			dm_update_metadata( $meta_type, $object_id, $key, $set_value );
+			devm_update_metadata( $meta_type, $object_id, $key, $set_value );
 		} else { // Change only specified key
 			$value = self::get( $meta_type, $object_id, $key, true );
-			dm_aks( $multi_key, $set_value, $value );
-			dm_update_metadata( $meta_type, $object_id, $key, $value );
+			devm_aks( $multi_key, $set_value, $value );
+			devm_update_metadata( $meta_type, $object_id, $key, $value );
 		}
 	}
 	
@@ -51,7 +51,7 @@ class DM_WP_Meta {
 		if ( empty( $multi_key ) && $multi_key !== '0' ) {
 			return $value;
 		} else {
-			return dm_akg($multi_key, $value, $default_value);
+			return devm_akg($multi_key, $value, $default_value);
 		}
 	}
 }

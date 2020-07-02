@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'DM' ) ) {
+<?php if ( ! defined( 'DEVM' ) ) {
 	die( 'Forbidden' );
 }
 
@@ -98,10 +98,10 @@ class Dm_Callback {
 
 	protected function get_id() {
 		if ( ! is_string( $this->id ) ) {
-			//$this->id = 'dm-callback-' . md5( $this->serialize_callback() . serialize( $this->args ) );
+			//$this->id = 'devm-callback-' . md5( $this->serialize_callback() . serialize( $this->args ) );
 			//Disabled temporary for optimization reasons
 			//Maybe later will come with a better idea.
-			$this->id = uniqid( 'dm-callback-' );
+			$this->id = uniqid( 'devm-callback-' );
 		}
 
 		return $this->id;

@@ -28,7 +28,7 @@ class WpEditor extends Structure {
 	 */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -53,7 +53,7 @@ class WpEditor extends Structure {
     }
 
     function editor_customizer_script() {
-        wp_enqueue_script( 'wp-editor-customizer', DM_CORE . 'options/customizer/controls/wp-editor/assets/js/script.js', array( 'jquery' ), rand(), true );
+        wp_enqueue_script( 'wp-editor-customizer', DEVMONSTA_CORE . 'options/customizer/controls/wp-editor/assets/js/script.js', array( 'jquery' ), rand(), true );
     }
     
     /*
@@ -76,12 +76,12 @@ class WpEditor extends Structure {
      */
     public function render_content() {
         ?>
-            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+            <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right wp-editor-parent">
+                <div class="devm-option-column right wp-editor-parent">
                     
                     <input class="wp-editor-area" type="hidden" <?php $this->link(); ?> value="<?php echo esc_textarea( $this->value() ); ?>">
                         <?php
@@ -99,7 +99,7 @@ class WpEditor extends Structure {
                         do_action('admin_footer');
                         do_action('admin_print_footer_scripts');
                         ?>
-                    <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
     <?php

@@ -1,17 +1,17 @@
-<?php if (!defined('DM')) die('Forbidden');
+<?php if (!defined('DEVM')) die('Forbidden');
 
 final class _Dm
 {
 	/** @var bool If already loaded */
 	private static $loaded = false;
 
-	/** @var DM_Framework_Manifest */
+	/** @var DEVM_Framework_Manifest */
 	public $manifest;
 
-	/** @var _DM_Component_Backend */
+	/** @var _DEVM_Component_Backend */
 	public $backend;
 
-	/** @var _DM_Component_Theme */
+	/** @var _DEVM_Component_Theme */
 	public $theme;
 
 	public function __construct()
@@ -22,16 +22,16 @@ final class _Dm
 			self::$loaded = true;
 		}
 
-		$dm_dir = dm_get_framework_directory();
+		$devm_dir = devm_get_framework_directory();
 
 		// manifest
 		{
-			require $dm_dir .'/manifest.php';
+			require $devm_dir .'/manifest.php';
 			/** @var array $manifest */
 
 			$this->manifest = new DMS_Framework_Manifest($manifest);
 
-			add_action('dm_init', array($this, '_check_requirements'), 1);
+			add_action('devm_init', array($this, '_check_requirements'), 1);
 		}
 
 		// components
@@ -49,8 +49,8 @@ final class _Dm
 	public function _check_requirements()
 	{
 		if (is_admin() && !$this->manifest->check_requirements()) {
-			DM_Flash_Messages::add(
-				'dm_requirements',
+			DEVM_Flash_Messages::add(
+				'devm_requirements',
 				__('Framework requirements not met:', 'dm') .' '. $this->manifest->get_not_met_requirement_text(),
 				'warning'
 			);

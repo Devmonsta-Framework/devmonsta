@@ -1,7 +1,7 @@
-jQuery(window).on('dm-vue.dm', function(e, val){
-    let elements = jQuery('.dm-vue-app.active-script');
+jQuery(window).on('devm-vue.dm', function(e, val){
+    let elements = jQuery('.devm-vue-app.active-script');
     if(val){
-        elements = val.find('.dm-vue-app.active-script');
+        elements = val.find('.devm-vue-app.active-script');
     }
     elements.each(function (item) {
         new Vue({
@@ -10,7 +10,7 @@ jQuery(window).on('dm-vue.dm', function(e, val){
     });
 });
 jQuery(window).on('load',function(){
-    jQuery(window).trigger('dm-vue.dm');
+    jQuery(window).trigger('devm-vue.dm');
 });
 
 

@@ -17,7 +17,7 @@ class Checkbox extends Structure {
     public function __construct( $manager, $id, $args = [] ) {
 
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -52,19 +52,19 @@ class Checkbox extends Structure {
     public function render_content() {
         $is_checked = ( $this->value == 'true' ) ? 'checked' : '';
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="devm-option-column right">
                 <input <?php $this->link();?> type="text" value="false" name="<?php echo esc_attr( $this->name ); ?>" style="display: none">
 
-                <label class="dm-option-label-list">
-                    <input <?php $this->link();?> type="checkbox" name="<?php echo esc_attr( $this->name ); ?>" value="true" <?php echo esc_attr( $is_checked ); ?> class="dm-ctrl ">
+                <label class="devm-option-label-list">
+                    <input <?php $this->link();?> type="checkbox" name="<?php echo esc_attr( $this->name ); ?>" value="true" <?php echo esc_attr( $is_checked ); ?> class="devm-ctrl ">
                     <?php echo esc_html( $this->text ); ?>
                 </label>
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 

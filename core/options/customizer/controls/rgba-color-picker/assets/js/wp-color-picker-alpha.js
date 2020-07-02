@@ -1,6 +1,6 @@
 
 jQuery(document).ready(function($) {
 
-    jQuery(window).trigger('dm-scripts.dm');
+    jQuery(window).trigger('devm-scripts.dm');
 
 });

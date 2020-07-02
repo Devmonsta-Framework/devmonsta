@@ -36,21 +36,21 @@ class Typography extends Structure {
      * @return void
      */
     public function load_scripts() {
-        $this->dm_enqueue_color_picker();
+        $this->devm_enqueue_color_picker();
     }
 
     /**
      * @internal
      */
-    public function dm_enqueue_color_picker() {
+    public function devm_enqueue_color_picker() {
 
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
+        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        wp_enqueue_script( 'devm-typo-script-handle', DEVMONSTA_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
     }
 
     /**
@@ -73,11 +73,11 @@ class Typography extends Structure {
      * @internal
      */
     public function output() {
-        $font_list             = $this->dm_getGoogleFonts();
+        $font_list             = $this->devm_getGoogleFonts();
         $data['font_list']     = $font_list;
         $data['selected_data'] = $this->value;
         
-        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
+        wp_localize_script( 'devm-typo-script-handle', 'typo_config', $data );
 
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
@@ -104,7 +104,7 @@ class Typography extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -134,10 +134,10 @@ class Typography extends Structure {
 
         $this->load_scripts();
 
-        $font_list             = $this->dm_getGoogleFonts();
+        $font_list             = $this->devm_getGoogleFonts();
         $data['font_list']     = $font_list;
         $data['selected_data'] = $value;
-        wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
+        wp_localize_script( 'devm-typo-script-handle', 'typo_config', $data );
 
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -153,11 +153,11 @@ class Typography extends Structure {
     /**
      * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
      */
-    public function dm_getGoogleFonts( $count = 30 ) {
+    public function devm_getGoogleFonts( $count = 30 ) {
         $transient = "_newseqo_customizer_google_fonts";
 
         if ( get_transient( $transient ) == false ) {
-            $request = wp_remote_get( DM_OPTIONS . '/posts/controls/typography/google-fonts-popularity.json' );
+            $request = wp_remote_get( DEVMONSTA_OPTIONS . '/posts/controls/typography/google-fonts-popularity.json' );
 
             if ( is_wp_error( $request ) ) {
                 return "";
@@ -192,12 +192,12 @@ class Typography extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list  ) {
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?></label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?></label>
             </div>
-            <div class="dm-option-column right full-width">
-                <ul class="dm-option-typography">
+            <div class="devm-option-column right full-width">
+                <ul class="devm-option-typography">
                 <?php
 
                 if ( is_array( $components ) && !empty( $components ) ) {
@@ -210,7 +210,7 @@ class Typography extends Structure {
                                 <?php
                                 if ( is_array( $font_list ) && count( $font_list ) > 0 ): ?>
                                     <div class="google-fonts">
-                                        <select class="dm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
+                                        <select class="devm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
                                     <?php
                                     foreach ( $font_list as $key => $item ) {
                                         $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
@@ -225,11 +225,11 @@ class Typography extends Structure {
                                     <label><?php echo esc_html_e( 'Family', 'devmonsta' ); ?></label>
                                 </li>
                                 <li>
-                                    <select data-selected_value='<?php echo isset( $value["weight"] )  ? esc_attr( $value["weight"] ) : "" ;?>' name="<?php echo esc_attr( $name ) ?>[weight]" class="dm-option-input dm-ctrl google-weight-list"></select>
+                                    <select data-selected_value='<?php echo isset( $value["weight"] )  ? esc_attr( $value["weight"] ) : "" ;?>' name="<?php echo esc_attr( $name ) ?>[weight]" class="devm-option-input devm-ctrl google-weight-list"></select>
                                     <label><?php echo esc_html_e( 'Weight', 'devmonsta' ); ?></label>
                                 </li>
                                 <li>
-                                    <select data-selected_value='<?php echo isset( $value["weight"] ) ? esc_attr( $value["style"] ) : "" ;?>' name="<?php echo esc_attr( $name ) ?>[style]" class="dm-option-input dm-ctrl google-style-list"></select>
+                                    <select data-selected_value='<?php echo isset( $value["weight"] ) ? esc_attr( $value["style"] ) : "" ;?>' name="<?php echo esc_attr( $name ) ?>[style]" class="devm-option-input devm-ctrl google-style-list"></select>
                                     <label><?php echo esc_html_e( 'Style', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -237,7 +237,7 @@ class Typography extends Structure {
                             case 'size':
                                 ?>
                                 <li>
-                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[size]" value="<?php echo isset( $value["size"] ) && is_numeric( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="dm-option-input dm-ctrl font-size" />
+                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[size]" value="<?php echo isset( $value["size"] ) && is_numeric( $value["size"] ) ? esc_html( trim( $value["size"] ) ) : 0.00; ?>"  id="size_value" class="devm-option-input devm-ctrl font-size" />
                                     <label><?php echo esc_html_e( 'Size', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -245,7 +245,7 @@ class Typography extends Structure {
                             case 'line-height':
                                 ?>
                                 <li>
-                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) && is_numeric( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="dm-option-input dm-ctrl " />
+                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[line_height]" value="<?php echo isset( $value["line_height"] ) && is_numeric( $value["line_height"] ) ? esc_html( trim( $value["line_height"] ) ) : 0.00; ?>"   id="line_height_value" class="devm-option-input devm-ctrl " />
                                     <label><?php echo esc_html_e( 'Line height', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -253,7 +253,7 @@ class Typography extends Structure {
                             case 'letter-spacing':
                                 ?>
                                 <li>
-                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) && is_numeric( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="dm-option-input dm-ctrl " />
+                                    <input type="number" name="<?php echo esc_attr( $name ) ?>[letter_spacing]" value="<?php echo isset( $value["letter_spacing"] ) && is_numeric( $value["letter_spacing"] ) ? esc_html( trim( $value["letter_spacing"] ) ) : 0.00; ?>" id="latter_spacing_value" class="devm-option-input devm-ctrl " />
                                     <label><?php echo esc_html_e( 'Later space', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -262,7 +262,7 @@ class Typography extends Structure {
                                 ?>
                                 <li>
                                     <input  type="text" name="<?php echo esc_attr( $name ) ?>[color]" value="<?php echo isset( $value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $value["color"]) ? esc_html( $value["color"] ) : ""; ?>"
-                                            class="dm-ctrl dm-typography-color-field" data-default-color="<?php echo isset( $value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $value["color"]) ? esc_html( $value["color"] ) : ""; ?>" />
+                                            class="devm-ctrl devm-typography-color-field" data-default-color="<?php echo isset( $value["color"] ) && preg_match('/^#[a-f0-9]{6}$/i', $value["color"]) ? esc_html( $value["color"] ) : ""; ?>" />
                                     <label><?php echo esc_html_e( 'Color', 'devmonsta' ); ?></label>
                                 </li>
                                 <?php
@@ -282,7 +282,7 @@ class Typography extends Structure {
                 // end foreach
                 ?>
                 </ul>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?></p>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p>
             </div>
         </div>
     <?php

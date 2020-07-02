@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
     
-    jQuery(window).trigger('dm-scripts.datePicker');
+    jQuery(window).trigger('devm-scripts.datePicker');
 
 });

@@ -34,7 +34,7 @@ class DatetimePicker extends Structure {
     public function __construct( $manager, $id, $args = [] ) {
 
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -53,12 +53,12 @@ class DatetimePicker extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
         if ( !wp_script_is( 'flatpickr', 'enqueued' ) ) {
-            wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'], false, true );
+            wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'], false, true );
         }
-        wp_enqueue_script( 'dm-date-time-picker-from-post', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
-        wp_enqueue_script( 'dm-customizer-date-time-picker', DM_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr', 'dm-date-time-picker-from-post'], false, true );
+        wp_enqueue_script( 'devm-date-time-picker-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'devm-customizer-date-time-picker', DEVMONSTA_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-picker-from-post'], false, true );
         
         $date_time_picker_data                = [];
         $date_time_picker_data['format']      = isset( $this->date_time_picker_config['date-format'] ) && in_array( strtolower( $this->date_time_picker_config['date-format'] ), $this->allowed_date_formats ) ? $this->date_time_picker_config['date-format'] : 'Y-m-d H:i';
@@ -67,7 +67,7 @@ class DatetimePicker extends Structure {
         $date_time_picker_data['maxDate']     = isset( $this->date_time_picker_config['max-date'] ) ? date( $date_time_picker_data['format'], strtotime( $this->date_time_picker_config['max-date'] ) ) : "";
         $date_time_picker_data['timepicker']  = ( $this->date_time_picker_config['timepicker'] ) ? 1 : 0;
         $date_time_picker_data['defaultTime'] = isset( $this->date_time_picker_config['default-time'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $this->date_time_picker_config['default-time'])? $this->date_time_picker_config['default-time'] : '12:00';
-        wp_localize_script( 'dm-customizer-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
+        wp_localize_script( 'devm-customizer-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
     }
 
     public function render() {
@@ -77,15 +77,15 @@ class DatetimePicker extends Structure {
 
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
-                <input <?php $this->link();?> type="text" class="dm-option-input dm-ctrl dm-option-input-datetime-picker"
+            <div class="devm-option-column right">
+                <input <?php $this->link();?> type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-picker"
                     value="<?php echo esc_attr( $this->value ); ?>"  data-value="<?php echo esc_html( $this->value ); ?>">
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 

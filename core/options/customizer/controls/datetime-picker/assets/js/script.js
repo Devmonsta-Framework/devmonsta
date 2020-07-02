@@ -1,6 +1,6 @@
 
 jQuery(document).ready(function($) {
     
-    jQuery(window).trigger('dm-scripts.datetimePicker');
+    jQuery(window).trigger('devm-scripts.datetimePicker');
 
 });

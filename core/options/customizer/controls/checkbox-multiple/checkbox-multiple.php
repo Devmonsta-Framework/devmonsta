@@ -28,7 +28,7 @@ class CheckboxMultiple extends Structure {
 	 */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -67,7 +67,7 @@ class CheckboxMultiple extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_script( 'dm-checkbox-multiple', DM_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_script( 'devm-checkbox-multiple', DEVMONSTA_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -84,12 +84,12 @@ class CheckboxMultiple extends Structure {
      */
     public function render_content() {
         ?>
-            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+            <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
+                <div class="devm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
                     
                     <?php $multi_values = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
 
@@ -98,7 +98,7 @@ class CheckboxMultiple extends Structure {
 
                             <li>
                                 <label>
-                                    <input class="dm-ctrl customize-control-checkbox-multiple" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
+                                    <input class="devm-ctrl customize-control-checkbox-multiple" type="checkbox" value="<?php echo esc_attr( $value ); ?>" <?php checked( in_array( $value, $multi_values ) ); ?> />
                                     <?php echo esc_html( $label ); ?>
                                 </label>
                             </li>
@@ -107,7 +107,7 @@ class CheckboxMultiple extends Structure {
                         <input type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $multi_values ) ); ?>" />
 
                     </ul>
-                    <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
     <?php

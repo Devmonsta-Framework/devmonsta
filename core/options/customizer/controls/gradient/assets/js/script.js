@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     for(color_id in gradient_picker_config.defaults){
-        var single_color = '.dm-gradient-field-' + color_id ;
+        var single_color = '.devm-gradient-field-' + color_id ;
         let dmOptions = {
             defaultColor: gradient_picker_config.defaults[color_id],
             hide: true,
@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
                 var secondary = $(this).parents(".gradient-parent").find(".wp-color-result")[1].style.backgroundColor ;
                 
                 var final_color = rgb2hex(primary)  + "," + rgb2hex(secondary);
-                $(this).parents(".gradient-parent").find(".dm-gradient-value").val(final_color).trigger('change');
+                $(this).parents(".gradient-parent").find(".devm-gradient-value").val(final_color).trigger('change');
               } 
         };
         $(single_color).wpColorPicker(dmOptions);

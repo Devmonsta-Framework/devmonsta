@@ -375,7 +375,7 @@ class Customizer
             ]);
 
             $wp_customize->add_control(new \Theme_Customize_Repeater_Control($wp_customize, $control['id'], [
-                'label' => __($control['label'], 'devmonsta'),
+                'label' =>esc_html__($control['label'], 'devmonsta'),
                 'description_a' => 'This is description',
                 'section' => $control['section'],
                 'fields' => $field_controls,
@@ -444,7 +444,7 @@ class Customizer
 
             $wp_customize->add_control(new \Theme_Customize_Repeater_Popup_Control($wp_customize, $control['id'], [
 
-                'label' => __($control['label'], 'devmonsta'),
+                'label' =>esc_html__($control['label'], 'devmonsta'),
                 'description_a' => 'This is description',
                 'section' => $control['section'],
                 'fields' => $field_controls,
@@ -525,9 +525,9 @@ class Customizer
                     $panel_id = $panel['id'];
                     unset($panel['id']);
 
-                    $dm_panel = new \DM_WP_Customize_Panel($wp_customize, $panel_id, $panel);
+                    $devm_panel = new \DEVM_WP_Customize_Panel($wp_customize, $panel_id, $panel);
 
-                    $wp_customize->add_panel($dm_panel);
+                    $wp_customize->add_panel($devm_panel);
 //                    $wp_customize->add_panel( $panel_id, $panel );
                 });
 
@@ -559,10 +559,10 @@ class Customizer
                     $section_id = $section['id'];
                     unset($section['id']);
 
-                    $dm_section = new \DM_WP_Customize_Section($wp_customize, $section_id, $section);
+                    $devm_section = new \DEVM_WP_Customize_Section($wp_customize, $section_id, $section);
 
 
-                    $wp_customize->add_section($dm_section);
+                    $wp_customize->add_section($devm_section);
 //                    $wp_customize->add_section($section_id, $section);
 
                 });
@@ -616,11 +616,11 @@ class Customizer
      */
     public function load_scripts()
     {
-        wp_enqueue_style('devmonsta-controls-style', DM_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_style('customizer-nested-section-css', DM_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css');
-        wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-        wp_enqueue_script('dm-vue', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
-        wp_enqueue_script('customizer-script', DM_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true);
-        wp_enqueue_script('customizer-nested-section-js',DM_PATH . 'core/options/customizer/libs/assets/js/customizer-nested-panel.js',[],null,true);
+        wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_style('customizer-nested-section-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css');
+        wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('devm-vue', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_script('customizer-script', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true);
+        wp_enqueue_script('customizer-nested-section-js',DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/customizer-nested-panel.js',[],null,true);
     }
 }

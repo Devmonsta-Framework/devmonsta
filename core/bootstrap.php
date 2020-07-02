@@ -19,7 +19,7 @@ final class Bootstrap
 
     public function init()
     {
-        define('DM', true);
+        define('DEVM', true);
 
         //Make all the helper functions available
         $helper_files = [

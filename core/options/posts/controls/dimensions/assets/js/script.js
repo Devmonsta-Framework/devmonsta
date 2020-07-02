@@ -1,11 +1,11 @@
 jQuery(window).on('dimensions.dm', function(){
-    Vue.component('dm-dimensions', {
+    Vue.component('devm-dimensions', {
         props: ["dimension", "linkedName", "name"],
         template: `
-            <ul class="dm-option-dimensions">
+            <ul class="devm-option-dimensions">
                 <slot></slot>
                 <li>
-                    <button @click.prevent="linkedDimensions" class="dm-option-input dm-dimension-btn" :class="{active: isDimension}"><span class="dashicons dashicons-admin-links"></span></button>
+                    <button @click.prevent="linkedDimensions" class="devm-option-input devm-dimension-btn" :class="{active: isDimension}"><span class="dashicons dashicons-admin-links"></span></button>
                     <input type="hidden" :name="linkedName" v-model="isDimension" />
                     <input v-if="name" type="hidden" v-model="message" :data-customize-setting-link="name"  />
                     <label>&nbsp;</label>
@@ -49,11 +49,11 @@ jQuery(window).on('dimensions.dm', function(){
         }
     });
     
-    Vue.component('dm-dimensions-item', {
+    Vue.component('devm-dimensions-item', {
         props: ["name", "value", "label"],
         template: `
             <li>
-                <input class="dm-option-input dm-dimension-number-input input-top" type="number" :name="name" v-model="inputValue" min="0"/>
+                <input class="devm-option-input devm-dimension-number-input input-top" type="number" :name="name" v-model="inputValue" min="0"/>
                 <label>{{label}}</label>
             </li>
         `,

@@ -1,20 +1,20 @@
 
-.dm-select-icon {
+.devm-select-icon {
     display: inline-flex;
     align-items: center;
 }
-.dm-add-icon-btn{
+.devm-add-icon-btn{
     cursor: pointer;
 }
-.dm-list-icon {
+.devm-list-icon {
     height: 465px;
     overflow: auto;
 }
-.dm-list-icon ul {
+.devm-list-icon ul {
     display: flex;
     flex-wrap: wrap;
 }
-.dm-list-icon ul li {
+.devm-list-icon ul li {
     margin: 0;
     flex: 0 0 68px;
     height: 65px;
@@ -26,17 +26,17 @@
     justify-content: center;
     align-items: center;
 }
-.dm-list-icon ul li span {
+.devm-list-icon ul li span {
     color: #6a737b;
     font-size: 22px;
 }
-.dm-list-icon ul li:hover {
+.devm-list-icon ul li:hover {
     box-shadow: inset 0px 0px 0px 3px #d2d7dc;
 }
-.dm-list-icon ul li.active {
+.devm-list-icon ul li.active {
     box-shadow: inset 0px 0px 0px 3px #00aadc;
 }
-.dm-icon-modal-container {
+.devm-icon-modal-container {
     position: fixed;
     z-index: 999;
     width: 100%;
@@ -46,7 +46,7 @@
     transition: all .4s;
     
 }
-.dm-icon-modal-container:before{
+.devm-icon-modal-container:before{
     content: "";
     background-color: #000;
     opacity: .7;
@@ -56,7 +56,7 @@
     left: 0;
     top: 0;
 }
-.dm-icon-modal-data {
+.devm-icon-modal-data {
     background-color: #fff;
     width: 840px;
     max-width: 100%;
@@ -66,16 +66,16 @@
     transform: translate(-50%, -50%);
     box-shadow: 0 5px 15px rgba(0,0,0,.7);
 }
-.dm-icon-modal-header {
+.devm-icon-modal-header {
     padding: 20px 10px 0 10px;
     background-color: #fcfcfc;
 }
-.dm-icon-modal-header ul {
+.devm-icon-modal-header ul {
     margin:  0;
     padding: 0;
     list-style: none;
 }
-.dm-icon-modal-header ul li{
+.devm-icon-modal-header ul li{
     padding: 6px 12px;
     font-weight: 600;
     font-size: 15px;
@@ -90,12 +90,12 @@
     display: inline-block;
     opacity: 0;
 }
-.dm-icon-modal-header ul li.active{
+.devm-icon-modal-header ul li.active{
     color: #222;
     background: 0 0;
     border-bottom-color: #f1f1f1;
 }
-.dm-icon-modal-selection {
+.devm-icon-modal-selection {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -105,18 +105,18 @@
     border-bottom: 1px solid #e5e5e5;
     box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.02);
 }
-.dm-icon-modal-selection .dm-icon-search,
-.dm-icon-modal-selection .dm-icon-type {
+.devm-icon-modal-selection .devm-icon-search,
+.devm-icon-modal-selection .devm-icon-type {
     flex: 0 0 48%;
 }
-.dm-icon-modal-footer {
+.devm-icon-modal-footer {
     border-top: 1px solid #ddd;
     text-align: right;
     margin-right: auto;
     background-color: #FCFCFC;
     padding: 20px;
 }
-.dm-icon-modal-close {
+.devm-icon-modal-close {
     position: absolute;
     top: 0;
     right: 0;
@@ -134,7 +134,7 @@
     text-align: center;
     line-height: 50px;
 }
-.dm-icon-modal-close:hover{
+.devm-icon-modal-close:hover{
     color: #00a0d2
 }
 .fade-enter-active, .fade-leave-active {
@@ -143,7 +143,7 @@
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
 }
-.dm-placeholder-icons{
+.devm-placeholder-icons{
     opacity: 0;
     position: absolute;
     left: -9999999px;
@@ -151,7 +151,7 @@
     user-select: none;
 }
 
-.dm-icon-box{
+.devm-icon-box{
     position: relative;
     margin-right: 25px;
 }
@@ -169,32 +169,32 @@
     width: 55px;
     cursor: pointer;
 }
-.dm-icon-box:hover .dm-close-icon{
+.devm-icon-box:hover .devm-close-icon{
     opacity: 1;
 }
-.dm-close-icon i {
+.devm-close-icon i {
     font-size: 10px;
     transition: all .4s;
 }
-.dm-close-icon i:hover{
+.devm-close-icon i:hover{
     color: #CC0000;
 }
 .iconBox-inner.has-icon{
     background-image: url("../images/transparent_bg.png");
     background-size: 10px;
 }
-.iconBox-inner .dm-icon{
+.iconBox-inner .devm-icon{
     color: #7a7a7a;
     background-repeat: no-repeat;
     line-height: 1em;
     margin: 0;
 }
-.iconBox-inner.has-icon .dm-icon{
+.iconBox-inner.has-icon .devm-icon{
     font-size: 40px;
     width: auto;
     height: auto;
 }
-.dm-close-icon{
+.devm-close-icon{
     position: absolute;
     opacity: 0;
     width: 12px;

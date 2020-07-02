@@ -17,7 +17,7 @@ class Hidden extends Structure {
 
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -57,9 +57,9 @@ class Hidden extends Structure {
 
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column right">
-                <input type="hidden" <?php $this->link();?> value="<?php echo esc_html( $this->value() ); ?>" class="dm-ctrl">
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column right">
+                <input type="hidden" <?php $this->link();?> value="<?php echo esc_html( $this->value() ); ?>" class="devm-ctrl">
               
             </div>
         </li>
