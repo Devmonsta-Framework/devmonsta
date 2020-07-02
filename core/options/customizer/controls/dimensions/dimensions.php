@@ -30,7 +30,7 @@ class Dimensions extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style('element-ui', 'https://unpkg.com/element-ui/lib/theme-chalk/index.css', [], null, '');
+        wp_enqueue_style('element-ui', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/css/unpkg.css', [], null, '');
         wp_enqueue_script( 'devm-dimensions-components', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     }
 
