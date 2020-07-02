@@ -10,21 +10,18 @@ use Devmonsta\Libs\Customizer as LibsCustomizer;
  *
  * @package Devmonsta\Options\Customizer
  */
-
 class Controls extends Customizer {
 
-    public function get_controls(){
-
+    public function get_controls()
+    {
         $customizer_file = $this->get_customizer_file();
 
         /**
          * Check if the customizer file exists
          */
-
-        if (file_exists($customizer_file)) {
-
+        if (file_exists($customizer_file))
+        {
             require_once $customizer_file;
-
             $childrens = [];
 
             /**
@@ -34,8 +31,8 @@ class Controls extends Customizer {
              *================================================
              */
 
-            foreach (get_declared_classes() as $class) {
-
+            foreach (get_declared_classes() as $class)
+            {
                 if (is_subclass_of($class, 'Devmonsta\Libs\Customizer')) {
 
                     /** Store all control class to @var array $childrens */
@@ -47,8 +44,8 @@ class Controls extends Customizer {
 
             $customizer = new LibsCustomizer;
 
-            foreach ($childrens as $child_class) {
-
+            foreach ($childrens as $child_class)
+            {
                 $control = new $child_class;
 
                 if (method_exists($control, 'register_controls')) {
@@ -56,12 +53,7 @@ class Controls extends Customizer {
                 }
 
             }
-
             return $customizer->all_controls();
-
         }
     }
-
-
-
 }

@@ -21,8 +21,8 @@ class Customizer {
      * @since   1.0.0
      * ==========================================
      */
-    public function init() {
-
+    public function init()
+    {
         if ( !$this->check_requirements() ) {
             return;
         }
@@ -32,24 +32,20 @@ class Customizer {
         /**
          * Add styles and scripts
          */
-
         add_action( 'customize_preview_init', [$this, 'scripts_and_styles'] );
 
         /**
          * Get Customizer file from the
          * current active theme
          */
-
         $customizer_file = $this->get_customizer_file();
 
         /**
          * Check if the customizer file exists
          */
-
-        if ( file_exists( $customizer_file ) ) {
-
+        if ( file_exists( $customizer_file ) )
+        {
             require_once $customizer_file;
-
             $childrens = [];
 
             /**
@@ -59,12 +55,11 @@ class Customizer {
              *================================================
              */
 
-            foreach ( get_declared_classes() as $class ) {
-
+            foreach ( get_declared_classes() as $class )
+            {
                 if ( is_subclass_of( $class, 'Devmonsta\Libs\Customizer' ) ) {
 
                     /** Store all control class to @var array $childrens */
-
                     $childrens[] = $class;
                 }
 
@@ -72,11 +67,12 @@ class Customizer {
 
             $customizer = new LibsCustomizer;
 
-            foreach ( $childrens as $child_class ) {
-
+            foreach ( $childrens as $child_class )
+            {
                 $control = new $child_class;
 
-                if ( method_exists( $control, 'register_controls' ) ) {
+                if ( method_exists( $control, 'register_controls' ) )
+                {
                     $control->register_controls();
                 }
 
@@ -85,56 +81,46 @@ class Customizer {
             /**
              * Get all panels defined in the theme
              */
-
             $all_panels = $customizer->all_panels();
 
             /**
              * Get all sections defined in the theme
              */
-
             $all_sections = $customizer->all_sections();
 
             /**
              * Get all controls defined in the theme
              */
-
             $all_controls = $customizer->all_controls();
 
             /**
              * Get all settings for the customizer defined in theme
              */
-
             $all_settings = $customizer->all_settings();
 
             /**
              * Get all tabs and the controls of the tabs
              */
-
             $all_tabs = $customizer->all_tabs();
 
             /**
              * Build the panel , sections and controls
              */
-
             $this->build_panels( $all_panels );
             $this->build_sections( $all_sections );
             $this->build_controls( $all_controls );
             $this->build_tabs( $all_tabs );
-
         }
-
     }
 
-    public function check_requirements() {
+    public function check_requirements()
+    {
         global $wp_customize;
-
         if ( isset( $wp_customize ) ) {
             // do stuff
             return true;
         }
-
         return false;
-
     }
 
     /**
@@ -146,8 +132,8 @@ class Customizer {
      * @return  string
      * ======================================
      */
-
-    public function get_customizer_file() {
+    public function get_customizer_file()
+    {
         /**
          * Return the customizer file
          *
@@ -164,7 +150,6 @@ class Customizer {
      * @return  void
      *=================================
      */
-
     public function build_controls( $args ) {
 
         /**
@@ -175,17 +160,16 @@ class Customizer {
          * =====================================================
          */
 
-        if ( !empty( $args ) ) {
-
-            foreach ( $args as $control ) {
-
-                if ( isset( $control['type'] ) ) {
+        if ( !empty( $args ) )
+        {
+            foreach ( $args as $control )
+            {
+                if ( isset( $control['type'] ) )
+                {
                     $type = $control['type'];
-
                     if ( $type == 'repeater' ) {
 
                         // Repeater code goes here
-
                         $this->build_repeater_control( $type, $control );
 
                     } elseif ( $type == 'addable-popup' ) {
@@ -195,7 +179,6 @@ class Customizer {
                     } else {
 
                         /** If control type is default */
-
                         $this->build_control( $type, $control );
 
                     }
@@ -208,18 +191,15 @@ class Customizer {
 
     }
 
-    public function build_tabs( $all_tabs ) {
-
-        if ( is_array( $all_tabs ) ) {
-
-            foreach ( $all_tabs as $tab ) {
-
+    public function build_tabs( $all_tabs )
+    {
+        if ( is_array( $all_tabs ) )
+        {
+            foreach ( $all_tabs as $tab )
+            {
                 $this->tab_content( $tab );
-
             }
-
         }
-
     }
 
     public function tab_content( $tab ) {
@@ -236,10 +216,10 @@ class Customizer {
      * @return  void
      *=================================
      */
-    public function build_control( $type, $control ) {
-
-        if ( in_array( $type, $this->default_controls ) ) {
-
+    public function build_control( $type, $control )
+    {
+        if ( in_array( $type, $this->default_controls ) )
+        {
             /**
              * Add Defaults controls to the customizer.
              * Defaults controls list defined on @default_controls
@@ -287,7 +267,6 @@ class Customizer {
             /**
              * Build custom controls
              */
-
             $this->build_custom_control( $type, $control );
 
         }
@@ -304,20 +283,20 @@ class Customizer {
      * ===============================
      *
      */
-
-    public function build_repeater_control( $type, $control ) {
+    public function build_repeater_control( $type, $control )
+    {
 
         add_action( 'customize_register', function ( $wp_customize ) use ( $control, $type ) {
             require_once __DIR__ . '/libs/customize-repeater-control.php';
 
-            $wp_customize->register_control_type( 'Theme_Customize_Repeater_Control' );
+            $wp_customize->register_control_type( 'DEVM_Theme_Customize_Repeater_Control' );
 
             $fields = $control['fields'];
 
             $field_controls = [];
 
-            foreach ( $fields as $field ) {
-
+            foreach ( $fields as $field )
+            {
                 if ( in_array( $field['type'], $this->default_controls ) ) {
 
                     array_push( $field_controls, [
@@ -358,11 +337,11 @@ class Customizer {
 
             }
 
-            $wp_customize->add_setting( $control['id'], [
+            $wp_customize->add_setting( $control['id'] , [
                 'default' => '',
             ] );
 
-            $wp_customize->add_control( new \Theme_Customize_Repeater_Control( $wp_customize, $control['id'], [
+            $wp_customize->add_control( new \DEVM_Theme_Customize_Repeater_Control( $wp_customize, $control['id'], [
                 'label'           => esc_html__( $control['label'], 'devmonsta' ),
                 'description_a'   => 'This is description',
                 'section'         => $control['section'],
@@ -379,7 +358,7 @@ class Customizer {
         add_action( 'customize_register', function ( $wp_customize ) use ( $control, $type ) {
             require_once __DIR__ . '/libs/customize-repeater-control-popup.php';
 
-            $wp_customize->register_control_type( 'Theme_Customize_Repeater_Popup_Control' );
+            $wp_customize->register_control_type( 'DEVM_Theme_Customize_Repeater_Popup_Control' );
 
             $fields = $control['fields'];
 
@@ -428,7 +407,7 @@ class Customizer {
                 'default' => '',
             ] );
 
-            $wp_customize->add_control( new \Theme_Customize_Repeater_Popup_Control( $wp_customize, $control['id'], [
+            $wp_customize->add_control( new \DEVM_Theme_Customize_Repeater_Popup_Control( $wp_customize, $control['id'], [
 
                 'label'           => esc_html__( $control['label'], 'devmonsta' ),
                 'description_a'   => 'This is description',
