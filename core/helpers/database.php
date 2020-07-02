@@ -95,7 +95,7 @@ class DEVM_Db_Options_Model_Post extends DEVM_Db_Options_Model {
             $post_type !== 'devm-slider',
             $post_type
         ) ) {
-            return dm()->theme->get_post_options( $post_type );
+            return devm()->theme->get_post_options( $post_type );
         } else {
             return [];
         }
@@ -129,7 +129,7 @@ class DEVM_Db_Options_Model_Post extends DEVM_Db_Options_Model {
         /**
          * @deprecated
          */
-        dm()->backend->_sync_post_separate_meta( $post_id );
+        devm()->backend->_sync_post_separate_meta( $post_id );
 
         /**
          * @since 2.2.8
@@ -186,7 +186,7 @@ class DEVM_Db_Options_Model_Post extends DEVM_Db_Options_Model {
 
 // Term Options
 class DEVM_Db_Options_Model_Term extends DEVM_Db_Options_Model {
-    
+
     protected function get_id() {
         return 'term';
     }
@@ -204,7 +204,7 @@ class DEVM_Db_Options_Model_Term extends DEVM_Db_Options_Model {
     }
 
     protected function get_options( $item_id, array $extra_data = [] ) {
-        return dm()->theme->get_taxonomy_options( $extra_data['taxonomy'] );
+        return devm()->theme->get_taxonomy_options( $extra_data['taxonomy'] );
     }
 
     protected function get_devm_storage_params( $item_id, array $extra_data = [] ) {
@@ -388,8 +388,8 @@ class DEVM_Db_Options_Model_Term extends DEVM_Db_Options_Model {
     }
 
 }
-new DEVM_Db_Options_Model_Term();
 
+new DEVM_Db_Options_Model_Term();
 
 // Customizer Options
 class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
@@ -406,7 +406,7 @@ class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
     }
 
     protected function get_options( $item_id, array $extra_data = [] ) {
-        return dm()->theme->get_customizer_options();
+        return devm()->theme->get_customizer_options();
     }
 
     protected function get_devm_storage_params( $item_id, array $extra_data = [] ) {
@@ -444,7 +444,7 @@ class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
      * @internal
      */
     public function reset_cache_protected() {
-        Dm_Cache::del( $this->get_main_cache_key() );
+        Devm_Cache::del( $this->get_main_cache_key() );
     }
 
     protected function _init() {
@@ -476,4 +476,5 @@ class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
     }
 
 }
+
 new DEVM_Db_Options_Model_Customizer();

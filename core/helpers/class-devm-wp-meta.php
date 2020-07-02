@@ -34,7 +34,7 @@ class DEVM_WP_Meta {
 	
 	public static function get( $meta_type, $object_id, $multi_key, $default_value = null, $get_original_value = null ) {
 		if ( ! is_null($get_original_value) ) {
-			_doing_it_wrong(__FUNCTION__, '$get_original_value parameter was removed', 'DM 2.5.8');
+			_doing_it_wrong(__FUNCTION__, '$get_original_value parameter was removed', 'DEVM 2.5.8');
 		}
 
 		if ( empty( $multi_key ) ) {

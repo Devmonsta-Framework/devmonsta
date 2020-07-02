@@ -1,10 +1,11 @@
 <?php
+
 if ( !defined( 'DEVM' ) ) {
     die( 'Forbidden' );
 }
 
-if ( !class_exists( 'Dm_Resize' ) ) {
-    class Dm_Resize {
+if ( !class_exists( 'Devm_Resize' ) ) {
+    class Devm_Resize {
         /**
          * The singleton instance
          */
@@ -53,7 +54,7 @@ if ( !class_exists( 'Dm_Resize' ) ) {
                 return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE ID=%d LIMIT 1", $attachment ), ARRAY_A );
             } else {
 
-                $attachment = str_replace( [ 'http:', 'https:' ], '', $attachment );
+                $attachment = str_replace( ['http:', 'https:'], '', $attachment );
 
                 return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE guid LIKE %s LIMIT 1", '%' . $wpdb->esc_like( $attachment ) ), ARRAY_A );
             }
