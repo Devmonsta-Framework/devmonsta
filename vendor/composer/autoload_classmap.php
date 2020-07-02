@@ -6,8 +6,10 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'DM_WP_Customize_Panel' => $baseDir . '/core/options/customizer/libs/sections.php',
-    'DM_WP_Customize_Section' => $baseDir . '/core/options/customizer/libs/sections.php',
+    'DEVM_Theme_Customize_Repeater_Control' => $baseDir . '/core/options/customizer/libs/customize-repeater-control.php',
+    'DEVM_Theme_Customize_Repeater_Popup_Control' => $baseDir . '/core/options/customizer/libs/customize-repeater-control-popup.php',
+    'DEVM_WP_Customize_Panel' => $baseDir . '/core/options/customizer/libs/sections.php',
+    'DEVM_WP_Customize_Section' => $baseDir . '/core/options/customizer/libs/sections.php',
     'Devmonsta\\Bootstrap' => $baseDir . '/core/bootstrap.php',
     'Devmonsta\\Libs\\Customizer' => $baseDir . '/core/libs/customizer.php',
     'Devmonsta\\Libs\\Posts' => $baseDir . '/core/libs/posts.php',
@@ -24,6 +26,4 @@ return array(
     'Devmonsta\\Options\\Taxonomies\\Taxonomies' => $baseDir . '/core/options/taxonomies/taxonomies.php',
     'Devmonsta\\Rest' => $baseDir . '/core/rest.php',
     'Devmonsta\\Traits\\Singleton' => $baseDir . '/core/traits/singleton.php',
-    'Theme_Customize_Repeater_Control' => $baseDir . '/core/options/customizer/libs/customize-repeater-control.php',
-    'Theme_Customize_Repeater_Popup_Control' => $baseDir . '/core/options/customizer/libs/customize-repeater-control-popup.php',
 );
