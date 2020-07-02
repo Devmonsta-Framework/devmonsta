@@ -9,7 +9,7 @@ if (!class_exists('WP_Customize_Control')) {
     return;
 }
 
-class Theme_Customize_Repeater_Control extends WP_Customize_Control
+class DEVM_Theme_Customize_Repeater_Control extends WP_Customize_Control
 {
     /*
      ** Field that is used as the repeater label
