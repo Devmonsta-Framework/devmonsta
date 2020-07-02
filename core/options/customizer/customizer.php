@@ -7,8 +7,7 @@ use Devmonsta\Libs\Customizer as LibsCustomizer;
 use Devmonsta\Options\Customizer\Panel;
 use Devmonsta\Traits\Singleton;
 
-class Customizer
-{
+class Customizer {
 
     use Singleton;
 
@@ -22,20 +21,19 @@ class Customizer
      * @since   1.0.0
      * ==========================================
      */
-    public function init()
-    {
+    public function init() {
 
-        if (!$this->check_requirements()) {
+        if ( !$this->check_requirements() ) {
             return;
         }
 
-        add_action('customize_controls_enqueue_scripts', [$this, 'load_scripts']);
+        add_action( 'customize_controls_enqueue_scripts', [$this, 'load_scripts'] );
 
         /**
          * Add styles and scripts
          */
 
-        add_action('customize_preview_init', [$this, 'scripts_and_styles']);
+        add_action( 'customize_preview_init', [$this, 'scripts_and_styles'] );
 
         /**
          * Get Customizer file from the
@@ -48,7 +46,7 @@ class Customizer
          * Check if the customizer file exists
          */
 
-        if (file_exists($customizer_file)) {
+        if ( file_exists( $customizer_file ) ) {
 
             require_once $customizer_file;
 
@@ -61,9 +59,9 @@ class Customizer
              *================================================
              */
 
-            foreach (get_declared_classes() as $class) {
+            foreach ( get_declared_classes() as $class ) {
 
-                if (is_subclass_of($class, 'Devmonsta\Libs\Customizer')) {
+                if ( is_subclass_of( $class, 'Devmonsta\Libs\Customizer' ) ) {
 
                     /** Store all control class to @var array $childrens */
 
@@ -74,11 +72,11 @@ class Customizer
 
             $customizer = new LibsCustomizer;
 
-            foreach ($childrens as $child_class) {
+            foreach ( $childrens as $child_class ) {
 
                 $control = new $child_class;
 
-                if (method_exists($control, 'register_controls')) {
+                if ( method_exists( $control, 'register_controls' ) ) {
                     $control->register_controls();
                 }
 
@@ -118,20 +116,19 @@ class Customizer
              * Build the panel , sections and controls
              */
 
-            $this->build_panels($all_panels);
-            $this->build_sections($all_sections);
-            $this->build_controls($all_controls);
-            $this->build_tabs($all_tabs);
+            $this->build_panels( $all_panels );
+            $this->build_sections( $all_sections );
+            $this->build_controls( $all_controls );
+            $this->build_tabs( $all_tabs );
 
         }
 
     }
 
-    public function check_requirements()
-    {
+    public function check_requirements() {
         global $wp_customize;
 
-        if (isset($wp_customize)) {
+        if ( isset( $wp_customize ) ) {
             // do stuff
             return true;
         }
@@ -150,8 +147,7 @@ class Customizer
      * ======================================
      */
 
-    public function get_customizer_file()
-    {
+    public function get_customizer_file() {
         /**
          * Return the customizer file
          *
@@ -169,8 +165,7 @@ class Customizer
      *=================================
      */
 
-    public function build_controls($args)
-    {
+    public function build_controls( $args ) {
 
         /**
          * =====================================================
@@ -180,20 +175,20 @@ class Customizer
          * =====================================================
          */
 
-        if (!empty($args)) {
+        if ( !empty( $args ) ) {
 
-            foreach ($args as $control) {
+            foreach ( $args as $control ) {
 
-                if (isset($control['type'])) {
+                if ( isset( $control['type'] ) ) {
                     $type = $control['type'];
 
-                    if ($type == 'repeater') {
+                    if ( $type == 'repeater' ) {
 
                         // Repeater code goes here
 
-                        $this->build_repeater_control($type, $control);
+                        $this->build_repeater_control( $type, $control );
 
-                    } elseif ($type == 'addable-popup') {
+                    } elseif ( $type == 'addable-popup' ) {
 
                         // $this->build_addable_popup_control($type,$control);
 
@@ -201,7 +196,7 @@ class Customizer
 
                         /** If control type is default */
 
-                        $this->build_control($type, $control);
+                        $this->build_control( $type, $control );
 
                     }
 
@@ -213,14 +208,13 @@ class Customizer
 
     }
 
-    public function build_tabs($all_tabs)
-    {
+    public function build_tabs( $all_tabs ) {
 
-        if (is_array($all_tabs)) {
+        if ( is_array( $all_tabs ) ) {
 
-            foreach ($all_tabs as $tab) {
+            foreach ( $all_tabs as $tab ) {
 
-                $this->tab_content($tab);
+                $this->tab_content( $tab );
 
             }
 
@@ -228,8 +222,7 @@ class Customizer
 
     }
 
-    public function tab_content($tab)
-    {
+    public function tab_content( $tab ) {
 
         // $tab_id = $tab['id'];
 
@@ -243,35 +236,33 @@ class Customizer
      * @return  void
      *=================================
      */
-    public function build_control($type, $control)
-    {
+    public function build_control( $type, $control ) {
 
-        if (in_array($type, $this->default_controls)) {
+        if ( in_array( $type, $this->default_controls ) ) {
 
             /**
              * Add Defaults controls to the customizer.
              * Defaults controls list defined on @default_controls
              */
 
-            add_action('customize_register', function ($wp_customize) use ($control, $type) {
-                $args = $control;
-                $id = $args['id'];
+            add_action( 'customize_register', function ( $wp_customize ) use ( $control, $type ) {
+                $args             = $control;
+                $id               = $args['id'];
                 $args['settings'] = $id;
-                $wp_customize->add_setting($id, [
-                    'default' => isset($args['default']) ? $args['default'] : '',
-                ]);
+                $wp_customize->add_setting( $id, [
+                    'default' => isset( $args['default'] ) ? $args['default'] : '',
+                ] );
 
-                if (isset($args['selector'])) {
-                    $wp_customize->selective_refresh->add_partial($id, [
-                        'selector' => $args['selector'],
-                        'render_callback' => function () use ($args) {
-                            echo get_theme_mod($args['settings']);
+                if ( isset( $args['selector'] ) ) {
+                    $wp_customize->selective_refresh->add_partial( $id, [
+                        'selector'        => $args['selector'],
+                        'render_callback' => function () use ( $args ) {
+                            echo get_theme_mod( $args['settings'] );
                         },
-                    ]);
+                    ] );
                 }
 
-                if ($type == 'media') {
-                    error_log('Media detected');
+                if ( $type == 'media' ) {
                     $wp_customize->add_control(
                         new \WP_Customize_Media_Control(
                             $wp_customize,
@@ -289,8 +280,7 @@ class Customizer
                     );
                 }
 
-
-            });
+            } );
 
         } else {
 
@@ -298,7 +288,7 @@ class Customizer
              * Build custom controls
              */
 
-            $this->build_custom_control($type, $control);
+            $this->build_custom_control( $type, $control );
 
         }
 
@@ -315,52 +305,51 @@ class Customizer
      *
      */
 
-    public function build_repeater_control($type, $control)
-    {
+    public function build_repeater_control( $type, $control ) {
 
-        add_action('customize_register', function ($wp_customize) use ($control, $type) {
+        add_action( 'customize_register', function ( $wp_customize ) use ( $control, $type ) {
             require_once __DIR__ . '/libs/customize-repeater-control.php';
 
-            $wp_customize->register_control_type('Theme_Customize_Repeater_Control');
+            $wp_customize->register_control_type( 'Theme_Customize_Repeater_Control' );
 
             $fields = $control['fields'];
 
             $field_controls = [];
 
-            foreach ($fields as $field) {
+            foreach ( $fields as $field ) {
 
-                if (in_array($field['type'], $this->default_controls)) {
+                if ( in_array( $field['type'], $this->default_controls ) ) {
 
-                    array_push($field_controls, [
-                        'key' => $field['id'],
+                    array_push( $field_controls, [
+                        'key'     => $field['id'],
                         'control' => 'WP_Customize_Control',
-                        'args' => $field,
-                    ]);
+                        'args'    => $field,
+                    ] );
 
                 } else {
 
                     $control_file = __DIR__ . '/controls/' . $field['type'] . '/' . $field['type'] . '.php';
 
-                    if (file_exists($control_file)) {
+                    if ( file_exists( $control_file ) ) {
 
                         require_once $control_file;
 
-                        $class_name = explode('-', $field['type']);
-                        $class_name = array_map('ucfirst', $class_name);
-                        $class_name = implode('', $class_name);
+                        $class_name    = explode( '-', $field['type'] );
+                        $class_name    = array_map( 'ucfirst', $class_name );
+                        $class_name    = implode( '', $class_name );
                         $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
-                        // Register control type 
+                        // Register control type
 
-                        $wp_customize->register_control_type($control_class);
+                        $wp_customize->register_control_type( $control_class );
 
-                        if (class_exists($control_class)) {
+                        if ( class_exists( $control_class ) ) {
 
-                            array_push($field_controls, [
-                                'key' => $field['id'],
+                            array_push( $field_controls, [
+                                'key'     => $field['id'],
                                 'control' => $control_class,
-                                'args' => $field,
-                            ]);
+                                'args'    => $field,
+                            ] );
                         }
 
                     }
@@ -369,66 +358,64 @@ class Customizer
 
             }
 
-
-            $wp_customize->add_setting($control['id'], [
+            $wp_customize->add_setting( $control['id'], [
                 'default' => '',
-            ]);
+            ] );
 
-            $wp_customize->add_control(new \Theme_Customize_Repeater_Control($wp_customize, $control['id'], [
-                'label' =>esc_html__($control['label'], 'devmonsta'),
-                'description_a' => 'This is description',
-                'section' => $control['section'],
-                'fields' => $field_controls,
-                'add_button_text' => isset($control['add_button_text']) ? $control['add_button_text'] : 'Add new Item',
-                'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title',
-            ]));
+            $wp_customize->add_control( new \Theme_Customize_Repeater_Control( $wp_customize, $control['id'], [
+                'label'           => esc_html__( $control['label'], 'devmonsta' ),
+                'description_a'   => 'This is description',
+                'section'         => $control['section'],
+                'fields'          => $field_controls,
+                'add_button_text' => isset( $control['add_button_text'] ) ? $control['add_button_text'] : 'Add new Item',
+                'title_field'     => isset( $control['title_field'] ) ? $control['title_field'] : 'Title',
+            ] ) );
 
-        });
+        } );
     }
 
-    public function build_addable_popup_control($type, $control)
-    {
+    public function build_addable_popup_control( $type, $control ) {
 
-        add_action('customize_register', function ($wp_customize) use ($control, $type) {
+        add_action( 'customize_register', function ( $wp_customize ) use ( $control, $type ) {
             require_once __DIR__ . '/libs/customize-repeater-control-popup.php';
 
-            $wp_customize->register_control_type('Theme_Customize_Repeater_Popup_Control');
+            $wp_customize->register_control_type( 'Theme_Customize_Repeater_Popup_Control' );
 
             $fields = $control['fields'];
 
             $field_controls = [];
 
-            foreach ($fields as $field) {
+            foreach ( $fields as $field ) {
 
-                if (in_array($field['type'], $this->default_controls)) {
-                    array_push($field_controls, [
-                        'key' => $field['id'],
+                if ( in_array( $field['type'], $this->default_controls ) ) {
+                    array_push( $field_controls, [
+                        'key'     => $field['id'],
                         'control' => 'WP_Customize_Control',
-                        'args' => $field,
-                    ]);
+                        'args'    => $field,
+                    ] );
 
                 } else {
 
                     $control_file = __DIR__ . '/controls/' . $field['type'] . '/' . $field['type'] . '.php';
 
-                    if (file_exists($control_file)) {
+                    if ( file_exists( $control_file ) ) {
 
                         require_once $control_file;
 
-                        $class_name = explode('-', $field['type']);
-                        $class_name = array_map('ucfirst', $class_name);
-                        $class_name = implode('', $class_name);
+                        $class_name    = explode( '-', $field['type'] );
+                        $class_name    = array_map( 'ucfirst', $class_name );
+                        $class_name    = implode( '', $class_name );
                         $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
-                        $wp_customize->register_control_type($control_class);
+                        $wp_customize->register_control_type( $control_class );
 
-                        if (class_exists($control_class)) {
+                        if ( class_exists( $control_class ) ) {
 
-                            array_push($field_controls, [
-                                'key' => $field['id'],
+                            array_push( $field_controls, [
+                                'key'     => $field['id'],
                                 'control' => $control_class,
-                                'args' => $field,
-                            ]);
+                                'args'    => $field,
+                            ] );
                         }
 
                     }
@@ -437,23 +424,22 @@ class Customizer
 
             }
 
-
-            $wp_customize->add_setting($control['id'], [
+            $wp_customize->add_setting( $control['id'], [
                 'default' => '',
-            ]);
+            ] );
 
-            $wp_customize->add_control(new \Theme_Customize_Repeater_Popup_Control($wp_customize, $control['id'], [
+            $wp_customize->add_control( new \Theme_Customize_Repeater_Popup_Control( $wp_customize, $control['id'], [
 
-                'label' =>esc_html__($control['label'], 'devmonsta'),
-                'description_a' => 'This is description',
-                'section' => $control['section'],
-                'fields' => $field_controls,
-                'add_button_text' => isset($control['add_button_text']) ? $control['add_button_text'] : 'Add new Item',
-                'title_field' => isset($control['title_field']) ? $control['title_field'] : 'Title',
+                'label'           => esc_html__( $control['label'], 'devmonsta' ),
+                'description_a'   => 'This is description',
+                'section'         => $control['section'],
+                'fields'          => $field_controls,
+                'add_button_text' => isset( $control['add_button_text'] ) ? $control['add_button_text'] : 'Add new Item',
+                'title_field'     => isset( $control['title_field'] ) ? $control['title_field'] : 'Title',
 
-            ]));
+            ] ) );
 
-        });
+        } );
     }
 
     /**
@@ -465,42 +451,41 @@ class Customizer
      * @return  void
      * ==============================
      */
-    public function build_custom_control($type, $control)
-    {
+    public function build_custom_control( $type, $control ) {
 
         $control_file = __DIR__ . '/controls/' . $type . '/' . $type . '.php';
 
-        $class_name = explode('-', $type);
-        $class_name = array_map('ucfirst', $class_name);
-        $class_name = implode('', $class_name);
+        $class_name    = explode( '-', $type );
+        $class_name    = array_map( 'ucfirst', $class_name );
+        $class_name    = implode( '', $class_name );
         $control_class = 'Devmonsta\Options\Customizer\Controls\\' . $class_name . '\\' . $class_name;
 
-        add_action('customize_register', function ($wp_customize) use ($control_file, $control_class, $control) {
+        add_action( 'customize_register', function ( $wp_customize ) use ( $control_file, $control_class, $control ) {
 
-            if (file_exists($control_file)) {
+            if ( file_exists( $control_file ) ) {
 
                 require_once $control_file;
 
-                if (class_exists($control_class)) {
+                if ( class_exists( $control_class ) ) {
 
-                    $wp_customize->add_setting($control['id'], [
+                    $wp_customize->add_setting( $control['id'], [
 
-                        'default' => isset($control['default']) ? $control['default'] : '',
+                        'default' => isset( $control['default'] ) ? $control['default'] : '',
 
-                    ]);
+                    ] );
 
-                    $wp_customize->add_control(new $control_class($wp_customize, $control['id'], [
+                    $wp_customize->add_control( new $control_class( $wp_customize, $control['id'], [
 
                         'section' => $control['section'],
                         $control,
 
-                    ]));
+                    ] ) );
 
                 }
 
             }
 
-        });
+        } );
 
     }
 
@@ -512,24 +497,23 @@ class Customizer
      * @return  void
      * ==================================
      */
-    public function build_panels($panels)
-    {
+    public function build_panels( $panels ) {
 
-        if (!empty($panels)) {
+        if ( !empty( $panels ) ) {
 
             include_once 'libs/sections.php';
 
-            foreach ($panels as $panel) {
+            foreach ( $panels as $panel ) {
 
-                add_action('customize_register', function ($wp_customize) use ($panel) {
+                add_action( 'customize_register', function ( $wp_customize ) use ( $panel ) {
                     $panel_id = $panel['id'];
-                    unset($panel['id']);
+                    unset( $panel['id'] );
 
-                    $devm_panel = new \DEVM_WP_Customize_Panel($wp_customize, $panel_id, $panel);
+                    $devm_panel = new \DEVM_WP_Customize_Panel( $wp_customize, $panel_id, $panel );
 
-                    $wp_customize->add_panel($devm_panel);
-//                    $wp_customize->add_panel( $panel_id, $panel );
-                });
+                    $wp_customize->add_panel( $devm_panel );
+                    //$wp_customize->add_panel( $panel_id, $panel );
+                } );
 
             }
 
@@ -545,27 +529,25 @@ class Customizer
      * @return  void
      * ========================
      */
-    public function build_sections($sections)
-    {
+    public function build_sections( $sections ) {
 
-        if (!empty($sections)) {
+        if ( !empty( $sections ) ) {
 
             include_once 'libs/sections.php';
 
-            foreach ($sections as $section) {
+            foreach ( $sections as $section ) {
 
-                add_action('customize_register', function ($wp_customize) use ($section) {
+                add_action( 'customize_register', function ( $wp_customize ) use ( $section ) {
 
                     $section_id = $section['id'];
-                    unset($section['id']);
+                    unset( $section['id'] );
 
-                    $devm_section = new \DEVM_WP_Customize_Section($wp_customize, $section_id, $section);
+                    $devm_section = new \DEVM_WP_Customize_Section( $wp_customize, $section_id, $section );
 
+                    $wp_customize->add_section( $devm_section );
+                    //$wp_customize->add_section($section_id, $section);
 
-                    $wp_customize->add_section($devm_section);
-//                    $wp_customize->add_section($section_id, $section);
-
-                });
+                } );
 
             }
 
@@ -585,8 +567,7 @@ class Customizer
     protected $default_controls;
     protected $control_file;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->default_controls = [
             'text',
             'checkbox',
@@ -604,9 +585,8 @@ class Customizer
         ];
     }
 
-    public function scripts_and_styles()
-    {
-        wp_enqueue_script('devmonsta-customizer', plugin_dir_url(__FILE__) . 'libs/assets/js/customizer.js', ['customize-preview', 'jquery', 'jquery-ui']);
+    public function scripts_and_styles() {
+        wp_enqueue_script( 'devmonsta-customizer', plugin_dir_url( __FILE__ ) . 'libs/assets/js/customizer.js', ['customize-preview', 'jquery', 'jquery-ui'] );
     }
 
     /**
@@ -614,13 +594,13 @@ class Customizer
      *      Load Styles & Scripts for controls
      * ===========================================
      */
-    public function load_scripts()
-    {
-        wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_style('customizer-nested-section-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css');
-        wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-        wp_enqueue_script('devm-vue', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
-        wp_enqueue_script('customizer-script', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true);
-        wp_enqueue_script('customizer-nested-section-js',DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/customizer-nested-panel.js',[],null,true);
+    public function load_scripts() {
+        wp_enqueue_style( 'devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css' );
+        wp_enqueue_style( 'customizer-nested-section-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css' );
+        wp_enqueue_script( 'vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false );
+        wp_enqueue_script( 'devm-vue', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true );
+        wp_enqueue_script( 'customizer-script', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true );
+        wp_enqueue_script( 'customizer-nested-section-js', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/customizer-nested-panel.js', [], null, true );
     }
+
 }

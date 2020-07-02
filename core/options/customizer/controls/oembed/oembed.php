@@ -57,7 +57,7 @@ class Oembed extends Structure {
         wp_register_script( 'devm-oembed', DEVMONSTA_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
         wp_localize_script( 'devm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
         wp_enqueue_script( 'devm-oembed' );
-        add_action( 'wp_ajax_get_oembed_response', [$this, '_action_get_oembed_response'] );
+        add_action( 'wp_ajax_get_oembed_response', [$this, 'action_get_oembed_response'] );
     }
 
     /**
@@ -74,7 +74,7 @@ class Oembed extends Structure {
      * @internal
      */
     public function render_content() {
-        $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
+        $wrapper_attr['data-nonce']   = wp_create_nonce( 'action_get_oembed_response' );
         $wrapper_attr['data-preview'] = $this->data_preview;
         ?>
         <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
@@ -101,9 +101,9 @@ class Oembed extends Structure {
      *
      * @return void
      */
-    public static function _action_get_oembed_response() {
+    public static function action_get_oembed_response() {
 
-        if ( wp_verify_nonce( \DEVM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
+        if ( wp_verify_nonce( \DEVM_Request::POST( '_nonce' ), 'action_get_oembed_response' ) ) {
     
             require_once DEVMONSTA_DIR . '/core/helpers/class-dm-request.php';
             
