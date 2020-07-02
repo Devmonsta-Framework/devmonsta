@@ -238,7 +238,7 @@ class Posts
                 update_post_meta(
                     $post_id,
                     $key,
-                    $_POST[$key]
+                    sanitize_text_field($_POST[$key])
                 );
             }
         }

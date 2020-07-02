@@ -27,7 +27,7 @@ class Rest
 
     public function devm_get_control()
     {
-        $control = $this->get_control($_POST['type'], $_POST['name']);
+        $control = $this->get_control(sanitize_text_field($_POST['type']), $_POST['name']);
         echo json_encode($control);
         echo $this->get_control_markup(
            $control
