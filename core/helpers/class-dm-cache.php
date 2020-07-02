@@ -44,7 +44,7 @@ class Dm_Cache {
     /**
      * @internal
      */
-    public static function _init() {
+    public static function init_static() {
         self::$not_found_value = new Dm_Cache_Not_Found_Exception();
 
         foreach ( [
@@ -249,4 +249,4 @@ class Dm_Cache {
 
 class Dm_Cache_Not_Found_Exception extends Exception {}
 
-Dm_Cache::_init();
+Dm_Cache::init_static();
