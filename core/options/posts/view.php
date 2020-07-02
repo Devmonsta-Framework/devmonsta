@@ -119,23 +119,23 @@ class View
 
             // add_thickbox();
             ?>
-            <div id="<?php echo $control_data['name']; ?>" class="devm-option form-field ">
+            <div id="<?php echo esc_attr( $control_data['name'] ); ?>" class="devm-option form-field ">
 
                 <div class='devm-option-column left'>
-                    <label class="devm-option-label"><?php echo $control_data['label']; ?> </label>
+                    <label class="devm-option-label"><?php echo esc_html( $control_data['label'] ); ?> </label>
                 </div>
 
 
                 <div class='devm-option-column devm-repeater-column right'>
 
                     <div class="devm-repeater-control devm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_data['name']; ?>" class="devm-repeater-control-action">Control
-                            <button type="button" data-id="<?php echo $control_data['name']; ?>"
+                        <a href="#" data-id="<?php echo esc_attr( $control_data['name'] ); ?>" class="devm-repeater-control-action">Control
+                            <button type="button" data-id="<?php echo esc_attr( $control_data['name'] ); ?>"
                                     class="components-button devm-editor-post-trash is-link"><span
                                         class="dashicons dashicons-dismiss"></span></button>
                         </a>
 
-                        <div class="devm-repeater-inner-controls" id="<?php echo $control_data['name']; ?>">
+                        <div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_data['name'] ); ?>">
                             <div class="devm-repeater-inner-controls-inner">
                                 <div class="devm-repeater-popup-heading">
                                     <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
@@ -155,14 +155,14 @@ class View
                         </div>
                     </div>
 
-                    <div id="devm-repeater-control-list-<?php echo $control_data['name']; ?>"
+                    <div id="devm-repeater-control-list-<?php echo esc_attr( $control_data['name'] ); ?>"
                          class="devm-repeater-control-list">
 
                     </div>
 
 
-                    <a href='' data-id='<?php echo $control_data['name']; ?>'
-                       class='devm-repeater-add-new button'><?php echo $control_data['add_new']; ?></a>
+                    <a href='' data-id='<?php echo esc_attr( $control_data['name'] ); ?>'
+                       class='devm-repeater-add-new button'><?php echo esc_html( $control_data['add_new'] ); ?></a>
                 </div>
             </div>
 
@@ -223,21 +223,21 @@ class View
         ?>
         <div class='devm-option form-field devm-repeater-child'>
             <div class='devm-option-column left'>
-                <label class='devm-option-label'><?php echo $control_content['lable']; ?> </label>
+                <label class='devm-option-label'><?php echo esc_html( $control_content['lable'] ); ?> </label>
             </div>
             <div class='devm-option-column right'>
 
                 <div class='devm-option-column devm-repeater-column right'>
 
                     <div class="devm-repeater-control devm-repeater-sample">
-                        <a href="#" data-id="<?php echo $control_content['name']; ?>"
+                        <a href="#" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
                            class="devm-repeater-control-action">Control
-                            <button type="button" data-id="<?php echo $control_content['name']; ?>"
+                            <button type="button" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
                                     class="components-button devm-editor-post-trash is-link"><span
                                         class="dashicons dashicons-dismiss"></span></button>
                         </a>
 
-                        <div class="devm-repeater-inner-controls" id="<?php echo $control_content['name']; ?>">
+                        <div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_content['name'] ); ?>">
                             <div class="devm-repeater-inner-controls-inner">
                                 <div class="devm-repeater-popup-heading">
                                     <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
@@ -258,7 +258,7 @@ class View
 
                     <div class="devm-repeater-control-list"></div>
 
-                    <a href='' data-id='<?php echo $control_content['name']; ?>' class='devm-repeater-add-new button'>Add
+                    <a href='' data-id='<?php echo esc_attr( $control_content['name'] ); ?>' class='devm-repeater-add-new button'>Add
                         New</a>
                 </div>
             </div>
