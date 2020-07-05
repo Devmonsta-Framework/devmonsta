@@ -22,9 +22,6 @@ class Gradient extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        add_action( 'init', [$this, 'devm_enqueue_gradient_picker'] );
-
     }
 
     /**
@@ -144,8 +141,6 @@ class Gradient extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-        $this->devm_enqueue_gradient_picker();
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -169,6 +164,7 @@ class Gradient extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc  ) {
+        $this->devm_enqueue_gradient_picker();
         ?>
             <div <?php echo devm_render_markup( $default_attributes ); ?> >
                 <div class="devm-option-column left">
