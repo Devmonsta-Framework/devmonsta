@@ -53,6 +53,7 @@ class Devm_Dumper {
             if ( self::$_depth <= $level ) {
                 self::$_output .= 'array(...)';
             } else
+
             if ( empty( $var ) ) {
                 self::$_output .= 'array()';
             } else {
@@ -74,6 +75,7 @@ class Devm_Dumper {
             if (  ( $id = array_search( $var, self::$_objects, true ) ) !== false ) {
                 self::$_output .= get_class( $var ) . '(...)';
             } else
+
             if ( self::$_depth <= $level ) {
                 self::$_output .= get_class( $var ) . '(...)';
             } else {
@@ -85,7 +87,7 @@ class Devm_Dumper {
                 self::$_output .= "$class_name\n" . $spaces . '(';
 
                 foreach ( $keys as $key ) {
-                    $key_display = strtr( trim( $key ), [ "\0" => ':' ] );
+                    $key_display = strtr( trim( $key ), ["\0" => ':'] );
                     self::$_output .= "\n" . $spaces . "    [$key_display] => ";
                     self::$_output .= self::dump_internal( $members[$key], $level + 1 );
                 }
