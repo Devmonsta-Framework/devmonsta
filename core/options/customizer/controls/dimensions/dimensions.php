@@ -55,7 +55,7 @@ class Dimensions extends Structure {
             </div>
             <div class="devm-option-column right devm-vue-app active-script">
                 <devm-dimensions
-                    dimension="<?php echo ( isset( $savedData['isLinked'] ) && true ==$savedData['isLinked'] ) ? "true" : "false"; ?>"  
+                    :dimension="<?php echo ( isset( $savedData['isLinked'] ) && true ==$savedData['isLinked'] ) ? "true" : "false"; ?>"  
                     linked-name="<?php echo esc_attr( $this->name ); ?>[isLinked]"
                     name="<?php echo esc_attr( $this->name ); ?>"
                 >
