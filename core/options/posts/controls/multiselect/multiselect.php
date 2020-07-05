@@ -21,13 +21,19 @@ class Multiselect extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        add_action( 'init', [$this, 'load_multi_select_scripts'] );
+    
+        if ( $this->current_screen == "post" ) {
+            $this->load_multi_select_scripts();
+        } elseif ( $this->current_screen == "taxonomy" ) {
+            add_action( 'init', [$this, 'load_multi_select_scripts'] );
+        }
     }
 
     /**
      * @internal
      */
     public function load_multi_select_scripts() {
+        // devm_print( "multi-select" );
         wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
         wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
         wp_enqueue_script( 'devm-multiselect-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
