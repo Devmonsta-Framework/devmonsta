@@ -164,6 +164,9 @@
         .devm-dimension-btn{
             cursor: pointer;
             transition: all .4s;
+            span{
+                padding-top: 3px;
+            }
             &.active{
                 background-color: #A4AFB7;
                 color: #fff
