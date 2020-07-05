@@ -21,7 +21,12 @@ class Multiselect extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        add_action( 'init', [$this, 'load_multi_select_scripts'] );
+    
+        if ( $this->current_screen == "post" ) {
+            $this->load_multi_select_scripts();
+        } elseif ( $this->current_screen == "taxonomy" ) {
+            add_action( 'init', [$this, 'load_multi_select_scripts'] );
+        }
     }
 
     /**
