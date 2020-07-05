@@ -7,14 +7,14 @@ use Devmonsta\Libs\Posts as LibsPosts;
 class Controls
 {
 
-    public function get_controls()
+    public static function get_controls()
     {
-        if (!empty($this->get_post_files())) {
+        if (!empty(self::get_post_files())) {
 
             /** Include the file and stract the data  */
             $files = [];
 
-            foreach ($this->get_post_files() as $file) {
+            foreach (self::get_post_files() as $file) {
 
                 require_once $file;
                 $files[] = $file;
@@ -51,11 +51,13 @@ class Controls
 
             $all_controls = $post_lib->all_controls();
 
+
+
             return $all_controls;
         }
     }
 
-    private function get_post_files()
+    private static function get_post_files()
     {
         $files = [];
 

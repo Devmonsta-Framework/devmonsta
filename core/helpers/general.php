@@ -1094,9 +1094,8 @@ function devm_available_widgets()
 }
 
 
-function devm_sanitize_data($key,$value)
+function devm_sanitize_data($key, $value)
 {
-   return $value;
     $array_valued_controls = [
         'checkbox-multiple',
         'dimensions',
@@ -1104,7 +1103,7 @@ function devm_sanitize_data($key,$value)
         'icon',
         'multiselect',
         'typography',
-    ]; // These controls value save as array
+    ]; // These controls value save as array and user don't have any scope to input invalid string
 
     $html_valued_controls = [
         'wp-editor',
@@ -1114,40 +1113,47 @@ function devm_sanitize_data($key,$value)
         'email',
     ];
 
-    $control_type = devm_get_metabox_control($key);
 
-    if(in_array($control_type,$array_valued_controls)){
-        return $value;
-    }
 
-    if(in_array($control_type,$html_valued_controls)){
-        return $value;
-    }
+    $control_type = devm_get_post_type($key);
 
-    if(in_array($control_type,$email_valued_controls)){
+    // Sanitize email type controls
+    if (in_array($control_type, $email_valued_controls)) {
         return sanitize_email($value);
     }
 
+    if (in_array($control_type, $array_valued_controls)) {
+        return $value;
+    }
+
+    if (in_array($control_type, $html_valued_controls)) {
+        return $value;
+    }
+
+
+    // Sanitize all controls string except array and HTML control.
     return sanitize_text_field($value);
 
 
-
 }
 
-function devm_get_all_metabox_controls()
+
+function devm_get_all_posteta_controls()
 {
-    return (new Controls())->get_controls();
+    return get_option('devmonsta_all_potmeta_controls');
 }
 
-function devm_get_metabox_control($control_name)
+function devm_get_post_type($control_name)
 {
-    foreach (devm_get_all_metabox_controls() as $control) {
-        if ($control['name'] == $control_name) {
-            return $control;
+    $all_controls = devm_get_all_posteta_controls();
+
+    foreach ($all_controls as $control) {
+        if ( 'devmonsta_' . $control['name'] == $control_name) {
+            return $control['type'];
         }
     }
 
-    return false;
+
 }
 
-//devm_print(devm_get_all_metabox_controls());
+//devm_print(devm_get_post_type('user_url_one'));
