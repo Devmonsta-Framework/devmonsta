@@ -238,7 +238,7 @@ class Posts
                 update_post_meta(
                     $post_id,
                     $key,
-                    sanitize_text_field($_POST[$key])
+                    devm_sanitize_data($key,$_POST[$key])
                 );
             }
         }
