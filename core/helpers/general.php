@@ -1104,8 +1104,25 @@ function devm_available_widgets() {
 
 //demo import file flter
 function devm_import_files() {
-    $demo_data = [];
+    $demo_data = [
+        [
+            'id'                       => '1',
+            'import_title'             => 'Demo (1 - 2)',
+            'import_file_url'          => 'http://demo.themewinter.com/wp/demo-content/privsa/main/privsa-main.xml',
+            'import_desc'              => 'Here goes the description of this demo 1 to 2',
+            'import_preview_image_url' => 'http://demo.themewinter.com/wp/demo-content/privsa/main/screenshot.png',
+            'required_plugin'          => ["elementor", "elementskit-lite", "metform", "privsa-essential"],
+        ],
+        [
+            'id'                       => '2',
+            'import_title'             => 'One Page ',
+            'import_file_url'          => 'http://demo.themewinter.com/wp/demo-content/privsa/onepage/onepage.xml',
+            'import_desc'              => 'Here goes the description of this demo 1 to 2',
+            'import_preview_image_url' => 'http://demo.themewinter.com/wp/demo-content/privsa/onepage/screenshot.png',
+            'required_plugin'          => ["elementor", "elementskit-lite", "metform", "privsa-essential"],
+        ],
+    ];
 
-    $demo_data_array = apply_filters( 'devm:import_demo_files', $demo_data );
+    $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
     return $demo_data_array;
 }
