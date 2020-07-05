@@ -61,10 +61,10 @@ class DEVM_Demo_Importer {
         add_action( 'admin_init', [$this, 'dms_demo_import_script_enqueuer'] );
         // Actions.
         add_action( 'admin_menu', [$this, 'create_import_page'] );
-        add_action( "wp_ajax_dms_import_config", [$this, "dms_import_config"] );
+        add_action( "wp_ajax_devm_import_config", [$this, "devm_import_config"] );
         add_action( "wp_ajax_dms_import_content_before", [$this, "dms_import_content_before"] );
-        add_action( "wp_ajax_dms_import_erase_data", [$this, "dms_import_erase_data"] );
-        add_action( "wp_ajax_dms_import_plugin_install", [$this, "dms_import_plugin_install"] );
+        add_action( "wp_ajax_dms_import_erase_data", [$this, "devm_import_erase_data"] );
+        add_action( "wp_ajax_dms_import_plugin_install", [$this, "devm_import_plugin_install"] );
 
         add_action( "wp_ajax_dms_import_demo", [$this, "dms_import_demo_ajax_call_back"] );
     }
@@ -134,9 +134,9 @@ class DEVM_Demo_Importer {
     private function __wakeup() {
     }
 
-    function dms_import_config() {
+    function devm_import_config() {
 
-        if ( !wp_verify_nonce( $_REQUEST['nonce'], "dms_demo_import_nonce" ) ) {
+        if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Woof Woof Woof" );
         }
 
@@ -156,16 +156,15 @@ class DEVM_Demo_Importer {
                 "delete previous data data two",
                 "delete previous data data three",
             ],
-
         ];
 
         wp_send_json_success( $result_array );
         wp_die();
     }
 
-    function dms_import_erase_data() {
+    function devm_import_erase_data() {
 
-        if ( !wp_verify_nonce( $_REQUEST['nonce'], "dms_demo_import_nonce" ) ) {
+        if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Woof Woof Woof" );
         }
 
@@ -181,8 +180,8 @@ class DEVM_Demo_Importer {
         $delete_selected = $config_data["dms_delete_data"];
 
         if ( $delete_selected == "true" ) {
-            $reset_db_obj = new Dms_Reset_DB();
-            $reset_db_obj->dms_reset_previous_data();
+            $reset_db_obj = new Devm_Reset_DB();
+            $reset_db_obj->devm_reset_previous_data();
 
             $result_array["messages"] = ["Previous data erased"];
         }
@@ -191,9 +190,9 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
-    function dms_import_plugin_install() {
+    function devm_import_plugin_install() {
 
-        if ( !wp_verify_nonce( $_REQUEST['nonce'], "dms_demo_import_nonce" ) ) {
+        if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Woof Woof Woof" );
         }
 
@@ -209,7 +208,7 @@ class DEVM_Demo_Importer {
             "data"     => [],
         ];
 
-        $dms_plugin_obj           = new Dms_Plugin_Backup_Restore();
+        $dms_plugin_obj           = new Devm_Plugin_Backup_Restore();
         $result_message           = $dms_plugin_obj->dms_process_plugins( $required_plugins_array );
         $result_array["messages"] = [$result_message];
 
@@ -220,7 +219,7 @@ class DEVM_Demo_Importer {
     function dms_import_demo_ajax_call_back() {
 
 // nonce check for an extra layer of security, the function will exit if it fails
-        if ( !wp_verify_nonce( $_REQUEST['nonce'], "dms_demo_import_nonce" ) ) {
+        if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Woof Woof Woof" );
         }
 
@@ -303,7 +302,7 @@ class DEVM_Demo_Importer {
 
     function dms_import_content_before() {
 
-        if ( !wp_verify_nonce( $_REQUEST['nonce'], "dms_demo_import_nonce" ) ) {
+        if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Woof Woof Woof" );
         }
 

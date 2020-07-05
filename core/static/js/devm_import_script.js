@@ -17,13 +17,14 @@ jQuery(document).ready(function ($) {
             dataType: "json",
             url: dmsAjax.ajaxurl,
             data: {
-                action: "dms_import_config",
+                action: "devm_import_config",
                 xml_link: xml_link,
                 xml_data: xml_data,
                 nonce: nonce,
                 name: name
             },
             success: function (response) {
+                console.log("success");
                 var config = {
                         ...response.data,
                         required_plugin
