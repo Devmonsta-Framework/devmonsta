@@ -45,6 +45,7 @@ final class Bootstrap {
 
         //include file to backup data
         require dirname( __FILE__ ) . '/backup/export.php';
+        require dirname( __FILE__ ) . '/backup/demo-importer.php';
     }
 
 }

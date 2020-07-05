@@ -66,6 +66,7 @@ function devm_print( $value ) {
         echo '</pre></div>';
     } else {
         echo '<div class="devm_print_r_group">';
+
         foreach ( func_get_args() as $param ) {
             devm_print( $param );
         }
@@ -88,8 +89,6 @@ function devm_htmlspecialchars( $string ) {
     return htmlspecialchars( $string, ENT_QUOTES, 'UTF-8' );
 }
 
-
-
 /**
  * Recursively find a key's value in array
  *
@@ -102,6 +101,7 @@ function devm_htmlspecialchars( $string ) {
  * @since 1.0.0
  */
 function devm_array_key_get( $keys, $array_or_object, $default_value = null, $keys_delimiter = '/' ) {
+
     if ( !is_array( $keys ) ) {
         $keys = explode( $keys_delimiter, (string) $keys );
     }
@@ -109,6 +109,7 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
     $array_or_object = devm_call( $array_or_object );
 
     $key_or_property = array_shift( $keys );
+
     if ( $key_or_property === null ) {
         return devm_call( $default_value );
     }
@@ -116,11 +117,13 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
     $is_object = is_object( $array_or_object );
 
     if ( $is_object ) {
+
         if ( !property_exists( $array_or_object, $key_or_property ) ) {
             return devm_call( $default_value );
         }
 
     } else {
+
         if ( !is_array( $array_or_object ) || !array_key_exists( $key_or_property, $array_or_object ) ) {
             return devm_call( $default_value );
         }
@@ -129,7 +132,7 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             return devm_array_key_get( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
@@ -147,7 +150,6 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
 
 }
 
-
 /**
  * Alias for devm_print
  *
@@ -160,7 +162,6 @@ if ( !function_exists( 'debug' ) ) {
     }
 
 }
-
 
 /**
  * Set (or create if not exists) value for specified key in some array level
@@ -231,7 +232,7 @@ function devm_array_key_set( $keys, $value, &$array_or_object, $keys_delimiter =
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_set( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
@@ -286,7 +287,7 @@ function devm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' )
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_unset( $keys, $array_or_object->{$key_or_property} );
         } else {
@@ -451,6 +452,46 @@ function devm_get_framework_directory( $rel_path = '' ) {
     }
 
     return $dir . $rel_path;
+}
+
+/**
+ * dms_get_path_url( dirname(__FILE__) .'/test.css' ) --> http://site.url/path/to/test.css
+ *
+ * @param string $path
+ *
+ * @return string|null
+ * @since 2.6.11
+ */
+function devm_get_path_url( $path ) {
+    try {
+        $paths_to_urls = DEVM_Cache::get( $cache_key = 'devm:paths_to_urls' );
+    } catch ( DEVM_Cache_Not_Found_Exception $e ) {
+        $wp_upload_dir = wp_upload_dir();
+
+        $paths_to_urls = [
+            devm_fix_path( WP_PLUGIN_DIR )             => plugins_url(),
+            devm_fix_path( get_theme_root() )          => get_theme_root_uri(),
+            devm_fix_path( $wp_upload_dir['basedir'] ) => $wp_upload_dir['baseurl'],
+        ];
+
+        if ( is_multisite() && WPMU_PLUGIN_DIR ) {
+            $paths_to_urls[devm_fix_path( WPMU_PLUGIN_DIR )] = WPMU_PLUGIN_URL;
+        }
+
+        DEVM_Cache::set( $cache_key, $paths_to_urls );
+    }
+
+    $path = devm_fix_path( $path );
+
+    foreach ( $paths_to_urls as $_path => $_url ) {
+
+        if ( preg_match( $regex = '/^' . preg_quote( $_path, '/' ) . '($|\/)/', $path ) ) {
+            return $_url . '/' . preg_replace( $regex, '', $path );
+        }
+
+    }
+
+    return null;
 }
 
 /**
@@ -788,8 +829,6 @@ function devm_post_img_alt( $image_id ) {
 
 }
 
-
-
 /**
  * @param string|array $callback Callback function
  * @param array $args Callback arguments
@@ -839,6 +878,7 @@ function devm_attr_to_html( array $attr_array ) {
     $html_attr = '';
 
     foreach ( $attr_array as $attr_name => $attr_val ) {
+
         if ( $attr_val === false ) {
             continue;
         }
@@ -854,13 +894,16 @@ function devm_attr_to_html( array $attr_array ) {
  */
 function devm_stripslashes_deep_keys( $value ) {
     static $magic_quotes = null;
+
     if ( $magic_quotes === null ) {
         $magic_quotes = get_magic_quotes_gpc();
     }
 
     if ( is_array( $value ) ) {
+
         if ( $magic_quotes ) {
             $new_value = [];
+
             foreach ( $value as $key => $val ) {
                 $new_value[is_string( $key ) ? stripslashes( $key ) : $key] = devm_stripslashes_deep_keys( $val );
             }
@@ -873,6 +916,7 @@ function devm_stripslashes_deep_keys( $value ) {
 
     } elseif ( is_object( $value ) ) {
         $vars = get_object_vars( $value );
+
         foreach ( $vars as $key => $data ) {
             $value->{$key}
 
@@ -983,24 +1027,27 @@ function devm_widgets_export() {
     $available_widgets = devm_available_widgets();
     $widget_instances  = [];
 
-    // Loop widgets.
+// Loop widgets.
     foreach ( $available_widgets as $widget_data ) {
         // Get all instances for this ID base.
         $instances = get_option( 'widget_' . $widget_data['id_base'] );
 
-            // Have instances.
+// Have instances.
         if ( !empty( $instances ) ) {
 
-            // Loop instances.
+// Loop instances.
             foreach ( $instances as $instance_id => $instance_data ) {
 
-                // Key is ID (not _multiwidget).
+// Key is ID (not _multiwidget).
                 if ( is_numeric( $instance_id ) ) {
                     $unique_instance_id                    = $widget_data['id_base'] . '-' . $instance_id;
                     $widget_instances[$unique_instance_id] = $instance_data;
                 }
+
             }
+
         }
+
     }
 
     // Gather sidebars with their widget instances.
@@ -1009,7 +1056,7 @@ function devm_widgets_export() {
 
     foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
 
-        // Skip inactive widgets.
+// Skip inactive widgets.
         if ( 'wp_inactive_widgets' === $sidebar_id ) {
             continue;
         }
@@ -1044,7 +1091,7 @@ function devm_available_widgets() {
 
     foreach ( $widget_controls as $widget ) {
 
-        // No duplicates.
+// No duplicates.
         if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name']    = $widget['name'];
@@ -1053,4 +1100,12 @@ function devm_available_widgets() {
     }
 
     return $available_widgets;
+}
+
+//demo import file flter
+function devm_import_files() {
+    $demo_data = [];
+
+    $demo_data_array = apply_filters( 'devm:import_demo_files', $demo_data );
+    return $demo_data_array;
 }
