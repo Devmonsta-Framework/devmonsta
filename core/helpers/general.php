@@ -1185,8 +1185,50 @@ function devm_sanitize_data($key, $value)
 
 }
 
-function devm_sanitize_taxonomy_data($kye,$value){
-    return $value;
+
+
+function devm_sanitize_taxonomy_data($key,$value){
+    $array_valued_controls = [
+        'checkbox-multiple',
+        'dimensions',
+        'gradient',
+        'icon',
+        'multiselect',
+        'typography',
+    ]; // These controls value save as array and user don't have any scope to input invalid string
+
+    $html_valued_controls = [
+        'wp-editor',
+    ]; // These controls value save as HTML
+
+    $email_valued_controls = [
+        'email',
+    ];
+
+
+
+    $control_type = devm_get_taxonomy_post_type($key);
+
+    // Sanitize email type controls
+    if (in_array($control_type, $email_valued_controls)) {
+        return sanitize_email($value);
+    }
+
+    if (in_array($control_type, $array_valued_controls)) {
+        return $value;
+    }
+
+    if (in_array($control_type, $html_valued_controls)) {
+        return $value;
+    }
+
+
+    // Sanitize all controls string except array and HTML control.
+    return sanitize_text_field($value);
+}
+
+function devm_get_all_taxonomy_controls(){
+    return get_option('devmonsta_all_taxonomy_controls');
 }
 
 function devm_get_all_posteta_controls()
@@ -1194,9 +1236,7 @@ function devm_get_all_posteta_controls()
     return get_option('devmonsta_all_potmeta_controls');
 }
 
-function devm_get_all_taxonomy_controls(){
-    return get_option('devmonsta_all_taxonomy_controls');
-}
+
 
 function devm_get_post_type($control_name)
 {
@@ -1206,6 +1246,22 @@ function devm_get_post_type($control_name)
         if ( 'devmonsta_' . $control['name'] == $control_name) {
             return $control['type'];
         }
+    }
+
+
+}
+
+function devm_get_taxonomy_post_type($control_name)
+{
+    $all_controls = devm_get_all_taxonomy_controls();
+
+    foreach ($all_controls as $control) {
+        if(isset($control['name'] )){
+            if ( 'devmonsta_' . $control['name'] == $control_name) {
+                return $control['type'];
+            }
+        }
+
     }
 
 
