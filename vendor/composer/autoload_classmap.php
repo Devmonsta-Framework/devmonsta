@@ -18,6 +18,7 @@ return array(
     'Devmonsta\\Options\\Customizer\\Controls' => $baseDir . '/core/options/customizer/controls.php',
     'Devmonsta\\Options\\Customizer\\Customizer' => $baseDir . '/core/options/customizer/customizer.php',
     'Devmonsta\\Options\\Customizer\\Structure' => $baseDir . '/core/options/customizer/structure.php',
+    'Devmonsta\\Options\\Posts\\Controls' => $baseDir . '/core/options/posts/controls.php',
     'Devmonsta\\Options\\Posts\\Posts' => $baseDir . '/core/options/posts/posts.php',
     'Devmonsta\\Options\\Posts\\Structure' => $baseDir . '/core/options/posts/structure.php',
     'Devmonsta\\Options\\Posts\\Validator' => $baseDir . '/core/options/posts/validator.php',

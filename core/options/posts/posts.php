@@ -232,13 +232,17 @@ class Posts
      */
     public function save($post_id)
     {
+
         $prefix = 'devmonsta_';
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_potmeta_controls',$controls_data);
+
         foreach ($_POST as $key => $value) {
             if (strpos($key, $prefix) !== false) {
                 update_post_meta(
                     $post_id,
                     $key,
-                    $_POST[$key]
+                    devm_sanitize_data($key,$value)
                 );
             }
         }

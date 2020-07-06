@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3b6488e1b6e04c6e5c30bdcf53217bcd
+class ComposerStaticInita9f943861c85c89187796fe4501729a2
 {
     public static $prefixLengthsPsr4 = array (
         'D' => 
@@ -33,6 +33,7 @@ class ComposerStaticInit3b6488e1b6e04c6e5c30bdcf53217bcd
         'Devmonsta\\Options\\Customizer\\Controls' => __DIR__ . '/../..' . '/core/options/customizer/controls.php',
         'Devmonsta\\Options\\Customizer\\Customizer' => __DIR__ . '/../..' . '/core/options/customizer/customizer.php',
         'Devmonsta\\Options\\Customizer\\Structure' => __DIR__ . '/../..' . '/core/options/customizer/structure.php',
+        'Devmonsta\\Options\\Posts\\Controls' => __DIR__ . '/../..' . '/core/options/posts/controls.php',
         'Devmonsta\\Options\\Posts\\Posts' => __DIR__ . '/../..' . '/core/options/posts/posts.php',
         'Devmonsta\\Options\\Posts\\Structure' => __DIR__ . '/../..' . '/core/options/posts/structure.php',
         'Devmonsta\\Options\\Posts\\Validator' => __DIR__ . '/../..' . '/core/options/posts/validator.php',
@@ -46,9 +47,9 @@ class ComposerStaticInit3b6488e1b6e04c6e5c30bdcf53217bcd
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3b6488e1b6e04c6e5c30bdcf53217bcd::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3b6488e1b6e04c6e5c30bdcf53217bcd::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit3b6488e1b6e04c6e5c30bdcf53217bcd::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInita9f943861c85c89187796fe4501729a2::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInita9f943861c85c89187796fe4501729a2::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInita9f943861c85c89187796fe4501729a2::$classMap;
 
         }, null, ClassLoader::class);
     }

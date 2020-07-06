@@ -23,8 +23,8 @@ class DEVM_Request
 	{
 		return devm_stripslashes_deep_keys(
 			$multikey === null
-				? $_GET
-				: devm_array_key_get($multikey, $_GET, $default_value)
+				? sanitize_text_field($_GET)
+				: devm_array_key_get($multikey, sanitize_text_field($_GET), $default_value)
 		);
 	}
 
@@ -33,7 +33,7 @@ class DEVM_Request
 		return devm_stripslashes_deep_keys(
 			$multikey === null
 				? $_POST
-				: devm_array_key_get($multikey, $_POST, $default_value)
+				: devm_array_key_get($multikey, sanitize_text_field($_POST), $default_value)
 		);
 	}
 
@@ -57,8 +57,8 @@ class DEVM_Request
 	{
 		return devm_stripslashes_deep_keys(
 			$multikey === null
-				? $_REQUEST
-				: devm_array_key_get($multikey, $_REQUEST, $default_value)
+				? sanitize_text_field($_REQUEST)
+				: devm_array_key_get($multikey, sanitize_text_field($_REQUEST), $default_value)
 		);
 	}
 }

@@ -42,7 +42,7 @@ class Taxonomies
 
             $taxonomy_file = get_template_directory() .
                 '/devmonsta/options/taxonomies/' .
-                $_GET['taxonomy'] . '.php';
+                sanitize_text_field($_GET['taxonomy'] ) . '.php';
 
             if (file_exists($taxonomy_file)) {
 
@@ -282,17 +282,19 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
-        // $taxonomy = get_option('devm_taxonomy');
         $prefix = 'devmonsta_';
 
-        foreach ($_POST as $key => $value) {
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls',$controls_data);
 
+        foreach ($_POST as $key => $value)
+        {
             if (strpos($key, $prefix) !== false) {
-
-                add_term_meta($term_id, $key, $_POST[$key]);
+                add_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
             }
-
         }
+
+
 
     }
 
@@ -308,11 +310,14 @@ class Taxonomies
 
         $prefix = 'devmonsta_';
 
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls',$controls_data);
+
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
 
-                update_term_meta($term_id, $key, $_POST[$key]);
+                update_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
             }
 
         }
