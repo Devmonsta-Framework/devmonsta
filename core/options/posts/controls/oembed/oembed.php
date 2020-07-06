@@ -53,7 +53,7 @@ class Oembed extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
+        $wrapper_attr['data-nonce']   = wp_create_nonce( 'action_get_oembed_response' );
         $wrapper_attr['data-preview'] = isset( $this->content['preview'] ) ? json_encode( $this->content['preview'] ) : "";
         
         //generate attributes dynamically for parent tag
@@ -76,7 +76,7 @@ class Oembed extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -106,7 +106,7 @@ class Oembed extends Structure {
         $name                         = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc                         = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value                        = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $wrapper_attr['data-nonce']   = wp_create_nonce( '_action_get_oembed_response' );
+        $wrapper_attr['data-nonce']   = wp_create_nonce( 'action_get_oembed_response' );
         $wrapper_attr['data-preview'] = isset( $this->content['preview'] ) ? json_encode( $this->content['preview'] ) : "";
         
                 
@@ -130,17 +130,17 @@ class Oembed extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $wrapper_attr ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                    <label  class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
-                <div class="dm-option-column right dm-oembed-input">
-                    <input <?php echo dm_attr_to_html( $wrapper_attr ) ?>
+                <div class="devm-option-column right devm-oembed-input">
+                    <input <?php echo devm_attr_to_html( $wrapper_attr ) ?>
                             type="url" name="<?php echo esc_attr( $name ); ?>"
                             value="<?php echo esc_html( $value ); ?>"
-                            class="dm-ctrl dm-oembed-url-input dm-option-input"/>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                    <div class="dm-oembed-preview"></div>
+                            class="devm-ctrl devm-oembed-url-input devm-option-input"/>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <div class="devm-oembed-preview"></div>
                 </div>
             </div>
     <?php
@@ -151,27 +151,27 @@ class Oembed extends Structure {
      *
      * @return void
      */
-    public static function _action_get_oembed_response() {
+    public static function action_get_oembed_response() {
 
-        if ( wp_verify_nonce( \DM_Request::POST( '_nonce' ), '_action_get_oembed_response' ) ) {
+        if ( wp_verify_nonce( \DEVM_Request::POST( '_nonce' ), 'action_get_oembed_response' ) ) {
     
-            require_once DM_DIR . '/core/helpers/class-dm-request.php';
+            require_once DEVMONSTA_DIR . '/core/helpers/class-devm-request.php';
             
-            $url = \DM_Request::POST( 'url' );
+            $url = \DEVM_Request::POST( 'url' );
     
-            $width = \DM_Request::POST( 'preview/width' );
+            $width = \DEVM_Request::POST( 'preview/width' );
     
-            $height = \DM_Request::POST( 'preview/height' );
+            $height = \DEVM_Request::POST( 'preview/height' );
     
-            $keep_ratio = ( \DM_Request::POST( 'preview/keep_ratio' ) === 'true' );
+            $keep_ratio = ( \DEVM_Request::POST( 'preview/keep_ratio' ) === 'true' );
     
             $iframe = empty( $keep_ratio ) ?
     
-            dm_oembed_get( $url, compact( 'width', 'height' ) ) :
+            devm_oembed_get( $url, compact( 'width', 'height' ) ) :
     
             wp_oembed_get( $url, compact( 'width', 'height' ) );
     
-            echo dm_render_markup($iframe) ;
+            echo devm_render_markup($iframe) ;
             die();
     
         } else {

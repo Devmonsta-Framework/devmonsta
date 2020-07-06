@@ -28,7 +28,7 @@ class RgbaColorPicker extends Structure {
      */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -58,13 +58,13 @@ class RgbaColorPicker extends Structure {
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
-        wp_enqueue_script( 'dm-rgba-handle-from-post', DM_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
-        wp_enqueue_script( 'dm-customizer-rgba-handle', DM_CORE . 'options/customizer/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker', 'dm-rgba-handle-from-post'], false, true );
+        wp_enqueue_script( 'devm-rgba-handle-from-post', DEVMONSTA_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_script( 'devm-customizer-rgba-handle', DEVMONSTA_CORE . 'options/customizer/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker', 'devm-rgba-handle-from-post'], false, true );
 
         $data             = [];
         $data['default']  = $this->default_value;
         $data['palettes'] = $this->palettes;
-        wp_localize_script( 'dm-customizer-rgba-handle', 'rgba_color_picker_config', $data );
+        wp_localize_script( 'devm-customizer-rgba-handle', 'rgba_color_picker_config', $data );
     }
 
     /**
@@ -82,20 +82,20 @@ class RgbaColorPicker extends Structure {
      */
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right">
+                <div class="devm-option-column right">
                     <input type="text" <?php $this->link(); ?>
                         name="<?php echo esc_attr( $this->name ); ?>"
                         value="<?php echo esc_attr( $this->value ); ?>"
-                        class="dm-ctrl dm-color-field color-picker-rgb"
+                        class="devm-ctrl devm-color-field color-picker-rgb"
                         data-alpha="true"
                         data-default-color="<?php echo esc_attr( $this->value ); ?>" />
                     
-                    <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
         <?php

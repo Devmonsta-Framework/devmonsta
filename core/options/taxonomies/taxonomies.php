@@ -20,7 +20,7 @@ class Taxonomies
     public function init()
     {
 
-        $t = get_option('dm_taxonomy'); // $t for taxonomy name
+        $t = get_option('devm_taxonomy'); // $t for taxonomy name
 
         add_action('created_' . $t, [$this, 'save_meta'], 10, 2);
         add_action($t . '_edit_form_fields', [$this, 'edit_meta'], 10, 2);
@@ -42,7 +42,7 @@ class Taxonomies
 
             $taxonomy_file = get_template_directory() .
                 '/devmonsta/options/taxonomies/' .
-                $_GET['taxonomy'] . '.php';
+                sanitize_text_field($_GET['taxonomy'] ) . '.php';
 
             if (file_exists($taxonomy_file)) {
 
@@ -57,7 +57,7 @@ class Taxonomies
                  * Save term meta
                  */
 
-                update_option('dm_taxonomy', $taxonomy);
+                update_option('devm_taxonomy', $taxonomy);
 
                 /**
                  * Edit term meta
@@ -103,7 +103,7 @@ class Taxonomies
 
     /**
      * =======================================================
-     * Added CSS class name .dm-taxonomy-wrapper to the body
+     * Added CSS class name .devm-taxonomy-wrapper to the body
      * So that controls insdie taxonomy markup can be stylable
      *
      * @return  string
@@ -114,10 +114,10 @@ class Taxonomies
     {
         global $pagenow;
 
-        $classes = 'dm-taxonomy-wrapper ';
+        $classes = 'devm-taxonomy-wrapper ';
 
         if ($pagenow == 'term.php')
-            $classes .= 'dm-taxonomy-edit-wrapper';
+            $classes .= 'devm-taxonomy-edit-wrapper';
 
         return $classes;
     }
@@ -173,7 +173,7 @@ class Taxonomies
 
                 } else {
 
-                    $file = DM_DIR .
+                    $file = DEVMONSTA_DIR .
                         '/core/options/posts/controls/' .
                         $control['type'] . '/' .
                         $control['type'] . '.php';
@@ -249,7 +249,7 @@ class Taxonomies
 
                 } else {
 
-                    $file = DM_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
+                    $file = DEVMONSTA_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
 
                     if (file_exists($file)) {
 
@@ -282,16 +282,12 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
-        // $taxonomy = get_option('dm_taxonomy');
         $prefix = 'devmonsta_';
-
-        foreach ($_POST as $key => $value) {
-
+        foreach ($_POST as $key => $value)
+        {
             if (strpos($key, $prefix) !== false) {
-
                 add_term_meta($term_id, $key, $_POST[$key]);
             }
-
         }
 
     }
@@ -312,7 +308,7 @@ class Taxonomies
 
             if (strpos($key, $prefix) !== false) {
 
-                update_term_meta($term_id, $key, $_POST[$key]);
+                update_term_meta($term_id, $key, sanitize_text_field($_POST[$key]));
             }
 
         }
@@ -391,7 +387,7 @@ class Taxonomies
         wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
-        wp_enqueue_script('dm-conditions', DM_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
+        wp_enqueue_script('devmonsta-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
         wp_enqueue_script('dm-vendor-js', DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
         wp_enqueue_script('dm-init-js', DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);

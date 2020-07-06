@@ -1,8 +1,8 @@
-jQuery(window).on('dm-scripts.datetimeRange', function (e, val) {
-    var el = jQuery('.dm-option.active-script .dm-option-input-datetime-range');
+jQuery(window).on('devm-scripts.datetimeRange', function (e, val) {
+    var el = jQuery('.devm-option.active-script .devm-option-input-datetime-range');
 
     if (val) {
-        el = val.find('.dm-option-input-datetime-range');
+        el = val.find('.devm-option-input-datetime-range');
     }
     if(el && !el.length){ return false; }
 
@@ -27,5 +27,5 @@ jQuery(window).on('dm-scripts.datetimeRange', function (e, val) {
 
 
 jQuery(document).ready(function ($) {
-    jQuery(window).trigger('dm-scripts.datetimeRange');
+    jQuery(window).trigger('devm-scripts.datetimeRange');
 });

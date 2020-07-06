@@ -2,7 +2,7 @@
 
 if (class_exists('WP_Customize_Section')) {
 
-    class DM_WP_Customize_Section extends WP_Customize_Section
+    class DEVM_WP_Customize_Section extends WP_Customize_Section
     {
 
         public $section;
@@ -39,7 +39,7 @@ if (class_exists('WP_Customize_Section')) {
 
 if (class_exists('WP_Customize_Panel')) {
 
-    class DM_WP_Customize_Panel extends WP_Customize_Panel
+    class DEVM_WP_Customize_Panel extends WP_Customize_Panel
     {
 
         public $panel;

@@ -27,7 +27,7 @@ class Multiselect extends Structure {
 	 */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -53,10 +53,10 @@ class Multiselect extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
-        wp_enqueue_script( 'dm-multiselect-js-from-post', DM_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
-        wp_enqueue_script( 'dm-customizer-multiselect-js', DM_CORE . 'options/customizer/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js', 'dm-multiselect-js-from-post'], time(), true );
+        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
+        wp_enqueue_script( 'devm-multiselect-js-from-post', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+        wp_enqueue_script( 'devm-customizer-multiselect-js', DEVMONSTA_CORE . 'options/customizer/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js', 'devm-multiselect-js-from-post'], time(), true );
     }
 
     /**
@@ -73,12 +73,12 @@ class Multiselect extends Structure {
      */
     public function render_content() {
         ?>
-            <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+            <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
-                <div class="dm-option-column right">
-                    <select class="dm-ctrl dm_multi_select" <?php $this->link(); ?> multiple="multiple" style="height: 100%;" data-value="<?php echo esc_html( json_encode($this->value) ); ?>">
+                <div class="devm-option-column right">
+                    <select class="devm-ctrl devm_multi_select" <?php $this->link(); ?> multiple="multiple" style="height: 100%;" data-value="<?php echo esc_html( json_encode($this->value) ); ?>">
                         <?php
                         if(isset($this->choices) && is_array($this->choices)){
                             foreach ( $this->choices as $value => $label ) {
@@ -89,7 +89,7 @@ class Multiselect extends Structure {
                         }
                         ?>
                     </select>
-                    <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
     <?php

@@ -108,7 +108,7 @@ class DatetimeRange extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -164,17 +164,17 @@ class DatetimeRange extends Structure {
         $date_time_range_data['timepicker']    = ( $date_time_range_config['timepicker'] ) ? 1 : 0;
         $date_time_range_data['defaultTime']   = isset( $date_time_range_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_range_config['defaultTime']) ? $date_time_range_config['defaultTime'] : '12:00';
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
+            <div class="devm-option-column right">
                 <input type="text" data-config='<?php echo json_encode($date_time_range_data); ?>'
-                        class="dm-option-input dm-ctrl dm-option-input-datetime-range"
+                        class="devm-option-input devm-ctrl devm-option-input-datetime-range"
                         name="<?php echo esc_attr( $name ); ?>"
                         value="<?php echo esc_attr( $value ); ?>">
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
     

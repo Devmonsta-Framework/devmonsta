@@ -1,16 +1,16 @@
 <?php
 
-function dm_export_elementor_css_file()
+function devm_export_elementor_css_file()
 {
     try {
         $uploads = wp_upload_dir();
         $uploads['baseurl'] .   "/elementor/css/";
         $path =  $uploads['baseurl'] .   "/elementor/css/";
-        $directory = dm_backups_destination_directory();
+        $directory = devm_backups_destination_directory();
         if (is_dir($directory)) {
             $all_files = glob($directory . '/*.css');
             foreach ($all_files as $file) :
-                $file_url =  dm_fix_path($uploads['baseurl'] .   "/elementor/css") . "/" . basename($file);
+                $file_url =  devm_fix_path($uploads['baseurl'] .   "/elementor/css") . "/" . basename($file);
             ?>
                 <wp:elementor>
                     <wp:path><?php echo esc_url($file_url); ?></wp:path>
@@ -23,9 +23,9 @@ function dm_export_elementor_css_file()
     }
 }
 
-add_action("rss2_head", "dm_export_elementor_css_file");
+add_action("rss2_head", "devm_export_elementor_css_file");
 
-function dm_export_option_file()
+function devm_export_option_file()
 {
     $theme_name =    strtolower(get_option('current_theme'));
     $option_name = "theme_mods_" . $theme_name;
@@ -35,15 +35,15 @@ function dm_export_option_file()
     <wp:customizer>
         <wp:theme>
             <wp:title><?php echo esc_html($theme_name); ?></wp:title>
-            <wp:option><?php echo dm_render_markup($customizer_serialized_data); ?></wp:option>
+            <wp:option><?php echo devm_render_markup($customizer_serialized_data); ?></wp:option>
         </wp:theme>
     </wp:customizer>
 <?php
 }
 
-add_action("rss2_head", "dm_export_option_file");
+add_action("rss2_head", "devm_export_option_file");
 
-function dm_export_primary_menu_slug()
+function devm_export_primary_menu_slug()
 {
     $menu_name = 'primary';
     $locations = get_nav_menu_locations();
@@ -52,18 +52,18 @@ function dm_export_primary_menu_slug()
     ?>
     <menu>
         <primary>
-            <slug><?php echo dm_render_markup($primary_menu_slug); ?></slug>
+            <slug><?php echo devm_render_markup($primary_menu_slug); ?></slug>
         </primary>
     </menu>
     <?php
 }
 
-add_action("rss2_head", "dm_export_primary_menu_slug");
+add_action("rss2_head", "devm_export_primary_menu_slug");
 
 
-function dm_export_widget_option()
+function devm_export_widget_option()
 {
-    $data = dm_widgets_export();
+    $data = devm_widgets_export();
     ?>
     <wp:sidebar>
         <wp:widgets><?php echo esc_html($data); ?></wp:widgets>
@@ -71,4 +71,4 @@ function dm_export_widget_option()
     <?php
 }
 
-add_action("rss2_head", "dm_export_widget_option");
+add_action("rss2_head", "devm_export_widget_option");

@@ -1,7 +1,8 @@
-jQuery(window).on('dm-scripts.datePicker', function(e, val){
-    var el = jQuery('.dm-option.active-script .dm-option-input-date-picker');
+jQuery(window).on('devm-scripts.datePicker', function(e, val){
+    
+    var el = jQuery('.devm-option.active-script .devm-option-input-date-picker');
     if(val){
-        el = val.find('.dm-option-input-date-picker');
+        el = val.find('.devm-option-input-date-picker');
     }
     if(!el.length){ return false; }
     el.each(function(){
@@ -20,5 +21,5 @@ jQuery(window).on('dm-scripts.datePicker', function(e, val){
 });
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.datePicker');
+    jQuery(window).trigger('devm-scripts.datePicker');
 });

@@ -83,7 +83,7 @@ class DatePicker extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -134,16 +134,16 @@ class DatePicker extends Structure {
         $data['minDate'] = isset( $this->content['min-date'] ) ? date("Y-m-d", strtotime($this->content['min-date'])) : "today";
         $data['maxDate'] = isset( $this->content['max-date'] ) ? date("Y-m-d", strtotime($this->content['max-date'])) : false;
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right">
+                <div class="devm-option-column right">
                     <input type="text" name="<?php echo esc_attr( $name ); ?>" data-min-Date="<?php echo esc_attr($data['minDate']); ?>" data-max-Date="<?php echo esc_attr($data['maxDate']); ?>"  data-mondey-first="<?php echo esc_attr($data['mondayFirst']); ?>"
-                        class="dm-option-input dm-ctrl dm-option-input-date-picker"
+                        class="devm-option-input devm-ctrl devm-option-input-date-picker"
                         value="<?php echo esc_attr( $value ); ?>">
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>
     <?php

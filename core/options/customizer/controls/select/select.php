@@ -28,7 +28,7 @@ class Select extends Structure {
 	 */
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -54,9 +54,9 @@ class Select extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        wp_enqueue_script( 'dm-select-js', DM_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        wp_enqueue_script( 'devm-select-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
     }
 
     /**
@@ -74,13 +74,13 @@ class Select extends Structure {
      */
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right">
-                    <select <?php $this->link(); ?> class="dm-option-input dm-ctrl dm_select" name="<?php echo esc_attr( $this->name ); ?>">
+                <div class="devm-option-column right">
+                    <select <?php $this->link(); ?> class="devm-option-input devm-ctrl devm_select" name="<?php echo esc_attr( $this->name ); ?>">
                         <?php
                             if ( is_array( $this->choices ) && !empty( $this->choices ) ) {
                                 foreach ( $this->choices as $key => $val ) {
@@ -95,7 +95,7 @@ class Select extends Structure {
                         ?>
                     </select>
                     
-                    <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </div>
     <?php

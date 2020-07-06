@@ -1,5 +1,5 @@
-jQuery(window).on('dm-scripts.slider', function(){
-    var el = jQuery('.dm-option.active-script .dm-slider');
+jQuery(window).on('devm-scripts.slider', function(){
+    var el = jQuery('.devm-option.active-script .devm-slider');
     
     if (el.length) {
         el.asRange({
@@ -22,5 +22,5 @@ jQuery(window).on('dm-scripts.slider', function(){
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.slider');
+    jQuery(window).trigger('devm-scripts.slider');
 });

@@ -89,7 +89,7 @@ class Upload extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -137,7 +137,7 @@ class Upload extends Structure {
         }
 
         if ( $image_attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
-            $image   = '"dm_upload_image_button"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
+            $image   = '"devm_upload_image_button"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
             $display = 'inline-block';
         }
         
@@ -164,17 +164,17 @@ class Upload extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display ) {
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label  class="dm-option-label"> <?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label  class="devm-option-label"> <?php echo esc_html( $label ); ?> </label>
                 </div>
-                <div class="dm-option-column right">
-                    <div class="dm-option-upload-wrapper">
-                        <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="dm_upload_image_button<?php echo dm_render_markup( $image ); ?> </a>
-                        <input class='dm-ctrl dm-upload' type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
-                        <a href='#' class='dm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <i class='dashicons dashicons-dismiss'></i></a>
+                <div class="devm-option-column right">
+                    <div class="devm-option-upload-wrapper">
+                        <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="devm_upload_image_button<?php echo devm_render_markup( $image ); ?> </a>
+                        <input class='devm-ctrl devm-upload' type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
+                        <a href='#' class='devm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <i class='dashicons dashicons-dismiss'></i></a>
                     </div>
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>
     <?php

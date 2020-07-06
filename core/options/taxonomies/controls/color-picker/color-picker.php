@@ -12,25 +12,25 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function enqueue() {
-        add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+        add_action( 'init', [$this, 'devm_enqueue_color_picker'] );
     }
 
     /**
      * @internal
      */
-    function dm_enqueue_color_picker() {
+    function devm_enqueue_color_picker() {
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        if ( !wp_script_is( 'dm-script-handle', 'enqueued' ) ) {
-            wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], time(), true );
+        if ( !wp_script_is( 'devm-script-handle', 'enqueued' ) ) {
+            wp_enqueue_script( 'devm-script-handle', DEVMONSTA_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], time(), true );
         }
 
         $data            = [];
         $data['default'] = $this->content['value'];
         $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
-        wp_localize_script( 'dm-script-handle', 'color_picker_config', $data );
+        wp_localize_script( 'devm-script-handle', 'color_picker_config', $data );
     }
 
     /**
@@ -67,16 +67,16 @@ class ColorPicker extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option $dynamic_classes'";
+        $class_attributes = "class='devm-option $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <label><?php echo esc_html( $label ); ?> </label>
             <div><small><?php echo esc_html( $desc ); ?> </small></div>
             <input  type="text"
                     name="<?php echo esc_attr( $name ); ?>"
-                    class="dm-color-field"
+                    class="devm-color-field"
                     data-default-color="<?php echo esc_attr( $default ); ?>" />
         </div>
     <?php
@@ -99,7 +99,7 @@ class ColorPicker extends Structure {
             }
 
             if ( $visible ) {
-                $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
             }
 
             return $columns;
@@ -123,7 +123,7 @@ class ColorPicker extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
         //enqueue scripts and styles for color picker
-        $this->dm_enqueue_color_picker();
+        $this->devm_enqueue_color_picker();
         $prefix             = 'devmonsta_';
         $name               = $prefix . $this->content['name'];
         $value              = get_term_meta( $term->term_id, $name, true );
@@ -145,17 +145,17 @@ class ColorPicker extends Structure {
 
         }
 
-        $class_attributes = "class='dm-option term-group-wrap $dynamic_classes'";
+        $class_attributes = "class='devm-option term-group-wrap $dynamic_classes'";
         $default_attributes .= $class_attributes;
 
         ?>
 
-        <tr <?php echo dm_render_markup( $default_attributes ); ?> >
+        <tr <?php echo devm_render_markup( $default_attributes ); ?> >
             <th scope="row"><label for="feature-group"><?php echo esc_html( $this->content['label'] ); ?></label></th>
             <td> <input  type="text"
                     name="<?php echo esc_attr( $name ); ?>"
                     value="<?php echo esc_attr( $value ); ?>"
-                    class="dm-color-field"
+                    class="devm-color-field"
                     data-default-color="#FF0000" />
             </td>
         </tr>

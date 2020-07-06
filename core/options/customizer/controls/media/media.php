@@ -207,44 +207,44 @@ class Media extends \WP_Customize_Control {
         switch ( $mime_type ) {
             case 'video':
                 return array(
-                    'select'       => __( 'Select video' ),
-                    'change'       => __( 'Change video' ),
-                    'default'      => __( 'Default' ),
-                    'remove'       => __( 'Remove' ),
-                    'placeholder'  => __( 'No video selected' ),
-                    'frame_title'  => __( 'Select video' ),
-                    'frame_button' => __( 'Choose video' ),
+                    'select'       =>esc_html__( 'Select video' ),
+                    'change'       =>esc_html__( 'Change video' ),
+                    'default'      =>esc_html__( 'Default' ),
+                    'remove'       =>esc_html__( 'Remove' ),
+                    'placeholder'  =>esc_html__( 'No video selected' ),
+                    'frame_title'  =>esc_html__( 'Select video' ),
+                    'frame_button' =>esc_html__( 'Choose video' ),
                 );
             case 'audio':
                 return array(
-                    'select'       => __( 'Select audio' ),
-                    'change'       => __( 'Change audio' ),
-                    'default'      => __( 'Default' ),
-                    'remove'       => __( 'Remove' ),
-                    'placeholder'  => __( 'No audio selected' ),
-                    'frame_title'  => __( 'Select audio' ),
-                    'frame_button' => __( 'Choose audio' ),
+                    'select'       =>esc_html__( 'Select audio' ),
+                    'change'       =>esc_html__( 'Change audio' ),
+                    'default'      =>esc_html__( 'Default' ),
+                    'remove'       =>esc_html__( 'Remove' ),
+                    'placeholder'  =>esc_html__( 'No audio selected' ),
+                    'frame_title'  =>esc_html__( 'Select audio' ),
+                    'frame_button' =>esc_html__( 'Choose audio' ),
                 );
             case 'image':
                 return array(
-                    'select'       => __( 'Select image' ),
-                    'site_icon'    => __( 'Select site icon' ),
-                    'change'       => __( 'Change image' ),
-                    'default'      => __( 'Default' ),
-                    'remove'       => __( 'Remove' ),
-                    'placeholder'  => __( 'No image selected' ),
-                    'frame_title'  => __( 'Select image' ),
-                    'frame_button' => __( 'Choose image' ),
+                    'select'       =>esc_html__( 'Select image' ),
+                    'site_icon'    =>esc_html__( 'Select site icon' ),
+                    'change'       =>esc_html__( 'Change image' ),
+                    'default'      =>esc_html__( 'Default' ),
+                    'remove'       =>esc_html__( 'Remove' ),
+                    'placeholder'  =>esc_html__( 'No image selected' ),
+                    'frame_title'  =>esc_html__( 'Select image' ),
+                    'frame_button' =>esc_html__( 'Choose image' ),
                 );
             default:
                 return array(
-                    'select'       => __( 'Select file' ),
-                    'change'       => __( 'Change file' ),
-                    'default'      => __( 'Default' ),
-                    'remove'       => __( 'Remove' ),
-                    'placeholder'  => __( 'No file selected' ),
-                    'frame_title'  => __( 'Select file' ),
-                    'frame_button' => __( 'Choose file' ),
+                    'select'       =>esc_html__( 'Select file' ),
+                    'change'       =>esc_html__( 'Change file' ),
+                    'default'      =>esc_html__( 'Default' ),
+                    'remove'       =>esc_html__( 'Remove' ),
+                    'placeholder'  =>esc_html__( 'No file selected' ),
+                    'frame_title'  =>esc_html__( 'Select file' ),
+                    'frame_button' =>esc_html__( 'Choose file' ),
                 );
         } // End switch().
     }

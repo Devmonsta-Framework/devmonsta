@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     // for color
-    var dmOptions = {
+    var devmOptions = {
         defaultColor: typo_config.selected_data.color,
         hide: true,
         change: function (event, ui) {
@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
             updateValueHolder(currentObject);
         }
     };
-    $('.dm-typography-color-field').wpColorPicker(dmOptions);
+    $('.devm-typography-color-field').wpColorPicker(devmOptions);
 
     // for select2 
     $('.google-fonts-list').select2();
@@ -22,7 +22,7 @@ jQuery(document).ready(function ($) {
         updateValueHolder(currentObject);
 
         var self = jQuery(this),
-            parent = self.parents('.dm-option-typography'),
+            parent = self.parents('.devm-option-typography'),
             weight = parent.find('.google-weight-list'),
             styleField = parent.find('.google-style-list'),
             selected_value = self.val();
@@ -114,29 +114,29 @@ jQuery(document).ready(function ($) {
     function updateValueHolder(currentObject) {
         var obj = {};
 
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-color").length > 0) {
-            obj["color"] = rgb2hex(currentObject.parents(".dm-option-typography").find(".wp-color-result")[0].style.backgroundColor);
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-color").length > 0) {
+            obj["color"] = rgb2hex(currentObject.parents(".devm-option-typography").find(".wp-color-result")[0].style.backgroundColor);
         }
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-list").length > 0) {
-            obj["family"] = currentObject.parents(".dm-option-typography").find("select.google-fonts-list").val();
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-list").length > 0) {
+            obj["family"] = currentObject.parents(".devm-option-typography").find("select.google-fonts-list").val();
         }
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-weight").length > 0) {
-            obj["weight"] = currentObject.parents(".dm-option-typography").find("select.google-weight-list").val();
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-weight").length > 0) {
+            obj["weight"] = currentObject.parents(".devm-option-typography").find("select.google-weight-list").val();
         }
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-style").length > 0) {
-            obj["style"] = currentObject.parents(".dm-option-typography").find("select.google-style-list").val();
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-style").length > 0) {
+            obj["style"] = currentObject.parents(".devm-option-typography").find("select.google-style-list").val();
         }
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-size").length > 0) {
-            obj["size"] = currentObject.parents(".dm-option-typography").find("input.typo-font-size").val();
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-size").length > 0) {
+            obj["size"] = currentObject.parents(".devm-option-typography").find("input.typo-font-size").val();
         }
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-lineheight").length > 0) {
-            obj["line_height"] = currentObject.parents(".dm-option-typography").find("input.typo-font-line-height").val();
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-lineheight").length > 0) {
+            obj["line_height"] = currentObject.parents(".devm-option-typography").find("input.typo-font-line-height").val();
         }
-        if (currentObject.parents(".dm-option-typography").find("li.typo-font-laterspace").length > 0) {
-            obj["letter_spacing"] = currentObject.parents(".dm-option-typography").find("input.typo-font-letter-space").val();
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-laterspace").length > 0) {
+            obj["letter_spacing"] = currentObject.parents(".devm-option-typography").find("input.typo-font-letter-space").val();
         }
         let finalJsonValue = JSON.stringify(obj);
-        currentObject.parents(".dm-option-typography").find("input.input-typo-value-holder").val(finalJsonValue).trigger('change');
+        currentObject.parents(".devm-option-typography").find("input.input-typo-value-holder").val(finalJsonValue).trigger('change');
     }
 
 

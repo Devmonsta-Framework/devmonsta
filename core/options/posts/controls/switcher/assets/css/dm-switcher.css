@@ -1,4 +1,4 @@
-.dm_switcher_item .dm_switcher_label {
+.devm_switcher_item .devm_switcher_label {
     cursor: pointer;
     width: 85px;
     height: 24px;
@@ -9,11 +9,11 @@
     margin: 0;
     padding: 0 !important;
 }
-.dm-control-switcher:checked + .dm_switcher_label {
+.devm-control-switcher:checked + .devm_switcher_label {
     background: #5d78ff !important;
     color: #fff;
 }
-.dm_switcher_item .dm_switcher_label:after {
+.devm_switcher_item .devm_switcher_label:after {
     content: "";
     position: absolute;
     top: 4px;
@@ -28,27 +28,27 @@
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.21);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.21);
 }
-.dm-control-switcher{
+.devm-control-switcher{
     visibility: hidden;
     position: absolute;
 }
-.dm_switcher_item {
+.devm_switcher_item {
     display: block;
     min-height: 25px;
 }
-.dm-control-switcher , .dm_switcher_left {
+.devm-control-switcher , .devm_switcher_left {
     height: 0;
     width: 0;
     visibility: hidden;
     display: none;
 }
-.dm-control-switcher:checked + .dm_switcher_label:after {
+.devm-control-switcher:checked + .devm_switcher_label:after {
     left: calc(100% - 5px);
     -webkit-transform: translateX(-100%);
     -ms-transform: translateX(-100%);
     transform: translateX(-100%);
 }
-.dm_switcher_item .dm_switcher_label:before {
+.devm_switcher_item .devm_switcher_label:before {
     content: attr(data-left);
     position: absolute;
     right: 10px;
@@ -60,7 +60,7 @@
     text-transform: uppercase;
     font-weight: 600;
 }
-.dm-control-switcher:checked + .dm_switcher_label:before {
+.devm-control-switcher:checked + .devm_switcher_label:before {
     content: attr(data-right);
     right: inherit;
     left: 10px;

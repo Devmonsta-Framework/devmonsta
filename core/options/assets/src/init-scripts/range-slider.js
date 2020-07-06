@@ -1,5 +1,5 @@
-jQuery(window).on('dm-scripts.rangeSlider', function(){
-    var el = jQuery('.dm-option.active-script .dm-range-slider');
+jQuery(window).on('devm-scripts.rangeSlider', function(){
+    var el = jQuery('.devm-option.active-script .devm-range-slider');
     if (el.length) {
         el.asRange({
             range: true,
@@ -21,5 +21,5 @@ jQuery(window).on('dm-scripts.rangeSlider', function(){
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.rangeSlider');
+    jQuery(window).trigger('devm-scripts.rangeSlider');
 });

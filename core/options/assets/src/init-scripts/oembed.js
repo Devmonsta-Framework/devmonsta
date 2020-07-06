@@ -1,4 +1,4 @@
-jQuery(window).on('dm-scripts.oembed', function(){
+jQuery(window).on('devm-scripts.oembed', function(){
     if( !window.ajaxurl ) {return false}
     var ajaxurl = window.ajaxurl;
     var is_url = function (str) {
@@ -7,12 +7,12 @@ jQuery(window).on('dm-scripts.oembed', function(){
     };
 
 
-    jQuery(document).on("keyup",".dm-oembed-url-input",
+    jQuery(document).on("keyup",".devm-oembed-url-input",
          function () {
             var wrapper = jQuery(this);
             var url_input = jQuery(this).val();
 
-            var iframeWrapper = wrapper.siblings(".dm-oembed-preview");
+            var iframeWrapper = wrapper.siblings(".devm-oembed-preview");
                 if (url_input) {
                     var data = {
                         action: "get_oembed_response",
@@ -36,12 +36,12 @@ jQuery(window).on('dm-scripts.oembed', function(){
     );
 
     //initial trigger of oembed
-    jQuery(".dm-oembed-url-input").trigger("keyup");
+    jQuery(".devm-oembed-url-input").trigger("keyup");
 
 });
 
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.oembed');
+    jQuery(window).trigger('devm-scripts.oembed');
 });

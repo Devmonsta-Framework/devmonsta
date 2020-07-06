@@ -18,7 +18,7 @@ class Icon extends Structure {
     public function __construct( $manager, $id, $args = [] ) {
 
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -27,9 +27,9 @@ class Icon extends Structure {
         $this->name                         = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc                         = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value['icon']        = isset( $args[0]['value']['icon'] ) ? $args[0]['value']['icon'] : "fab fa-500px";
-        $this->default_value['iconType']    = isset( $args[0]['value']['type'] ) ? $args[0]['value']['type'] : "dm-font-awesome";
+        $this->default_value['iconType']    = isset( $args[0]['value']['type'] ) ? $args[0]['value']['type'] : "devm-font-awesome";
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "dm-vue-app" );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0], "devm-vue-app" );
     }
 
 
@@ -37,10 +37,10 @@ class Icon extends Structure {
      * @internal
      */
     public function enqueue(  ) {
-        wp_enqueue_style( 'dm-fontawesome-css', DM_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
-        wp_enqueue_style( 'dm-main-css', DM_CORE . 'options/posts/controls/icon/assets/css/main.css' );
-        wp_enqueue_script( 'dm-icon-components', DM_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
-        wp_enqueue_script( 'dm-asicon', DM_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_style( 'devm-fontawesome-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
+        wp_enqueue_style( 'devm-main-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/main.css' );
+        wp_enqueue_script( 'devm-icon-components', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_script( 'devm-asicon', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -55,23 +55,23 @@ class Icon extends Structure {
         $iconEncoded = json_encode( $iconList );
         $savedData = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right dm-vue-app active-script">
-                <dm-icon-picker 
+            <div class="devm-option-column right devm-vue-app active-script">
+                <devm-icon-picker 
                         name='<?php echo esc_attr( $this->name ); ?>'
-                        class="dm-ctrl"
-                        icon_list='<?php echo dm_render_markup($iconEncoded); ?>'
+                        class="devm-ctrl"
+                        icon_list='<?php echo devm_render_markup($iconEncoded); ?>'
                         default_icon_type='<?php echo isset( $savedData['iconType'] ) ? esc_attr( $savedData['iconType'] ) : ""; ?>'
                         default_icon='<?php echo isset( $savedData['icon'] ) ? esc_attr( $savedData['icon'] ) : ""; ?>'
-                    ></dm-icon-picker>
+                    ></devm-icon-picker>
 
                     <input type="hidden" <?php $this->link();?>  value="" >
                     
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 

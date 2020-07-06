@@ -1,9 +1,10 @@
 <?php
-if (!defined('DM')) {
+
+use Devmonsta\Options\Posts\Controls;
+
+if (!defined('DEVM')) {
     die('Forbidden');
 }
-
-// Useful functions
 
 /**
  * print_r() alternative
@@ -11,14 +12,14 @@ if (!defined('DM')) {
  * @param mixed $value Value to debug
  * @since 1.0.0
  */
-function dm_print($value)
+function devm_print($value)
 {
     static $first_time = true;
 
     if ($first_time) {
         ob_start();
         echo '<style type="text/css">
-			div.dm_print_r {
+			div.devm_print_r {
 				max-height: 500px;
 				overflow-y: scroll;
 				background: #23282d;
@@ -30,7 +31,7 @@ function dm_print($value)
 				z-index: 11111;
 			}
 
-			div.dm_print_r pre {
+			div.devm_print_r pre {
 				color: #78FF5B;
 				background: #23282d;
 				text-shadow: 1px 1px 0 #000;
@@ -43,7 +44,7 @@ function dm_print($value)
 				text-align: left;
 			}
 
-			div.dm_print_r_group {
+			div.devm_print_r_group {
 				background: #f1f1f1;
 				margin: 10px 30px;
 				padding: 1px;
@@ -52,7 +53,7 @@ function dm_print($value)
 				z-index: 11110;
 			}
 
-			div.dm_print_r_group div.dm_print_r {
+			div.devm_print_r_group div.devm_print_r {
 				margin: 9px;
 				border-width: 0;
 			}
@@ -63,30 +64,16 @@ function dm_print($value)
     }
 
     if (func_num_args() == 1) {
-        echo '<div class="dm_print_r"><pre>';
-        echo dm_htmlspecialchars(Dm_Dumper::dump($value));
+        echo '<div class="devm_print_r"><pre>';
+        echo devm_htmlspecialchars(Devm_Dumper::dump($value));
         echo '</pre></div>';
     } else {
-        echo '<div class="dm_print_r_group">';
+        echo '<div class="devm_print_r_group">';
         foreach (func_get_args() as $param) {
-            dm_print($param);
+            devm_print($param);
         }
 
         echo '</div>';
-    }
-
-}
-
-/**
- * Alias for dm_print
- *
- * @see dm_print()
- * @since 1.0.0
- */
-if (!function_exists('debug')) {
-    function debug()
-    {
-        call_user_func_array('dm_print', func_get_args());
     }
 
 }
@@ -100,10 +87,11 @@ if (!function_exists('debug')) {
  * @return string
  * @since 1.0.0
  */
-function dm_htmlspecialchars($string)
+function devm_htmlspecialchars($string)
 {
     return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 }
+
 
 /**
  * Recursively find a key's value in array
@@ -116,39 +104,40 @@ function dm_htmlspecialchars($string)
  * @return null|mixed
  * @since 1.0.0
  */
-function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
+function devm_array_key_get($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
 {
     if (!is_array($keys)) {
         $keys = explode($keys_delimiter, (string)$keys);
     }
 
-    $array_or_object = dm_call($array_or_object);
+    $array_or_object = devm_call($array_or_object);
 
     $key_or_property = array_shift($keys);
     if ($key_or_property === null) {
-        return dm_call($default_value);
+        return devm_call($default_value);
     }
 
     $is_object = is_object($array_or_object);
 
     if ($is_object) {
         if (!property_exists($array_or_object, $key_or_property)) {
-            return dm_call($default_value);
+            return devm_call($default_value);
         }
 
     } else {
         if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-            return dm_call($default_value);
+            return devm_call($default_value);
         }
 
     }
 
     if (isset($keys[0])) {
-// not used count() for performance reasons
+
+        // not used count() for performance reasons
         if ($is_object) {
-            return dm_array_key_get($keys, $array_or_object->{$key_or_property}, $default_value);
+            return devm_array_key_get($keys, $array_or_object->{$key_or_property}, $default_value);
         } else {
-            return dm_array_key_get($keys, $array_or_object[$key_or_property], $default_value);
+            return devm_array_key_get($keys, $array_or_object[$key_or_property], $default_value);
         }
 
     } else {
@@ -162,6 +151,22 @@ function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_
 
 }
 
+
+/**
+ * Alias for devm_print
+ *
+ * @see devm_print()
+ * @since 1.0.0
+ */
+if (!function_exists('debug')) {
+    function debug()
+    {
+        call_user_func_array('devm_print', func_get_args());
+    }
+
+}
+
+
 /**
  * Set (or create if not exists) value for specified key in some array level
  *
@@ -173,7 +178,7 @@ function dm_array_key_get($keys, $array_or_object, $default_value = null, $keys_
  * @return array|object
  * @since 1.0.0
  */
-function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/')
+function devm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/')
 {
     if (!is_array($keys)) {
         $keys = explode($keys_delimiter, (string)$keys);
@@ -196,6 +201,7 @@ function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/
                 trigger_error('Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING);
             } else {
                 $array_or_object->{$key_or_property}
+
                     = [];
             }
 
@@ -230,16 +236,18 @@ function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/
     }
 
     if (isset($keys[0])) {
-// not used count() for performance reasons
+
+        // not used count() for performance reasons
         if ($is_object) {
-            dm_array_key_set($keys, $value, $array_or_object->{$key_or_property});
+            devm_array_key_set($keys, $value, $array_or_object->{$key_or_property});
         } else {
-            dm_array_key_set($keys, $value, $array_or_object[$key_or_property]);
+            devm_array_key_set($keys, $value, $array_or_object[$key_or_property]);
         }
 
     } else {
         if ($is_object) {
             $array_or_object->{$key_or_property}
+
                 = $value;
         } else {
             $array_or_object[$key_or_property] = $value;
@@ -258,7 +266,7 @@ function dm_array_key_set($keys, $value, &$array_or_object, $keys_delimiter = '/
  * @return array|object
  * @since 1.0.0
  */
-function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
+function devm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
 {
     if (!is_array($keys)) {
         $keys = explode($keys_delimiter, (string)$keys);
@@ -284,11 +292,12 @@ function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
     }
 
     if (isset($keys[0])) {
-// not used count() for performance reasons
+
+        // not used count() for performance reasons
         if ($is_object) {
-            dm_array_key_unset($keys, $array_or_object->{$key_or_property});
+            devm_array_key_unset($keys, $array_or_object->{$key_or_property});
         } else {
-            dm_array_key_unset($keys, $array_or_object[$key_or_property]);
+            devm_array_key_unset($keys, $array_or_object[$key_or_property]);
         }
 
     } else {
@@ -304,18 +313,18 @@ function dm_array_key_unset($keys, &$array_or_object, $keys_delimiter = '/')
 }
 
 /**
- * If the value is instance of Dm_Callback class then it is executed and returns the callback value
+ * If the value is instance of Devm_Callback class then it is executed and returns the callback value
  * In other case function returns the provided value
  *
- * @param mixed|Dm_Callback $value
+ * @param mixed|Devm_Callback $value
  *
  * @return mixed
  *
  * @since 1.0.0
  */
-function dm_call($value)
+function devm_call($value)
 {
-    if (!dm_is_callback($value)) {
+    if (!devm_is_callback($value)) {
         return $value;
     }
 
@@ -325,16 +334,16 @@ function dm_call($value)
 }
 
 /**
- * Check if the current value is instance of Dm_Callback class
+ * Check if the current value is instance of Devm_Callback class
  *
  * @param mixed $value
  *
  * @return bool
  * @since 1.0.0
  */
-function dm_is_callback($value)
+function devm_is_callback($value)
 {
-    return $value instanceof Dm_Callback || (is_object($value) && get_class($value) == 'Closure');
+    return $value instanceof Devm_Callback || (is_object($value) && get_class($value) == 'Closure');
 }
 
 /**
@@ -344,7 +353,7 @@ function dm_is_callback($value)
  * @return string
  * @since 1.0.0
  */
-function dm_human_bytes($bytes, $precision = 2)
+function devm_human_bytes($bytes, $precision = 2)
 {
     $kilobyte = 1024;
     $megabyte = $kilobyte * 1024;
@@ -371,7 +380,7 @@ function dm_human_bytes($bytes, $precision = 2)
  * Generate random unique md5
  * @since 1.0.0
  */
-function dm_rand()
+function devm_rand()
 {
     return md5(time() . '-' . uniqid(rand(), true) . '-' . mt_rand(1, 1000));
 }
@@ -382,7 +391,7 @@ function dm_rand()
  * @return string URI
  * @since 1.0.0
  */
-function dm_theme_path_uri($rel_path)
+function devm_theme_path_uri($rel_path)
 {
     if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
         return get_stylesheet_directory_uri() . $rel_path;
@@ -400,7 +409,7 @@ function dm_theme_path_uri($rel_path)
  * @return string URI
  * @since 1.0.0
  */
-function dm_theme_path($rel_path)
+function devm_theme_path($rel_path)
 {
     if (is_child_theme() && file_exists(get_stylesheet_directory() . $rel_path)) {
         return get_stylesheet_directory() . $rel_path;
@@ -416,7 +425,7 @@ function dm_theme_path($rel_path)
  * Convert to Unix style directory separators
  * @since 1.0.0
  */
-function dm_fix_path($path)
+function devm_fix_path($path)
 {
     $windows_network_path = isset($_SERVER['windir']) && in_array(
             substr($path, 0, 2),
@@ -442,16 +451,16 @@ function dm_fix_path($path)
  * @return string
  * @since 1.0.0
  */
-function dm_get_framework_directory($rel_path = '')
+function devm_get_framework_directory($rel_path = '')
 {
     try {
-        $dir = Dm_Cache::get($cache_key = 'dm_framework_dir');
-    } catch (Dm_Cache_Not_Found_Exception $e) {
-        Dm_Cache::set(
+        $dir = Devm_Cache::get($cache_key = 'devm_framework_dir');
+    } catch (Devm_Cache_Not_Found_Exception $e) {
+        Devm_Cache::set(
             $cache_key,
             $dir = apply_filters(
-                'dm_framework_directory',
-                dm_fix_path(dirname(dirname(__FILE__))) // double dirname() to remove '/helpers', use parent dir
+                'devm_framework_directory',
+                devm_fix_path(dirname(dirname(__FILE__))) // double dirname() to remove '/helpers', use parent dir
             )
         );
     }
@@ -467,16 +476,16 @@ function dm_get_framework_directory($rel_path = '')
  * @return string
  * @since 1.0.0
  */
-function dm_get_framework_directory_uri($rel_path = '')
+function devm_get_framework_directory_uri($rel_path = '')
 {
     try {
-        $uri = Dm_Cache::get($cache_key = 'dm_framework_dir_uri');
-    } catch (Dm_Cache_Not_Found_Exception $e) {
-        Dm_Cache::set(
+        $uri = Devm_Cache::get($cache_key = 'devm_framework_dir_uri');
+    } catch (Devm_Cache_Not_Found_Exception $e) {
+        Devm_Cache::set(
             $cache_key,
             $uri = apply_filters(
-                'dm_framework_directory_uri',
-                ($uri = dm_get_path_url(dm_get_framework_directory())) ? $uri : get_template_directory_uri()
+                'devm_framework_directory_uri',
+                ($uri = devm_get_path_url(devm_get_framework_directory())) ? $uri : get_template_directory_uri()
             )
         );
     }
@@ -491,7 +500,7 @@ function dm_get_framework_directory_uri($rel_path = '')
  * @return string
  * @since 1.0.0
  */
-function dm_kses($raw)
+function devm_kses($raw)
 {
     $allowed_tags = [
         'a' => [
@@ -635,7 +644,7 @@ function dm_kses($raw)
         'label' => [
             'class' => [],
             'for' => [],
-        ]
+        ],
     ];
 
     if (function_exists('wp_kses')) { // WP is here
@@ -652,9 +661,9 @@ function dm_kses($raw)
  * @return string
  * @since 1.0.0
  */
-function dm_kspan($text)
+function devm_kspan($text)
 {
-    return str_replace(['{', '}'], ['<span>', '</span>'], dm_kses($text));
+    return str_replace(['{', '}'], ['<span>', '</span>'], devm_kses($text));
 }
 
 /**
@@ -666,7 +675,7 @@ function dm_kspan($text)
  * @return string
  * @since 1.0.0
  */
-function dm_render_markup($content)
+function devm_render_markup($content)
 {
 
     if ($content == "") {
@@ -680,7 +689,7 @@ function dm_render_markup($content)
  * @return string Current url
  * @since 1.0.0
  */
-function dm_current_url()
+function devm_current_url()
 {
     static $url = null;
 
@@ -695,7 +704,7 @@ function dm_current_url()
         }
 
         //Remove the "//" before the domain name
-        $url = ltrim(dm_get_url_without_scheme($url), '/');
+        $url = ltrim(devm_get_url_without_scheme($url), '/');
 
         //Remove the ulr subdirectory in case it has one
         $split = explode('/', $url);
@@ -703,7 +712,7 @@ function dm_current_url()
         //Remove end slash
         $url = rtrim($split[0], '/');
 
-        $url .= '/' . ltrim(dm_array_key_get('REQUEST_URI', $_SERVER, ''), '/');
+        $url .= '/' . ltrim(devm_array_key_get('REQUEST_URI', $_SERVER, ''), '/');
         $url = set_url_scheme('//' . $url); // https fix
     }
 
@@ -714,7 +723,7 @@ function dm_current_url()
  * Return URI without scheme
  * @since 1.0.0
  */
-function dm_get_url_without_scheme($url)
+function devm_get_url_without_scheme($url)
 {
     return preg_replace('/^[^:]+:\/\//', '//', $url);
 }
@@ -727,12 +736,12 @@ function dm_get_url_without_scheme($url)
  * @return null|string
  * @since 1.0.0
  */
-function dm_get_stylesheet_directory($rel_path = '')
+function devm_get_stylesheet_directory($rel_path = '')
 {
 
     if (is_child_theme()) {
         return get_stylesheet_directory() .
-            dm_get_customizations_dir_rel_path($rel_path);
+            devm_get_customizations_dir_rel_path($rel_path);
     } else {
         // check is_child_theme() before using this function
         return null;
@@ -748,12 +757,12 @@ function dm_get_stylesheet_directory($rel_path = '')
  * @return null|string
  * @since 1.0.0
  */
-function dm_get_stylesheet_directory_uri($rel_path = '')
+function devm_get_stylesheet_directory_uri($rel_path = '')
 {
 
     if (is_child_theme()) {
         return get_stylesheet_directory_uri() .
-            dm_get_customizations_dir_rel_path($rel_path);
+            devm_get_customizations_dir_rel_path($rel_path);
     } else {
         // check is_child_theme() before using this function
         return null;
@@ -767,14 +776,14 @@ function dm_get_stylesheet_directory_uri($rel_path = '')
  * @return string
  * @since 1.0.0
  */
-function dm_get_customizations_dir_rel_path($append = '')
+function devm_get_customizations_dir_rel_path($append = '')
 {
     try {
-        $dir = Dm_Cache::get($cache_key = 'dm_customizations_dir_rel_path');
-    } catch (Dm_Cache_Not_Found_Exception $e) {
-        Dm_Cache::set(
+        $dir = Devm_Cache::get($cache_key = 'devm_customizations_dir_rel_path');
+    } catch (Devm_Cache_Not_Found_Exception $e) {
+        Devm_Cache::set(
             $cache_key,
-            $dir = apply_filters('dm_customizations_dir_rel_path', '/devmonsta')
+            $dir = apply_filters('devm_customizations_dir_rel_path', '/devmonsta')
         );
     }
 
@@ -787,7 +796,7 @@ function dm_get_customizations_dir_rel_path($append = '')
  * @return string
  * @since 1.0.0
  */
-function dm_post_img_alt($image_id)
+function devm_post_img_alt($image_id)
 {
 
     if (!empty($image_id)) {
@@ -804,206 +813,6 @@ function dm_post_img_alt($image_id)
 
 }
 
-/**
- * Unset specified key in some array level
- *
- * @param string $keys 'a/b/c' -> unset($arr['a']['b']['c']);
- * @param array|object $array_or_object
- * @param string $keys_delimiter
- *
- * @return array|object
- */
-function dm_aku($keys, &$array_or_object, $keys_delimiter = '/')
-{
-
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
-    }
-
-    $key_or_property = array_shift($keys);
-
-    if ($key_or_property === null || $key_or_property === '') {
-        return $array_or_object;
-    }
-
-    $is_object = is_object($array_or_object);
-
-    if ($is_object) {
-
-        if (!property_exists($array_or_object, $key_or_property)) {
-            return $array_or_object;
-        }
-
-    } else {
-
-        if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-            return $array_or_object;
-        }
-
-    }
-
-    if (isset($keys[0])) {
-// not used count() for performance reasons
-        if ($is_object) {
-            dm_aku($keys, $array_or_object->{$key_or_property});
-        } else {
-            dm_aku($keys, $array_or_object[$key_or_property]);
-        }
-
-    } else {
-        if ($is_object) {
-            unset($array_or_object->{$key_or_property});
-        } else {
-            unset($array_or_object[$key_or_property]);
-        }
-
-    }
-
-    return $array_or_object;
-}
-
-/**
- * Set (or create if not exists) value for specified key in some array level
- *
- * @param string $keys 'a/b/c', or 'a/b/c/' equivalent to: $arr['a']['b']['c'][] = $val;
- * @param mixed $value
- * @param array|object $array_or_object
- * @param string $keys_delimiter
- *
- * @return array|object
- */
-function dm_aks($keys, $value, &$array_or_object, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
-    }
-
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null) {
-        return $array_or_object;
-    }
-
-    $is_object = is_object($array_or_object);
-
-    if ($is_object) {
-        if (
-            !property_exists($array_or_object, $key_or_property)
-            || !(is_array($array_or_object->{$key_or_property}) || is_object($array_or_object->{$key_or_property}))
-        ) {
-            if ($key_or_property === '') {
-                // this happens when use 'empty keys' like: abc/d/e////i/j//foo/
-                trigger_error('Cannot push value to object like in array ($arr[] = $val)', E_USER_WARNING);
-            } else {
-                $array_or_object->{$key_or_property}
-                    = [];
-            }
-
-        }
-
-    } else {
-
-        if (!is_array($array_or_object)) {
-            $array_or_object = [];
-        }
-
-        if (
-            !array_key_exists(
-                $key_or_property,
-                $array_or_object
-            ) || !is_array($array_or_object[$key_or_property])
-        ) {
-
-            if ($key_or_property === '') {
-                // this happens when use 'empty keys' like: abc.d.e....i.j..foo.
-                $array_or_object[] = [];
-
-                // get auto created key (last)
-                end($array_or_object);
-                $key_or_property = key($array_or_object);
-            } else {
-                $array_or_object[$key_or_property] = [];
-            }
-
-        }
-
-    }
-
-    if (isset($keys[0])) {
-// not used count() for performance reasons
-        if ($is_object) {
-            dm_aks($keys, $value, $array_or_object->{$key_or_property});
-        } else {
-            dm_aks($keys, $value, $array_or_object[$key_or_property]);
-        }
-
-    } else {
-        if ($is_object) {
-            $array_or_object->{$key_or_property}
-                = $value;
-        } else {
-            $array_or_object[$key_or_property] = $value;
-        }
-
-    }
-
-    return $array_or_object;
-}
-
-/**
- * Recursively find a key's value in array
- *
- * @param string $keys 'a/b/c'
- * @param array|object $array_or_object
- * @param null|mixed $default_value
- * @param string $keys_delimiter
- *
- * @return null|mixed
- */
-function dm_akg($keys, $array_or_object, $default_value = null, $keys_delimiter = '/')
-{
-    if (!is_array($keys)) {
-        $keys = explode($keys_delimiter, (string)$keys);
-    }
-
-    $array_or_object = dm_call($array_or_object);
-
-    $key_or_property = array_shift($keys);
-    if ($key_or_property === null) {
-        return dm_call($default_value);
-    }
-
-    $is_object = is_object($array_or_object);
-
-    if ($is_object) {
-        if (!property_exists($array_or_object, $key_or_property)) {
-            return dm_call($default_value);
-        }
-
-    } else {
-        if (!is_array($array_or_object) || !array_key_exists($key_or_property, $array_or_object)) {
-            return dm_call($default_value);
-        }
-
-    }
-
-    if (isset($keys[0])) {
-// not used count() for performance reasons
-        if ($is_object) {
-            return dm_akg($keys, $array_or_object->{$key_or_property}, $default_value);
-        } else {
-            return dm_akg($keys, $array_or_object[$key_or_property], $default_value);
-        }
-
-    } else {
-        if ($is_object) {
-            return $array_or_object->{$key_or_property};
-        } else {
-            return $array_or_object[$key_or_property];
-        }
-
-    }
-
-}
 
 /**
  * @param string|array $callback Callback function
@@ -1012,13 +821,13 @@ function dm_akg($keys, $array_or_object, $default_value = null, $keys_delimiter 
  * Recommend when the function call may require many resources or time (database requests) , or the value is small
  * Not recommended using on very large values
  *
- * @return DM_Callback
+ * @return DEVM_Callback
  *
  * @since 2.6.14
  */
-function dm_callback($callback, array $args = [], $cache = true)
+function devm_callback($callback, array $args = [], $cache = true)
 {
-    return new Dm_Callback($callback, $args, $cache);
+    return new Devm_Callback($callback, $args, $cache);
 }
 
 /**
@@ -1030,9 +839,9 @@ function dm_callback($callback, array $args = [], $cache = true)
  *
  * @return string The tag's html
  */
-function dm_html_tag($tag, $attr = [], $end = false)
+function devm_html_tag($tag, $attr = [], $end = false)
 {
-    $html = '<' . $tag . ' ' . dm_attr_to_html($attr);
+    $html = '<' . $tag . ' ' . devm_attr_to_html($attr);
 
     if ($end === true) {
         $html .= '></' . $tag . '>';
@@ -1052,7 +861,7 @@ function dm_html_tag($tag, $attr = [], $end = false)
  *
  * @return string 'href="/" title="Test"'
  */
-function dm_attr_to_html(array $attr_array)
+function devm_attr_to_html(array $attr_array)
 {
     $html_attr = '';
 
@@ -1061,7 +870,7 @@ function dm_attr_to_html(array $attr_array)
             continue;
         }
 
-        $html_attr .= $attr_name . '="' . dm_htmlspecialchars($attr_val) . '" ';
+        $html_attr .= $attr_name . '="' . devm_htmlspecialchars($attr_val) . '" ';
     }
 
     return $html_attr;
@@ -1070,7 +879,7 @@ function dm_attr_to_html(array $attr_array)
 /**
  * Strip slashes from values, and from keys if magic_quotes_gpc = On
  */
-function dm_stripslashes_deep_keys($value)
+function devm_stripslashes_deep_keys($value)
 {
     static $magic_quotes = null;
     if ($magic_quotes === null) {
@@ -1081,20 +890,21 @@ function dm_stripslashes_deep_keys($value)
         if ($magic_quotes) {
             $new_value = [];
             foreach ($value as $key => $val) {
-                $new_value[is_string($key) ? stripslashes($key) : $key] = dm_stripslashes_deep_keys($val);
+                $new_value[is_string($key) ? stripslashes($key) : $key] = devm_stripslashes_deep_keys($val);
             }
 
             $value = $new_value;
             unset($new_value);
         } else {
-            $value = array_map('dm_stripslashes_deep_keys', $value);
+            $value = array_map('devm_stripslashes_deep_keys', $value);
         }
 
     } elseif (is_object($value)) {
         $vars = get_object_vars($value);
         foreach ($vars as $key => $data) {
             $value->{$key}
-                = dm_stripslashes_deep_keys($data);
+
+                = devm_stripslashes_deep_keys($data);
         }
 
     } elseif (is_string($value)) {
@@ -1112,7 +922,7 @@ function dm_stripslashes_deep_keys($value)
  *
  * @return bool|string
  */
-function dm_oembed_get($url, $args = [])
+function devm_oembed_get($url, $args = [])
 {
     $html = wp_oembed_get($url, $args);
 
@@ -1132,7 +942,7 @@ function dm_oembed_get($url, $args = [])
     return $html;
 }
 
-function dm_meta_option($post_id, $option_id, $default_value = null)
+function devm_meta_option($post_id, $option_id, $default_value = null)
 {
     $prefix = 'devmonsta_';
     $option_id = $prefix . $option_id;
@@ -1140,41 +950,47 @@ function dm_meta_option($post_id, $option_id, $default_value = null)
     return get_post_meta($post_id, $option_id, true);
 }
 
-function dm_taxonomy($term_id, $key = '', $single = true)
+function devm_taxonomy($term_id, $key = '', $single = true)
 {
     return get_term_meta($term_id, $key, $single);
 }
 
-function dm_theme_option($option_name, $default = false)
+function devm_theme_option($option_name, $default = false)
 {
-    if(get_theme_mod($option_name)){
+
+    if (get_theme_mod($option_name)) {
         return get_theme_mod($option_name, $default);
     }
 
-    return dm_theme_control_default_control($option_name);
+    return devm_theme_control_default_control($option_name);
 
 }
 
-function dm_theme_control_default_control($control_name){
+function devm_theme_control_default_control($control_name)
+{
 
-    $control = dm_get_theme_control($control_name);
-    if($control != false){
+    $control = devm_get_theme_control($control_name);
+
+    if ($control != false) {
         $default = '';
-        if(isset($control['default'])){
+
+        if (isset($control['default'])) {
             $default = $control['default'];
         }
 
-        if(isset($control['value'])){
+        if (isset($control['value'])) {
             $default = $control['value'];
         }
 
         return $default;
     }
+
 }
 
-function dm_get_theme_control($control_name)
+function devm_get_theme_control($control_name)
 {
-    $controls = dm_get_all_theme_controls();
+    $controls = devm_get_all_theme_controls();
+
     foreach ($controls as $control) {
 
         if ($control['id'] == $control_name) {
@@ -1186,32 +1002,35 @@ function dm_get_theme_control($control_name)
     return false;
 }
 
-function dm_get_all_theme_controls()
+function devm_get_all_theme_controls()
 {
     $controls = new Devmonsta\Options\Customizer\Controls();
     return $controls->get_controls();
 }
 
-
-function dm_backups_destination_directory()
+function devm_backups_destination_directory()
 {
     $uploads = wp_upload_dir();
-    return dm_fix_path($uploads['basedir'] . "/elementor/css/");
+    return devm_fix_path($uploads['basedir'] . "/elementor/css/");
 }
 
-function dm_widgets_export()
+function devm_widgets_export()
 {
 
-    $available_widgets = dm_available_widgets();
-    $widget_instances = array();
+    $available_widgets = devm_available_widgets();
+    $widget_instances = [];
+
     // Loop widgets.
     foreach ($available_widgets as $widget_data) {
         // Get all instances for this ID base.
         $instances = get_option('widget_' . $widget_data['id_base']);
+
         // Have instances.
         if (!empty($instances)) {
+
             // Loop instances.
             foreach ($instances as $instance_id => $instance_data) {
+
                 // Key is ID (not _multiwidget).
                 if (is_numeric($instance_id)) {
                     $unique_instance_id = $widget_data['id_base'] . '-' . $instance_id;
@@ -1220,46 +1039,128 @@ function dm_widgets_export()
             }
         }
     }
+
     // Gather sidebars with their widget instances.
     $sidebars_widgets = get_option('sidebars_widgets');
-    $sidebars_widget_instances = array();
+    $sidebars_widget_instances = [];
+
     foreach ($sidebars_widgets as $sidebar_id => $widget_ids) {
+
         // Skip inactive widgets.
         if ('wp_inactive_widgets' === $sidebar_id) {
             continue;
         }
+
         if (!is_array($widget_ids) || empty($widget_ids)) {
             continue;
         }
+
         foreach ($widget_ids as $widget_id) {
             if (isset($widget_instances[$widget_id])) {
                 $sidebars_widget_instances[$sidebar_id][$widget_id] = $widget_instances[$widget_id];
             }
+
         }
+
     }
 
     // Filter pre-encoded data.
-    $data = apply_filters('dm_unencoded_export_data', $sidebars_widget_instances);
+    $data = apply_filters('devm_unencoded_export_data', $sidebars_widget_instances);
 
     // Encode the data for file contents.
     $encoded_data = wp_json_encode($data);
 
     // Return contents.
-    return apply_filters('dm_generate_export_data', $encoded_data);
+    return apply_filters('devm_generate_export_data', $encoded_data);
 }
 
-
-function dm_available_widgets()
+function devm_available_widgets()
 {
     global $wp_registered_widget_controls;
     $widget_controls = $wp_registered_widget_controls;
-    $available_widgets = array();
+    $available_widgets = [];
+
     foreach ($widget_controls as $widget) {
+
         // No duplicates.
         if (!empty($widget['id_base']) && !isset($available_widgets[$widget['id_base']])) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name'] = $widget['name'];
         }
+
     }
+
     return $available_widgets;
 }
+
+
+function devm_sanitize_data($key, $value)
+{
+    $array_valued_controls = [
+        'checkbox-multiple',
+        'dimensions',
+        'gradient',
+        'icon',
+        'multiselect',
+        'typography',
+    ]; // These controls value save as array and user don't have any scope to input invalid string
+
+    $html_valued_controls = [
+        'wp-editor',
+    ]; // These controls value save as HTML
+
+    $email_valued_controls = [
+        'email',
+    ];
+
+
+
+    $control_type = devm_get_post_type($key);
+
+    // Sanitize email type controls
+    if (in_array($control_type, $email_valued_controls)) {
+        return sanitize_email($value);
+    }
+
+    if (in_array($control_type, $array_valued_controls)) {
+        return $value;
+    }
+
+    if (in_array($control_type, $html_valued_controls)) {
+        return $value;
+    }
+
+
+    // Sanitize all controls string except array and HTML control.
+    return sanitize_text_field($value);
+
+
+}
+
+function devm_sanitize_taxonomy_data($kye,$value){
+    return $value;
+}
+
+function devm_get_all_posteta_controls()
+{
+    return get_option('devmonsta_all_potmeta_controls');
+}
+
+function devm_get_all_taxonomy_controls(){
+    return get_option('devmonsta_all_taxonomy_controls');
+}
+
+function devm_get_post_type($control_name)
+{
+    $all_controls = devm_get_all_posteta_controls();
+
+    foreach ($all_controls as $control) {
+        if ( 'devmonsta_' . $control['name'] == $control_name) {
+            return $control['type'];
+        }
+    }
+
+
+}
+
+//devm_print(devm_get_post_type('user_url_one'));

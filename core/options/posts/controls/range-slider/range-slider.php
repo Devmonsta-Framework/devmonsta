@@ -81,7 +81,7 @@ class RangeSlider extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -135,15 +135,15 @@ class RangeSlider extends Structure {
         $range_slider_data['max']  = isset( $range_slider_config['max'] )  && is_numeric( $range_slider_config['max'] )? $range_slider_config['max'] : 100;
         $range_slider_data['step'] = isset( $range_slider_config['step'] )  && is_numeric( $range_slider_config['step'] )? $range_slider_config['step'] : 1;
         ?>  
-        <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-            <div class="dm-option-column right">
-                <input class="dm-ctrl dm-range-slider" min="<?php echo esc_attr($range_slider_data['min']); ?>" max="<?php echo esc_attr($range_slider_data['max']); ?>" step="<?php echo esc_attr($range_slider_data['step']); ?>"
+            <div class="devm-option-column right">
+                <input class="devm-ctrl devm-range-slider" min="<?php echo esc_attr($range_slider_data['min']); ?>" max="<?php echo esc_attr($range_slider_data['max']); ?>" step="<?php echo esc_attr($range_slider_data['step']); ?>"
                     type="text" value="<?php echo esc_attr( $value ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"/>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
     <?php

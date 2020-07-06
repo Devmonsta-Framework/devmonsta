@@ -9,7 +9,7 @@ if (!class_exists('WP_Customize_Control')) {
     return;
 }
 
-class Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
+class DEVM_Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
 {
     /*
      ** Field that is used as the repeater label
@@ -165,7 +165,7 @@ class Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
 					<div class="menu-item-bar">
 						<div class="customize-control-repeater-field-handle menu-item-handle">
 							<span class="item-title" aria-hidden="true">
-								<span class="menu-item-title"><?php _e('Key')?> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg> </span>
+								<span class="menu-item-title"><?php esc_html_e('Key', 'devmonsta')?> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg> </span>
 							</span>
 							<span class="item-controls">
 								<button type="button" class="button-link item-edit" aria-expanded="false">
@@ -181,7 +181,7 @@ class Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
                         </ul>
                         
 						<div class="menu-item-actions-popup description-thin submitbox">
-							<button type="button" class="button-link-popup button-link-delete-popup item-delete-popup submitdelete-popup deletion-popup"><?php _e('Delete')?></button>
+							<button type="button" class="button-link-popup button-link-delete-popup item-delete-popup submitdelete-popup deletion-popup"><?php esc_html_e('Delete', 'devmonsta')?></button>
 						</div>
 					</div>
 				</div>
@@ -192,7 +192,7 @@ class Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
 
 
 			<button type="button" class="button customize-add-repeater-field-popup" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">
-				<?php _e('Add Items')?>
+				<?php esc_html_e('Add Items', 'devmonsta')?>
 			</button>
 		</div>
 		<?php

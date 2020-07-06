@@ -34,7 +34,7 @@ class DatetimeRange extends Structure {
     public function __construct( $manager, $id, $args = [] ) {
 
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -62,11 +62,11 @@ class DatetimeRange extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-range-from-post', DM_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
-        wp_enqueue_script( 'dm-date-time-range', DM_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'dm-date-time-range-from-post'], false, true );
-        wp_localize_script( 'dm-date-time-range', 'date_time_range_config', $this->date_time_range_default_data );
+        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        wp_enqueue_script( 'devm-date-time-range-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
+        wp_enqueue_script( 'devm-date-time-range', DEVMONSTA_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-range-from-post'], false, true );
+        wp_localize_script( 'devm-date-time-range', 'date_time_range_config', $this->date_time_range_default_data );
     }
 
     public function render() {
@@ -76,15 +76,15 @@ class DatetimeRange extends Structure {
 
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
-                <input type="text" class="dm-option-input dm-ctrl dm-option-input-datetime-range"
+            <div class="devm-option-column right">
+                <input type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-range"
                     <?php $this->link();?> value="<?php echo esc_attr( $this->default_value ); ?>" data-value="<?php echo esc_html( $this->value ); ?>">
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 

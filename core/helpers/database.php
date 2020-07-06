@@ -1,36 +1,34 @@
 <?php
 
-if ( !defined( 'DM' ) ) {
+if ( !defined( 'DEVM' ) ) {
     die( 'Forbidden' );
 }
 
-
 // Post Options
-class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
+class DEVM_Db_Options_Model_Post extends DEVM_Db_Options_Model {
 
     /**
-     * returns post meta data 
+     * returns post meta data
      *
      * @param String $post_id
      * @param String $option_id
      * @param String $default_value
      * @return void
      */
-    function option($post_id, $option_id, $default_value= null){
-        
-        $prefix = 'devmonsta_';
-        $option_id = $prefix . $option_id;
-        $post_id = intval($post_id);
-        return get_post_meta($post_id, $option_id, true);
-    }
+    function option( $post_id, $option_id, $default_value = null ) {
 
+        $prefix    = 'devmonsta_';
+        $option_id = $prefix . $option_id;
+        $post_id   = intval( $post_id );
+        return get_post_meta( $post_id, $option_id, true );
+    }
 
     protected function get_id() {
         return 'post';
     }
 
     private function get_cache_key( $key, $item_id = null, array $extra_data = [] ) {
-        return 'dm-options-model:' . $this->get_id() . '/' . $key;
+        return 'devm-options-model:' . $this->get_id() . '/' . $key;
     }
 
     private function get_post_id( $post_id ) {
@@ -38,8 +36,8 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
 
         try {
             // Prevent too often execution of wp_get_post_autosave() because it does WP Query
-            return DM_Cache::get( $cache_key = $this->get_cache_key( 'id/' . $post_id ) );
-        } catch ( DM_Cache_Not_Found_Exception $e ) {
+            return DEVM_Cache::get( $cache_key = $this->get_cache_key( 'id/' . $post_id ) );
+        } catch ( DEVM_Cache_Not_Found_Exception $e ) {
 
             if ( !$post_id ) {
                 /** @var WP_Post $post */
@@ -65,7 +63,7 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
 
             }
 
-            DM_Cache::set( $cache_key, $post_id );
+            DEVM_Cache::set( $cache_key, $post_id );
 
             return $post_id;
         }
@@ -76,9 +74,9 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
         $post_id = $this->get_post_id( $post_id );
 
         try {
-            return DM_Cache::get( $cache_key = $this->get_cache_key( 'type/' . $post_id ) );
-        } catch ( DM_Cache_Not_Found_Exception $e ) {
-            DM_Cache::set(
+            return DEVM_Cache::get( $cache_key = $this->get_cache_key( 'type/' . $post_id ) );
+        } catch ( DEVM_Cache_Not_Found_Exception $e ) {
+            DEVM_Cache::set(
                 $cache_key,
                 $post_type = get_post_type(
                     ( $post_revision_id = wp_is_post_revision( $post_id ) ) ? $post_revision_id : $post_id
@@ -93,11 +91,11 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
     protected function get_options( $item_id, array $extra_data = [] ) {
         $post_type = $this->get_post_type( $item_id );
 
-        if ( apply_filters( 'dm_get_db_post_option:dm-storage-enabled',
-            $post_type !== 'dm-slider',
+        if ( apply_filters( 'devm_get_db_post_option:devm-storage-enabled',
+            $post_type !== 'devm-slider',
             $post_type
         ) ) {
-            return dm()->theme->get_post_options( $post_type );
+            return devm()->theme->get_post_options( $post_type );
         } else {
             return [];
         }
@@ -105,18 +103,18 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
     }
 
     protected function get_values( $item_id, array $extra_data = [] ) {
-        return DM_WP_Meta::get( 'post', $this->get_post_id( $item_id ), 'dm_options', [] );
+        return DEVM_WP_Meta::get( 'post', $this->get_post_id( $item_id ), 'devm_options', [] );
     }
 
     protected function set_values( $item_id, $values, array $extra_data = [] ) {
-        DM_WP_Meta::set( 'post', $this->get_post_id( $item_id ), 'dm_options', $values );
+        DEVM_WP_Meta::set( 'post', $this->get_post_id( $item_id ), 'devm_options', $values );
     }
 
-    protected function get_dm_storage_params( $item_id, array $extra_data = [] ) {
+    protected function get_devm_storage_params( $item_id, array $extra_data = [] ) {
         return ['post-id' => $this->get_post_id( $item_id )];
     }
 
-    protected function _get_cache_key( $key, $item_id, array $extra_data = [] ) {
+    protected function get_cache_key_protected( $key, $item_id, array $extra_data = [] ) {
 
         if ( $key === 'options' ) {
             // Cache options grouped by post-type, not by post id
@@ -127,16 +125,16 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
 
     }
 
-    protected function _after_set( $post_id, $option_id, $sub_keys, $old_value, array $extra_data = [] ) {
+    protected function after_set_protected( $post_id, $option_id, $sub_keys, $old_value, array $extra_data = [] ) {
         /**
          * @deprecated
          */
-        dm()->backend->_sync_post_separate_meta( $post_id );
+        devm()->backend->_sync_post_separate_meta( $post_id );
 
         /**
          * @since 2.2.8
          */
-        do_action( 'dm_post_options_update',
+        do_action( 'devm_post_options_update',
             $post_id,
             /**
              * Option id
@@ -166,8 +164,8 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
      */
     protected function _init() {
 
-        function dm_post_option( $post_id = null, $option_id = null, $default_value = null ) {
-            return DM_Db_Options_Model::_get_instance( 'post' )->get( intval( $post_id ), $option_id, $default_value );
+        function devm_post_option( $post_id = null, $option_id = null, $default_value = null ) {
+            return DEVM_Db_Options_Model::get_instance_protected( 'post' )->get( intval( $post_id ), $option_id, $default_value );
         }
 
         /**
@@ -177,18 +175,18 @@ class DM_Db_Options_Model_Post extends DM_Db_Options_Model {
          * @param string|null $option_id Specific option id (accepts multikey). null - all options
          * @param $value
          */
-        function dm_set_post_option( $post_id = null, $option_id = null, $value ) {
-            DM_Db_Options_Model::_get_instance( 'post' )->set( intval( $post_id ), $option_id, $value );
+        function devm_set_post_option( $post_id = null, $option_id = null, $value ) {
+            DEVM_Db_Options_Model::get_instance_protected( 'post' )->set( intval( $post_id ), $option_id, $value );
         }
 
-        // todo: add_action() to clear the DM_Cache
+        // todo: add_action() to clear the DEVM_Cache
     }
 
 }
 
-
 // Term Options
-class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
+class DEVM_Db_Options_Model_Term extends DEVM_Db_Options_Model {
+
     protected function get_id() {
         return 'term';
     }
@@ -196,27 +194,27 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
     protected function get_values( $item_id, array $extra_data = [] ) {
         self::migrate( $item_id );
 
-        return (array) get_term_meta( $item_id, 'dm_options', true );
+        return (array) get_term_meta( $item_id, 'devm_options', true );
     }
 
     protected function set_values( $item_id, $values, array $extra_data = [] ) {
         self::migrate( $item_id );
 
-        update_term_meta( $item_id, 'dm_options', $values );
+        update_term_meta( $item_id, 'devm_options', $values );
     }
 
     protected function get_options( $item_id, array $extra_data = [] ) {
-        return dm()->theme->get_taxonomy_options( $extra_data['taxonomy'] );
+        return devm()->theme->get_taxonomy_options( $extra_data['taxonomy'] );
     }
 
-    protected function get_dm_storage_params( $item_id, array $extra_data = [] ) {
+    protected function get_devm_storage_params( $item_id, array $extra_data = [] ) {
         return [
             'term-id'  => $item_id,
             'taxonomy' => $extra_data['taxonomy'],
         ];
     }
 
-    protected function _get_cache_key( $key, $item_id, array $extra_data = [] ) {
+    protected function get_cache_key_protected( $key, $item_id, array $extra_data = [] ) {
 
         if ( $key === 'options' ) {
             return $extra_data['taxonomy']; // Cache options grouped by taxonomy, not by term id
@@ -241,7 +239,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
             /** @var WPDB $wpdb */
             global $wpdb;
 
-            $table_name = $wpdb->get_results( "show tables like '{$wpdb->prefix}dm_termmeta'", ARRAY_A );
+            $table_name = $wpdb->get_results( "show tables like '{$wpdb->prefix}devm_termmeta'", ARRAY_A );
             $table_name = $table_name ? array_pop( $table_name[0] ) : false;
 
             if ( $table_name && !$wpdb->get_results( "SELECT 1 FROM `{$table_name}` LIMIT 1" ) ) {
@@ -259,19 +257,19 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
     /**
      * @internal
      */
-    public static function _action_switch_blog() {
+    public static function action_switch_blog_protected() {
         self::$old_table_name = null; // reset
     }
 
     /**
-     * When a term is deleted, delete its meta from old dm_termmeta table
+     * When a term is deleted, delete its meta from old devm_termmeta table
      *
      * @param mixed $term_id
      *
      * @return void
      * @internal
      */
-    public static function _action_dm_delete_term( $term_id ) {
+    public static function action_devm_delete_term_protected( $term_id ) {
 
         if ( !( $table_name = self::get_old_table_name() ) ) {
             return;
@@ -286,7 +284,7 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
         /** @var WPDB $wpdb */
         global $wpdb;
 
-        $wpdb->delete( $table_name, ['dm_term_id' => $term_id], ['%d'] );
+        $wpdb->delete( $table_name, ['devm_term_id' => $term_id], ['%d'] );
     }
 
     /**
@@ -302,15 +300,15 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
             ( $old_table_name = self::get_old_table_name() )
             &&
             ( $value = $wpdb->get_col( $wpdb->prepare(
-                "SELECT meta_value FROM `{$old_table_name}` WHERE dm_term_id = %d AND meta_key = 'dm_options' LIMIT 1",
+                "SELECT meta_value FROM `{$old_table_name}` WHERE devm_term_id = %d AND meta_key = 'devm_options' LIMIT 1",
                 $term_id
             ) ) )
             &&
             ( $value = unserialize( $value[0] ) )
         ) {
-            $wpdb->delete( $old_table_name, ['dm_term_id' => $term_id], ['%d'] );
+            $wpdb->delete( $old_table_name, ['devm_term_id' => $term_id], ['%d'] );
 
-            update_term_meta( $term_id, 'dm_options', $value );
+            update_term_meta( $term_id, 'devm_options', $value );
 
             return true;
         } else {
@@ -319,11 +317,11 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
 
     }
 
-    protected function _after_set( $item_id, $option_id, $sub_keys, $old_value, array $extra_data = [] ) {
+    protected function after_set_protected( $item_id, $option_id, $sub_keys, $old_value, array $extra_data = [] ) {
         /**
          * @since 2.6.0
          */
-        do_action( 'dm_term_options_update', [
+        do_action( 'devm_term_options_update', [
             'term_id'   => $item_id,
             'taxonomy'  => $extra_data['taxonomy'],
             /**
@@ -353,13 +351,13 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
      */
     protected function _init() {
 
-        function dm_term_option( $term_id, $taxonomy, $option_id = null, $default_value = null, $get_original_value = null ) {
+        function devm_term_option( $term_id, $taxonomy, $option_id = null, $default_value = null, $get_original_value = null ) {
 
             if ( !taxonomy_exists( $taxonomy ) ) {
                 return null;
             }
 
-            return DM_Db_Options_Model::_get_instance( 'term' )->get( intval( $term_id ), $option_id, $default_value, [
+            return DEVM_Db_Options_Model::get_instance_protected( 'term' )->get( intval( $term_id ), $option_id, $default_value, [
                 'taxonomy' => $taxonomy,
             ] );
         }
@@ -374,54 +372,54 @@ class DM_Db_Options_Model_Term extends DM_Db_Options_Model {
          *
          * @return null
          */
-        function dm_set_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
+        function devm_set_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
 
             if ( !taxonomy_exists( $taxonomy ) ) {
                 return null;
             }
 
-            DM_Db_Options_Model::_get_instance( 'term' )->set( intval( $term_id ), $option_id, $value, [
+            DEVM_Db_Options_Model::get_instance_protected( 'term' )->set( intval( $term_id ), $option_id, $value, [
                 'taxonomy' => $taxonomy,
             ] );
         }
 
-        add_action( 'switch_blog', [__CLASS__, '_action_switch_blog'] );
-        add_action( 'delete_term', [__CLASS__, '_action_dm_delete_term'] );
+        add_action( 'switch_blog', [__CLASS__, 'action_switch_blog_protected'] );
+        add_action( 'delete_term', [__CLASS__, 'action_devm_delete_term_protected'] );
     }
 
 }
 
-new DM_Db_Options_Model_Term();
+new DEVM_Db_Options_Model_Term();
 
 // Customizer Options
-class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
+class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
     protected function get_id() {
         return 'customizer';
     }
 
     protected function get_values( $item_id, array $extra_data = [] ) {
-        return get_theme_mod( 'dm_options', [] );
+        return get_theme_mod( 'devm_options', [] );
     }
 
     protected function set_values( $item_id, $values, array $extra_data = [] ) {
-        set_theme_mod( 'dm_options', $values );
+        set_theme_mod( 'devm_options', $values );
     }
 
     protected function get_options( $item_id, array $extra_data = [] ) {
-        return dm()->theme->get_customizer_options();
+        return devm()->theme->get_customizer_options();
     }
 
-    protected function get_dm_storage_params( $item_id, array $extra_data = [] ) {
+    protected function get_devm_storage_params( $item_id, array $extra_data = [] ) {
         return [
             'customizer' => true,
         ];
     }
 
-    protected function _after_set( $item_id, $option_id, $sub_keys, $old_value, array $extra_data = [] ) {
+    protected function after_set_protected( $item_id, $option_id, $sub_keys, $old_value, array $extra_data = [] ) {
         /**
          * @since 2.6.0
          */
-        do_action( 'dm_customizer_options_update', [
+        do_action( 'devm_customizer_options_update', [
             /**
              * Option id
              * First level multi-key
@@ -445,8 +443,8 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
     /**
      * @internal
      */
-    public function _reset_cache() {
-        DM_Cache::del( $this->get_main_cache_key() );
+    public function reset_cache_protected() {
+        Devm_Cache::del( $this->get_main_cache_key() );
     }
 
     protected function _init() {
@@ -458,8 +456,8 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
          *
          * @return mixed|null
          */
-        function dm_customizer_option( $option_id = null, $default_value = null ) {
-            return DM_Db_Options_Model::_get_instance( 'customizer' )->get( null, $option_id, $default_value );
+        function devm_customizer_option( $option_id = null, $default_value = null ) {
+            return DEVM_Db_Options_Model::get_instance_protected( 'customizer' )->get( null, $option_id, $default_value );
         }
 
         /**
@@ -468,15 +466,15 @@ class DM_Db_Options_Model_Customizer extends DM_Db_Options_Model {
          * @param null $option_id Specific option id (accepts multikey). null - all options
          * @param mixed $value
          */
-        function dm_set_customizer_option( $option_id = null, $value ) {
-            DM_Db_Options_Model::_get_instance( 'customizer' )->set( null, $option_id, $value );
+        function devm_set_customizer_option( $option_id = null, $value ) {
+            DEVM_Db_Options_Model::get_instance_protected( 'customizer' )->set( null, $option_id, $value );
         }
 
-        add_action( 'customize_preview_init', [$this, '_reset_cache'],
+        add_action( 'customize_preview_init', [$this, 'reset_cache_protected'],
             1
         );
     }
 
 }
 
-new DM_Db_Options_Model_Customizer();
+new DEVM_Db_Options_Model_Customizer();

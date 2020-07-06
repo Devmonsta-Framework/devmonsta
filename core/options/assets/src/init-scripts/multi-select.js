@@ -1,5 +1,5 @@
-jQuery(window).on('dm-scripts.multiSelect', function(){
-    var el = jQuery('.dm-option.active-script .dm_multi_select');
+jQuery(window).on('devm-scripts.multiSelect', function(){
+    var el = jQuery('.devm-option.active-script .devm_multi_select');
 
     if (el.length) {
         el.select2({multiple:true});
@@ -8,5 +8,5 @@ jQuery(window).on('dm-scripts.multiSelect', function(){
 
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.multiSelect');
+    jQuery(window).trigger('devm-scripts.multiSelect');
 });

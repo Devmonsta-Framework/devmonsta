@@ -4,8 +4,7 @@ namespace Devmonsta;
 
 use Devmonsta\Traits\Singleton;
 
-final class Bootstrap
-{
+final class Bootstrap {
 
     use Singleton;
 
@@ -17,38 +16,35 @@ final class Bootstrap
      * =============================================
      */
 
-    public function init()
-    {
-        define('DM', true);
+    public function init() {
+        define( 'DEVM', true );
 
         //Make all the helper functions available
         $helper_files = [
-            'class-dm-db-options-model',
-            'class-dm-dumper',
+            'class-devm-db-options-model',
+            'class-devm-dumper',
             'meta',
-            'class-dm-cache',
-            'class-dm-callback',
-            'class-dm-wp-meta',
+            'class-devm-cache',
+            'class-devm-callback',
+            'class-devm-wp-meta',
             'database',
-            'class-dm-resize',
-            'class-dm-request',
-            'class-dm-session',
-            'class-dm-flash-messages',
+            'class-devm-resize',
+            'class-devm-request',
             'general',
             'repeater',
         ];
 
-        foreach ($helper_files as $file) {
-            require dirname(__FILE__) . '/helpers/' . $file . '.php';
+        foreach ( $helper_files as $file ) {
+            require dirname( __FILE__ ) . '/helpers/' . $file . '.php';
         }
 
-        
         \Devmonsta\Options\Customizer\Customizer::instance()->init();
         \Devmonsta\Options\Posts\Posts::instance()->init();
         \Devmonsta\Options\Taxonomies\Taxonomies::instance()->init();
         \Devmonsta\Rest::instance()->init();
 
         //include file to backup data
-        require dirname(__FILE__) . '/backup/export.php';
+        require dirname( __FILE__ ) . '/backup/export.php';
     }
+
 }

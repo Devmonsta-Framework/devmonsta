@@ -22,9 +22,9 @@ class ColorPicker extends Structure {
         $this->current_screen = $meta_owner;
 
         if ( $this->current_screen == "post" ) {
-            $this->dm_enqueue_color_picker();
+            $this->devm_enqueue_color_picker();
         } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'dm_enqueue_color_picker'] );
+            add_action( 'init', [$this, 'devm_enqueue_color_picker'] );
         }
 
     }
@@ -32,7 +32,7 @@ class ColorPicker extends Structure {
     /**
      * @internal
      */
-    function dm_enqueue_color_picker() {
+    function devm_enqueue_color_picker() {
 
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
@@ -96,7 +96,7 @@ class ColorPicker extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -121,7 +121,7 @@ class ColorPicker extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
         //enqueue scripts and styles for color picker
-        $this->dm_enqueue_color_picker();
+        $this->devm_enqueue_color_picker();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
@@ -157,18 +157,18 @@ class ColorPicker extends Structure {
 
         $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-                <div class="dm-option-column left">
-                    <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
                 </div>
 
-                <div class="dm-option-column right">
+                <div class="devm-option-column right">
                     <input  type="text" data-config='<?php echo json_encode($data); ?>'
                             name="<?php echo esc_attr( $name ); ?>"
-                            class="dm-ctrl dm-color-picker-field"
+                            class="devm-ctrl devm-color-picker-field"
                             value="<?php echo esc_attr( $value );?>"
                             data-default-color="<?php echo esc_attr( $value );?>" />
-                    <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>
     <?php

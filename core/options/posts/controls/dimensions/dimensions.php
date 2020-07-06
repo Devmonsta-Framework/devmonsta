@@ -55,7 +55,7 @@ class Dimensions extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
                 
         //generate attributes dynamically for parent tag
-        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app active-script" );
+        $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app active-script" );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc );
@@ -73,7 +73,7 @@ class Dimensions extends Structure {
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
 
                 if ( $visible ) {
-                    $columns[$content['name']] = __( $content['label'], 'devmonsta' );
+                    $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
 
                 return $columns;
@@ -116,7 +116,7 @@ class Dimensions extends Structure {
         $value              = (  ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) && ( "" != get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
                         
         //generate attributes dynamically for parent tag
-        $default_attributes = $this->prepare_default_attributes( $this->content, "dm-vue-app" );
+        $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
@@ -135,45 +135,45 @@ class Dimensions extends Structure {
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
 
         ?>
-            <div <?php echo dm_render_markup( $default_attributes ); ?> >
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
-            <div class="dm-option-column right">
-                <dm-dimensions
+            <div class="devm-option-column right">
+                <devm-dimensions
                     :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>" 
                     linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
                 >
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $value['top'] ) && is_numeric( $value['top'] ) ? esc_attr( intval( $value['top'] ) ) : 0; ?>"
                         label="top"
-                    ></dm-dimensions-item>
+                    ></devm-dimensions-item>
 
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[right]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $value['right'] ) && is_numeric( $value['right'] ) ? esc_attr( intval( $value['right'] ) ) : 0; ?>"
                         label="right"
-                    ></dm-dimensions-item>
+                    ></devm-dimensions-item>
 
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[bottom]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $value['bottom'] ) && is_numeric( $value['bottom'] ) ? esc_attr( intval( $value['bottom'] ) ) : 0; ?>"
                         label="bottom"
-                    ></dm-dimensions-item>
+                    ></devm-dimensions-item>
 
-                    <dm-dimensions-item
+                    <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[left]"
-                        class="dm-ctrl"
+                        class="devm-ctrl"
                         value="<?php echo isset( $value['left'] ) && is_numeric( $value['left'] )? esc_attr( intval( $value['left'] ) ) : 0; ?>"
                         label="left"
-                    ></dm-dimensions-item>
-                </dm-dimensions>
-                <p class="dm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    ></devm-dimensions-item>
+                </devm-dimensions>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
     <?php

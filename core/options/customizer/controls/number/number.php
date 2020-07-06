@@ -17,7 +17,7 @@ class Number extends Structure {
 
     public function __construct( $manager, $id, $args = [] ) {
         $this->prepare_values( $id, $args );
-        $this->statuses = ['' => __( 'Default' )];
+        $this->statuses = ['' =>esc_html__( 'Default' )];
         parent::__construct( $manager, $id, $args );
     }
 
@@ -59,16 +59,16 @@ class Number extends Structure {
 
     public function render_content() {
         ?>
-        <li <?php echo dm_render_markup( $this->default_attributes ); ?>>
-            <div class="dm-option-column left">
-                <label class="dm-option-label"><?php echo esc_html( $this->label ); ?> </label>
+        <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
 
             </div>
 
-            <div class="dm-option-column right">
-                <input <?php $this->link();?> type="number" class="dm-option-input dm-ctrl" min="<?php echo esc_attr( $this->min ); ?>"
+            <div class="devm-option-column right">
+                <input <?php $this->link();?> type="number" class="devm-option-input devm-ctrl" min="<?php echo esc_attr( $this->min ); ?>"
                     max="<?php echo esc_attr( $this->max ); ?>" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_url( $this->value ); ?>" >
-                <p class="dm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
+                <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
 
