@@ -14,7 +14,7 @@ require_once ABSPATH . 'wp-admin/includes/comment.php';
 require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 
-class Dms_WXR_Importer extends WP_Importer {
+class Devm_WXR_Importer extends WP_Importer {
     var $max_wxr_version = 1.2; // max. supported WXR version
 
     var $id;
@@ -68,7 +68,7 @@ class Dms_WXR_Importer extends WP_Importer {
         $this->process_widgets_sidebar();
         $this->process_posts();
         $this->update_reading_setting( $file );
-        $this->dms_update_primary_menu( $file );
+        $this->devm_update_primary_menu( $file );
         wp_suspend_cache_invalidation( false );
 
         // update incorrect/missing information in the DB
@@ -109,7 +109,7 @@ class Dms_WXR_Importer extends WP_Importer {
 
     }
 
-    public function dms_update_primary_menu( $file ) {
+    public function devm_update_primary_menu( $file ) {
         $xml_file          = simplexml_load_file( $file );
         $all_nodes         = $xml_file->channel;
         $primary_menu_slug = $all_nodes->menu->primary->slug;
@@ -1294,7 +1294,7 @@ class Dms_WXR_Importer extends WP_Importer {
      * @return array Information gathered from the WXR file
      */
     function parse( $file ) {
-        $parser = new Dms_WXR_Parser();
+        $parser = new Devm_WXR_Parser();
         return $parser->parse( $file );
     }
 
@@ -1322,9 +1322,9 @@ class Dms_WXR_Importer extends WP_Importer {
      */
     function is_valid_meta_key( $key ) {
 
-// skip attachment metadata since we'll regenerate it from scratch
+    // skip attachment metadata since we'll regenerate it from scratch
 
-// skip _edit_lock as not relevant for import
+    // skip _edit_lock as not relevant for import
         if ( in_array( $key, [ '_wp_attached_file', '_wp_attachment_metadata', '_edit_lock' ] ) ) {
             return false;
         }

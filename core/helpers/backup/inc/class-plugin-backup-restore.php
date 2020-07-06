@@ -190,5 +190,5 @@ class Devm_Plugin_Backup_Restore {
 
 }
 
-// $dms_plugin_obj = new Dms_Plugin_Backup_Restore();
+// $dms_plugin_obj = new Devm_Plugin_Backup_Restore();
 // dms_print($dms_plugin_obj->dms_get_all_installed_plugins_directory());

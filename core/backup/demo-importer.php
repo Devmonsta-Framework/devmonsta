@@ -236,8 +236,8 @@ class DEVM_Demo_Importer {
             "data"     => [],
         ];
 
-        $d                      = new Dms_Downloader();
-        $im                     = new Dms_Importer();
+        $d                      = new Devm_Downloader();
+        $im                     = new Devm_Importer();
         $filename               = 'dms_production.xml';
         $dms_imported_file_path = $im->get_import_file_path( $filename );
 

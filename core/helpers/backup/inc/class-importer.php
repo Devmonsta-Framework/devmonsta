@@ -2,7 +2,7 @@
 
 defined('ABSPATH') || exit;
 
-class Dms_Importer
+class Devm_Importer
 {
 
 	public function download($url = null)
@@ -46,7 +46,7 @@ class Dms_Importer
 		// Import XML file demo content.
 		if (is_file($import_file)) {
 
-			$wp_import                    = new Dms_WXR_Importer();
+			$wp_import                    = new Devm_WXR_Importer();
 			$wp_import->fetch_attachments = true;
 
 			ob_start();
