@@ -160,12 +160,13 @@ class Devm_Plugin_Backup_Restore {
                         $this->devm_install_plugin( $plugin_slug );
                         $installed                          = true;
                         $this->pluginsInstall[$plugin_slug] = $installed;
-                    } else {
-                        //plugin's already installed, upgrade plugin
-                        $this->devm_upgrade_plugin( $plugin_slug );
-                        $installed                          = true;
-                        $this->pluginsInstall[$plugin_slug] = $installed;
-                    }
+                    } 
+                    // else {
+                    //     //plugin's already installed, upgrade plugin
+                    //     $this->devm_upgrade_plugin( $plugin_slug );
+                    //     $installed                          = true;
+                    //     $this->pluginsInstall[$plugin_slug] = $installed;
+                    // }
 
                     $plugin_slug                    = $plugin_slug;
                     $updated_plugin_directory_array = $this->devm_get_all_installed_plugins_directory();
