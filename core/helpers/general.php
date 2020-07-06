@@ -1215,10 +1215,14 @@ function devm_get_post_type($control_name)
 //demo import file flter
 function devm_import_files() {
     $demo_data = [ ];
+    $demo_file =  get_stylesheet_directory() . '/devmonsta/theme-demos.php';
 
-    require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
+    if( file_exists($demo_file)){
+        require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
+    }
+
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
-    
+
     return $demo_data_array;
 }
 
