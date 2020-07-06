@@ -58,18 +58,18 @@ class DEVM_Demo_Importer {
 
     function __construct() {
 
-        add_action( 'admin_init', [$this, 'dms_demo_import_script_enqueuer'] );
+        add_action( 'admin_init', [$this, 'devm_demo_import_script_enqueuer'] );
         // Actions.
         add_action( 'admin_menu', [$this, 'create_import_page'] );
         add_action( "wp_ajax_devm_import_config", [$this, "devm_import_config"] );
-        add_action( "wp_ajax_dms_import_content_before", [$this, "dms_import_content_before"] );
-        add_action( "wp_ajax_dms_import_erase_data", [$this, "devm_import_erase_data"] );
-        add_action( "wp_ajax_dms_import_plugin_install", [$this, "devm_import_plugin_install"] );
+        add_action( "wp_ajax_devm_import_content_before", [$this, "devm_import_content_before"] );
+        add_action( "wp_ajax_devm_import_erase_data", [$this, "devm_import_erase_data"] );
+        add_action( "wp_ajax_devm_import_plugin_install", [$this, "devm_import_plugin_install"] );
 
-        add_action( "wp_ajax_dms_import_demo", [$this, "dms_import_demo_ajax_call_back"] );
+        add_action( "wp_ajax_devm_import_demo", [$this, "devm_import_demo_ajax_call_back"] );
     }
 
-    function dms_demo_import_script_enqueuer() {
+    function devm_demo_import_script_enqueuer() {
         global $pagenow;
 
         if ( isset( $_GET['page'] ) && 'tools.php' == $pagenow && 'devm-demo-import' == $_GET['page'] ) {
@@ -98,7 +98,7 @@ class DEVM_Demo_Importer {
                 devm_get_framework_directory_uri( '/static/js/devm_import_script.js' ),
                 ['jquery'] );
 
-            wp_localize_script( 'devm_import_script', 'dmsAjax', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
+            wp_localize_script( 'devm_import_script', 'devmAjax', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
         }
 
     }
@@ -170,14 +170,14 @@ class DEVM_Demo_Importer {
 
         $result_array = [
             "status"   => "1",
-            'next'     => 'dms_import_plugin_install',
+            'next'     => 'devm_import_plugin_install',
             'config'   => $_POST['config'],
             "messages" => [],
             "data"     => [],
         ];
 
         $config_data     = $_POST["config"];
-        $delete_selected = $config_data["dms_delete_data"];
+        $delete_selected = $config_data["devm_delete_data"];
 
         if ( $delete_selected == "true" ) {
             $reset_db_obj = new Devm_Reset_DB();
@@ -201,22 +201,22 @@ class DEVM_Demo_Importer {
 
         $result_array = [
             "status"   => "1",
-            'next'     => 'dms_import_demo',
+            'next'     => 'devm_import_demo',
             'nonce'    => $_POST["nonce"],
             'config'   => $_POST['config'],
             "messages" => [],
             "data"     => [],
         ];
 
-        $dms_plugin_obj           = new Devm_Plugin_Backup_Restore();
-        $result_message           = $dms_plugin_obj->dms_process_plugins( $required_plugins_array );
+        $devm_plugin_obj           = new Devm_Plugin_Backup_Restore();
+        $result_message           = $devm_plugin_obj->devm_process_plugins( $required_plugins_array );
         $result_array["messages"] = [$result_message];
 
         wp_send_json_success( $result_array );
         wp_die();
     }
 
-    function dms_import_demo_ajax_call_back() {
+    function devm_import_demo_ajax_call_back() {
 
 // nonce check for an extra layer of security, the function will exit if it fails
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
@@ -238,8 +238,8 @@ class DEVM_Demo_Importer {
 
         $d                      = new Devm_Downloader();
         $im                     = new Devm_Importer();
-        $filename               = 'dms_production.xml';
-        $dms_imported_file_path = $im->get_import_file_path( $filename );
+        $filename               = 'devm_production.xml';
+        $devm_imported_file_path = $im->get_import_file_path( $filename );
 
         ignore_user_abort( true );
         try {
@@ -264,22 +264,22 @@ class DEVM_Demo_Importer {
             error_log( "timeout could not be updated: " . $ex->getMessage() );
         }
 
-        if ( file_exists( $dms_imported_file_path ) ) {
-            unlink( $dms_imported_file_path );
+        if ( file_exists( $devm_imported_file_path ) ) {
+            unlink( $devm_imported_file_path );
         }
 
         try {
-            $dms_imported_file_path = $d->download_xml_file( $xml_link, $dms_imported_file_path );
+            $devm_imported_file_path = $d->download_xml_file( $xml_link, $devm_imported_file_path );
         } catch ( Exception $ex ) {
-            error_log( $dms_imported_file_path . ": could not be downloaded. error message:" . $ex->getMessage() );
+            error_log( $devm_imported_file_path . ": could not be downloaded. error message:" . $ex->getMessage() );
         }
 
         if ( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
 
             try {
-                $error = esc_html__( 'Data import failed', 'dms' );
+                $error = esc_html__( 'Data import failed', 'devm' );
 
-                $return_success = $im->import_dummy_xml( $dms_imported_file_path );
+                $return_success = $im->import_dummy_xml( $devm_imported_file_path );
                 if ( $return_success ) {
                     wp_send_json_success( $result );
                 } else {
@@ -287,7 +287,7 @@ class DEVM_Demo_Importer {
                 }
 
             } catch ( Exception $e ) {
-                // error_log($dms_imported_file_path  . ": could not be imported. error message:" . $e->getMessage());
+                // error_log($devm_imported_file_path  . ": could not be imported. error message:" . $e->getMessage());
                 $result['messages'] = ["demo import failed"];
                 wp_send_json_error( $result );
             }
@@ -300,7 +300,7 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
-    function dms_import_content_before() {
+    function devm_import_content_before() {
 
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Woof Woof Woof" );
@@ -310,7 +310,7 @@ class DEVM_Demo_Importer {
             "status"          => "1",
             'required_plugin' => $_POST['required_plugin'],
             'nonce'           => $_POST["nonce"],
-            'dms_delete_data' => $_POST['dms_delete_data'],
+            'devm_delete_data' => $_POST['devm_delete_data'],
             "messages"        => [
                 "import content message one",
                 "import content message two",

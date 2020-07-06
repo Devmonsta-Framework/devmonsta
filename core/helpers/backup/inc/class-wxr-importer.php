@@ -93,7 +93,7 @@ class Devm_WXR_Importer extends WP_Importer {
                 $key          = $obj_to_array["key"];
                 $value        = $obj_to_array["value"];
                 if ( "page_on_front" == $key ) {
-                    $page_id = $this->dms_get_id_by_slug( $value, 'page' );
+                    $page_id = $this->devm_get_id_by_slug( $value, 'page' );
                     update_option( $key, $page_id );
                     // error_log("updated page on front with page id : " . $page_id);
                 }
@@ -124,7 +124,7 @@ class Devm_WXR_Importer extends WP_Importer {
         set_theme_mod( 'nav_menu_locations', $nav_menu_location );
     }
 
-    function dms_get_id_by_slug( $title, $type ) {
+    function devm_get_id_by_slug( $title, $type ) {
         $page = get_posts(
             [
                 'name'        => $title,
@@ -143,8 +143,8 @@ class Devm_WXR_Importer extends WP_Importer {
     function import_start( $file ) {
 
         if ( !is_file( $file ) ) {
-            echo '<p><strong>' . __( 'Sorry, there has been an error.', 'dms' ) . '</strong><br />';
-            echo __( 'The file does not exist, please try again.', 'dms' ) . '</p>';
+            echo '<p><strong>' . __( 'Sorry, there has been an error.', 'devmonsta' ) . '</strong><br />';
+            echo __( 'The file does not exist, please try again.', 'devmonsta' ) . '</p>';
 
             die();
         }
@@ -153,7 +153,7 @@ class Devm_WXR_Importer extends WP_Importer {
         $import_data = $this->parse( $file );
 
         if ( is_wp_error( $import_data ) ) {
-            echo '<p><strong>' . __( 'Sorry, there has been an error.', 'dms' ) . '</strong><br />';
+            echo '<p><strong>' . __( 'Sorry, there has been an error.', 'devmonsta' ) . '</strong><br />';
             echo esc_html( $import_data->get_error_message() ) . '</p>';
 
             die();
@@ -206,7 +206,7 @@ class Devm_WXR_Importer extends WP_Importer {
                 $login = sanitize_user( $post['post_author'], true );
 
                 if ( empty( $login ) ) {
-                    printf( __( 'Failed to import author %s. Their posts will be attributed to the current user.', 'dms' ), esc_html( $post['post_author'] ) );
+                    printf( __( 'Failed to import author %s. Their posts will be attributed to the current user.', 'devmonsta' ), esc_html( $post['post_author'] ) );
                     echo '<br />';
                     continue;
                 }
@@ -273,7 +273,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
                     $this->author_mapping[$santized_old_login] = $user_id;
                 } else {
-                    printf( __( 'Failed to create new user for %s. Their posts will be attributed to the current user.', 'dms' ), esc_html( $this->authors[$old_login]['author_display_name'] ) );
+                    printf( __( 'Failed to create new user for %s. Their posts will be attributed to the current user.', 'devmonsta' ), esc_html( $this->authors[$old_login]['author_display_name'] ) );
 
                     if ( defined( 'IMPORT_DEBUG' ) && IMPORT_DEBUG ) {
                         echo ' ' . esc_html( $user_id->get_error_message() );
@@ -311,7 +311,7 @@ class Devm_WXR_Importer extends WP_Importer {
     }
 
     function process_customizers() {
-        $this->customizers = apply_filters( 'dms_import_customizer', $this->customizers );
+        $this->customizers = apply_filters( 'devm_import_customizer', $this->customizers );
         if ( is_array( $this->customizers ) ) {
             $customizer_data = unserialize( $this->customizers[1] );
             $theme_name      = $this->customizers[0];
@@ -329,7 +329,7 @@ class Devm_WXR_Importer extends WP_Importer {
      * Check if a specific plugin is installed in system
      * Check is done using plugin's slug
      */
-    function dms_is_plugin_installed( $slug ) {
+    function devm_is_plugin_installed( $slug ) {
         if ( !function_exists( 'get_plugins' ) ) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
         }
@@ -344,7 +344,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
     }
 
-    function dms_install_plugin( $plugin_zip ) {
+    function devm_install_plugin( $plugin_zip ) {
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
         wp_cache_flush();
 
@@ -354,7 +354,7 @@ class Devm_WXR_Importer extends WP_Importer {
         return $installed;
     }
 
-    function dms_upgrade_plugin( $plugin_slug ) {
+    function devm_upgrade_plugin( $plugin_slug ) {
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
         wp_cache_flush();
 
@@ -366,19 +366,19 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function process_plugins() {
         $install_report          = "";
-        $this->activated_plugins = apply_filters( 'dms_import_activated_plugins', $this->activated_plugins );
+        $this->activated_plugins = apply_filters( 'devm_import_activated_plugins', $this->activated_plugins );
 
         if ( is_array( $this->activated_plugins ) ) {
             foreach ( $this->activated_plugins as $plugin_slug ) {
                 $slug_words = explode( "/", $plugin_slug );
                 $plugin_zip = "https://downloads.wordpress.org/plugin" . $slug_words[0] . ".latest-stable.zip";
                 $installed  = false;
-                if ( dms_is_plugin_installed( $plugin_slug ) ) {
-                    $this->dms_upgrade_plugin( $plugin_slug );
+                if ( devm_is_plugin_installed( $plugin_slug ) ) {
+                    $this->devm_upgrade_plugin( $plugin_slug );
                     $installed = true;
                     $install_report .= "upgraded";
                 } else {
-                    $this->dms_install_plugin( $plugin_zip );
+                    $this->devm_install_plugin( $plugin_zip );
                     $installed = true;
                     $install_report .= "installed";
                 }
@@ -447,7 +447,7 @@ class Devm_WXR_Importer extends WP_Importer {
                 }
 
             } else {
-                printf( __( 'Failed to import category %s', 'dms' ), esc_html( $cat['category_nicename'] ) );
+                printf( __( 'Failed to import category %s', 'devmonsta' ), esc_html( $cat['category_nicename'] ) );
 
                 if ( defined( 'IMPORT_DEBUG' ) && IMPORT_DEBUG ) {
                     echo ': ' . esc_html( $id->get_error_message() );
@@ -503,7 +503,7 @@ class Devm_WXR_Importer extends WP_Importer {
                 }
 
             } else {
-                printf( __( 'Failed to import post tag %s', 'dms' ), esc_html( $tag['tag_name'] ) );
+                printf( __( 'Failed to import post tag %s', 'devmonsta' ), esc_html( $tag['tag_name'] ) );
 
                 if ( defined( 'IMPORT_DEBUG' ) && IMPORT_DEBUG ) {
                     echo ': ' . esc_html( $id->get_error_message() );
@@ -571,7 +571,7 @@ class Devm_WXR_Importer extends WP_Importer {
                 }
 
             } else {
-                printf( __( 'Failed to import %1$s %2$s', 'dms' ), esc_html( $term['term_taxonomy'] ), esc_html( $term['term_name'] ) );
+                printf( __( 'Failed to import %1$s %2$s', 'devmonsta' ), esc_html( $term['term_taxonomy'] ), esc_html( $term['term_name'] ) );
 
                 if ( defined( 'IMPORT_DEBUG' ) && IMPORT_DEBUG ) {
                     echo ': ' . esc_html( $id->get_error_message() );
@@ -680,7 +680,7 @@ class Devm_WXR_Importer extends WP_Importer {
             $post_exists = apply_filters( 'wp_import_existing_post', $post_exists, $post );
 
             if ( $post_exists && get_post_type( $post_exists ) == $post['post_type'] ) {
-                printf( __( '%1$s &#8220;%2$s&#8221; already exists.', 'dms' ), $post_type_object->labels->singular_name, esc_html( $post['post_title'] ) );
+                printf( __( '%1$s &#8220;%2$s&#8221; already exists.', 'devmonsta' ), $post_type_object->labels->singular_name, esc_html( $post['post_title'] ) );
                 echo '<br />';
                 $comment_post_ID                                 = $post_id                                 = $post_exists;
                 $this->processed_posts[intval( $post['post_id'] )] = intval( $post_exists );
@@ -758,7 +758,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
                     }
 
-                    // error_log("dms inserted into attachment block with url: " .  $remote_url);
+                    // error_log("devmonsta inserted into attachment block with url: " .  $remote_url);
                     $comment_post_ID = $post_id = $this->process_attachment( $postdata, $remote_url );
                 } else {
                     $comment_post_ID = $post_id = wp_insert_post( $postdata, true );
@@ -767,7 +767,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
                 if ( is_wp_error( $post_id ) ) {
                     printf(
-                        __( 'Failed to import %1$s &#8220;%2$s&#8221;', 'dms' ),
+                        __( 'Failed to import %1$s &#8220;%2$s&#8221;', 'devmonsta' ),
                         $post_type_object->labels->singular_name,
                         esc_html( $post['post_title'] )
                     );
@@ -811,7 +811,7 @@ class Devm_WXR_Importer extends WP_Importer {
                             $term_id = $t['term_id'];
                             do_action( 'wp_import_insert_term', $t, $term, $post_id, $post );
                         } else {
-                            printf( __( 'Failed to import %1$s %2$s', 'dms' ), esc_html( $taxonomy ), esc_html( $term['name'] ) );
+                            printf( __( 'Failed to import %1$s %2$s', 'devmonsta' ), esc_html( $taxonomy ), esc_html( $term['name'] ) );
 
                             if ( defined( 'IMPORT_DEBUG' ) && IMPORT_DEBUG ) {
                                 echo ': ' . esc_html( $t->get_error_message() );
@@ -1002,14 +1002,14 @@ class Devm_WXR_Importer extends WP_Importer {
 
 // no nav_menu term associated with this menu item
         if ( !$menu_slug ) {
-            _e( 'Menu item skipped due to missing menu slug', 'dms' );
+            _e( 'Menu item skipped due to missing menu slug', 'devmonsta' );
             echo '<br />';
             return;
         }
 
         $menu_id = term_exists( $menu_slug, 'nav_menu' );
         if ( !$menu_id ) {
-            printf( __( 'Menu item skipped due to invalid menu slug: %s', 'dms' ), esc_html( $menu_slug ) );
+            printf( __( 'Menu item skipped due to invalid menu slug: %s', 'devmonsta' ), esc_html( $menu_slug ) );
             echo '<br />';
             return;
         } else {
@@ -1076,12 +1076,12 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function process_attachment( $post, $url ) {
 
-// error_log("dms started attachment processing: " .  $url);
+// error_log("devmonsta started attachment processing: " .  $url);
 
         if ( !$this->fetch_attachments ) {
             return new WP_Error(
                 'attachment_processing_error',
-                __( 'Fetching attachments is not enabled', 'dms' )
+                __( 'Fetching attachments is not enabled', 'devmonsta' )
             );
         }
 
@@ -1092,7 +1092,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
         $upload = $this->fetch_remote_file( $url, $post );
 
-// error_log("dms started attachment downloading: " . print_r($upload));
+// error_log("devmonsta started attachment downloading: " . print_r($upload));
         if ( is_wp_error( $upload ) ) {
             return $upload;
         }
@@ -1100,8 +1100,8 @@ class Devm_WXR_Importer extends WP_Importer {
         if ( $info = wp_check_filetype( $upload['file'] ) ) {
             $post['post_mime_type'] = $info['type'];
         } else {
-            // error_log("dms started attachment downloading: Invalid file type");
-            return new WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'dms' ) );
+            // error_log("devmonsta started attachment downloading: Invalid file type");
+            return new WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'devmonsta' ) );
         }
 
         $post['guid'] = $upload['url'];
@@ -1150,8 +1150,8 @@ class Devm_WXR_Importer extends WP_Importer {
 // request failed
         if ( !$headers ) {
             @unlink( $upload['file'] );
-            // error_log("dms attachment download error : Remote server did not respond " . $file_name);
-            return new WP_Error( 'import_file_error', __( 'Remote server did not respond', 'dms' ) );
+            // error_log("devmonsta attachment download error : Remote server did not respond " . $file_name);
+            return new WP_Error( 'import_file_error', __( 'Remote server did not respond', 'devmonsta' ) );
         }
 
         $remote_response_code = wp_remote_retrieve_response_code( $remote_response );
@@ -1159,8 +1159,8 @@ class Devm_WXR_Importer extends WP_Importer {
 // make sure the fetch was successful
         if ( $remote_response_code != '200' ) {
             @unlink( $upload['file'] );
-            // error_log("dms attachment download error : Remote server returned error response " . $remote_response_code);
-            return new WP_Error( 'import_file_error', sprintf( __( 'Remote server returned error response %1$d %2$s', 'dms' ), esc_html( $remote_response_code ), get_status_header_desc( $remote_response_code ) ) );
+            // error_log("devmonsta attachment download error : Remote server returned error response " . $remote_response_code);
+            return new WP_Error( 'import_file_error', sprintf( __( 'Remote server returned error response %1$d %2$s', 'devmonsta' ), esc_html( $remote_response_code ), get_status_header_desc( $remote_response_code ) ) );
         }
 
         $filesize = filesize( $upload['file'] );
@@ -1169,24 +1169,24 @@ class Devm_WXR_Importer extends WP_Importer {
 
 //     @unlink($upload['file']);
 
-//     error_log("dms attachment download error : Remote file is incorrect size " . $filesize);
+//     error_log("devmonsta attachment download error : Remote file is incorrect size " . $filesize);
 
-//     return new WP_Error('import_file_error', __('Remote file is incorrect size', 'dms'));
+//     return new WP_Error('import_file_error', __('Remote file is incorrect size', 'devmonsta'));
 
 // }
 
         if ( 0 == $filesize ) {
             @unlink( $upload['file'] );
-            // error_log("dms attachment download error : Zero size file downloaded");
-            return new WP_Error( 'import_file_error', __( 'Zero size file downloaded', 'dms' ) );
+            // error_log("devmonsta attachment download error : Zero size file downloaded");
+            return new WP_Error( 'import_file_error', __( 'Zero size file downloaded', 'devmonsta' ) );
         }
 
         $max_size = (int) $this->max_attachment_size();
 
         if ( !empty( $max_size ) && $filesize > $max_size ) {
             @unlink( $upload['file'] );
-            // error_log("dms attachment download error : Remote file is too large");
-            return new WP_Error( 'import_file_error', sprintf( __( 'Remote file is too large, limit is %s', 'dms' ), size_format( $max_size ) ) );
+            // error_log("devmonsta attachment download error : Remote file is too large");
+            return new WP_Error( 'import_file_error', sprintf( __( 'Remote file is too large, limit is %s', 'devmonsta' ), size_format( $max_size ) ) );
         }
 
         // keep track of the old and new urls so we can substitute them later
@@ -1308,8 +1308,8 @@ class Devm_WXR_Importer extends WP_Importer {
      */
     function greet() {
         echo '<div class="narrow">';
-        echo '<p>' . __( 'Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import the posts, pages, comments, custom fields, categories, and tags into this site.', 'dms' ) . '</p>';
-        echo '<p>' . __( 'Choose a WXR (.xml) file to upload, then click Upload file and import.', 'dms' ) . '</p>';
+        echo '<p>' . __( 'Howdy! Upload your WordPress eXtended RSS (WXR) file and we&#8217;ll import the posts, pages, comments, custom fields, categories, and tags into this site.', 'devmonsta' ) . '</p>';
+        echo '<p>' . __( 'Choose a WXR (.xml) file to upload, then click Upload file and import.', 'devmonsta' ) . '</p>';
         wp_import_upload_form( 'admin.php?import=wordpress&amp;step=1' );
         echo '</div>';
     }

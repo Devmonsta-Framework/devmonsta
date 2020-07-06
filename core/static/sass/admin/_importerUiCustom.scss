@@ -4,16 +4,16 @@
     }
 }
 
-.dms-pop-container,
+.devm-pop-container,
 .install-next-btn {
     display: none;
 }
 
-.dms-pop-container.active {
+.devm-pop-container.active {
     display: block;
 }
 
-#dms-importMmodal {
+#devm-importMmodal {
     &.attr-modal {
         max-width: 920px;
         margin-bottom: 0px;
@@ -44,7 +44,7 @@
     }
 }
 
-.dms-importer-close-modal {
+.devm-importer-close-modal {
     position: absolute;
     color: tomato;
     right: -9px;
@@ -57,13 +57,13 @@
     font-weight: 700;
 }
 
-.dms-modal-main-content {
+.devm-modal-main-content {
     min-height: 460px;
     display: flex;
     box-sizing: border-box;
     padding: 0;
     overflow: hidden;
-    .dms-single-content {
+    .devm-single-content {
         background: #23282e;
         display: flex;
         flex-direction: column;
@@ -93,7 +93,7 @@
             right: -25%;
         }
     }
-    .dms-importer-data {
+    .devm-importer-data {
         -webkit-box-flex: 1;
         -ms-flex: 1;
         flex: 1;
@@ -115,7 +115,7 @@
         // overflow: hidden;
         transition: all .4s;
         ;
-        .dms-single-importer {
+        .devm-single-importer {
             position: relative;
             flex: 0 0 100%;
             opacity: 0;
@@ -137,7 +137,7 @@
             }
         }
         &--welcome-text {
-            &.dms-plugin-installed {
+            &.devm-plugin-installed {
                 p {
                     color: red;
                 }
@@ -150,7 +150,7 @@
                 opacity: .7;
                 margin: 0;
             }
-            .dms-installed {
+            .devm-installed {
                 &:before {
                     content: "\e902";
                     font-family: 'devmonsta';
@@ -160,7 +160,7 @@
                 }
             }
         }
-        .dms-importer-plugin-list {
+        .devm-importer-plugin-list {
             p {
                 color: #fff;
                 font-size: 18px;
@@ -177,7 +177,7 @@
                     display: inline-block;
                 }
             }
-            .dms-installed {
+            .devm-installed {
                 &:before {
                     content: "\e902";
                     font-family: 'devmonsta';
@@ -196,7 +196,7 @@
             font-weight: 600;
             display: none;
         }
-        .dms-loading {
+        .devm-loading {
             display: none;
             &.start {
                 display: block;
@@ -225,10 +225,10 @@
             }
         }
     }
-    .dms-importer-buttons {
+    .devm-importer-buttons {
         text-align: right;
         padding: 30px 48px;
-        .dms-btn {
+        .devm-btn {
             font-size: 15px;
             line-height: 26px;
             color: #fff;
@@ -246,8 +246,8 @@
             &:last-child {
                 margin-right: 0;
             }
-            &.dms-continue-btn,
-            &.dms-special-btn {
+            &.devm-continue-btn,
+            &.devm-special-btn {
                 background-color: #0272AB;
                 border-color: #0272AB;
                 &:disabled {
@@ -285,7 +285,7 @@
             }
         }
     }
-    .dms-importer-additional-data {
+    .devm-importer-additional-data {
         font-size: 18px;
         line-height: 24px;
         letter-spacing: -1px;
@@ -299,13 +299,13 @@
             visibility: hidden;
             position: absolute;
             opacity: 0;
-            &:checked+.dms-importer-check-label {
+            &:checked+.devm-importer-check-label {
                 &:before {
                     content: "\e901";
                 }
             }
         }
-        .dms-importer-check-label {
+        .devm-importer-check-label {
             &:before {
                 content: "\e900";
                 font-family: 'devmonsta';
@@ -314,7 +314,7 @@
                 margin-right: 13px;
             }
         }
-        .dms-progress-bar {
+        .devm-progress-bar {
             // display: none;
             margin: 0;
             height: 10px;
@@ -331,16 +331,16 @@
     }
 }
 
-.dms-importer-final-buttons {
+.devm-importer-final-buttons {
     display: none;
 }
 
 // demo import preivew page
-body.tools_page_dms-demo-import {
+body.tools_page_devm-demo-import {
     background-color: #F1F1F1;
 }
 
-.about-wrap.dms-container {
+.about-wrap.devm-container {
     margin: 0;
     padding-left: 40px;
     padding-top: 50px;
@@ -348,7 +348,7 @@ body.tools_page_dms-demo-import {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    .dms {
+    .devm {
         &--importer-title {
             margin: 0;
             font-size: 36px;
@@ -403,11 +403,11 @@ body.tools_page_dms-demo-import {
             background-color: #fff;
         }
     }
-    .dms-preview-btn-list {
+    .devm-preview-btn-list {
         margin-top: 20px;
     }
-    .dms-preview-btn,
-    .dms-special-preview-btn {
+    .devm-preview-btn,
+    .devm-special-preview-btn {
         background-color: rgba(55, 125, 255, .1);
         font-size: 14px;
         line-height: 26px;
@@ -427,7 +427,7 @@ body.tools_page_dms-demo-import {
             font-weight: 600;
         }
     }
-    .dms-special-preview-btn {
+    .devm-special-preview-btn {
         background-color: #1592E6;
         color: #fff;
     }

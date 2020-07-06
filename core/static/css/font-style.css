@@ -10,7 +10,7 @@
   font-display: block;
 }
 
-.dms {
+.devm {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'devmonsta' !important;
   speak: none;
@@ -25,24 +25,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.dms-sqaure:before {
+.devm-sqaure:before {
   content: "\e900";
 }
-.dms-square-tick:before {
+.devm-square-tick:before {
   content: "\e901";
 }
-.dms-tick:before {
+.devm-tick:before {
   content: "\e902";
 }
-.dms-laptop:before {
+.devm-laptop:before {
   content: "\e83c";
 }
-.dms-cancel:before {
+.devm-cancel:before {
   content: "\e9e4";
 }
-.dms-download1:before {
+.devm-download1:before {
   content: "\ea4a";
 }
-.dms-cog-icon1:before {
+.devm-cog-icon1:before {
   content: "\e93b";
 }

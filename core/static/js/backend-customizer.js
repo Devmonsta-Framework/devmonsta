@@ -2,7 +2,7 @@ jQuery(function($){
 	var initialized = false,
 		changeTimeoutId = 0,
 		randomIdIncrement = 0,
-		localized = _dms_backend_customizer_localized,
+		localized = _devms_backend_customizer_localized,
 		/**
 		 * @type {Object} {'#options_wrapper_id':'~'}
 		 */
@@ -13,8 +13,8 @@ jQuery(function($){
 		processPendingChanges = function(){
 			$.each(pendingChanges, function(optionsWrapperId){
 				var $optionsWrapper = $('#'+ optionsWrapperId),
-					$input = $optionsWrapper.closest('.dms-backend-customizer-option')
-						.find('> input.dms-backend-customizer-option-input'),
+					$input = $optionsWrapper.closest('.devm-backend-customizer-option')
+						.find('> input.devms-backend-customizer-option-input'),
 					newValue = JSON.stringify(fixSerializedValues(
 						$optionsWrapper.find(':input').serializeArray()
 					));
@@ -35,9 +35,9 @@ jQuery(function($){
 			/**
 			 * Traverse reversed array to leave only the last values.
 			 * This is how _POST works, if you have
-			 * dms_options[option_name][x]: 3
-			 * dms_options[option_name][x]: 7
-			 * the last one "wins" and the value of $_POST['dms_options']['option_name']['x'] will be 7
+			 * devms_options[option_name][x]: 3
+			 * devms_options[option_name][x]: 7
+			 * the last one "wins" and the value of $_POST['devms_options']['option_name']['x'] will be 7
 			 */
 			for (var i = values.length - 1; i >= 0; i--) {
 				if (values[i].name.slice(-2) === '[]') {
@@ -64,12 +64,12 @@ jQuery(function($){
 			}
 
 			/**
-			 * Populate all <input class="dms-backend-customizer-option-input" ... /> with (initial) options values
+			 * Populate all <input class="devm-backend-customizer-option-input" ... /> with (initial) options values
 			 */
-			$('#customize-theme-controls .dms-backend-customizer-option').each(function(){
-				$(this).find('> input.dms-backend-customizer-option-input').val(
+			$('#customize-theme-controls .devm-backend-customizer-option').each(function(){
+				$(this).find('> input.devm-backend-customizer-option-input').val(
 					JSON.stringify(fixSerializedValues(
-						$(this).find('> .dms-backend-customizer-option-inner :input').serializeArray()
+						$(this).find('> .devm-backend-customizer-option-inner :input').serializeArray()
 					))
 				);
 			});
@@ -79,7 +79,7 @@ jQuery(function($){
 			 */
 			$('#customize-theme-controls').on(
 				'change keyup click paste',
-				'.dms-backend-customizer-option > .dms-backend-customizer-option-inner > .dms-backend-option > .dms-backend-option-input',
+				'.devm-backend-customizer-option > .devm-backend-customizer-option-inner > .devm-backend-option > .devm-backend-option-input',
 				function(e){
 					clearTimeout(changeTimeoutId);
 
@@ -109,10 +109,10 @@ jQuery(function($){
 			initialized = true;
 		};
 
-	dmsEvents.one('dms:options:init', function(){
+	devmEvents.one('devm:options:init', function(){
 		setTimeout(
 			init,
-			40 // must be later than first 'dms:options:init' on body http://bit.ly/1F1dDUZ
+			40 // must be later than first 'devm:options:init' on body http://bit.ly/1F1dDUZ
 		);
 	});
 });

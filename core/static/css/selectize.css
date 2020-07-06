@@ -311,22 +311,22 @@
   background-color: #fafafa;
 }
 
-/* dms-selectize style */
-.dms-selectize .selectize-input {
+/* devm-selectize style */
+.devm-selectize .selectize-input {
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
 	border-radius: 0px;
 	padding: 4px !important;
 }
-.dms-selectize .selectize-input.has-items{
+.devm-selectize .selectize-input.has-items{
 	padding: 3px 3px 0px 3px !important;
 }
-.dms-selectize .selectize-dropdown-header{
+.devm-selectize .selectize-dropdown-header{
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
 	border-radius: 0px;
 }
-.dms-selectize .selectize-input .item{
+.devm-selectize .selectize-input .item{
 	margin: 0px 3px 3px 0px  !important;
 
 }

@@ -33,7 +33,7 @@ final class Devmonsta {
 
         register_activation_hook( __FILE__, [$this, 'activate'] );
 
-        add_action( 'plugins_loaded', [$this, 'init_plugin'] );
+        add_action( 'plugins_loaded', [$this, 'init_plugin'],9999 );
     }
 
     /**

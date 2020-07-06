@@ -17,7 +17,7 @@ class Devm_Importer
 	{
 		$uploads = wp_upload_dir();
 		$upload_dir = $uploads['basedir'];
-		$upload_dir = $upload_dir . '/dms';
+		$upload_dir = $upload_dir . '/devm';
 		if (!is_dir($upload_dir)) {
 			wp_mkdir_p($upload_dir);
 		}
@@ -28,7 +28,7 @@ class Devm_Importer
 	public function import_dummy_xml($filepath = null)
 	{
 		if (is_null($filepath)) {
-			$import_file = $this->get_import_file_path('dms_production.xml');
+			$import_file = $this->get_import_file_path('devm_production.xml');
 		} else {
 			$import_file = $filepath;
 		}
@@ -51,7 +51,7 @@ class Devm_Importer
 
 			ob_start();
 
-			// error_log("dms started import: " .  $import_file);
+			// error_log("devm started import: " .  $import_file);
 			$wp_import->import($import_file);
 			ob_end_clean();
 			flush_rewrite_rules();

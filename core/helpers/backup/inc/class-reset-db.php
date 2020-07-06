@@ -86,4 +86,4 @@ class Devm_Reset_DB {
 }
 
 // $reset_db_obj = new Devm_Reset_DB();
-// $reset_db_obj->dms_reset_previous_data();
+// $reset_db_obj->devm_reset_previous_data();

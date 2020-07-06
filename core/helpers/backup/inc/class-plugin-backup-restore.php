@@ -6,7 +6,7 @@ class Devm_Plugin_Backup_Restore {
 
     public $pluginsInstall = [];
 
-    function dms_get_all_installed_plugins_directory() {
+    function devm_get_all_installed_plugins_directory() {
 
         if ( !function_exists( 'get_plugins' ) ) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -22,7 +22,7 @@ class Devm_Plugin_Backup_Restore {
         return $plugin_main_file_path;
     }
 
-    function dms_get_all_installed_plugins_slug() {
+    function devm_get_all_installed_plugins_slug() {
 
         if ( !function_exists( 'get_plugins' ) ) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -43,13 +43,13 @@ class Devm_Plugin_Backup_Restore {
      * Get all active plugins
      * Insert plugin slug into exported xml file in the below format
      */
-    function dms_backup_plugins() {
+    function devm_backup_plugins() {
         $active_plugins = get_option( 'active_plugins' );
         ?>
         <wp:plugins>
             <?php
         foreach ( $active_plugins as $plugin ) {?>
-                <wp:slug><?php echo DMS_Helpers::render( $plugin ); ?></wp:slug>
+                <wp:slug><?php echo DEVM_Helpers::render( $plugin ); ?></wp:slug>
             <?php }
         ?>
         </wp:plugins>
@@ -60,7 +60,7 @@ class Devm_Plugin_Backup_Restore {
      * Check if a specific plugin is installed in system
      * Check is done using plugin's slug
      */
-    function dms_is_plugin_installed( $slug ) {
+    function devm_is_plugin_installed( $slug ) {
 
         if ( !function_exists( 'get_plugins' ) ) {
             require_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -79,7 +79,7 @@ class Devm_Plugin_Backup_Restore {
     /**
      * takes plugin slug as parameter and installs plugin
      */
-    function dms_install_plugin( $plugin_slug ) {
+    function devm_install_plugin( $plugin_slug ) {
         include_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
         require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
@@ -111,7 +111,7 @@ class Devm_Plugin_Backup_Restore {
         $upgrader->install( $api->download_link );
     }
 
-    function dms_upgrade_plugin( $plugin_slug ) {
+    function devm_upgrade_plugin( $plugin_slug ) {
 
         include_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
@@ -144,11 +144,11 @@ class Devm_Plugin_Backup_Restore {
         $upgrader->upgrade( $api->download_link );
     }
 
-    function dms_process_plugins( $plugins_array = "" ) {
-        $plugins_array = apply_filters( 'dms_import_activated_plugins', $plugins_array );
+    function devm_process_plugins( $plugins_array = "" ) {
+        $plugins_array = apply_filters( 'devm_import_activated_plugins', $plugins_array );
 
         if ( is_array( $plugins_array ) && !empty( $plugins_array ) ) {
-            $installed_plugin_slug_array = $this->dms_get_all_installed_plugins_slug();
+            $installed_plugin_slug_array = $this->devm_get_all_installed_plugins_slug();
             try {
 
                 foreach ( $plugins_array as $plugin_slug ) {
@@ -157,19 +157,19 @@ class Devm_Plugin_Backup_Restore {
 
                     if ( !in_array( $plugin_slug, $installed_plugin_slug_array ) ) {
                         //plugin's not installed, install plugin
-                        $this->dms_install_plugin( $plugin_slug );
+                        $this->devm_install_plugin( $plugin_slug );
                         $installed                          = true;
                         $this->pluginsInstall[$plugin_slug] = $installed;
                     } else {
                         //plugin's already installed, upgrade plugin
-                        $this->dms_upgrade_plugin( $plugin_slug );
+                        $this->devm_upgrade_plugin( $plugin_slug );
                         $installed                          = true;
                         $this->pluginsInstall[$plugin_slug] = $installed;
                     }
 
                     $plugin_slug                    = $plugin_slug;
-                    $updated_plugin_directory_array = $this->dms_get_all_installed_plugins_directory();
-                    $updated_plugin_slug_array      = $this->dms_get_all_installed_plugins_slug();
+                    $updated_plugin_directory_array = $this->devm_get_all_installed_plugins_directory();
+                    $updated_plugin_slug_array      = $this->devm_get_all_installed_plugins_slug();
                     $current_slug_index             = array_search( $plugin_slug, $updated_plugin_slug_array );
                     $current_slug_main_path         = $updated_plugin_directory_array[$current_slug_index];
 
@@ -190,5 +190,5 @@ class Devm_Plugin_Backup_Restore {
 
 }
 
-// $dms_plugin_obj = new Devm_Plugin_Backup_Restore();
-// dms_print($dms_plugin_obj->dms_get_all_installed_plugins_directory());
+// $devm_plugin_obj = new Devm_Plugin_Backup_Restore();
+// devm_print($devm_plugin_obj->devm_get_all_installed_plugins_directory());

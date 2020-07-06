@@ -455,7 +455,7 @@ function devm_get_framework_directory( $rel_path = '' ) {
 }
 
 /**
- * dms_get_path_url( dirname(__FILE__) .'/test.css' ) --> http://site.url/path/to/test.css
+ * devm_get_path_url( dirname(__FILE__) .'/test.css' ) --> http://site.url/path/to/test.css
  *
  * @param string $path
  *
@@ -1123,6 +1123,8 @@ function devm_import_files() {
         ],
     ];
 
+    // require get_template_directory() . '/devmonsta/theme-demos.php';
+    // devm_print( dms_get_template_customizations_directory() )
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
     return $demo_data_array;
 }
@@ -1172,7 +1174,7 @@ function devm_widgets_import_data( $data ) {
             $sidebar_available    = false;
             $use_sidebar_id       = 'wp_inactive_widgets';
             $sidebar_message_type = 'error';
-            $sidebar_message      = esc_html__( 'Widget area does not exist in theme (using Inactive)', 'dms' );
+            $sidebar_message      = esc_html__( 'Widget area does not exist in theme (using Inactive)', 'devmonsta' );
         }
 
         $results[$sidebar_id]['name']         = !empty( $wp_registered_sidebars[$sidebar_id]['name'] ) ? $wp_registered_sidebars[$sidebar_id]['name'] : $sidebar_id;

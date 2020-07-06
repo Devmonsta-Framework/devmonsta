@@ -12,28 +12,28 @@
     }
 }
 
-.dms-pop-container,
+.devm-pop-container,
 .install-next-btn {
     display: none
 }
 
-.dms-pop-container.active {
+.devm-pop-container.active {
     display: block
 }
 
-#dms-importMmodal.attr-modal {
+#devm-importMmodal.attr-modal {
     max-width: 920px;
     margin-bottom: 0px;
     width: 100%
 }
 
-#dms-importMmodal .attr-modal-dialog {
+#devm-importMmodal .attr-modal-dialog {
     width: 100%;
     margin-bottom: 0;
     margin-top: 0
 }
 
-#dms-importMmodal .attr-modal-content {
+#devm-importMmodal .attr-modal-content {
     -webkit-box-shadow: none;
     box-shadow: none;
     border: none;
@@ -41,7 +41,7 @@
     border-radius: 0
 }
 
-#dms-importMmodal.attr-modal {
+#devm-importMmodal.attr-modal {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -56,7 +56,7 @@
     transform: translate(-50%, -50%)
 }
 
-.dms-importer-close-modal {
+.devm-importer-close-modal {
     position: absolute;
     color: tomato;
     right: -9px;
@@ -69,7 +69,7 @@
     font-weight: 700
 }
 
-.dms-modal-main-content {
+.devm-modal-main-content {
     min-height: 460px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -80,7 +80,7 @@
     overflow: hidden
 }
 
-.dms-modal-main-content .dms-single-content {
+.devm-modal-main-content .devm-single-content {
     background: #23282e;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -98,23 +98,23 @@
     width: 50%
 }
 
-.dms-modal-main-content .dms-single-content--right-section {
+.devm-modal-main-content .devm-single-content--right-section {
     position: relative
 }
 
-.dms-modal-main-content .dms-single-content--preview-img {
+.devm-modal-main-content .devm-single-content--preview-img {
     display: none
 }
 
-.dms-modal-main-content .dms-single-content--preview-img.active {
+.devm-modal-main-content .devm-single-content--preview-img.active {
     display: block
 }
 
-.dms-modal-main-content .dms-single-content--preview-img img {
+.devm-modal-main-content .devm-single-content--preview-img img {
     display: block
 }
 
-.dms-modal-main-content .dms-single-content:last-of-type:before {
+.devm-modal-main-content .devm-single-content:last-of-type:before {
     content: "";
     background: #23282e;
     width: 391px;
@@ -125,7 +125,7 @@
     right: -25%
 }
 
-.dms-modal-main-content .dms-importer-data {
+.devm-modal-main-content .devm-importer-data {
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
@@ -154,7 +154,7 @@
     transition: all .4s
 }
 
-.dms-modal-main-content .dms-importer-data .dms-single-importer {
+.devm-modal-main-content .devm-importer-data .devm-single-importer {
     position: relative;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 100%;
@@ -162,11 +162,11 @@
     opacity: 0
 }
 
-.dms-modal-main-content .dms-importer-data .dms-single-importer.active {
+.devm-modal-main-content .devm-importer-data .devm-single-importer.active {
     opacity: 1
 }
 
-.dms-modal-main-content .dms-importer-data--welcome-title {
+.devm-modal-main-content .devm-importer-data--welcome-title {
     font-size: 48px;
     line-height: 46px;
     color: #fff;
@@ -176,15 +176,15 @@
     margin-bottom: 15px
 }
 
-.dms-modal-main-content .dms-importer-data--welcome-title.hidden {
+.devm-modal-main-content .devm-importer-data--welcome-title.hidden {
     display: none
 }
 
-.dms-modal-main-content .dms-importer-data--welcome-text.dms-plugin-installed p {
+.devm-modal-main-content .devm-importer-data--welcome-text.devm-plugin-installed p {
     color: red
 }
 
-.dms-modal-main-content .dms-importer-data--welcome-text p {
+.devm-modal-main-content .devm-importer-data--welcome-text p {
     color: #fff;
     font-size: 18px;
     line-height: 26px;
@@ -193,7 +193,7 @@
     margin: 0
 }
 
-.dms-modal-main-content .dms-importer-data--welcome-text .dms-installed:before {
+.devm-modal-main-content .devm-importer-data--welcome-text .devm-installed:before {
     content: "\e902";
     font-family: 'devmonsta';
     color: #12C97A;
@@ -201,7 +201,7 @@
     margin-right: 10px
 }
 
-.dms-modal-main-content .dms-importer-data .dms-importer-plugin-list p {
+.devm-modal-main-content .devm-importer-data .devm-importer-plugin-list p {
     color: #fff;
     font-size: 18px;
     line-height: 26px;
@@ -210,7 +210,7 @@
     margin: 0
 }
 
-.dms-modal-main-content .dms-importer-data .dms-importer-plugin-list p:before {
+.devm-modal-main-content .devm-importer-data .devm-importer-plugin-list p:before {
     content: "\e9e4";
     font-family: 'devmonsta';
     color: #4E4E4E;
@@ -219,7 +219,7 @@
     display: inline-block
 }
 
-.dms-modal-main-content .dms-importer-data .dms-importer-plugin-list .dms-installed:before {
+.devm-modal-main-content .devm-importer-data .devm-importer-plugin-list .devm-installed:before {
     content: "\e902";
     font-family: 'devmonsta';
     color: #12C97A;
@@ -228,7 +228,7 @@
     display: inline-block
 }
 
-.dms-modal-main-content .dms-importer-data--progress-msg {
+.devm-modal-main-content .devm-importer-data--progress-msg {
     color: #FFB25D;
     font-size: 24px;
     line-height: 46px;
@@ -237,15 +237,15 @@
     display: none
 }
 
-.dms-modal-main-content .dms-importer-data .dms-loading {
+.devm-modal-main-content .devm-importer-data .devm-loading {
     display: none
 }
 
-.dms-modal-main-content .dms-importer-data .dms-loading.start {
+.devm-modal-main-content .devm-importer-data .devm-loading.start {
     display: block
 }
 
-.dms-modal-main-content .dms-importer-data .dms-loading.start:after {
+.devm-modal-main-content .devm-importer-data .devm-loading.start:after {
     content: '. ';
     -webkit-animation: dots 1s steps(5, end) infinite;
     animation: dots 1s steps(5, end) infinite
@@ -289,12 +289,12 @@
     }
 }
 
-.dms-modal-main-content .dms-importer-buttons {
+.devm-modal-main-content .devm-importer-buttons {
     text-align: right;
     padding: 30px 48px
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn {
+.devm-modal-main-content .devm-importer-buttons .devm-btn {
     font-size: 15px;
     line-height: 26px;
     color: #fff;
@@ -312,29 +312,29 @@
     cursor: pointer
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn:last-child {
+.devm-modal-main-content .devm-importer-buttons .devm-btn:last-child {
     margin-right: 0
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn.dms-continue-btn,
-.dms-modal-main-content .dms-importer-buttons .dms-btn.dms-special-btn {
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-continue-btn,
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-special-btn {
     background-color: #0272AB;
     border-color: #0272AB
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn.dms-continue-btn:disabled,
-.dms-modal-main-content .dms-importer-buttons .dms-btn.dms-special-btn:disabled {
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-continue-btn:disabled,
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-special-btn:disabled {
     background-color: #999;
     border-color: #999
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn:disabled {
+.devm-modal-main-content .devm-importer-buttons .devm-btn:disabled {
     background-color: #999;
     border-color: #999;
     cursor: not-allowed
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn .attr-spinner-border {
+.devm-modal-main-content .devm-importer-buttons .devm-btn .attr-spinner-border {
     display: inline-block;
     width: 12px;
     height: 12px;
@@ -353,13 +353,13 @@
     transition: all .4s
 }
 
-.dms-modal-main-content .dms-importer-buttons .dms-btn.active.show .attr-spinner-border {
+.devm-modal-main-content .devm-importer-buttons .devm-btn.active.show .attr-spinner-border {
     opacity: 1;
     visibility: visible;
     position: static
 }
 
-.dms-modal-main-content .dms-importer-additional-data {
+.devm-modal-main-content .devm-importer-additional-data {
     font-size: 18px;
     line-height: 24px;
     letter-spacing: -1px;
@@ -368,7 +368,7 @@
     margin-top: 20px
 }
 
-.dms-modal-main-content .dms-importer-additional-data .form-check-input {
+.devm-modal-main-content .devm-importer-additional-data .form-check-input {
     height: 0;
     width: 0;
     visibility: hidden;
@@ -376,11 +376,11 @@
     opacity: 0
 }
 
-.dms-modal-main-content .dms-importer-additional-data .form-check-input:checked+.dms-importer-check-label:before {
+.devm-modal-main-content .devm-importer-additional-data .form-check-input:checked+.devm-importer-check-label:before {
     content: "\e901"
 }
 
-.dms-modal-main-content .dms-importer-additional-data .dms-importer-check-label:before {
+.devm-modal-main-content .devm-importer-additional-data .devm-importer-check-label:before {
     content: "\e900";
     font-family: 'devmonsta';
     font-size: 18px;
@@ -388,29 +388,29 @@
     margin-right: 13px
 }
 
-.dms-modal-main-content .dms-importer-additional-data .dms-progress-bar {
+.devm-modal-main-content .devm-importer-additional-data .devm-progress-bar {
     margin: 0;
     height: 10px;
     border-radius: 0
 }
 
-.dms-modal-main-content .dms-importer-additional-data .dms-progress-bar .attr-progress-bar {
+.devm-modal-main-content .devm-importer-additional-data .devm-progress-bar .attr-progress-bar {
     background-color: #FFB25D
 }
 
-.dms-modal-main-content .dms-importer-additional-data .dms-progress-bar.success .attr-progress-bar {
+.devm-modal-main-content .devm-importer-additional-data .devm-progress-bar.success .attr-progress-bar {
     background-color: #12C97A
 }
 
-.dms-importer-final-buttons {
+.devm-importer-final-buttons {
     display: none
 }
 
-body.tools_page_dms-demo-import {
+body.tools_page_devm-demo-import {
     background-color: #F1F1F1
 }
 
-.about-wrap.dms-container {
+.about-wrap.devm-container {
     margin: 0;
     padding-left: 40px;
     padding-top: 50px;
@@ -421,7 +421,7 @@ body.tools_page_dms-demo-import {
     box-sizing: border-box
 }
 
-.about-wrap.dms-container .dms--importer-title {
+.about-wrap.devm-container .devm--importer-title {
     margin: 0;
     font-size: 36px;
     line-height: 42px;
@@ -432,13 +432,13 @@ body.tools_page_dms-demo-import {
     padding-bottom: 25px
 }
 
-.about-wrap.dms-container .dms--importer-title__icon {
+.about-wrap.devm-container .devm--importer-title__icon {
     color: #377DFF;
     font-size: 28px;
     margin-right: 13px
 }
 
-.about-wrap.dms-container .dms--demo-preview-list {
+.about-wrap.devm-container .devm--demo-preview-list {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -447,7 +447,7 @@ body.tools_page_dms-demo-import {
     flex-wrap: wrap
 }
 
-.about-wrap.dms-container .dms--demo-preview-list__item {
+.about-wrap.devm-container .devm--demo-preview-list__item {
     margin: 0;
     -webkit-box-flex: 0;
     -ms-flex: 0 0 33.33%;
@@ -462,39 +462,39 @@ body.tools_page_dms-demo-import {
     box-shadow: none
 }
 
-.about-wrap.dms-container .dms--demo-preview-list__item:nth-child(3n+3) {
+.about-wrap.devm-container .devm--demo-preview-list__item:nth-child(3n+3) {
     padding-right: 0
 }
 
-.about-wrap.dms-container .dms--demo-preview-list__item--thumb {
+.about-wrap.devm-container .devm--demo-preview-list__item--thumb {
     min-height: 190px;
     background-repeat: no-repeat;
     background-position: center top;
     background-size: cover
 }
 
-.about-wrap.dms-container .dms--demo-preview-list .card-body {
+.about-wrap.devm-container .devm--demo-preview-list .card-body {
     padding: 40px;
     padding-top: 25px
 }
 
-.about-wrap.dms-container .dms--demo-preview-list .card-title {
+.about-wrap.devm-container .devm--demo-preview-list .card-title {
     font-size: 22px;
     line-height: 26px;
     color: #101010;
     margin: 0
 }
 
-.about-wrap.dms-container .dms--demo-preivew-inner {
+.about-wrap.devm-container .devm--demo-preivew-inner {
     background-color: #fff
 }
 
-.about-wrap.dms-container .dms-preview-btn-list {
+.about-wrap.devm-container .devm-preview-btn-list {
     margin-top: 20px
 }
 
-.about-wrap.dms-container .dms-preview-btn,
-.about-wrap.dms-container .dms-special-preview-btn {
+.about-wrap.devm-container .devm-preview-btn,
+.about-wrap.devm-container .devm-special-preview-btn {
     background-color: rgba(55, 125, 255, 0.1);
     font-size: 14px;
     line-height: 26px;
@@ -508,18 +508,18 @@ body.tools_page_dms-demo-import {
     margin-right: 16px
 }
 
-.about-wrap.dms-container .dms-preview-btn:last-child,
-.about-wrap.dms-container .dms-special-preview-btn:last-child {
+.about-wrap.devm-container .devm-preview-btn:last-child,
+.about-wrap.devm-container .devm-special-preview-btn:last-child {
     margin-right: 0
 }
 
-.about-wrap.dms-container .dms-preview-btn-icon,
-.about-wrap.dms-container .dms-special-preview-btn-icon {
+.about-wrap.devm-container .devm-preview-btn-icon,
+.about-wrap.devm-container .devm-special-preview-btn-icon {
     margin-right: 5px;
     font-weight: 600
 }
 
-.about-wrap.dms-container .dms-special-preview-btn {
+.about-wrap.devm-container .devm-special-preview-btn {
     background-color: #1592E6;
     color: #fff
 }

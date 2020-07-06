@@ -1,6 +1,6 @@
 <?php
 
-class DMS_Helpers {
+class DEVM_Helpers {
 
     public static $demo_import_start_time = '';
 
@@ -36,7 +36,7 @@ class DMS_Helpers {
         ];
         $downloader = new Devm_Downloader();
 
-        $import_file_info = apply_filters( 'dms/pre_download_import_files', $import_file_info );
+        $import_file_info = apply_filters( 'devm/pre_download_import_files', $import_file_info );
 
         if ( empty( $import_file_info['import_file_url'] ) ) {
 
@@ -46,7 +46,7 @@ class DMS_Helpers {
 
         } else {
 
-            $content_filename = apply_filters( 'dms/downloaded_content_file_prefix', 'demo-content-import-file_' ) . self::$demo_import_start_time . apply_filters( 'dms/downloaded_content_file_suffix_and_file_extension', '.xml' );
+            $content_filename = apply_filters( 'devm/downloaded_content_file_prefix', 'demo-content-import-file_' ) . self::$demo_import_start_time . apply_filters( 'devm/downloaded_content_file_suffix_and_file_extension', '.xml' );
 
             // Download the content import file.
             $downloaded_files['content'] = $downloader->download_file( $import_file_info['import_file_url'], $content_filename );
@@ -60,7 +60,7 @@ class DMS_Helpers {
 
         if ( !empty( $import_file_info['import_widget_file_url'] ) ) {
             // Set the filename string for widgets import file.
-            $widget_filename = apply_filters( 'dms/downloaded_widgets_file_prefix', 'demo-widgets-import-file_' ) . self::$demo_import_start_time . apply_filters( 'dms/downloaded_widgets_file_suffix_and_file_extension', '.json' );
+            $widget_filename = apply_filters( 'devm/downloaded_widgets_file_prefix', 'demo-widgets-import-file_' ) . self::$demo_import_start_time . apply_filters( 'devm/downloaded_widgets_file_suffix_and_file_extension', '.json' );
 
             // Download the widgets import file.
             $downloaded_files['widgets'] = $downloader->download_file( $import_file_info['import_widget_file_url'], $widget_filename );
@@ -79,7 +79,7 @@ class DMS_Helpers {
 
         if ( !empty( $import_file_info['import_customizer_file_url'] ) ) {
             // Setup filename path to save the customizer content.
-            $customizer_filename = apply_filters( 'dms/downloaded_customizer_file_prefix', 'demo-customizer-import-file_' ) . self::$demo_import_start_time . apply_filters( 'dms/downloaded_customizer_file_suffix_and_file_extension', '.dat' );
+            $customizer_filename = apply_filters( 'devm/downloaded_customizer_file_prefix', 'demo-customizer-import-file_' ) . self::$demo_import_start_time . apply_filters( 'devm/downloaded_customizer_file_suffix_and_file_extension', '.dat' );
 
             // Download the customizer import file.
             $downloaded_files['customizer'] = $downloader->download_file( $import_file_info['import_customizer_file_url'], $customizer_filename );
@@ -121,7 +121,7 @@ class DMS_Helpers {
             return new \WP_Error(
                 'failed_writing_file_to_server',
                 sprintf(
-                    __( 'An error occurred while writing file to your server! Tried to write a file to: %s%s.', 'dms' ),
+                    __( 'An error occurred while writing file to your server! Tried to write a file to: %s%s.', 'devmonsta' ),
                     '<br>',
                     $file_path
                 )
@@ -156,7 +156,7 @@ class DMS_Helpers {
             return new \WP_Error(
                 'failed_writing_file_to_server',
                 sprintf(
-                    __( 'An error occurred while writing file to your server! Tried to write a file to: %s%s.', 'dms' ),
+                    __( 'An error occurred while writing file to your server! Tried to write a file to: %s%s.', 'devmonsta' ),
                     '<br>',
                     $file_path
                 )
@@ -189,7 +189,7 @@ class DMS_Helpers {
             return new \WP_Error(
                 'failed_reading_file_from_server',
                 sprintf(
-                    __( 'An error occurred while reading a file from your server! Tried reading file from path: %s%s.', 'dms' ),
+                    __( 'An error occurred while reading a file from your server! Tried reading file from path: %s%s.', 'devmonsta' ),
                     '<br>',
                     $file_path
                 )
@@ -213,7 +213,7 @@ class DMS_Helpers {
             return new \WP_Error(
                 'no_direct_file_access',
                 sprintf(
-                    __( 'This WordPress page does not have %sdirect%s write file access. This plugin needs it in order to save the demo import xml file to the upload directory of your site. You can change this setting with these instructions: %s.', 'dms' ),
+                    __( 'This WordPress page does not have %sdirect%s write file access. This plugin needs it in order to save the demo import xml file to the upload directory of your site. You can change this setting with these instructions: %s.', 'devmonsta' ),
                     '<strong>',
                     '</strong>',
                     '<a href="http://gregorcapuder.com/wordpress-how-to-set-direct-filesystem-method/" target="_blank">How to set <strong>direct</strong> filesystem method</a>'
@@ -222,12 +222,12 @@ class DMS_Helpers {
         }
 
         // Get plugin page settings.
-        $plugin_page_setup = apply_filters( 'dms/plugin_page_setup', [
+        $plugin_page_setup = apply_filters( 'devm/plugin_page_setup', [
             'parent_slug' => 'themes.php',
-            'page_title'  => esc_html__( 'One Click Demo Import', 'dms' ),
-            'menu_title'  => esc_html__( 'Import Demo Data', 'dms' ),
+            'page_title'  => esc_html__( 'Demo Import', 'devmonsta' ),
+            'menu_title'  => esc_html__( 'Import Demo Data', 'devmonsta' ),
             'capability'  => 'import',
-            'menu_slug'   => 'dms-one-click-demo-import',
+            'menu_slug'   => 'devm-one-click-demo-import',
         ]
         );
 
@@ -237,7 +237,7 @@ class DMS_Helpers {
         if ( false === ( $creds = request_filesystem_credentials( $demo_import_page_url, '', false, false, null ) ) ) {
             return new \WP_error(
                 'filesystem_credentials_could_not_be_retrieved',
-                __( 'An error occurred while retrieving reading/writing permissions to your server (could not retrieve WP filesystem credentials)!', 'dms' )
+                __( 'An error occurred while retrieving reading/writing permissions to your server (could not retrieve WP filesystem credentials)!', 'devmonsta' )
             );
         }
 
@@ -245,7 +245,7 @@ class DMS_Helpers {
         if ( !WP_Filesystem( $creds ) ) {
             return new \WP_Error(
                 'wrong_login_credentials',
-                __( 'Your WordPress login credentials don\'t allow to use WP_Filesystem!', 'dms' )
+                __( 'Your WordPress login credentials don\'t allow to use WP_Filesystem!', 'devmonsta' )
             );
         }
 
@@ -259,9 +259,9 @@ class DMS_Helpers {
      */
     public static function get_log_path() {
         $upload_dir  = wp_upload_dir();
-        $upload_path = apply_filters( 'dms/upload_file_path', trailingslashit( $upload_dir['path'] ) );
+        $upload_path = apply_filters( 'devm/upload_file_path', trailingslashit( $upload_dir['path'] ) );
 
-        $log_path = $upload_path . apply_filters( 'dms/log_file_prefix', 'log_file_' ) . self::$demo_import_start_time . apply_filters( 'dms/log_file_suffix_and_file_extension', '.txt' );
+        $log_path = $upload_path . apply_filters( 'devm/log_file_prefix', 'log_file_' ) . self::$demo_import_start_time . apply_filters( 'devm/log_file_suffix_and_file_extension', '.txt' );
 
         self::register_file_as_media_attachment( $log_path );
 
@@ -277,13 +277,13 @@ class DMS_Helpers {
     public static function register_file_as_media_attachment( $log_path ) {
         // Check the type of file.
         $log_mimes = [ 'txt' => 'text/plain' ];
-        $filetype  = wp_check_filetype( basename( $log_path ), apply_filters( 'dms/file_mimes', $log_mimes ) );
+        $filetype  = wp_check_filetype( basename( $log_path ), apply_filters( 'devm/file_mimes', $log_mimes ) );
 
         // Prepare an array of post data for the attachment.
         $attachment = [
             'guid'           => self::get_log_url( $log_path ),
             'post_mime_type' => $filetype['type'],
-            'post_title'     => apply_filters( 'dms/attachment_prefix', esc_html__( 'One Click Demo Import - ', 'dms' ) ) . preg_replace( '/\.[^.]+$/', '', basename( $log_path ) ),
+            'post_title'     => apply_filters( 'devm/attachment_prefix', esc_html__( 'One Click Demo Import - ', 'devm' ) ) . preg_replace( '/\.[^.]+$/', '', basename( $log_path ) ),
             'post_content'   => '',
             'post_status'    => 'inherit',
         ];
@@ -300,7 +300,7 @@ class DMS_Helpers {
      */
     public static function get_log_url( $log_path ) {
         $upload_dir = wp_upload_dir();
-        $upload_url = apply_filters( 'dms/upload_file_url', trailingslashit( $upload_dir['url'] ) );
+        $upload_url = apply_filters( 'devm/upload_file_url', trailingslashit( $upload_dir['url'] ) );
 
         return $upload_url . basename( $log_path );
     }
@@ -309,13 +309,13 @@ class DMS_Helpers {
      * Check if the AJAX call is valid.
      */
     public static function verify_ajax_call() {
-        check_ajax_referer( 'dms-ajax-verification', 'security' );
+        check_ajax_referer( 'devm-ajax-verification', 'security' );
 
 // Check if user has the WP capability to import data.
         if ( !current_user_can( 'import' ) ) {
             wp_die(
                 sprintf(
-                    __( '%sYour user role isn\'t high enough. You don\'t have permission to import demo data.%s', 'dms' ),
+                    __( '%sYour user role isn\'t high enough. You don\'t have permission to import demo data.%s', 'devm' ),
                     '<div class="notice  notice-error"><p>',
                     '</p></div>'
                 )
@@ -359,11 +359,11 @@ class DMS_Helpers {
             // Add this error to log file.
             $log_added = self::append_to_file(
                 sprintf(
-                    __( 'Content file was not uploaded. Error: %s', 'dms' ),
+                    __( 'Content file was not uploaded. Error: %s', 'devm' ),
                     $widget_file_info['error']
                 ),
                 $log_file_path,
-                esc_html__( 'Upload files', 'dms' )
+                esc_html__( 'Upload files', 'devm' )
             );
         }
 
@@ -375,11 +375,11 @@ class DMS_Helpers {
             // Add this error to log file.
             $log_added = self::append_to_file(
                 sprintf(
-                    __( 'Widget file was not uploaded. Error: %s', 'dms' ),
+                    __( 'Widget file was not uploaded. Error: %s', 'devm' ),
                     $widget_file_info['error']
                 ),
                 $log_file_path,
-                esc_html__( 'Upload files', 'dms' )
+                esc_html__( 'Upload files', 'devm' )
             );
         }
 
@@ -391,19 +391,19 @@ class DMS_Helpers {
             // Add this error to log file.
             $log_added = self::append_to_file(
                 sprintf(
-                    __( 'Customizer file was not uploaded. Error: %s', 'dms' ),
+                    __( 'Customizer file was not uploaded. Error: %s', 'devm' ),
                     $customizer_file_info['error']
                 ),
                 $log_file_path,
-                esc_html__( 'Upload files', 'dms' )
+                esc_html__( 'Upload files', 'devm' )
             );
         }
 
         // Add this message to log file.
         $log_added = self::append_to_file(
-            __( 'The import files were successfully uploaded!', 'dms' ) . self::import_file_info( $selected_import_files ),
+            __( 'The import files were successfully uploaded!', 'devm' ) . self::import_file_info( $selected_import_files ),
             $log_file_path,
-            esc_html__( 'Upload files', 'dms' )
+            esc_html__( 'Upload files', 'devm' )
         );
 
         // Return array with paths of uploaded files.
@@ -419,16 +419,16 @@ class DMS_Helpers {
 
         return PHP_EOL .
         sprintf(
-            __( 'Initial max execution time = %s', 'dms' ),
+            __( 'Initial max execution time = %s', 'devm' ),
             ini_get( 'max_execution_time' )
         ) . PHP_EOL .
         sprintf(
-            __( 'Files info:%1$sSite URL = %2$s%1$sData file = %3$s%1$sWidget file = %4$s%1$sCustomizer file = %5$s%1$s', 'dms' ),
+            __( 'Files info:%1$sSite URL = %2$s%1$sData file = %3$s%1$sWidget file = %4$s%1$sCustomizer file = %5$s%1$s', 'devm' ),
             PHP_EOL,
             get_site_url(),
-            empty( $selected_import_files['content'] ) ? esc_html__( 'not defined!', 'dms' ) : $selected_import_files['content'],
-            empty( $selected_import_files['widgets'] ) ? esc_html__( 'not defined!', 'dms' ) : $selected_import_files['widgets'],
-            empty( $selected_import_files['customizer'] ) ? esc_html__( 'not defined!', 'dms' ) : $selected_import_files['customizer']
+            empty( $selected_import_files['content'] ) ? esc_html__( 'not defined!', 'devm' ) : $selected_import_files['content'],
+            empty( $selected_import_files['widgets'] ) ? esc_html__( 'not defined!', 'devm' ) : $selected_import_files['widgets'],
+            empty( $selected_import_files['customizer'] ) ? esc_html__( 'not defined!', 'devm' ) : $selected_import_files['customizer']
 
         );
     }
@@ -456,7 +456,7 @@ class DMS_Helpers {
      * Set the $demo_import_start_time class variable with the current date and time string.
      */
     public static function set_demo_import_start_time() {
-        self::$demo_import_start_time = date( apply_filters( 'dms/date_format_for_file_names', 'Y-m-d__H-i-s' ) );
+        self::$demo_import_start_time = date( apply_filters( 'devm/date_format_for_file_names', 'Y-m-d__H-i-s' ) );
     }
 
     /**
@@ -513,15 +513,15 @@ class DMS_Helpers {
     }
 
     /**
-     * Set the dms transient with the current importer data.
+     * Set the devm transient with the current importer data.
      *
      * @param array $data Data to be saved to the transient.
      */
-    public static function set_dms_import_data_transient( $data ) {
-        set_transient( 'dms_importer_data', $data, 0.1 * HOUR_IN_SECONDS );
+    public static function set_devm_import_data_transient( $data ) {
+        set_transient( 'devm_importer_data', $data, 0.1 * HOUR_IN_SECONDS );
     }
 
-    public static function dms_kses( $raw ) {
+    public static function devm_kses( $raw ) {
         $allowed_tags = [
             'a'                             => [
                 'class'  => [],
@@ -677,8 +677,8 @@ class DMS_Helpers {
 
     }
 
-    public static function dms_kspan( $text ) {
-        return str_replace( ['{', '}'], ['<span>', '</span>'], self::dms_kses( $text ) );
+    public static function devm_kspan( $text ) {
+        return str_replace( ['{', '}'], ['<span>', '</span>'], self::devm_kses( $text ) );
     }
 
     public static function render( $content ) {

@@ -32,7 +32,7 @@ class Devm_Downloader {
             return $content;
         }
 
-        return DMS_Helpers::write_to_file( $content, $this->download_directory_path . $filename );
+        return DEVM_Helpers::write_to_file( $content, $this->download_directory_path . $filename );
     }
 
     public function download_xml_file( $url, $file_full_path ) {
@@ -43,7 +43,7 @@ class Devm_Downloader {
             return $content;
         }
 
-        return DMS_Helpers::write_to_file( $content, $file_full_path );
+        return DEVM_Helpers::write_to_file( $content, $file_full_path );
     }
 
     /**
@@ -58,14 +58,14 @@ class Devm_Downloader {
         if ( empty( $url ) ) {
             return new \WP_Error(
                 'missing_url',
-                __( 'Missing URL for downloading a file!', 'dms' )
+                __( 'Missing URL for downloading a file!', 'devmonsta' )
             );
         }
 
         // Get file content from the server.
         $response = wp_remote_get(
             $url,
-            [ 'timeout' => apply_filters( 'dms/timeout_for_downloading_import_file', 60 ) ]
+            [ 'timeout' => apply_filters( 'devm/timeout_for_downloading_import_file', 60 ) ]
         );
 
 // Test if the get request was not successful.
@@ -76,7 +76,7 @@ class Devm_Downloader {
             return new \WP_Error(
                 'download_error',
                 sprintf(
-                    __( 'An error occurred while fetching file from: %1$s%2$s%3$s!%4$sReason: %5$s - %6$s.', 'dms' ),
+                    __( 'An error occurred while fetching file from: %1$s%2$s%3$s!%4$sReason: %5$s - %6$s.', 'devmonsta' ),
                     '<strong>',
                     $url,
                     '</strong>',
@@ -84,7 +84,7 @@ class Devm_Downloader {
                     $response_error['error_code'],
                     $response_error['error_message']
                 ) . '<br>' .
-                apply_filters( 'dms/message_after_file_fetching_error', '' )
+                apply_filters( 'devm/message_after_file_fetching_error', '' )
             );
         }
 
@@ -131,7 +131,7 @@ class Devm_Downloader {
             $this->download_directory_path = $download_directory_path;
         } else {
             $upload_dir                    = wp_upload_dir();
-            $this->download_directory_path = apply_filters( 'dms/upload_file_path', trailingslashit( $upload_dir['path'] ) );
+            $this->download_directory_path = apply_filters( 'devm/upload_file_path', trailingslashit( $upload_dir['path'] ) );
         }
 
     }
