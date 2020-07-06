@@ -382,15 +382,15 @@ class Taxonomies
     {
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('wp-color-picker');
-        wp_enqueue_style('devmonsta-taxonomy-style', DM_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
-        wp_enqueue_style('dm-main-style', DM_PATH . 'core/options/assets/css/main.css');
-        wp_enqueue_script('vue-js', DM_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-        wp_enqueue_script('dm-color-picker', DM_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_style('devmonsta-taxonomy-style', DEVMONSTA_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
+        wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
+        wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
         wp_enqueue_script('devmonsta-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
-        wp_enqueue_script('dm-vendor-js', DM_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
-        wp_enqueue_script('dm-init-js', DM_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-vendor-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-init-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
 
 
     }

@@ -177,7 +177,7 @@ class Typography extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components ) {
-        $font_list             = $this->dm_getGoogleFonts();
+        $font_list             = $this->devm_getGoogleFonts();
         $data                  = [];
         $data['font_list']     = $font_list;
         $data['selected_data'] = $value;

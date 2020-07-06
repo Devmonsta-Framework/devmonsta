@@ -1,19 +1,19 @@
-jQuery(window).on('dm-scripts.typo', function(e,typo){
-    var mainEl = jQuery('.dm-option-typography');
+jQuery(window).on('devm-scripts.typo', function(e,typo){
+    var mainEl = jQuery('.devm-option-typography');
    if(typo){
-        mainEl = typo.find('.dm-option-typography');
+        mainEl = typo.find('.devm-option-typography');
    }
    if(mainEl && !mainEl.length){ return false; }
     mainEl.each(function(){
         // configuration for color
         var typo_config = jQuery(this).data('config'),
-            el = jQuery(this).parents('.dm-option.active-script').find('.google-fonts-list'),
-            dmOptions = {
+            el = jQuery(this).parents('.devm-option.active-script').find('.google-fonts-list'),
+            devmOptions = {
                 defaultColor: typo_config.selected_data.color,
                 hide: true,
             };
         
-            jQuery(this).parents('.dm-option.active-script').find('.dm-typography-color-field').wpColorPicker(dmOptions);
+            jQuery(this).parents('.devm-option.active-script').find('.devm-typography-color-field').wpColorPicker(devmOptions);
 
         // for select2 
         el.select2();
@@ -21,7 +21,7 @@ jQuery(window).on('dm-scripts.typo', function(e,typo){
         // select 2 on change style and weight
         el.on("change", function (e) {
             var self = jQuery(this),
-                parent = self.parents('.dm-option-typography'),
+                parent = self.parents('.devm-option-typography'),
                 weight = parent.find('.google-weight-list'),
                 styleField = parent.find('.google-style-list'),
                 selected_value = self.val();
@@ -55,5 +55,5 @@ jQuery(window).on('dm-scripts.typo', function(e,typo){
 });
 
 jQuery(document).ready(function($){
-    jQuery(window).trigger('dm-scripts.typo');
+    jQuery(window).trigger('devm-scripts.typo');
 });

@@ -484,20 +484,20 @@ jQuery(document).ready(function(){
 })
 
 // Auto Call plugin is class is color-picker
-jQuery(window).on('dm-scripts.rgbaColorPicker', function(){
-    var el = jQuery('.dm-option.active-script .color-picker-rgb');
+jQuery(window).on('devm-scripts.rgbaColorPicker', function(){
+    var el = jQuery('.devm-option.active-script .color-picker-rgb');
     if(el && !el.length){ return false; }
  
     el.each(function(){
         var rgba_color_picker_config = jQuery(this).data('config'),
-            dmRgbaOptions = {
+            devmRgbaOptions = {
                 hide: true,
                 palettes: rgba_color_picker_config.palettes
             };
-        jQuery(this).wpColorPicker(dmRgbaOptions);
+        jQuery(this).wpColorPicker(devmRgbaOptions);
     });
 });
 
 jQuery(document).ready(function($) {
-    jQuery(window).trigger('dm-scripts.rgbaColorPicker');
+    jQuery(window).trigger('devm-scripts.rgbaColorPicker');
 });
