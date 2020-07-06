@@ -1137,10 +1137,17 @@ function devm_sanitize_data($key, $value)
 
 }
 
+function devm_sanitize_taxonomy_data($kye,$value){
+    return $value;
+}
 
 function devm_get_all_posteta_controls()
 {
     return get_option('devmonsta_all_potmeta_controls');
+}
+
+function devm_get_all_taxonomy_controls(){
+    return get_option('devmonsta_all_taxonomy_controls');
 }
 
 function devm_get_post_type($control_name)

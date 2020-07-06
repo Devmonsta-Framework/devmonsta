@@ -286,7 +286,7 @@ class Taxonomies
         foreach ($_POST as $key => $value)
         {
             if (strpos($key, $prefix) !== false) {
-                add_term_meta($term_id, $key, sanitize_text_field($_POST[$key]));
+                add_term_meta($term_id, $key, $_POST[$key]);
             }
         }
 
