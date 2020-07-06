@@ -1104,28 +1104,11 @@ function devm_available_widgets() {
 
 //demo import file flter
 function devm_import_files() {
-    $demo_data = [
-        [
-            'id'                       => '1',
-            'import_title'             => 'Demo (1 - 2)',
-            'import_file_url'          => 'http://demo.themewinter.com/wp/demo-content/privsa/main/privsa-main.xml',
-            'import_desc'              => 'Here goes the description of this demo 1 to 2',
-            'import_preview_image_url' => 'http://demo.themewinter.com/wp/demo-content/privsa/main/screenshot.png',
-            'required_plugin'          => ["elementor", "elementskit-lite", "metform"],
-        ],
-        [
-            'id'                       => '2',
-            'import_title'             => 'One Page ',
-            'import_file_url'          => 'http://demo.themewinter.com/wp/demo-content/privsa/onepage/onepage.xml',
-            'import_desc'              => 'Here goes the description of this demo 1 to 2',
-            'import_preview_image_url' => 'http://demo.themewinter.com/wp/demo-content/privsa/onepage/screenshot.png',
-            'required_plugin'          => ["elementor", "elementskit-lite", "metform"],
-        ],
-    ];
+    $demo_data = [ ];
 
-    // require get_template_directory() . '/devmonsta/theme-demos.php';
-    // devm_print( dms_get_template_customizations_directory() )
+    require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
+    
     return $demo_data_array;
 }
 
