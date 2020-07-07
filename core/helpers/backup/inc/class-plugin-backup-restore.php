@@ -48,13 +48,15 @@ class Devm_Plugin_Backup_Restore {
         ?>
         <wp:plugins>
             <?php
+
         foreach ( $active_plugins as $plugin ) {?>
                 <wp:slug><?php echo DEVM_Helpers::render( $plugin ); ?></wp:slug>
             <?php }
+
         ?>
         </wp:plugins>
     <?php
-    }
+}
 
     /**
      * Check if a specific plugin is installed in system
@@ -79,36 +81,67 @@ class Devm_Plugin_Backup_Restore {
     /**
      * takes plugin slug as parameter and installs plugin
      */
-    function devm_install_plugin( $plugin_slug ) {
+    function devm_install_plugin( $plugin_slug, $plugin_source = null ) {
         include_once ABSPATH . 'wp-admin/includes/file.php';
         require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
         require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
         require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
         require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
 
-        $api = plugins_api(
-            'plugin_information',
-            [
-                'slug'   => $plugin_slug,
-                'fields' => [
-                    'short_description' => false,
-                    'sections'          => false,
-                    'requires'          => false,
-                    'rating'            => false,
-                    'ratings'           => false,
-                    'downloaded'        => true,
-                    'last_updated'      => false,
-                    'added'             => false,
-                    'tags'              => false,
-                    'compatibility'     => false,
-                    'homepage'          => false,
-                    'donate_link'       => false,
-                ],
-            ]
-        );
         $skin     = new WP_Ajax_Upgrader_Skin();
         $upgrader = new Plugin_Upgrader( $skin );
-        $upgrader->install( $api->download_link );
+        $plugin_download_link = "";
+
+        if ( null == $plugin_source ) {
+            $api = plugins_api(
+                'plugin_information',
+                [
+                    'slug'   => $plugin_slug,
+                    'fields' => [
+                        'short_description' => false,
+                        'sections'          => false,
+                        'requires'          => false,
+                        'rating'            => false,
+                        'ratings'           => false,
+                        'downloaded'        => true,
+                        'last_updated'      => false,
+                        'added'             => false,
+                        'tags'              => false,
+                        'compatibility'     => false,
+                        'homepage'          => false,
+                        'donate_link'       => false,
+                    ],
+                ]
+            );
+            $plugin_download_link = $api->download_link;
+        } else {
+            $plugin_download_link = $plugin_source;
+        }
+
+        ignore_user_abort( true );
+        try {
+            if ( set_time_limit( 0 ) !== true ) {
+                ini_set( 'max_execution_time', 0 );
+            }
+
+            if ( ini_get( 'max_execution_time' ) !== '0' ) {
+                error_log( "timeout could not be updated to unlimited." );
+
+                if ( set_time_limit( 600 ) !== true ) {
+                    ini_set( 'max_execution_time', 600 );
+                }
+
+                if ( ini_get( 'max_execution_time' ) !== '600' ) {
+                    error_log( "timeout could not be updated." );
+                }
+
+            }
+
+        } catch ( Exception $ex ) {
+            error_log( "timeout could not be updated: " . $ex->getMessage() );
+        }
+
+        $upgrader->install( $plugin_download_link );
     }
 
     function devm_upgrade_plugin( $plugin_slug ) {
@@ -151,22 +184,26 @@ class Devm_Plugin_Backup_Restore {
             $installed_plugin_slug_array = $this->devm_get_all_installed_plugins_slug();
             try {
 
-                foreach ( $plugins_array as $plugin_slug ) {
+                foreach ( $plugins_array as $plugin ) {
+                    $plugin_slug   = $plugin["slug"];
+                    $plugin_source = isset( $plugin["source"] ) ? $plugin["source"] : null;
+
                     $installed                          = false;
                     $this->pluginsInstall[$plugin_slug] = $installed;
 
                     if ( !in_array( $plugin_slug, $installed_plugin_slug_array ) ) {
+
                         //plugin's not installed, install plugin
-                        $this->devm_install_plugin( $plugin_slug );
-                        $installed                          = true;
-                        $this->pluginsInstall[$plugin_slug] = $installed;
-                    } 
-                    // else {
-                    //     //plugin's already installed, upgrade plugin
-                    //     $this->devm_upgrade_plugin( $plugin_slug );
-                    //     $installed                          = true;
-                    //     $this->pluginsInstall[$plugin_slug] = $installed;
-                    // }
+                        try {
+                            $this->devm_install_plugin( $plugin_slug, $plugin_source );
+                            $installed                          = true;
+                            $this->pluginsInstall[$plugin_slug] = $installed;
+                        } catch ( Exception $e ) {
+                            $installed                          = false;
+                            $this->pluginsInstall[$plugin_slug] = $installed;
+                        }
+
+                    }
 
                     $plugin_slug                    = $plugin_slug;
                     $updated_plugin_directory_array = $this->devm_get_all_installed_plugins_directory();
@@ -187,6 +224,25 @@ class Devm_Plugin_Backup_Restore {
 
         }
 
+    }
+
+    /**
+     * Retrieve the download URL for a WP repo package.
+     *
+     * @since 1.0.0
+     *
+     * @param string $slug Plugin slug.
+     * @return string Plugin download URL.
+     */
+    protected function get_wp_repo_download_url( $slug ) {
+        $source = '';
+        $api    = $this->get_plugins_api( $slug );
+
+        if ( false !== $api && isset( $api->download_link ) ) {
+            $source = $api->download_link;
+        }
+
+        return $source;
     }
 
 }
