@@ -24,7 +24,7 @@ jQuery(document).ready(function ($) {
                 name: name
             },
             success: function (response) {
-                console.log(required_plugin);
+                // console.log(required_plugin);
                 var config = {
                         ...response.data,
                         required_plugin
@@ -159,7 +159,6 @@ jQuery(document).ready(function ($) {
                 }
             },
             success: function (response) {
-                console.log(response);
 
                 let delay = 0;
                 parent.find('.devm-btn').removeClass('active').removeClass('show');
@@ -167,18 +166,12 @@ jQuery(document).ready(function ($) {
 
 
                 if (step == 'plugin_install') {
-                    // console.log("process started");
                     delay = null;
                     let required_plugin_list = JSON.parse(parent.find(".devm-continue-btn").attr('config')).required_plugin;
-                    // console.log(required_plugin_list);
-                    // console.log(required_plugin);
 
-                    parent.find('.devm-importer-plugin-list p#' + required_plugin.slug).addClass('devm-installed');
+                    parent.find('.devm-importer-plugin-list p#' + required_plugin[0].slug).addClass('devm-installed');
                     var installedPlugin = parent.find('.devm-single-importer.active .devm-installed'),
                         parcent = (installedPlugin.length * 100) / required_plugin_list.length;
-
-                    // console.log(required_plugin_list.length);
-                    // console.log(installedPlugin.length);
 
                     if (required_plugin_list.length === installedPlugin.length) {
                         parent.find('.devm-progress-bar').addClass('success');
@@ -186,14 +179,12 @@ jQuery(document).ready(function ($) {
                     }
 
                     parent.find('.devm-progress-bar .attr-progress-bar').css('width', parcent + '%');
-                    // console.log("process ended");
 
                 } else if (step == 'content_import') {
                     parent.find('.devm-loading').removeClass('start');
                     $('.devm-importer-final-buttons').show();
                     $('.devm-importer-normal-buttons').hide();
                 }
-
 
                 if (delay == null) {
                     return;
