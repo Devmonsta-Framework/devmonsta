@@ -134,7 +134,7 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
 
     if ( isset( $keys[0] ) ) {
 
-// not used count() for performance reasons
+        // not used count() for performance reasons
         if ( $is_object ) {
             return devm_array_key_get( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
@@ -234,7 +234,7 @@ function devm_array_key_set( $keys, $value, &$array_or_object, $keys_delimiter =
 
     if ( isset( $keys[0] ) ) {
 
-// not used count() for performance reasons
+        // not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_set( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
@@ -289,7 +289,7 @@ function devm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' )
 
     if ( isset( $keys[0] ) ) {
 
-// not used count() for performance reasons
+        // not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_unset( $keys, $array_or_object->{$key_or_property} );
         } else {
@@ -989,18 +989,18 @@ function devm_widgets_export() {
     $available_widgets = devm_available_widgets();
     $widget_instances  = [];
 
-// Loop widgets.
+    // Loop widgets.
     foreach ( $available_widgets as $widget_data ) {
         // Get all instances for this ID base.
         $instances = get_option( 'widget_' . $widget_data['id_base'] );
 
-// Have instances.
+        // Have instances.
         if ( !empty( $instances ) ) {
 
-// Loop instances.
+            // Loop instances.
             foreach ( $instances as $instance_id => $instance_data ) {
 
-// Key is ID (not _multiwidget).
+                // Key is ID (not _multiwidget).
                 if ( is_numeric( $instance_id ) ) {
                     $unique_instance_id                    = $widget_data['id_base'] . '-' . $instance_id;
                     $widget_instances[$unique_instance_id] = $instance_data;
@@ -1018,7 +1018,7 @@ function devm_widgets_export() {
 
     foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
 
-// Skip inactive widgets.
+        // Skip inactive widgets.
         if ( 'wp_inactive_widgets' === $sidebar_id ) {
             continue;
         }
@@ -1053,7 +1053,7 @@ function devm_available_widgets() {
 
     foreach ( $widget_controls as $widget ) {
 
-// No duplicates.
+        // No duplicates.
         if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name']    = $widget['name'];
@@ -1084,7 +1084,7 @@ function devm_sanitize_data( $key, $value ) {
 
     $control_type = devm_get_post_type( $key );
 
-// Sanitize email type controls
+    // Sanitize email type controls
     if ( in_array( $control_type, $email_valued_controls ) ) {
         return sanitize_email( $value );
     }
@@ -1122,7 +1122,7 @@ function devm_sanitize_taxonomy_data( $key, $value ) {
 
     $control_type = devm_get_taxonomy_post_type( $key );
 
-// Sanitize email type controls
+    // Sanitize email type controls
     if ( in_array( $control_type, $email_valued_controls ) ) {
         return sanitize_email( $value );
     }
@@ -1177,7 +1177,6 @@ function devm_get_taxonomy_post_type( $control_name ) {
 
 }
 
-//devm_print(devm_get_post_type('user_url_one'));
 //demo import file flter
 function devm_import_files() {
     $demo_data = [];
@@ -1217,17 +1216,17 @@ function devm_widgets_import_data( $data ) {
     // Begin results.
     $results = [];
 
-// Loop import data's sidebars.
+    // Loop import data's sidebars.
     foreach ( $data as $sidebar_id => $widgets ) {
 
-// Skip inactive widgets (should not be in export file).
+        // Skip inactive widgets (should not be in export file).
         if ( 'wp_inactive_widgets' === $sidebar_id ) {
             continue;
         }
 
-// Check if sidebar is available on this site.
+        // Check if sidebar is available on this site.
 
-// Otherwise add widgets to inactive, and say so.
+        // Otherwise add widgets to inactive, and say so.
         if ( isset( $wp_registered_sidebars[$sidebar_id] ) ) {
             $sidebar_available    = true;
             $use_sidebar_id       = $sidebar_id;
@@ -1245,7 +1244,7 @@ function devm_widgets_import_data( $data ) {
         $results[$sidebar_id]['message']      = $sidebar_message;
         $results[$sidebar_id]['widgets']      = [];
 
-// Loop widgets.
+        // Loop widgets.
         foreach ( $widgets as $widget_instance_id => $widget ) {
 
             $fail = false;
@@ -1254,7 +1253,7 @@ function devm_widgets_import_data( $data ) {
             $id_base            = preg_replace( '/-[0-9]+$/', '', $widget_instance_id );
             $instance_id_number = str_replace( $id_base . '-', '', $widget_instance_id );
 
-// Does site support this widget?
+            // Does site support this widget?
             if ( !$fail && !isset( $available_widgets[$id_base] ) ) {
                 $fail                = true;
                 $widget_message_type = 'error';
@@ -1270,14 +1269,13 @@ function devm_widgets_import_data( $data ) {
                 $sidebars_widgets = get_option( 'sidebars_widgets' );
                 $sidebar_widgets  = isset( $sidebars_widgets[$use_sidebar_id] ) ? $sidebars_widgets[$use_sidebar_id] : [];
 
-// Check Inactive if that's where will go.
-
+                // Check Inactive if that's where will go.
                 // Loop widgets with ID base.
                 $single_widget_instances = !empty( $widget_instances[$id_base] ) ? $widget_instances[$id_base] : [];
 
                 foreach ( $single_widget_instances as $check_id => $check_widget ) {
 
-// Is widget in same sidebar and has identical settings?
+                    // Is widget in same sidebar and has identical settings?
                     if ( in_array( "$id_base-$check_id", $sidebar_widgets, true ) && (array) $widget === $check_widget ) {
                         $fail                = true;
                         $widget_message_type = 'warning';
@@ -1297,7 +1295,7 @@ function devm_widgets_import_data( $data ) {
                 ];
                 $single_widget_instances[] = $widget;
 
-// Add it.
+                // Add it.
                 // Get the key it was given.
                 end( $single_widget_instances );
                 $new_instance_id_number = key( $single_widget_instances );
@@ -1344,7 +1342,7 @@ function devm_widgets_import_data( $data ) {
                     'widget_id_num_old' => $instance_id_number,
                 ];
 
-// Success message.
+                // Success message.
                 if ( $sidebar_available ) {
                     $widget_message_type = 'success';
                     $widget_message      = esc_html__( 'Imported', 'devmonsta' );

@@ -29,7 +29,6 @@ final class Bootstrap {
             'class-devm-wp-meta',
             'database',
             'class-devm-resize',
-            'class-devm-request',
             'general',
             'repeater',
         ];
