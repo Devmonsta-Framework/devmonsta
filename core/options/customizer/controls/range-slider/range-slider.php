@@ -83,7 +83,7 @@ class RangeSlider extends Structure {
 
             <div class="devm-option-column right">
 
-                <input data-config='<?php echo $range_slider_config; ?>' class="devm-ctrl devm-range-slider" <?php $this->link();?>
+                <input data-config='<?php echo json_encode($range_slider_config); ?>' class="devm-ctrl devm-range-slider" <?php $this->link();?>
                     type="text" value="<?php echo esc_attr( $this->value ); ?>"
                     name="<?php echo esc_attr( $this->name ); ?>" data-value="<?php echo esc_html( $this->value ); ?>"/>
 

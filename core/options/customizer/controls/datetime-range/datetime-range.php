@@ -84,7 +84,7 @@ class DatetimeRange extends Structure {
             </div>
 
             <div class="devm-option-column right">
-                <input data-config='<?php echo $this->date_time_range_default_data; ?>' type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-range" data-config='<?php echo json_encode($this->date_time_range_default_data); ?>'
+                <input type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-range" data-config='<?php echo json_encode($this->date_time_range_default_data); ?>'
                     <?php $this->link();?> value="<?php echo esc_attr( $this->default_value ); ?>" data-value="<?php echo esc_html( $this->value ); ?>">
                 <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
