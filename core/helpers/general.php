@@ -1,7 +1,5 @@
 <?php
 
-use Devmonsta\Options\Posts\Controls;
-
 if ( !defined( 'DEVM' ) ) {
     die( 'Forbidden' );
 }
