@@ -5,7 +5,7 @@ use Devmonsta\Options\Customizer\Structure;
 
 class DatetimePicker extends Structure {
 
-    public $label, $name, $desc, $date_time_picker_config, 
+    public $label, $name, $desc, $date_time_picker_config,
             $default_attributes, $default_value, $value;
 
     private $allowed_date_formats = [
@@ -53,13 +53,13 @@ class DatetimePicker extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        if ( !wp_script_is( 'flatpickr', 'enqueued' ) ) {
-            wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'], false, true );
-        }
-        wp_enqueue_script( 'devm-date-time-picker-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
-        wp_enqueue_script( 'devm-customizer-date-time-picker', DEVMONSTA_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-picker-from-post'], false, true );
-        
+        // wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        // if ( !wp_script_is( 'flatpickr', 'enqueued' ) ) {
+        //     wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'], false, true );
+        // }
+        // wp_enqueue_script( 'devm-date-time-picker-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
+        // wp_enqueue_script( 'devm-customizer-date-time-picker', DEVMONSTA_CORE . 'options/customizer/controls/datetime-picker/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-picker-from-post'], false, true );
+
         // $date_time_picker_data                = [];
         // $date_time_picker_data['format']      = isset( $this->date_time_picker_config['date-format'] ) && in_array( strtolower( $this->date_time_picker_config['date-format'] ), $this->allowed_date_formats ) ? $this->date_time_picker_config['date-format'] : 'Y-m-d H:i';
         // $date_time_picker_data['is24Format']  = isset( $this->date_time_picker_config['time-24'] ) && $this->date_time_picker_config['time-24'] ? 1 : 0;

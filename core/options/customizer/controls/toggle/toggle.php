@@ -4,7 +4,7 @@ namespace Devmonsta\Options\Customizer\Controls\Toggle;
 use Devmonsta\Options\Customizer\Structure;
 
 class Toggle extends Structure {
-    
+
     public  $default_attributes;
     /**
      * The type of control being rendered
@@ -14,7 +14,7 @@ class Toggle extends Structure {
      * Enqueue our scripts and styles
      */
     public function enqueue(){
-        wp_enqueue_style( 'devmonsta-customizer', DEVMONSTA_CORE . '/options/customizer/libs/assets/css/customizer.css', [], null, 'all' );
+        // wp_enqueue_style( 'devmonsta-customizer', DEVMONSTA_CORE . '/options/customizer/libs/assets/css/customizer.css', [], null, 'all' );
     }
     /**
      * Render the control in the customizer

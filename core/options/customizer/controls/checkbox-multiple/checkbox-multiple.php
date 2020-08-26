@@ -18,7 +18,7 @@ class CheckboxMultiple extends Structure {
 
     public $statuses;
 
-    
+
     /**
 	 * Constructor of this control. Must call parent constructor
 	 *
@@ -67,7 +67,7 @@ class CheckboxMultiple extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_script( 'devm-checkbox-multiple', DEVMONSTA_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
+        // wp_enqueue_script( 'devm-checkbox-multiple', DEVMONSTA_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -90,7 +90,7 @@ class CheckboxMultiple extends Structure {
                 </div>
 
                 <div class="devm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
-                    
+
                     <?php $multi_values = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
 
                     <ul class="customize-control">

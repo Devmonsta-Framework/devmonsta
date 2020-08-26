@@ -54,10 +54,10 @@ class Oembed extends Structure {
      * @internal
      */
     public function enqueue(  ) {
-        wp_register_script( 'devm-oembed', DEVMONSTA_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
-        wp_localize_script( 'devm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
-        wp_enqueue_script( 'devm-oembed' );
-        add_action( 'wp_ajax_get_oembed_response', [$this, 'action_get_oembed_response'] );
+        // wp_register_script( 'devm-oembed', DEVMONSTA_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
+        // wp_localize_script( 'devm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
+        // wp_enqueue_script( 'devm-oembed' );
+        // add_action( 'wp_ajax_get_oembed_response', [$this, 'action_get_oembed_response'] );
     }
 
     /**
@@ -76,13 +76,14 @@ class Oembed extends Structure {
     public function render_content() {
         $wrapper_attr['data-nonce']   = wp_create_nonce( 'action_get_oembed_response' );
         $wrapper_attr['data-preview'] = $this->data_preview;
+        $data = ['ajaxurl' => admin_url( 'admin-ajax.php' )];
         ?>
         <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
                 <div class="devm-option-column left">
                     <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
                 <div class="devm-option-column right devm-oembed-input">
-                    <input <?php echo devm_attr_to_html( $wrapper_attr ) ?> <?php $this->link(); ?>
+                    <input data-config='<?php echo json_encode($data); ?>' <?php echo devm_attr_to_html( $wrapper_attr ) ?> <?php $this->link(); ?>
                             type="url" name="<?php echo esc_attr( $this->name ); ?>"
                             data-value="<?php echo esc_html( $this->value ); ?>"
                             value="<?php echo esc_html( $this->value ); ?>"
@@ -103,12 +104,12 @@ class Oembed extends Structure {
      */
     public static function action_get_oembed_response() {
 
-        // Post data array from ajax request 
+        // Post data array from ajax request
         $post_array = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         //Check for valid nonce
         if ( wp_verify_nonce( $post_array[ '_nonce' ], 'action_get_oembed_response' ) ) {
-            
+
             $url = $post_array[ 'url'];
             $width = $post_array['preview']['width'];
             $height = $post_array['preview']['height'];
@@ -117,7 +118,7 @@ class Oembed extends Structure {
 
             echo devm_render_markup( $iframe );
             die();
-    
+
         } else {
             echo esc_html_e('Invalid nonce', 'devmonsta');
             die();

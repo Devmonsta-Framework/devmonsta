@@ -17,7 +17,7 @@ class HtmlEditor extends Structure
             <?php
 
         $settings = array(
-            
+
             'media_buttons' => true,
             'drag_drop_upload' => false,
             'teeny' => true,
@@ -47,8 +47,8 @@ class HtmlEditor extends Structure
     public function enqueue()
     {
 
-        wp_enqueue_script('html_editor_control_js', plugin_dir_url(__FILE__) . 'js/html-editor.js', array('jquery', 'jquery-ui-core'), rand(), true);
-        add_action('customize_controls_print_styles', array($this, 'print_styles'));
+        // wp_enqueue_script('html_editor_control_js', plugin_dir_url(__FILE__) . 'js/html-editor.js', array('jquery', 'jquery-ui-core'), rand(), true);
+        // add_action('customize_controls_print_styles', array($this, 'print_styles'));
 
     }
 

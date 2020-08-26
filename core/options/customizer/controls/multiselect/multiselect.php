@@ -53,10 +53,10 @@ class Multiselect extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
-        wp_enqueue_script( 'devm-multiselect-js-from-post', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
-        wp_enqueue_script( 'devm-customizer-multiselect-js', DEVMONSTA_CORE . 'options/customizer/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js', 'devm-multiselect-js-from-post'], time(), true );
+        // wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
+        // wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
+        // wp_enqueue_script( 'devm-multiselect-js-from-post', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+        // wp_enqueue_script( 'devm-customizer-multiselect-js', DEVMONSTA_CORE . 'options/customizer/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js', 'devm-multiselect-js-from-post'], time(), true );
     }
 
     /**

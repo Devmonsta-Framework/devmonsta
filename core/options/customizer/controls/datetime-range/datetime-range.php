@@ -62,11 +62,11 @@ class DatetimeRange extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'devm-date-time-range-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
-        wp_enqueue_script( 'devm-date-time-range', DEVMONSTA_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-range-from-post'], false, true );
-        wp_localize_script( 'devm-date-time-range', 'date_time_range_config', $this->date_time_range_default_data );
+        // wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        // wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        // wp_enqueue_script( 'devm-date-time-range-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
+        // wp_enqueue_script( 'devm-date-time-range', DEVMONSTA_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-range-from-post'], false, true );
+        // wp_localize_script( 'devm-date-time-range', 'date_time_range_config', $this->date_time_range_default_data );
     }
 
     public function render() {
@@ -82,7 +82,7 @@ class DatetimeRange extends Structure {
             </div>
 
             <div class="devm-option-column right">
-                <input type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-range" data-config='<?php echo json_encode($this->date_time_range_default_data); ?>'
+                <input data-config='<?php echo $this->date_time_range_default_data; ?>' type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-range" data-config='<?php echo json_encode($this->date_time_range_default_data); ?>'
                     <?php $this->link();?> value="<?php echo esc_attr( $this->default_value ); ?>" data-value="<?php echo esc_html( $this->value ); ?>">
                 <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
