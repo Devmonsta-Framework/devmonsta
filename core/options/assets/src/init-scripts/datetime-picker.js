@@ -9,6 +9,7 @@ jQuery(window).on('devm-scripts.datetimePicker', function(e, repeater){
     if(el && !el.length){ return false }
     el.each(function(){
         var date_time_picker_config = jQuery(this).data('config');
+        console.log(date_time_picker_config);
         var time_picker = (date_time_picker_config.timepicker == 0) ? false : true;
         var is_24format = (date_time_picker_config.is24Format == 0) ? false : true;
         var min_date    = (date_time_picker_config.minDate == "") ? false : date_time_picker_config.minDate;
