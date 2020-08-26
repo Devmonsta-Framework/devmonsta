@@ -5,7 +5,7 @@ use Devmonsta\Options\Customizer\Structure;
 
 class WpEditor extends Structure {
 
-    public $label, $name, $desc, $value, $default_value, 
+    public $label, $name, $desc, $value, $default_value,
             $default_attributes, $editor_height, $editor_wpautop;
 
     /**
@@ -53,9 +53,9 @@ class WpEditor extends Structure {
     }
 
     function editor_customizer_script() {
-        wp_enqueue_script( 'wp-editor-customizer', DEVMONSTA_CORE . 'options/customizer/controls/wp-editor/assets/js/script.js', array( 'jquery' ), rand(), true );
+        // wp_enqueue_script( 'wp-editor-customizer', DEVMONSTA_CORE . 'options/customizer/controls/wp-editor/assets/js/script.js', array( 'jquery' ), rand(), true );
     }
-    
+
     /*
      ** Enqueue control related scripts/styles
      */
@@ -82,7 +82,7 @@ class WpEditor extends Structure {
                 </div>
 
                 <div class="devm-option-column right wp-editor-parent">
-                    
+
                     <input class="wp-editor-area" type="hidden" <?php $this->link(); ?> value="<?php echo esc_textarea( $this->value() ); ?>">
                         <?php
                         $content = !empty( $this->value() ) && !is_null( $this->value() ) ? $this->value() : $this->default_value;
@@ -95,7 +95,7 @@ class WpEditor extends Structure {
                         );
                         $this->filter_editor_setting_link();
                         wp_editor($content, $this->id, $settings );
-                        
+
                         do_action('admin_footer');
                         do_action('admin_print_footer_scripts');
                         ?>

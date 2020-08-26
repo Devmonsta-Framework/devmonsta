@@ -44,10 +44,10 @@ class ImagePicker extends Structure {
      */
     public function enqueue() {
         // css
-        wp_enqueue_style( 'devm-image-picker-css', DEVMONSTA_CORE . 'options/posts/controls/image-picker/assets/css/image-picker.css' );
+        // wp_enqueue_style( 'devm-image-picker-css', DEVMONSTA_CORE . 'options/posts/controls/image-picker/assets/css/image-picker.css' );
     }
 
-    
+
     public function render() {
         $this->value = ( !is_null( $this->value() ) && !empty( $this->value() ) ) ? $this->value() : $this->default_value;
         $this->render_content();

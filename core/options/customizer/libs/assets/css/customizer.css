@@ -809,5 +809,5 @@
    }
 
    .flatpickr-calendar.open {
-        z-index: 999999;
+        z-index: 999999 !important;
     }

@@ -54,9 +54,9 @@ class Select extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        wp_enqueue_script( 'devm-select-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+        // wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        // wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        // wp_enqueue_script( 'devm-select-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
     }
 
     /**
@@ -94,7 +94,7 @@ class Select extends Structure {
                             }
                         ?>
                     </select>
-                    
+
                     <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </div>

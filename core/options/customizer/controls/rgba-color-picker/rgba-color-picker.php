@@ -55,8 +55,8 @@ class RgbaColorPicker extends Structure {
      */
     public function enqueue() {
 
-        wp_enqueue_script( 'alpha-color-picker', DEVMONSTA_CORE . 'options/customizer/controls/rgba-color-picker/assets/js/alpha-color-picker.js', [ 'jquery', 'wp-color-picker' ], false, true );
-        wp_enqueue_style( 'alpha-color-picker', DEVMONSTA_CORE . 'options/customizer/controls/rgba-color-picker/assets/css/alpha-color-picker.css', [ 'wp-color-picker' ] );
+        // wp_enqueue_script( 'alpha-color-picker', DEVMONSTA_CORE . 'options/customizer/controls/rgba-color-picker/assets/js/alpha-color-picker.js', [ 'jquery', 'wp-color-picker' ], false, true );
+        // wp_enqueue_style( 'alpha-color-picker', DEVMONSTA_CORE . 'options/customizer/controls/rgba-color-picker/assets/css/alpha-color-picker.css', [ 'wp-color-picker' ] );
 
         // if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
         //     wp_enqueue_style( 'wp-color-picker' );

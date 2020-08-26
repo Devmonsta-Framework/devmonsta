@@ -37,10 +37,10 @@ class Icon extends Structure {
      * @internal
      */
     public function enqueue(  ) {
-        wp_enqueue_style( 'devm-fontawesome-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
-        wp_enqueue_style( 'devm-main-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/main.css' );
-        wp_enqueue_script( 'devm-icon-components', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
-        wp_enqueue_script( 'devm-asicon', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
+        // wp_enqueue_style( 'devm-fontawesome-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
+        // wp_enqueue_style( 'devm-main-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/main.css' );
+        // wp_enqueue_script( 'devm-icon-components', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
+        // wp_enqueue_script( 'devm-asicon', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -61,7 +61,7 @@ class Icon extends Structure {
             </div>
 
             <div class="devm-option-column right devm-vue-app active-script">
-                <devm-icon-picker 
+                <devm-icon-picker
                         name='<?php echo esc_attr( $this->name ); ?>'
                         class="devm-ctrl"
                         icon_list='<?php echo devm_render_markup($iconEncoded); ?>'
@@ -70,7 +70,7 @@ class Icon extends Structure {
                     ></devm-icon-picker>
 
                     <input type="hidden" <?php $this->link();?>  value="" >
-                    
+
                 <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
