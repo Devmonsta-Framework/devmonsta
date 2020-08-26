@@ -55,7 +55,9 @@ class Switcher extends Structure {
         $this->choices       = [$this->right_key => $this->right_choice[$this->right_key]];
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*

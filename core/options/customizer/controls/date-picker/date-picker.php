@@ -33,7 +33,10 @@ class DatePicker extends Structure {
         $this->max_date     = isset( $args[0]['max-date'] ) ? date( "Y-m-d", strtotime( $args[0]['max-date'] ) ) : false;
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        }
     }
 
     /**

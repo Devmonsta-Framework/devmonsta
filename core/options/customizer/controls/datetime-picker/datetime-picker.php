@@ -46,7 +46,9 @@ class DatetimePicker extends Structure {
         $this->date_time_picker_config = isset( $args[0]['datetime-picker'] ) && is_array( $args[0]['datetime-picker'] ) ? $args[0]['datetime-picker'] : [];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        }
     }
 
     /*

@@ -47,7 +47,9 @@ class Select extends Structure {
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*

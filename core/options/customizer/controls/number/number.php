@@ -38,7 +38,9 @@ class Number extends Structure {
         $this->max           = isset( $args[0]['max'] ) && is_numeric( $args[0]['max'] ) ? intval( $args[0]['max'] ) : 0;
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*

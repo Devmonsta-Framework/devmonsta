@@ -55,7 +55,9 @@ class DatetimeRange extends Structure {
         $this->date_time_range_default_data['defaultTime'] =  isset( $date_time_picker_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_picker_config['defaultTime']) ? $date_time_picker_config['defaultTime'] : '12:00';
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        }
     }
 
     /*

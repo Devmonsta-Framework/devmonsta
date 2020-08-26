@@ -28,8 +28,11 @@ class Icon extends Structure {
         $this->desc                         = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value['icon']        = isset( $args[0]['value']['icon'] ) ? $args[0]['value']['icon'] : "fab fa-500px";
         $this->default_value['iconType']    = isset( $args[0]['value']['type'] ) ? $args[0]['value']['type'] : "devm-font-awesome";
+        
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0], "devm-vue-app" );
+        }
     }
 
 

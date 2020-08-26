@@ -47,7 +47,9 @@ class RgbaColorPicker extends Structure {
         $this->palettes      = isset( $args[0]['palettes'] ) && is_array( $args[0]['palettes'] ) ? implode( '|', $args[0]['palettes'] ) : [];
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        }
     }
 
     /**

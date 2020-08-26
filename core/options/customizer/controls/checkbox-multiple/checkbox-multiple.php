@@ -60,7 +60,9 @@ class CheckboxMultiple extends Structure {
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*

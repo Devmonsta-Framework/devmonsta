@@ -46,9 +46,10 @@ class Gradient extends Structure {
         $this->default_value = isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ? $args[0]['value'] : ['primary'   => '#FF0000', 'secondary' => '#0000FF'];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        }
     }
-
 
     /*
      ** Enqueue control related scripts/styles

@@ -49,7 +49,9 @@ class WpEditor extends Structure {
         $this->editor_wpautop = isset($args[0]["wpautop"]) ? (bool) $args[0]['wpautop'] : false;
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     function editor_customizer_script() {

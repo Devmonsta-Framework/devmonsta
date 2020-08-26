@@ -31,7 +31,9 @@ class Typography extends Structure {
         $this->components    = isset( $args[0]['components'] ) && is_array( $args[0]['components'] ) ? $args[0]['components'] : [];
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /**
