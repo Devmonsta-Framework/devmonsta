@@ -283,12 +283,18 @@ class Taxonomies
     public function save_meta($term_id, $tt_id)
     {
         $prefix = 'devmonsta_';
+
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls',$controls_data);
+
         foreach ($_POST as $key => $value)
         {
             if (strpos($key, $prefix) !== false) {
-                add_term_meta($term_id, $key, $_POST[$key]);
+                add_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
             }
         }
+
+
 
     }
 
@@ -304,11 +310,14 @@ class Taxonomies
 
         $prefix = 'devmonsta_';
 
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls',$controls_data);
+
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
 
-                update_term_meta($term_id, $key, sanitize_text_field($_POST[$key]));
+                update_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
             }
 
         }

@@ -1,0 +1,532 @@
+@-webkit-keyframes spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes spinner-border {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+.devm-pop-container,
+.install-next-btn {
+    display: none
+}
+
+.devm-pop-container.active {
+    display: block
+}
+
+#devm-importMmodal.attr-modal {
+    max-width: 920px;
+    margin-bottom: 0px;
+    width: 100%
+}
+
+#devm-importMmodal .attr-modal-dialog {
+    width: 100%;
+    margin-bottom: 0;
+    margin-top: 0
+}
+
+#devm-importMmodal .attr-modal-content {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    background-color: #23282E;
+    border-radius: 0
+}
+
+#devm-importMmodal.attr-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    bottom: initial;
+    right: initial;
+    display: none;
+    overflow: visible;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%)
+}
+
+.devm-importer-close-modal {
+    position: absolute;
+    color: tomato;
+    right: -9px;
+    top: -9px;
+    background-color: #fff;
+    padding: 8px;
+    border-radius: 50%;
+    font-size: 11px;
+    cursor: pointer;
+    font-weight: 700
+}
+
+.devm-modal-main-content {
+    min-height: 460px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    overflow: hidden
+}
+
+.devm-modal-main-content .devm-single-content {
+    background: #23282e;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    width: 50%;
+}
+
+.devm-modal-main-content .devm-single-content:last-child {
+    padding-top: 25px;
+}
+
+.devm-modal-main-content .devm-single-content--right-section {
+    position: relative
+}
+
+.devm-modal-main-content .devm-single-content--preview-img {
+    display: none
+}
+
+.devm-modal-main-content .devm-single-content--preview-img.active {
+    display: block;
+    height: 100%;
+}
+
+.devm-modal-main-content .devm-single-content--preview-img img {
+    display: block;
+    max-width: 100%;
+    height: 100%;
+}
+
+.devm-modal-main-content .devm-single-content:last-of-type:before {
+    content: "";
+    background: #23282e;
+    width: 391px;
+    height: 211px;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: -12%;
+    right: -25%
+}
+
+.devm-modal-main-content .devm-importer-data {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin: 0 73px;
+    display: flex;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: end;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s
+}
+
+.devm-modal-main-content .devm-importer-data .devm-single-importer {
+    position: relative;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    opacity: 0
+}
+
+.devm-modal-main-content .devm-importer-data .devm-single-importer.active {
+    opacity: 1
+}
+
+.devm-modal-main-content .devm-importer-data--welcome-title {
+    font-size: 48px;
+    line-height: 46px;
+    color: #fff;
+    letter-spacing: -1px;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 15px
+}
+
+.devm-modal-main-content .devm-importer-data--welcome-title.hidden {
+    display: none
+}
+
+.devm-modal-main-content .devm-importer-data--welcome-text.devm-plugin-installed p {
+    color: red
+}
+
+.devm-modal-main-content .devm-importer-data--welcome-text p {
+    color: #fff;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -1px;
+    opacity: .7;
+    margin: 0
+}
+
+.devm-modal-main-content .devm-importer-data--welcome-text .devm-installed:before {
+    content: "\e902";
+    font-family: 'devmonsta';
+    color: #12C97A;
+    font-size: 14px;
+    margin-right: 10px
+}
+
+.devm-modal-main-content .devm-importer-data .devm-importer-plugin-list p {
+    color: #fff;
+    font-size: 18px;
+    line-height: 26px;
+    letter-spacing: -1px;
+    opacity: .7;
+    margin: 0
+}
+
+.devm-modal-main-content .devm-importer-data .devm-importer-plugin-list p:before {
+    content: "\e9e4";
+    font-family: 'devmonsta';
+    color: #4E4E4E;
+    font-size: 12px;
+    min-width: 22px;
+    display: inline-block
+}
+
+.devm-modal-main-content .devm-importer-data .devm-importer-plugin-list .devm-installed:before {
+    content: "\e902";
+    font-family: 'devmonsta';
+    color: #12C97A;
+    font-size: 12px;
+    min-width: 22px;
+    display: inline-block
+}
+
+.devm-modal-main-content .devm-importer-data--progress-msg {
+    color: #FFB25D;
+    font-size: 24px;
+    line-height: 46px;
+    margin: 0;
+    font-weight: 600;
+    display: none
+}
+
+.devm-modal-main-content .devm-importer-data .devm-loading {
+    display: none
+}
+
+.devm-modal-main-content .devm-importer-data .devm-loading.start {
+    display: block
+}
+
+.devm-modal-main-content .devm-importer-data .devm-loading.start:after {
+    content: '. ';
+    -webkit-animation: dots 1s steps(5, end) infinite;
+    animation: dots 1s steps(5, end) infinite
+}
+
+@-webkit-keyframes dots {
+    0%,
+    20% {
+        color: rgba(0, 0, 0, 0);
+        text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0)
+    }
+    40% {
+        color: white;
+        text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0)
+    }
+    60% {
+        text-shadow: 0.25em 0 0 white, 0.5em 0 0 rgba(0, 0, 0, 0)
+    }
+    80%,
+    to {
+        text-shadow: .25em 0 0 white, .5em 0 0 white
+    }
+}
+
+@keyframes dots {
+    0%,
+    20% {
+        color: rgba(0, 0, 0, 0);
+        text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0)
+    }
+    40% {
+        color: white;
+        text-shadow: 0.25em 0 0 rgba(0, 0, 0, 0), 0.5em 0 0 rgba(0, 0, 0, 0)
+    }
+    60% {
+        text-shadow: 0.25em 0 0 white, 0.5em 0 0 rgba(0, 0, 0, 0)
+    }
+    80%,
+    to {
+        text-shadow: .25em 0 0 white, .5em 0 0 white
+    }
+}
+
+.devm-modal-main-content .devm-importer-buttons {
+    text-align: right;
+    padding: 30px 48px
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn {
+    font-size: 15px;
+    line-height: 26px;
+    color: #fff;
+    letter-spacing: -1px;
+    background-color: transparent;
+    border: 2px solid #4E4E4E;
+    padding: 8px 29px;
+    margin-right: 14px;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    cursor: pointer
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn:last-child {
+    margin-right: 0
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-continue-btn,
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-special-btn {
+    background-color: #0272AB;
+    border-color: #0272AB
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-continue-btn:disabled,
+.devm-modal-main-content .devm-importer-buttons .devm-btn.devm-special-btn:disabled {
+    background-color: #999;
+    border-color: #999
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn:disabled {
+    background-color: #999;
+    border-color: #999;
+    cursor: not-allowed
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn .attr-spinner-border {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    vertical-align: text-bottom;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: spinner-border .75s linear infinite;
+    animation: spinner-border .75s linear infinite;
+    margin-right: 5px;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    -webkit-transition: all .4s;
+    -o-transition: all .4s;
+    transition: all .4s
+}
+
+.devm-modal-main-content .devm-importer-buttons .devm-btn.active.show .attr-spinner-border {
+    opacity: 1;
+    visibility: visible;
+    position: static
+}
+
+.devm-modal-main-content .devm-importer-additional-data {
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -1px;
+    color: #fff;
+    vertical-align: middle;
+    margin-top: 20px
+}
+
+.devm-modal-main-content .devm-importer-additional-data .form-check-input {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    position: absolute;
+    opacity: 0
+}
+
+.devm-modal-main-content .devm-importer-additional-data .form-check-input:checked+.devm-importer-check-label:before {
+    content: "\e901"
+}
+
+.devm-modal-main-content .devm-importer-additional-data .devm-importer-check-label:before {
+    content: "\e900";
+    font-family: 'devmonsta';
+    font-size: 18px;
+    color: #FFB25D;
+    margin-right: 13px
+}
+
+.devm-modal-main-content .devm-importer-additional-data .devm-progress-bar {
+    margin: 0;
+    height: 10px;
+    border-radius: 0
+}
+
+.devm-modal-main-content .devm-importer-additional-data .devm-progress-bar .attr-progress-bar {
+    background-color: #FFB25D
+}
+
+.devm-modal-main-content .devm-importer-additional-data .devm-progress-bar.success .attr-progress-bar {
+    background-color: #12C97A
+}
+
+.devm-importer-final-buttons {
+    display: none
+}
+
+body.tools_page_devm-demo-import {
+    background-color: #F1F1F1
+}
+
+.about-wrap.devm-container {
+    margin: 0;
+    padding-left: 40px;
+    padding-top: 50px;
+    padding-right: 60px;
+    width: 100%;
+    max-width: 100%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.about-wrap.devm-container .devm--importer-title {
+    margin: 0;
+    font-size: 36px;
+    line-height: 42px;
+    color: #101010;
+    font-weight: 400;
+    letter-spacing: -2px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 25px
+}
+
+.about-wrap.devm-container .devm--importer-title__icon {
+    color: #377DFF;
+    font-size: 28px;
+    margin-right: 13px
+}
+
+.about-wrap.devm-container .devm--demo-preview-list {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-top: 40px;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.about-wrap.devm-container .devm--demo-preview-list__item {
+    margin: 0;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.33%;
+    flex: 0 0 33.33%;
+    margin: 0;
+    border: none;
+    padding: 0;
+    padding-right: 30px;
+    padding-bottom: 30px;
+    background-color: transparent;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
+.about-wrap.devm-container .devm--demo-preview-list__item:nth-child(3n+3) {
+    padding-right: 0
+}
+
+.about-wrap.devm-container .devm--demo-preview-list__item--thumb {
+    min-height: 190px;
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover
+}
+
+.about-wrap.devm-container .devm--demo-preview-list .card-body {
+    padding: 40px;
+    padding-top: 25px
+}
+
+.about-wrap.devm-container .devm--demo-preview-list .card-title {
+    font-size: 22px;
+    line-height: 26px;
+    color: #101010;
+    margin: 0
+}
+
+.about-wrap.devm-container .devm--demo-preivew-inner {
+    background-color: #fff
+}
+
+.about-wrap.devm-container .devm-preview-btn-list {
+    margin-top: 20px
+}
+
+.about-wrap.devm-container .devm-preview-btn,
+.about-wrap.devm-container .devm-special-preview-btn {
+    background-color: rgba(55, 125, 255, 0.1);
+    font-size: 14px;
+    line-height: 26px;
+    color: #377DFF;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+    padding: 7px 28px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-right: 16px
+}
+
+.about-wrap.devm-container .devm-preview-btn:last-child,
+.about-wrap.devm-container .devm-special-preview-btn:last-child {
+    margin-right: 0
+}
+
+.about-wrap.devm-container .devm-preview-btn-icon,
+.about-wrap.devm-container .devm-special-preview-btn-icon {
+    margin-right: 5px;
+    font-weight: 600
+}
+
+.about-wrap.devm-container .devm-special-preview-btn {
+    background-color: #1592E6;
+    color: #fff
+}

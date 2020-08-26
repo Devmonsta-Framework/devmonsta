@@ -2,12 +2,15 @@
 
 namespace Devmonsta\Options\Taxonomies;
 
-use Devmonsta\Libs\Posts as LibsPosts;
+use Devmonsta\Libs\Taxonomies as LibsPosts;
 
-class Controls{
+
+class Controls
+{
     public static function get_controls()
     {
         if (!empty(self::get_post_files())) {
+
             /** Include the file and stract the data  */
             $files = [];
 
@@ -20,7 +23,7 @@ class Controls{
 
             foreach (get_declared_classes() as $class) {
 
-                if (is_subclass_of($class, 'Devmonsta\Libs\Posts')) {
+                if (is_subclass_of($class, 'Devmonsta\Libs\Taxonomies')) {
                     $post_file_class[] = $class;
                 }
             }
@@ -47,7 +50,7 @@ class Controls{
     private static function get_post_files()
     {
         $files = [];
-        foreach (glob(get_template_directory() . '/devmonsta/options/taxonomy/*.php') as $post_files) {
+        foreach (glob(get_template_directory() . '/devmonsta/options/taxonomies/*.php') as $post_files) {
             array_push($files, $post_files);
         }
         return $files;
