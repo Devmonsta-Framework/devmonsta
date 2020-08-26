@@ -63,9 +63,9 @@ class Typography extends Structure {
     public function render_content() {
         $this->value            = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
         $this->font_list        = $this->devm_getGoogleFonts();
+        $data                  = [];
         $data['font_list']      = $this->font_list;
         $data['selected_data']  = $this->value;
-
         ?>
         <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
             <div class="devm-option-column left">
@@ -73,7 +73,7 @@ class Typography extends Structure {
             </div>
 
             <div class="devm-option-column right full-width">
-                <ul class="devm-option-typography">
+                <ul class="devm-option-typography"  data-config='<?php echo json_encode($data); ?>'>
                 <?php
 
                 if ( is_array( $this->components ) && !empty( $this->components ) ) {
@@ -86,7 +86,7 @@ class Typography extends Structure {
                                     <?php
                                     if ( is_array($this->font_list) && count( $this->font_list ) > 0 ): ?>
                                         <div class="google-fonts">
-                                            <select data-config='<?php echo json_encode($data);?>' class="devm-ctrl google-fonts-list" name="<?php echo esc_html( $this->name ) ?>[family]">
+                                            <select class="devm-ctrl google-fonts-list" name="<?php echo esc_html( $this->name ) ?>[family]">
                                             <?php
                                             foreach ( $this->font_list as $key => $item ) {
                                                 $selected = ( $item->family == esc_html( $this->value["family"] ) ) ? 'selected' : '';
