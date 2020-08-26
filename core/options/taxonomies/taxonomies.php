@@ -382,6 +382,15 @@ class Taxonomies
     {
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('wp-color-picker');
+        $colorpicker_l10n = array(
+                'clear'            => __( 'Clear' ),
+                'clearAriaLabel'   => __( 'Clear color' ),
+                'defaultString'    => __( 'Default' ),
+                'defaultAriaLabel' => __( 'Select default color' ),
+                'pick'             => __( 'Select Color' ),
+                'defaultLabel'     => __( 'Color value' ),
+        );
+        wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n ); 
         wp_enqueue_style('devmonsta-taxonomy-style', DEVMONSTA_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
         wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
