@@ -69,7 +69,7 @@ class CheckboxMultiple extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        // wp_enqueue_script( 'devm-checkbox-multiple', DEVMONSTA_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_script( 'devm-checkbox-multiple', DEVMONSTA_CORE . 'options/customizer/controls/checkbox-multiple/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**

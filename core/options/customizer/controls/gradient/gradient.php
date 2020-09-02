@@ -56,6 +56,7 @@ class Gradient extends Structure {
      */
     public function enqueue() {
 
+        wp_enqueue_script( 'devm-customizer-gradient-handle', DEVMONSTA_CORE . 'options/customizer/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
         // if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
         //     wp_enqueue_style( 'wp-color-picker' );
         // }
@@ -63,18 +64,18 @@ class Gradient extends Structure {
         //     wp_enqueue_script( 'devm-customizer-gradient-handle', DEVMONSTA_CORE . 'options/customizer/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
         // }
 
-        // $data                = [];
-        // $default_value_array = [];
+        $data                = [];
+        $default_value_array = [];
 
-        // if ( is_array( $this->default_value ) && !empty( $this->default_value ) ) {
-        //     foreach ( $this->default_value as $default_key => $default_value ) {
-        //         $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
-        //     }
-        // }
+        if ( is_array( $this->default_value ) && !empty( $this->default_value ) ) {
+            foreach ( $this->default_value as $default_key => $default_value ) {
+                $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
+            }
+        }
 
-        // $data['defaults'] = $default_value_array;
+        $data['defaults'] = $default_value_array;
 
-        // wp_localize_script( 'devm-customizer-gradient-handle', 'gradient_picker_config', $data );
+        wp_localize_script( 'devm-customizer-gradient-handle', 'gradient_picker_config', $data );
     }
 
 

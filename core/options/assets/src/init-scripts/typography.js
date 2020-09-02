@@ -11,6 +11,10 @@ jQuery(window).on('devm-scripts.typo', function(e,typo){
             devmOptions = {
                 defaultColor: typo_config.selected_data.color,
                 hide: true,
+                change: function (event, ui) {
+                    // for customizer
+                    updateValueHolder(jQuery(this));
+                }
             };
         
             jQuery(this).parents('.devm-option.active-script').find('.devm-typography-color-field').wpColorPicker(devmOptions);
@@ -51,7 +55,59 @@ jQuery(window).on('devm-scripts.typo', function(e,typo){
 
 
         el.trigger('change');
-    })
+    });
+
+    // for customizer update the field value on changed
+    jQuery('.google-weight-list, .google-fonts-list, .google-style-list,.typo-font-line-height,.typo-font-letter-space, .typo-font-size').on("change", function () {
+        updateValueHolder(jQuery(this));
+    });
+
+    /**
+     * Update value of value-holder input for customizer
+     * @param {*} currentObject 
+     */
+    function updateValueHolder(currentObject) {
+        if(!wp.customize){ return false; }
+        var obj = {};
+        
+        obj["color"] = currentObject.parents(".devm-option-typography").find(".devm-typography-color-field").val() ? rgb2hex(currentObject.parents(".devm-option-typography").find(".devm-typography-color-field").val()) : '';
+
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-list").length > 0) {
+            obj["family"] = currentObject.parents(".devm-option-typography").find("select.google-fonts-list").val();
+        }
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-weight").length > 0) {
+            obj["weight"] = currentObject.parents(".devm-option-typography").find("select.google-weight-list").val();
+        }
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-style").length > 0) {
+            obj["style"] = currentObject.parents(".devm-option-typography").find("select.google-style-list").val();
+        }
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-size").length > 0) {
+            obj["size"] = currentObject.parents(".devm-option-typography").find("input.typo-font-size").val();
+        }
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-lineheight").length > 0) {
+            obj["line_height"] = currentObject.parents(".devm-option-typography").find("input.typo-font-line-height").val();
+        }
+        if (currentObject.parents(".devm-option-typography").find("li.typo-font-laterspace").length > 0) {
+            obj["letter_spacing"] = currentObject.parents(".devm-option-typography").find("input.typo-font-letter-space").val();
+        }
+        let finalJsonValue = JSON.stringify(obj);
+        currentObject.parents(".devm-option-typography").find("input.input-typo-value-holder").val(finalJsonValue).trigger('change');
+    }
+
+    /**
+     * convert rgb value into hex value
+     * @param {*} rgb 
+     */
+    function rgb2hex(rgb) {
+        if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
+
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+
+        function hex(x) {
+            return ("0" + parseInt(x).toString(16)).slice(-2);
+        }
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
 });
 
 jQuery(document).ready(function($){
