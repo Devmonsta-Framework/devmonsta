@@ -808,6 +808,7 @@
        text-decoration: none;
    }
 
-   .flatpickr-calendar.open {
-        z-index: 999999 !important;
+   .flatpickr-calendar.open,
+   .select2-container {
+        z-index: 9999999 !important;
     }

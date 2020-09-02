@@ -18,10 +18,8 @@ jQuery(window).on('load',function($){
             self.parents('.devm-option').addClass('active-script');
             jQuery(window).trigger('devm-scripts.dm');
         } );
+        self.parents('.devm-option').addClass('active-script');
     });
-    
-    // console.log("dui bar");
-    jQuery(window).trigger('devm-scripts.oembed');
-
-
+   
+    jQuery(window).trigger('devm-scripts');
 });

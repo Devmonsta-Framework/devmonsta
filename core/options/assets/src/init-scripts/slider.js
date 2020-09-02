@@ -1,6 +1,5 @@
 jQuery(window).on('devm-scripts.slider', function(){
     var el = jQuery('.devm-option.active-script .devm-slider');
-    
     if (el.length) {
         el.asRange({
             limit: true,

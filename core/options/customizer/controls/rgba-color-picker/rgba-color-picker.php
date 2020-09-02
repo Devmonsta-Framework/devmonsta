@@ -48,7 +48,7 @@ class RgbaColorPicker extends Structure {
 
         //generate attributes dynamically for parent tag
         if(isset( $args[0] )){
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
         }
     }
 
@@ -85,6 +85,9 @@ class RgbaColorPicker extends Structure {
      * @internal
      */
     public function render_content() {
+        $data             = [];
+        $data['default']  = $this->default_value;
+        $data['palettes'] = $this->palettes;
         ?>
         <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
                 <div class="devm-option-column left">
@@ -92,7 +95,7 @@ class RgbaColorPicker extends Structure {
                 </div>
 
                 <div class="devm-option-column right">
-                    <input class="alpha-color-control" type="text" data-show-opacity="true" data-palette="<?php echo esc_attr( $this->palettes ); ?>" data-default-color="<?php echo esc_attr( $this->value ); ?>" <?php $this->link();?>  />
+                    <input class="alpha-color-control devm-ctrl devm-color-field color-picker-rgb" type="text" data-show-opacity="true" data-palette="<?php echo esc_attr( $this->palettes ); ?>" data-alpha="true" data-config='<?php echo json_encode($data); ?>' data-default-color="<?php echo esc_attr( $this->value ); ?>" <?php $this->link();?>  data-value="<?php echo esc_html( $this->value ); ?>" />
                     <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>

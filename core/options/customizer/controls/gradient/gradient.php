@@ -47,7 +47,7 @@ class Gradient extends Structure {
 
         //generate attributes dynamically for parent tag
         if(isset( $args[0] )){
-            $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
         }
     }
 
@@ -56,9 +56,9 @@ class Gradient extends Structure {
      */
     public function enqueue() {
 
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
+        // if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+        //     wp_enqueue_style( 'wp-color-picker' );
+        // }
         // if ( !wp_script_is( 'devm-customizer-gradient-handle', 'enqueued' ) ) {
         //     wp_enqueue_script( 'devm-customizer-gradient-handle', DEVMONSTA_CORE . 'options/customizer/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
         // }
@@ -115,7 +115,8 @@ class Gradient extends Structure {
                     <?php
                         if ( is_array( $this->value ) && isset( $this->value['primary'] )  && isset( $this->value['secondary'] )) {
                             ?>
-                                    <input data-config='<?php echo json_encode($data) ?>' type="text" class="devm-ctrl devm-gradient-field-primary"
+                                 <div class="devm-gradient-color-picker" data-config='<?php echo json_encode($data) ?>'>
+                                    <input  type="text" class="devm-ctrl devm-gradient-field-primary"
                                             value="<?php echo esc_attr( $this->value['primary'] ); ?>"
                                             data-default-color="<?php echo esc_attr( $this->value['primary'] ); ?>" />
 
@@ -126,6 +127,7 @@ class Gradient extends Structure {
                                             data-default-color="<?php echo esc_attr( $this->value['secondary'] ); ?>" />
 
                                     <input type="hidden" class="devm-ctrl devm-gradient-value" <?php $this->link(); ?> value="" >
+                                </div>
                             <?php
                         }
                     ?>

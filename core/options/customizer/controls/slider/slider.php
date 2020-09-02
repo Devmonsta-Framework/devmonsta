@@ -77,7 +77,7 @@ class Slider extends Structure {
             </div>
 
             <div class="devm-option-column right">
-                <input data-config='<?php echo json_encode($devm_slider_data);?>' <?php $this->link();?> data-value="<?php echo esc_html( $this->value ); ?>" class="devm-ctrl devm-slider" type="range" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>" />
+                <input min="<?php echo esc_attr($devm_slider_data['min']); ?>" max="<?php echo esc_attr($devm_slider_data['max']); ?>" step="<?php echo esc_attr($devm_slider_data['step']); ?>"  <?php $this->link();?> data-value="<?php echo esc_html( $this->value ); ?>" class="devm-ctrl devm-slider" type="range" name="<?php echo esc_attr( $this->name ); ?>" value="<?php echo esc_attr( $this->value ); ?>" />
                 <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
         </li>
