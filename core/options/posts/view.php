@@ -82,6 +82,7 @@ class View
             $control->init();
             $control->enqueue($this->meta_owner);
             $control->render();
+
         } else {
 
             $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';

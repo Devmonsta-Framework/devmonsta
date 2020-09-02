@@ -588,6 +588,7 @@ class Customizer {
         wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n ); 
         wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_style('customizer-nested-section-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css');
+        wp_enqueue_style('customizer-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-vue', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('customizer-script', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true);

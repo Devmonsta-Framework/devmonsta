@@ -238,6 +238,7 @@ class Posts
         update_option('devmonsta_all_potmeta_controls',$controls_data);
 
         foreach ($_POST as $key => $value) {
+        	error_log(serialize($value));
             if (strpos($key, $prefix) !== false) {
                 update_post_meta(
                     $post_id,
