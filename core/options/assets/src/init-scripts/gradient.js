@@ -11,6 +11,7 @@ jQuery(window).on('devm-scripts.gradient', function(){
                 defaultColor: gradient_picker_config.defaults[color_id],
                 hide: true,
                 change: function(event, ui){
+                    if(!wp.customize){ return false }
                     var theColor = ui.color.toString();
                     var primary = jQuery(this).parents(".gradient-parent").find(".wp-color-result")[0].style.backgroundColor ;
                     var secondary = jQuery(this).parents(".gradient-parent").find(".wp-color-result")[1].style.backgroundColor ;
