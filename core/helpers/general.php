@@ -1106,7 +1106,9 @@ function devm_available_widgets() {
 function devm_import_files() {
     $demo_data = [ ];
 
-    require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
+    if(file_exists(get_stylesheet_directory() . '/devmonsta/theme-demos.php')){
+        require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
+    }
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
     
     return $demo_data_array;

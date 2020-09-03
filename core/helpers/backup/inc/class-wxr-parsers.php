@@ -49,6 +49,10 @@ class Devm_WXR_Parser_SimpleXML
 	function parse($file)
 	{
 		global $wp_filesystem;
+				
+		require_once ( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+		
 		$authors = $posts = $categories = $tags = $terms = array();
 
 		$internal_errors = libxml_use_internal_errors(true);
