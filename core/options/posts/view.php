@@ -28,12 +28,9 @@ class View
 
         foreach ($controls as $control) {
 
-            if (Validator::instance()->check($control)) {
-
                 if ($control['box_id'] == $box_id) {
                     $this->render($control);
                 }
-            }
         }
 
         echo '</div>';
@@ -116,9 +113,6 @@ class View
          */
         if (isset($control_data['controls'])) {
 
-            $repeater_controls = get_post_meta(get_the_ID(), 'devmonsta_repeater_content_' . $control_data['name'], true);
-
-            // add_thickbox();
             ?>
             <div id="<?php echo esc_attr( $control_data['name'] ); ?>" class="devm-option form-field ">
 
@@ -173,15 +167,10 @@ class View
 
     public function repeater_controls($control_data)
     {
-        // incomplete code , just testing 
-
         foreach ($control_data['controls'] as $control_content) {
 
-
-            if ($control_content['type'] == 'repeater') {
-
+            if ($control_content['type'] == 'repeater')
                 $this->repeater_control_markup($control_content);
-            }
 
             $name = $control_content['name'];
             unset($control_content['name']);
@@ -195,8 +184,8 @@ class View
 
                 $control = new $control_class($control_content);
                 $control->init();
-//                $control->enqueue($this->meta_owner);
                 $control->render();
+
             } else {
 
                 $file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
@@ -209,7 +198,6 @@ class View
 
                         $control = new $control_class($control_content);
                         $control->init();
-//                        $control->enqueue($this->meta_owner);
                         $control->render();
                     }
                 }
@@ -220,7 +208,6 @@ class View
 
     public function repeater_control_markup($control_content)
     {
-
         ?>
         <div class='devm-option form-field devm-repeater-child'>
             <div class='devm-option-column left'>
@@ -233,16 +220,22 @@ class View
                     <div class="devm-repeater-control devm-repeater-sample">
                         <a href="#" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
                            class="devm-repeater-control-action">Control
+
                             <button type="button" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
-                                    class="components-button devm-editor-post-trash is-link"><span
-                                        class="dashicons dashicons-dismiss"></span></button>
+                                    class="components-button devm-editor-post-trash is-link">
+                                <span class="dashicons dashicons-dismiss"></span>
+                            </button>
+
                         </a>
 
                         <div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_content['name'] ); ?>">
+
                             <div class="devm-repeater-inner-controls-inner">
+
                                 <div class="devm-repeater-popup-heading">
                                     <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
                                 </div>
+
                                 <div class="devm-repeater-popup-data">
                                     <?php
                                     ob_start();
@@ -252,7 +245,9 @@ class View
                                     echo str_replace("active-script", '', $output);
                                     ?>
                                 </div>
+
                                 <div class="devm-repeater-popup-footer"></div>
+
                             </div>
                         </div>
                     </div>

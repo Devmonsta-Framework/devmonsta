@@ -259,7 +259,6 @@ class Customizer {
                         )
                     );
                 }
-
             } );
 
         } else {
@@ -330,11 +329,8 @@ class Customizer {
                                 'args'    => $field,
                             ] );
                         }
-
                     }
-
                 }
-
             }
 
             $wp_customize->add_setting( $control['id'] , [
@@ -396,11 +392,8 @@ class Customizer {
                                 'args'    => $field,
                             ] );
                         }
-
                     }
-
                 }
-
             }
 
             $wp_customize->add_setting( $control['id'], [
@@ -459,13 +452,9 @@ class Customizer {
                         $control,
 
                     ] ) );
-
                 }
-
             }
-
         } );
-
     }
 
     /**
@@ -493,11 +482,8 @@ class Customizer {
                     $wp_customize->add_panel( $devm_panel );
                     //$wp_customize->add_panel( $panel_id, $panel );
                 } );
-
             }
-
         }
-
     }
 
     /**
@@ -524,7 +510,6 @@ class Customizer {
                     $devm_section = new \DEVM_WP_Customize_Section( $wp_customize, $section_id, $section );
 
                     $wp_customize->add_section( $devm_section );
-                    //$wp_customize->add_section($section_id, $section);
 
                 } );
 

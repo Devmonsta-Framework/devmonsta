@@ -10,7 +10,6 @@
 namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Libs\Posts as LibsPosts;
-use Devmonsta\Libs\Repeater;
 use Devmonsta\Traits\Singleton;
 
 class Posts
@@ -232,13 +231,12 @@ class Posts
      */
     public function save($post_id)
     {
-
         $prefix = 'devmonsta_';
         $controls_data = Controls::get_controls();
         update_option('devmonsta_all_potmeta_controls',$controls_data);
 
         foreach ($_POST as $key => $value) {
-        	error_log(serialize($value));
+
             if (strpos($key, $prefix) !== false) {
                 update_post_meta(
                     $post_id,
@@ -266,17 +264,14 @@ class Posts
                 'pick'             => __( 'Select Color' ),
                 'defaultLabel'     => __( 'Color value' ),
         );
-        wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n ); 
-        // wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
+
+        wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n );
+	    wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-vendor-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
         wp_enqueue_script('dm-init-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
-
         wp_enqueue_script('dm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
-        // wp_enqueue_script('dm-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script("jquery-ui-draggable");
-        // wp_enqueue_script('dm-repeater', DEVMONSTA_PATH . 'core/options/posts/assets/js/repeater.js', ['jquery'], null, true);
         wp_localize_script('dm-repeater', 'ajax_object', [
             'ajax_url' => admin_url('admin-ajax.php')
         ]);
