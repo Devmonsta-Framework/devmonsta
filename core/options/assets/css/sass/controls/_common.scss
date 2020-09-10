@@ -396,6 +396,12 @@
             border: 1px solid #aaa;
             border-radius: 4px;
         }
+        &.devm-condition-active{
+            display: none !important;
+            &.open{
+                display: block !important;
+            }
+        }
     }
 }
 

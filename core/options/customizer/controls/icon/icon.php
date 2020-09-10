@@ -66,7 +66,7 @@ class Icon extends Structure {
             <div class="devm-option-column right devm-vue-app active-script">
                 <devm-icon-picker
                         name='<?php echo esc_attr( $this->name ); ?>'
-                        class="devm-ctrl"
+                        
                         icon_list='<?php echo devm_render_markup($iconEncoded); ?>'
                         default_icon_type='<?php echo isset( $savedData['iconType'] ) ? esc_attr( $savedData['iconType'] ) : ""; ?>'
                         default_icon='<?php echo isset( $savedData['icon'] ) ? esc_attr( $savedData['icon'] ) : ""; ?>'

@@ -534,7 +534,7 @@ class Customizer {
     public function __construct() {
         $this->default_controls = [
             'text',
-            'checkbox',
+            // 'checkbox',
             'radio',
             'select',
             'textarea',

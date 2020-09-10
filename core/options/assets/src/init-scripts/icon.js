@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
                     <input v-if="!wp.customize" class="devm-ctrl" type="hidden" :name="name" v-model="savedIconClass">
                     <input v-if="!wp.customize" type="hidden" :name="name + '_type'" :value="iconType">
                     
-                    <input v-if="wp.customize" type="hidden" v-model="customizerdata" :data-customize-setting-link="name"  />
+                    <input v-if="wp.customize" type="hidden" class="devm-ctrl devm-color-picker" :name="name" v-model="customizerdata" :data-customize-setting-link="name"  />
                 </div>
                 <transition name="fade">
                     <devm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @icon-type="changeIconType"></devm-icon-modal>

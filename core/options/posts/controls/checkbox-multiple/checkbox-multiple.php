@@ -129,7 +129,7 @@ class CheckboxMultiple extends Structure {
         ?>
             <div <?php echo devm_render_markup( $default_attributes ); ?> >
                 <div class="devm-option-column left">
-                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> helllo world</label>
                 </div>
 
                 <div class="devm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">

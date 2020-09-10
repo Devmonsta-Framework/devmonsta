@@ -99,7 +99,7 @@ class ColorPicker extends Structure {
                     <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
                 <div class="devm-option-column right">
-                    <input data-config='<?php echo json_encode($data) ?>' <?php $this->link(); ?> type="text" class="devm-ctrl devm-color-picker-field"
+                    <input name="<?php echo isset( $this->name ) ? $this->name : ""; ?>" data-config='<?php echo json_encode($data) ?>' <?php $this->link(); ?> type="text" class="devm-ctrl devm-color-picker-field"
                     data-value="<?php echo esc_html( $this->value ); ?>"
                             value="<?php echo esc_attr( $this->value ); ?>" data-default-color="<?php echo esc_attr( $this->value ); ?>" />
                     <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
