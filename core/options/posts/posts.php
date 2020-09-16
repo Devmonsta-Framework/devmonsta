@@ -215,6 +215,7 @@ class Posts {
     }
 
     public function render( $post_id, $arr ) {
+
         $args         = $arr['args'][0];
         $all_controls = $arr['args'][1];
 

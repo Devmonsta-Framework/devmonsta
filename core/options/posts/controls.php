@@ -12,7 +12,7 @@ class Controls {
             /** Include the file and stract the data  */
             $files = [];
             foreach ( self::get_post_files() as $file ) {
-                
+
                 require_once $file;
                 $files[] = $file;
                 /** Get the class name which is extended to @Devmonsta\Libs\Posts */
@@ -62,6 +62,50 @@ class Controls {
         }
 
         return $files;
+    }
+
+    public static function get_control_type($control_name){
+    	$all_controls = self::get_controls();
+    	foreach($all_controls as $control){
+    		if($control['name'] == $control_name)
+    			return $control['type'];
+	    }
+    }
+
+    public static function get_control_data($control_name){
+	    $all_controls = self::get_controls();
+	    foreach($all_controls as $control){
+		    if($control['name'] == $control_name)
+			    return $control;
+
+	    }
+    }
+
+    public static function make_control($control_name){
+    	$control_content = self::get_control_data($control_name);
+	    $name = $control_content['name'];
+	    unset( $control_content['name'] );
+	    $control_content['name'] = $name;
+	    $class_name              = explode( '-', $control_content['type'] );
+	    $class_name              = array_map( 'ucfirst', $class_name );
+	    $class_name              = implode( '', $class_name );
+	    $control_class           = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+
+	    if ( class_exists( $control_class ) ) {
+		    $control = new $control_class( $control_content );
+		    $control->init();
+		    $control->render();
+	    } else {
+		    $file = plugin_dir_path( __FILE__ ) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
+		    if ( file_exists( $file ) ) {
+			    include_once $file;
+			    if ( class_exists( $control_class ) ) {
+				    $control = new $control_class( $control_content );
+				    $control->init();
+				    $control->render();
+			    }
+		    }
+	    }
     }
 
 }
