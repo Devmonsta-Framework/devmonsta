@@ -1,0 +1,67 @@
+.devm_switcher_item .devm_switcher_label {
+    cursor: pointer;
+    width: 85px;
+    height: 24px;
+    background: #DDDDDD;
+    display: inline-block;
+    border-radius: 100px;
+    position: relative;
+    margin: 0;
+    padding: 0 !important;
+}
+.devm-control-switcher:checked + .devm_switcher_label {
+    background: #5d78ff !important;
+    color: #fff;
+}
+.devm_switcher_item .devm_switcher_label:after {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 15px;
+    height: 15px;
+    background: #fff;
+    border-radius: 90px;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.21);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.21);
+}
+.devm-control-switcher{
+    visibility: hidden;
+    position: absolute;
+}
+.devm_switcher_item {
+    display: block;
+    min-height: 25px;
+}
+.devm-control-switcher , .devm_switcher_left {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    display: none;
+}
+.devm-control-switcher:checked + .devm_switcher_label:after {
+    left: calc(100% - 5px);
+    -webkit-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%);
+}
+.devm_switcher_item .devm_switcher_label:before {
+    content: attr(data-left);
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 10px;
+    display: inline-block;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+.devm-control-switcher:checked + .devm_switcher_label:before {
+    content: attr(data-right);
+    right: inherit;
+    left: 10px;
+}

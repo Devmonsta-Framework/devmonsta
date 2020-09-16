@@ -127,34 +127,34 @@ class CheckboxMultiple extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices, $isInline ) {
         ?>
-        <div <?php echo devm_render_markup( $default_attributes ); ?> >
-            <div class="devm-option-column left">
-                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-            <div class="devm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
-                <?php
-                    if ( is_array( $choices ) && !empty( $choices ) ) {
-                        foreach ( $choices as $id => $element ) {
-                            if ( is_array( $value ) && in_array( $id, $value ) ) {
-                                $checked = 'checked="checked"';
-                            } else {
-                                $checked = null;
+                <div class="devm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
+                    <?php
+                        if ( is_array( $choices ) && !empty( $choices ) ) {
+                            foreach ( $choices as $id => $element ) {
+                                if ( is_array( $value ) && in_array( $id, $value ) ) {
+                                    $checked = 'checked="checked"';
+                                } else {
+                                    $checked = null;
+                                }
+                                ?>
+                                <label class="devm-option-label-list">
+                                    <input class="devm-ctrl oka" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
+                                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
+                                        <?php echo esc_html( $element ); ?>
+                                </label>
+                                <?php
                             }
-                            ?>
-                            <label class="devm-option-label-list">
-                                <input class="devm-ctrl oka" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
-                                    value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                                    <?php echo esc_html( $element ); ?>
-                            </label>
-                            <?php
                         }
-                    }
-                ?>
-                <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
-                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    ?>
+                    <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
             </div>
-        </div>
-        <?php
+    <?php
     }
 }

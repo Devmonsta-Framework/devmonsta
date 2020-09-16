@@ -25,9 +25,9 @@ class JT_Customize_Control_Radio_Image extends WP_Customize_Control {
 	 * @return void
 	 */
 	public function enqueue() {
-		// wp_enqueue_script( 'jquery-ui-button');
-		// wp_enqueue_script( 'jt-customize-controls', get_template_directory_uri() . '/js/customize-controls.js', array( 'jquery' ) );
-		// wp_enqueue_style(  'jt-customize-controls', get_template_directory_uri() . '/css/customize-controls.css'                  );
+		wp_enqueue_script( 'jquery-ui-button');
+		wp_enqueue_script( 'jt-customize-controls', get_template_directory_uri() . '/js/customize-controls.js', array( 'jquery' ) );
+		wp_enqueue_style(  'jt-customize-controls', get_template_directory_uri() . '/css/customize-controls.css'                  );
 	}
 
 	/**

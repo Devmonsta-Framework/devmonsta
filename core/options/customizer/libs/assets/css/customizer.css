@@ -691,7 +691,7 @@
        height: 24px;
        width: 100%;
        background-color: #fff;
-       background-image: url(../images/transparency-grid.png);
+       background-image: url(../images/color-picker-transparency-grid.png);
        box-shadow: 0 0 5px rgba(0,0,0,0.4) inset;
        -webkit-border-radius: 3px;
        -moz-border-radius: 3px;
@@ -808,7 +808,6 @@
        text-decoration: none;
    }
 
-   .flatpickr-calendar.open,
-   .select2-container {
-        z-index: 9999999 !important;
+   .flatpickr-calendar.open {
+        z-index: 999999;
     }
