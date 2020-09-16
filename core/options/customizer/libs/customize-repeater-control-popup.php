@@ -186,6 +186,9 @@ class DEVM_Theme_Customize_Repeater_Popup_Control extends WP_Customize_Control
 					</div>
 				</div>
             </div>
+            
+        
+
 
 
 			<button type="button" class="button customize-add-repeater-field-popup" aria-label="<?php esc_attr_e('Add new item');?>" aria-expanded="false" aria-controls="available-repeater-items">

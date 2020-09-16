@@ -114,7 +114,7 @@ class Checkbox extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $is_checked, $text, $desc ) {
-        ?>
+    ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
@@ -138,6 +138,6 @@ class Checkbox extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-        <?php
+    <?php
     }
 }

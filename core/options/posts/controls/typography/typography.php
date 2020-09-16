@@ -22,7 +22,37 @@ class Typography extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+
+        if (  ( $this->current_screen == "post" ) || ( $this->current_screen == "taxonomy" ) ) {
+            add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
+        }
+
     }
+
+    /**
+     *
+     *
+     * @param [type] $hook
+     * @return void
+     */
+    public function load_scripts() {
+        $this->devm_enqueue_color_picker();
+    }
+
+    /**
+     * @internal
+     */
+    public function devm_enqueue_color_picker() {
+
+        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+            wp_enqueue_style( 'wp-color-picker' );
+        }
+
+        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        wp_enqueue_script( 'devm-typo-script-handle', DEVMONSTA_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
+    }
+
     /**
      * @internal
      */
@@ -43,6 +73,12 @@ class Typography extends Structure {
      * @internal
      */
     public function output() {
+        $font_list             = $this->devm_getGoogleFonts();
+        $data['font_list']     = $font_list;
+        $data['selected_data'] = $this->value;
+        
+        wp_localize_script( 'devm-typo-script-handle', 'typo_config', $data );
+
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -52,7 +88,8 @@ class Typography extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components, $font_list  );
+
     }
 
     /**
@@ -91,8 +128,16 @@ class Typography extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
+
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
+
+        $this->load_scripts();
+
+        $font_list             = $this->devm_getGoogleFonts();
+        $data['font_list']     = $font_list;
+        $data['selected_data'] = $value;
+        wp_localize_script( 'devm-typo-script-handle', 'typo_config', $data );
 
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -102,14 +147,14 @@ class Typography extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
         
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list );
     }
 
     /**
      * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
      */
     public function devm_getGoogleFonts( $count = 30 ) {
-        $transient = "_devm_google_fonts";
+        $transient = "_newseqo_customizer_google_fonts";
 
         if ( get_transient( $transient ) == false ) {
             $request = wp_remote_get( DEVMONSTA_OPTIONS . '/posts/controls/typography/google-fonts-popularity.json' );
@@ -145,20 +190,16 @@ class Typography extends Structure {
      * @param [type] $font_list
      * @return void
      */
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components ) {
-        $font_list             = $this->devm_getGoogleFonts();
-        $data                  = [];
-        $data['font_list']     = $font_list;
-        $data['selected_data'] = $value;
-        // wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list  ) {
         ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?></label>
             </div>
             <div class="devm-option-column right full-width">
-                <ul class="devm-option-typography" data-config='<?php echo json_encode($data); ?>'>
+                <ul class="devm-option-typography">
                 <?php
+
                 if ( is_array( $components ) && !empty( $components ) ) {
                     foreach ( $components as $key => $item ) {
                         if ( $item ) {
@@ -170,14 +211,14 @@ class Typography extends Structure {
                                 if ( is_array( $font_list ) && count( $font_list ) > 0 ): ?>
                                     <div class="google-fonts">
                                         <select class="devm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
-                                        <?php
-                                        foreach ( $font_list as $key => $item ) {
-                                            $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
-                                            ?>
-                                            <option value="<?php echo esc_attr( $item->family ); ?>" <?php echo esc_attr( $selected ); ?> ><?php echo esc_html( $item->family ); ?></option>
-                                            <?php
-                                        }
+                                    <?php
+                                    foreach ( $font_list as $key => $item ) {
+                                        $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
                                         ?>
+                                            <option value="<?php echo esc_attr( $item->family ); ?>" <?php echo esc_attr( $selected ); ?> ><?php echo esc_html( $item->family ); ?></option>
+                                        <?php
+                                    }
+                                    ?>
                                         </select>
                                     </div>
                                 <?php endif;?>
@@ -244,6 +285,6 @@ class Typography extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p>
             </div>
         </div>
-        <?php
+    <?php
     }
 }

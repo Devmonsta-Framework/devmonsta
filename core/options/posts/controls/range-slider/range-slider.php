@@ -22,6 +22,25 @@ class RangeSlider extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+        ( $this->current_screen == "post" ) ? $this->enqueue_slider_scripts() : add_action( 'init', [$this, 'enqueue_slider_scripts'] );
+
+    }
+
+    /**
+     * @internal
+     */
+    public function enqueue_slider_scripts() {
+        wp_enqueue_style( 'asRange-css', DEVMONSTA_CORE . 'options/posts/controls/range-slider/assets/css/asRange.css' );
+        wp_enqueue_script( 'asRange-js', DEVMONSTA_CORE . 'options/posts/controls/range-slider/assets/js/jquery-asRange.js' );
+        wp_enqueue_script( 'devm-range-slider', DEVMONSTA_CORE . 'options/posts/controls/range-slider/assets/js/script.js', ['jquery', 'asRange-js'], time(), true );
+
+        $range_slider_config       = isset($this->content['properties']) && is_array( $this->content['properties'] ) ? $this->content['properties'] : [];
+        $range_slider_data['min']  = isset( $range_slider_config['min'] ) && is_numeric( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
+        $range_slider_data['max']  = isset( $range_slider_config['max'] )  && is_numeric( $range_slider_config['max'] )? $range_slider_config['max'] : 100;
+        $range_slider_data['step'] = isset( $range_slider_config['step'] )  && is_numeric( $range_slider_config['step'] )? $range_slider_config['step'] : 1;
+
+        wp_localize_script( 'devm-range-slider', 'range_slider_config', $range_slider_data );
+
     }
 
     /**
@@ -91,6 +110,8 @@ class RangeSlider extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
+        $this->enqueue_slider_scripts();
+
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -114,22 +135,18 @@ class RangeSlider extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
-        $range_slider_config       = isset($this->content['properties']) && is_array( $this->content['properties'] ) ? $this->content['properties'] : [];
-        $range_slider_data['min']  = isset( $range_slider_config['min'] ) && is_numeric( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
-        $range_slider_data['max']  = isset( $range_slider_config['max'] )  && is_numeric( $range_slider_config['max'] )? $range_slider_config['max'] : 100;
-        $range_slider_data['step'] = isset( $range_slider_config['step'] )  && is_numeric( $range_slider_config['step'] )? $range_slider_config['step'] : 1;
         ?>  
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
             <div class="devm-option-column right">
-                <input class="devm-ctrl devm-range-slider" min="<?php echo esc_attr($range_slider_data['min']); ?>" max="<?php echo esc_attr($range_slider_data['max']); ?>" step="<?php echo esc_attr($range_slider_data['step']); ?>"
+                <input class="devm-ctrl devm-range-slider"
                     type="text" value="<?php echo esc_attr( $value ); ?>"
                     name="<?php echo esc_attr( $name ); ?>"/>
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-        <?php
+    <?php
     }
 }

@@ -112,17 +112,17 @@ class Text extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
-        <div <?php echo devm_render_markup( $default_attributes ); ?> >
-            <div class="devm-option-column left">
-                <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
+                <div class="devm-option-column right">
+                    <input type="text" class="devm-option-input devm-ctrl" name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_html( $value ); ?>" >
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
             </div>
-            <div class="devm-option-column right">
-                <input type="text" class="devm-option-input devm-ctrl" name="<?php echo esc_attr( $name ); ?>"
-                    value="<?php echo esc_html( $value ); ?>" >
-                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-            </div>
-        </div>
-        <?php
+    <?php
     }
 
 }

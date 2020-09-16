@@ -1,0 +1,158 @@
+/*
+Styles for options type from option-types.php file, that has no own style.css
+*/
+
+
+/* placeholder */
+
+.devm-option ::-webkit-input-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option ::-moz-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option :-ms-input-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option :-moz-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option::-webkit-input-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option::-moz-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option:-ms-input-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+.devm-option:-moz-placeholder {
+	font-style: italic;
+	line-height: 1.4em;
+}
+
+/* end: placeholder */
+
+
+textarea.devm-option-type-textarea {
+	max-width: 100%;
+	min-width: 100%;
+}
+
+
+.devm-backend-option-type-hidden,
+.devm-backend-option-type-unique {
+	display: none;
+}
+
+
+.devm-backend-option-input-type-text .devm-option-help-in-input,
+.devm-backend-option-input-type-short-text .devm-option-help-in-input,
+.devm-backend-option-input-type-select .devm-option-help-in-input,
+.devm-backend-option-input-type-short-select .devm-option-help-in-input,
+.devm-backend-option-input-type-password .devm-option-help-in-input {
+	top: 4px !important;
+}
+
+
+.devm-option-type-checkboxes > div,
+.devm-option-type-radio > div {
+	margin-bottom: 6px;
+}
+
+
+.devm-option-width-short {
+	width: 100px !important;
+}
+
+/* Radio and Checkboxes inline */
+
+.devm-option-type-checkboxes.devm-option-type-checkboxes-inline > div,
+.devm-option-type-radio.devm-option-type-radio-inline > div {
+	float: left;
+	margin-right: 10px;
+}
+
+.devm-option-type-checkboxes.devm-option-type-checkboxes-inline > div:last-child,
+.devm-option-type-radio.devm-option-type-radio-inline > div:last-child {
+	margin-right: 0;
+}
+
+/* RTL Radio and Checkboxes inline */
+body.rtl .devm-option-type-checkboxes.devm-option-type-checkboxes-inline > div:not(:last-child),
+body.rtl .devm-option-type-radio.devm-option-type-radio-inline > div:not(:last-child) {
+	float: right;
+	margin: 0 0 0 10px;
+}
+
+/* end: Radio amd Checkboxes inline */
+
+/* modal fixes */
+
+.devm-modal .media-frame input[type=password],
+.devm-modal .media-frame input[type=number],
+.devm-modal .media-frame input[type=search],
+.devm-modal .media-frame input[type=email],
+.devm-modal .media-frame input[type=text],
+.devm-modal .media-frame input[type=url],
+.devm-modal .media-frame select,
+.devm-modal .media-frame textarea {
+	font-size: 14px;
+}
+
+.devm-modal .media-frame select {
+	line-height: 28px;
+	height: 28px;
+	padding: 2px;
+	margin: 1px;
+}
+
+.devm-modal .media-frame select[multiple] {
+	height: auto;
+}
+
+.devm-modal .media-frame input[type=password],
+.devm-modal .media-frame input[type=number],
+.devm-modal .media-frame input[type=search],
+.devm-modal .media-frame input[type=email],
+.devm-modal .media-frame input[type=text],
+.devm-modal .media-frame input[type=url] {
+	height: 28px;
+	padding: 3px 5px;
+}
+
+.devm-modal .media-frame textarea {
+	padding: 3px 5px;
+}
+
+.devm-modal .media-frame textarea.code {
+	line-height: 1.4;
+}
+
+@media (max-width: 782px) {
+	.devm-option-type-checkboxes label,
+	.devm-option-type-radio label {
+		vertical-align: middle;
+		line-height: 2.2em;
+	}
+
+	select.devm-option-type-select-multiple {
+		height: auto !important;
+	}
+}
+
+/* end: modal fixes */

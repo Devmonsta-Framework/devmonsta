@@ -21,6 +21,25 @@ class Slider extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+        add_action( 'init', [$this, 'enqueue_slider_scripts'] );
+    }
+
+    /**
+     * @internal
+     */
+    public function enqueue_slider_scripts() {
+        wp_enqueue_style( 'devm-slider-asrange-css', DEVMONSTA_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
+        if ( !wp_script_is( 'devm-slider-asrange', 'enqueued' ) ) {
+            wp_enqueue_script( 'devm-slider-asrange', DEVMONSTA_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
+        }
+        wp_enqueue_script( 'devm-slider-script', DEVMONSTA_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'devm-slider-asrange'], time(), true );
+
+        //get slider settings from theme
+        $devm_slider_data_config  = isset($this->content['properties']) && is_array($this->content['properties']) ? $this->content['properties'] : [];
+        $devm_slider_data['min']  = isset( $devm_slider_data_config['min'] ) && is_numeric( $devm_slider_data_config['min'] ) ? $devm_slider_data_config['min'] : 0;
+        $devm_slider_data['max']  = isset( $devm_slider_data_config['max'] ) && is_numeric( $devm_slider_data_config['max'] ) ? $devm_slider_data_config['max'] : 100;
+        $devm_slider_data['step'] = isset( $devm_slider_data_config['step'] ) && is_numeric( $devm_slider_data_config['step']  )? $devm_slider_data_config['step'] : 1;
+        wp_localize_script( 'devm-slider-script', 'devm_slider_config', $devm_slider_data );
     }
 
     /**
@@ -92,6 +111,9 @@ class Slider extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
+        //loads scripts for taxonomy edit field
+        $this->enqueue_slider_scripts();
+
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -115,10 +137,6 @@ class Slider extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
-        $dm_slider_data_config  = isset($this->content['properties']) && is_array($this->content['properties']) ? $this->content['properties'] : [];
-        $dm_slider_data['min']  = isset( $dm_slider_data_config['min'] ) && is_numeric( $dm_slider_data_config['min'] ) ? $dm_slider_data_config['min'] : 0;
-        $dm_slider_data['max']  = isset( $dm_slider_data_config['max'] ) && is_numeric( $dm_slider_data_config['max'] ) ? $dm_slider_data_config['max'] : 100;
-        $dm_slider_data['step'] = isset( $dm_slider_data_config['step'] ) && is_numeric( $dm_slider_data_config['step']  )? $dm_slider_data_config['step'] : 1;
         ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
@@ -126,11 +144,11 @@ class Slider extends Structure {
             </div>
 
             <div class="devm-option-column right">
-                <input class="devm-ctrl devm-slider" min="<?php echo esc_attr($dm_slider_data['min']); ?>" max="<?php echo esc_attr($dm_slider_data['max']); ?>" step="<?php echo esc_attr($dm_slider_data['step']); ?>" type="range" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+                <input class="devm-ctrl devm-slider" type="range" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" />
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-        <?php
+    <?php
     }
 
 }

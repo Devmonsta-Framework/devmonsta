@@ -22,6 +22,16 @@ class Switcher extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+
+        add_action( 'admin_enqueue_scripts', [$this, 'load_switcher_scripts'] );
+    }
+
+    /**
+     * @internal
+     */
+    public function load_switcher_scripts() {
+        //css
+        wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
     }
 
     /**
@@ -102,6 +112,7 @@ class Switcher extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
+        $this->load_switcher_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
@@ -112,6 +123,7 @@ class Switcher extends Structure {
         $right_key          = $this->array_key_first( $right_choice );
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         
+                        
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -149,7 +161,7 @@ class Switcher extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-        <?php
+    <?php
     }
 
 }

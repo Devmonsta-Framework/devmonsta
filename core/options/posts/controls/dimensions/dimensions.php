@@ -21,6 +21,13 @@ class Dimensions extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
+
+        add_action( 'init', [$this, 'enqueue_dimensions_scripts'] );
+    }
+
+    public function enqueue_dimensions_scripts() {
+        wp_enqueue_style( 'devm-dimensions-css', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/css/style.css', [], time(), true );
+        wp_enqueue_script( 'devm-dimensions', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -100,6 +107,9 @@ class Dimensions extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
+        //load required scripts to run this control
+        $this->enqueue_dimensions_scripts();
+
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -123,8 +133,9 @@ class Dimensions extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+
         ?>
-        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
@@ -132,7 +143,8 @@ class Dimensions extends Structure {
             <div class="devm-option-column right">
                 <devm-dimensions
                     :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>" 
-                    linked-name="<?php echo esc_attr( $name ); ?>[isLinked]">
+                    linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
+                >
                     <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"
                         class="devm-ctrl"
@@ -164,6 +176,6 @@ class Dimensions extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-        <?php
+    <?php
     }
 }

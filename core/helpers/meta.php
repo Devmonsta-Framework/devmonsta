@@ -28,6 +28,10 @@ function devm_add_metadata( $meta_type, $object_id, $meta_key, $meta_value, $uni
 
     $column = sanitize_key( $meta_type . '_id' );
 
+// expected_slashed ($meta_key)
+
+//$meta_key = wp_unslash($meta_key);
+    //$meta_value = wp_unslash($meta_value);
     $meta_value = sanitize_meta( $meta_key, $meta_value, $meta_type );
 
     /**
@@ -139,7 +143,10 @@ function devm_update_metadata( $meta_type, $object_id, $meta_key, $meta_value, $
     $column    = sanitize_key( $meta_type . '_id' );
     $id_column = 'user' == $meta_type ? 'umeta_id' : 'meta_id';
 
+// expected_slashed ($meta_key)
+    //$meta_key = wp_unslash($meta_key);
     $passed_value = $meta_value;
+    //$meta_value = wp_unslash($meta_value);
     $meta_value = sanitize_meta( $meta_key, $meta_value, $meta_type );
 
     /**
@@ -290,6 +297,12 @@ function devm_delete_metadata( $meta_type, $object_id, $meta_key, $meta_value = 
 
     $type_column = sanitize_key( $meta_type . '_id' );
     $id_column   = 'user' == $meta_type ? 'umeta_id' : 'meta_id';
+
+// expected_slashed ($meta_key)
+
+//$meta_key = wp_unslash($meta_key);
+
+//$meta_value = wp_unslash($meta_value);
 
     /**
      * Filter whether to delete metadata of a specific type.
