@@ -22,20 +22,6 @@ class RangeSlider extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        ( $this->current_screen == "post" ) ? $this->enqueue_slider_scripts() : add_action( 'init', [$this, 'enqueue_slider_scripts'] );
-
-    }
-
-    /**
-     * @internal
-     */
-    public function enqueue_slider_scripts() {
-        // wp_enqueue_style( 'asRange-css', DM_CORE . 'options/posts/controls/range-slider/assets/css/asRange.css' );
-        // wp_enqueue_script( 'asRange-js', DM_CORE . 'options/posts/controls/range-slider/assets/js/jquery-asRange.js' );
-        // wp_enqueue_script( 'dm-range-slider', DM_CORE . 'options/posts/controls/range-slider/assets/js/script.js', ['jquery', 'asRange-js'], time(), true );
-
-        // wp_localize_script( 'dm-range-slider', 'range_slider_config', $range_slider_data );
-
     }
 
     /**
@@ -105,8 +91,6 @@ class RangeSlider extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
-        $this->enqueue_slider_scripts();
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -146,6 +130,6 @@ class RangeSlider extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 }

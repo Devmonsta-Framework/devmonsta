@@ -6,7 +6,6 @@ use Devmonsta\Options\Posts\Structure;
 
 class Oembed extends Structure {
 
-
     protected $current_screen;
 
     /**
@@ -24,9 +23,6 @@ class Oembed extends Structure {
     }
 
     public function enqueue_oembed_scripts() {
-        // wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
-        // wp_localize_script( 'dm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
-        wp_enqueue_script( 'dm-oembed' );
         add_action( 'wp_ajax_get_oembed_response', [$this, '_action_get_oembed_response'] );
     }
 
@@ -130,20 +126,20 @@ class Oembed extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $wrapper_attr ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-            <div class="devm-option-column left">
-                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
-                <div class="devm-option-column right devm-oembed-input">
-                    <input <?php echo devm_attr_to_html( $wrapper_attr ) ?>
-                            type="url" name="<?php echo esc_attr( $name ); ?>"
-                            value="<?php echo esc_html( $value ); ?>"
-                            class="devm-ctrl devm-oembed-url-input devm-option-input"/>
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                    <div class="devm-oembed-preview"></div>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+        <div class="devm-option-column left">
+                <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-    <?php
+            <div class="devm-option-column right devm-oembed-input">
+                <input <?php echo devm_attr_to_html( $wrapper_attr ) ?>
+                        type="url" name="<?php echo esc_attr( $name ); ?>"
+                        value="<?php echo esc_html( $value ); ?>"
+                        class="devm-ctrl devm-oembed-url-input devm-option-input"/>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                <div class="devm-oembed-preview"></div>
+            </div>
+        </div>
+        <?php
     }
 
     /**

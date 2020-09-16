@@ -36,33 +36,6 @@ class DatetimePicker extends Structure {
 
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        if ( $this->current_screen == "post" ) {
-
-            $this->enqueue_date_time_picker_scripts();
-
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'enqueue_date_time_picker_scripts'] );
-
-        }
-
-    }
-
-    public function enqueue_date_time_picker_scripts() {
-        // wp_enqueue_style( 'flatpickr-css', DM_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        // wp_enqueue_script( 'flatpickr', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        // wp_enqueue_script( 'dm-date-time-picker', DM_CORE . 'options/posts/controls/datetime-picker/assets/js/script.js', ['jquery'] );
-
-        // $date_time_picker_config               = $this->content['datetime-picker'];
-        // $date_time_picker_data['format']       = isset( $date_time_picker_config['date-format'] ) && in_array( strtolower( $date_time_picker_config['date-format'] ), $this->allowed_date_formats ) ? $date_time_picker_config['date-format'] : 'Y-m-d H:i';
-        // $date_time_picker_data['is24Format']   = isset( $date_time_picker_config['time-24'] ) && $date_time_picker_config['time-24'] ? 1 : 0;
-        // $date_time_picker_data['minDate']      = isset( $date_time_picker_config['min-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['min-date'])) : "today";
-        // $date_time_picker_data['maxDate']      = isset( $date_time_picker_config['max-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['max-date'])) : false;
-        // $date_time_picker_data['timepicker']   = ( $date_time_picker_config['timepicker'] ) ? 1 : 0;
-        // $date_time_picker_data['defaultTime']  =  isset( $date_time_picker_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_picker_config['defaultTime']) ? $date_time_picker_config['defaultTime'] : '12:00';
-        
-        // wp_localize_script( 'dm-date-time-picker', 'date_time_picker_config', $date_time_picker_data );
-
     }
 
     /**
@@ -133,8 +106,6 @@ class DatetimePicker extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-
-        $this->enqueue_date_time_picker_scripts();
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -166,12 +137,11 @@ class DatetimePicker extends Structure {
         $date_time_picker_data['maxDate']      = isset( $date_time_picker_config['max-date'] ) ? date("Y-m-d H:i", strtotime($date_time_picker_config['max-date'])) : false;
         $date_time_picker_data['timepicker']   = ( $date_time_picker_config['timepicker'] ) ? 1 : 0;
         $date_time_picker_data['defaultTime']  =  isset( $date_time_picker_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_picker_config['defaultTime']) ? $date_time_picker_config['defaultTime'] : '12:00';
-    ?>
+        ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-
             <div class="devm-option-column right">
                 <input type="text" data-config='<?php echo json_encode($date_time_picker_data); ?>'
                     class="devm-option-input devm-ctrl devm-option-input-datetime-picker"
@@ -180,7 +150,7 @@ class DatetimePicker extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 
 }

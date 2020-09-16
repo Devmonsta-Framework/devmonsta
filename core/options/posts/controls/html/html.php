@@ -106,19 +106,19 @@ class Html extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $html, $desc ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
-
-                <div class="devm-option-column right">
-                    <div class='devm-ctrl devm_html_block'>
-                        <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
-                    </div>
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-    <?php
+
+            <div class="devm-option-column right">
+                <div class='devm-ctrl devm_html_block'>
+                    <?php echo htmlspecialchars_decode( esc_html( $html ) ); ?>
+                </div>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p>
+            </div>
+        </div>
+        <?php
     }
 
 }

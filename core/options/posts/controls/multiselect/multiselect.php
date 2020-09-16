@@ -21,21 +21,6 @@ class Multiselect extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-    
-        if ( $this->current_screen == "post" ) {
-            $this->load_multi_select_scripts();
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'load_multi_select_scripts'] );
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public function load_multi_select_scripts() {
-        // wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
-        // wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
-        // wp_enqueue_script( 'dm-multiselect-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
     }
 
     /**
@@ -95,18 +80,14 @@ class Multiselect extends Structure {
                     $selected_data  = [];
 
                     if ( is_array( $choices ) && !empty( $choices ) ) {
-
                         foreach ( $choices as $key => $val ) {
 
                             if ( is_array( $selected_value ) && in_array( $key, $selected_value ) ) {
                                 array_push( $selected_data, $val );
                             }
-
                         }
-
                         echo esc_html( join( ", ", $selected_data ) );
                     }
-
                 }
 
                 return $content;
@@ -119,8 +100,6 @@ class Multiselect extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-
-        $this->load_multi_select_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
@@ -148,10 +127,10 @@ class Multiselect extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
             <div class="devm-option-column right">
                 <select class="devm-ctrl devm_multi_select" multiple="multiple" name="<?php echo esc_attr( $name ); ?>[]">
@@ -176,7 +155,7 @@ class Multiselect extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 
 }

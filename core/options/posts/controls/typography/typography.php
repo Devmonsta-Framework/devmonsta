@@ -22,35 +22,7 @@ class Typography extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        if (  ( $this->current_screen == "post" ) || ( $this->current_screen == "taxonomy" ) ) {
-            add_action( 'admin_enqueue_scripts', [$this, 'load_scripts'] );
-        }
-
     }
-
-    /**
-     *
-     *
-     * @param [type] $hook
-     * @return void
-     */
-    public function load_scripts() {
-        $this->devm_enqueue_color_picker();
-    }
-
-    /**
-     * @internal
-     */
-    public function devm_enqueue_color_picker() {
-
-        // wp_enqueue_style( 'wp-color-picker' );
-
-        // wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        // wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        // wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
-    }
-
     /**
      * @internal
      */
@@ -81,7 +53,6 @@ class Typography extends Structure {
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components );
-
     }
 
     /**
@@ -123,8 +94,6 @@ class Typography extends Structure {
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
 
-        $this->load_scripts();
-
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $components = isset( $this->content['components'] ) && is_array( $this->content['components'] ) ? $this->content['components'] : [];
@@ -140,7 +109,7 @@ class Typography extends Structure {
      * Return the list of Google Fonts from our json file. Unless otherwise specfied, list will be limited to 30 fonts.
      */
     public function devm_getGoogleFonts( $count = 30 ) {
-        $transient = "_newseqo_customizer_google_fonts";
+        $transient = "_devm_google_fonts";
 
         if ( get_transient( $transient ) == false ) {
             $request = wp_remote_get( DEVMONSTA_OPTIONS . '/posts/controls/typography/google-fonts-popularity.json' );
@@ -190,7 +159,6 @@ class Typography extends Structure {
             <div class="devm-option-column right full-width">
                 <ul class="devm-option-typography" data-config='<?php echo json_encode($data); ?>'>
                 <?php
-
                 if ( is_array( $components ) && !empty( $components ) ) {
                     foreach ( $components as $key => $item ) {
                         if ( $item ) {
@@ -202,14 +170,14 @@ class Typography extends Structure {
                                 if ( is_array( $font_list ) && count( $font_list ) > 0 ): ?>
                                     <div class="google-fonts">
                                         <select class="devm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
-                                    <?php
-                                    foreach ( $font_list as $key => $item ) {
-                                        $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
-                                        ?>
-                                            <option value="<?php echo esc_attr( $item->family ); ?>" <?php echo esc_attr( $selected ); ?> ><?php echo esc_html( $item->family ); ?></option>
                                         <?php
-                                    }
-                                    ?>
+                                        foreach ( $font_list as $key => $item ) {
+                                            $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
+                                            ?>
+                                            <option value="<?php echo esc_attr( $item->family ); ?>" <?php echo esc_attr( $selected ); ?> ><?php echo esc_html( $item->family ); ?></option>
+                                            <?php
+                                        }
+                                        ?>
                                         </select>
                                     </div>
                                 <?php endif;?>
@@ -276,6 +244,6 @@ class Typography extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p>
             </div>
         </div>
-    <?php
+        <?php
     }
 }
