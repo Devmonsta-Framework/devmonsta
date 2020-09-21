@@ -7,7 +7,7 @@ class Devm_WXR_Parser
 		// Attempt to use proper XML parsers first
 		if (extension_loaded('simplexml')) {
 			$parser = new Devm_WXR_Parser_SimpleXML;
-			error_log("step 3 ". $file);
+			// error_log("step 3 ". $file);
 			$result = $parser->parse($file);
 
 			// If SimpleXML succeeds or this is an invalid WXR file then return the results
@@ -275,6 +275,7 @@ class Devm_WXR_Parser_SimpleXML
 				$sidebar_widget = $widget[0];
 			}
 		}
+
 		//grab theme customizer option
 		$theme_mod_array = array();
 		foreach ($xml->xpath('/rss/channel/wp:customizer') as $customizers) {
@@ -285,6 +286,7 @@ class Devm_WXR_Parser_SimpleXML
 			}
 		}
 
+		// grab active plugin data
 		$activated_plugins = array();
 		foreach ($xml->xpath('/rss/channel/wp:plugin') as $plugins) {
 			$plugin = $plugins->children($namespaces["wp"]);
@@ -294,7 +296,7 @@ class Devm_WXR_Parser_SimpleXML
 			}
 		}
 
-		return array(
+		$parsed_data = array(
 			'elementor' => $elementor_file,
 			'sidebar_widgets' => $sidebar_widget,
 			"theme_mod_array" => $theme_mod_array,
@@ -307,6 +309,25 @@ class Devm_WXR_Parser_SimpleXML
 			'base_url' => $base_url,
 			'version' => $wxr_version
 		);
+
+		
+		// finally, check for time-table plugin data
+		if( isset( $xml->channel->timeslot ) ){
+			// grab time_slots
+			foreach ($xml->channel->timeslot as $time) {
+				$time_slots[] = array(
+					'column' => (int)$time->column,
+					'event' => (int)$time->event,
+					'event_start' => (string)$time->event_start,
+					'event_end' => (string)$time->event_end,
+					'user_id' => (int)$time->user_id,
+					'description' => (string)$time->description,
+				);
+			}
+			$parsed_data['time_slots'] = $time_slots;
+		}
+		
+		return $parsed_data;
 	}
 }
 

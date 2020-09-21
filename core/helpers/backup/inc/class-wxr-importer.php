@@ -18,7 +18,7 @@ class Devm_WXR_Importer extends WP_Importer {
     var $max_wxr_version = 1.2; // max. supported WXR version
 
     var $id;
-// WXR attachment ID
+    // WXR attachment ID
 
     // information to import from WXR file
     var $version;
@@ -31,6 +31,7 @@ class Devm_WXR_Importer extends WP_Importer {
     var $widget_sidebars = [];
     var $elementors      = [];
     var $base_url        = '';
+    var $time_slots      = [];
 
     // mappings from old information to new
     var $processed_authors    = [];
@@ -67,6 +68,7 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->process_customizers();
         $this->process_widgets_sidebar();
         $this->process_posts();
+		$this->process_external_plugin_data();
         $this->update_reading_setting( $file );
         $this->devm_update_primary_menu( $file );
         wp_suspend_cache_invalidation( false );
@@ -79,6 +81,65 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->import_end();
     }
 
+    /**
+     * process all external plugin data
+     */
+    public function process_external_plugin_data(){
+
+        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+        $plugin_to_check = 'mp-timetable/mp-timetable.php';
+    
+        if ( in_array( $plugin_to_check, $active_plugins ) ) {
+            $this->process_time_slot();
+        }
+    }
+    
+    /**
+     * process timeshot plugin data
+     *
+     * @return void
+     */
+	public function process_time_slot() {
+		global $wpdb;
+        $table_name = $wpdb->prefix . "mp_timetable_data";
+		$rows_affected = array();
+        $time_slots = $this->time_slots;
+		if (!empty($time_slots)) {
+			foreach ($time_slots as $time_slot) {
+				$exist_time_slot = $this->post_time_slot_exist($time_slot);
+				if (!$exist_time_slot) {
+					$rows_affected[] = $wpdb->insert($table_name, array(
+						'column_id' => $time_slot['column'],
+						'event_id' => $time_slot['event'],
+						'event_start' => date('H:i:s', strtotime($time_slot['event_start'])),
+						'event_end' => date('H:i:s', strtotime($time_slot['event_end'])),
+						'user_id' => $time_slot['user_id'],
+						'description' => $time_slot['description']
+					));
+				}
+			}
+		}
+    }
+
+	/**
+	 * Exist time slot
+	 *
+	 * @param array $time_slot
+	 *
+	 * @return bool
+	 */
+	public function post_time_slot_exist($time_slot = array()) {
+        global $wpdb;
+        $table_name = $wpdb->prefix . "mp_timetable_data";
+
+		if (empty($time_slot)) {
+			return false;
+		}
+		$data = $wpdb->get_results('SELECT id FROM  ' . $table_name . '   WHERE column_id = "' . $time_slot['column'] . '" AND event_id = "' . $time_slot['event'] . '" AND event_start = "' . $time_slot['event_start'] . '" AND event_end = "' . $time_slot['event_end'] . '"');
+		return empty($data) ? false : true;
+    }
+    
+
     function update_reading_setting( $file ) {
         // error_log("update reading settings started");
         $xml_file = simplexml_load_file( $file );
@@ -87,7 +148,7 @@ class Devm_WXR_Importer extends WP_Importer {
             $settings = (array) $xml_file->channel->settings;
             $setting  = (array) $settings["setting"];
 
-// error_log("settings node : " . var_dump($setting));
+            // error_log("settings node : " . var_dump($setting));
             foreach ( $setting as $s ) {
                 $obj_to_array = (array) $s;
                 $key          = $obj_to_array["key"];
@@ -165,6 +226,7 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->get_authors_from_import( $import_data );
         $this->terms           = $import_data['terms'];
         $this->posts           = $import_data['posts'];
+        $this->time_slots      = $import_data['time_slots'];
         $this->categories      = $import_data['categories'];
         $this->tags            = $import_data['tags'];
         $this->elementors      = $import_data['elementor'];
