@@ -5,7 +5,7 @@ use Devmonsta\Options\Customizer\Structure;
 
 class Typography extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, 
+    public $label, $name, $desc, $default_value, $value,
             $components, $font_list, $default_attributes;
 
     /**
@@ -29,26 +29,28 @@ class Typography extends Structure {
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ? $args[0]['value'] : [];
         $this->components    = isset( $args[0]['components'] ) && is_array( $args[0]['components'] ) ? $args[0]['components'] : [];
-    
+
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /**
      * @internal
      */
     public function enqueue() {
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
-        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
-        wp_enqueue_script( 'devm-customizer-typo-script-handle', DEVMONSTA_CORE . 'options/customizer/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
-        $this->value            = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
-        $this->font_list        = $this->devm_getGoogleFonts();
-        $data['font_list']      = $this->font_list;
-        $data['selected_data']  = $this->value;
-        wp_localize_script( 'devm-customizer-typo-script-handle', 'typo_config', $data );
+        // if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
+        //     wp_enqueue_style( 'wp-color-picker' );
+        // }
+        // wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
+        // wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
+        // wp_enqueue_script( 'devm-customizer-typo-script-handle', DEVMONSTA_CORE . 'options/customizer/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
+        // $this->value            = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
+        // $this->font_list        = $this->devm_getGoogleFonts();
+        // $data['font_list']      = $this->font_list;
+        // $data['selected_data']  = $this->value;
+        // wp_localize_script( 'devm-customizer-typo-script-handle', 'typo_config', $data );
     }
 
     /**
@@ -59,7 +61,11 @@ class Typography extends Structure {
     }
 
     public function render_content() {
-        
+        $this->value            = !empty( $this->value() ) ? (array) json_decode($this->value()) : $this->default_value;
+        $this->font_list        = $this->devm_getGoogleFonts();
+        $data                  = [];
+        $data['font_list']      = $this->font_list;
+        $data['selected_data']  = $this->value;
         ?>
         <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
             <div class="devm-option-column left">
@@ -67,7 +73,7 @@ class Typography extends Structure {
             </div>
 
             <div class="devm-option-column right full-width">
-                <ul class="devm-option-typography">
+                <ul class="devm-option-typography"  data-config='<?php echo json_encode($data); ?>'>
                 <?php
 
                 if ( is_array( $this->components ) && !empty( $this->components ) ) {

@@ -26,8 +26,8 @@ class Dimensions extends Structure {
     }
 
     public function enqueue_dimensions_scripts() {
-        wp_enqueue_style( 'devm-dimensions-css', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/css/style.css', [], time(), true );
-        wp_enqueue_script( 'devm-dimensions', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
+        // wp_enqueue_style( 'dm-dimensions-css', DM_CORE . 'options/posts/controls/dimensions/assets/css/style.css', [], time(), true );
+        // wp_enqueue_script( 'dm-dimensions', DM_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**

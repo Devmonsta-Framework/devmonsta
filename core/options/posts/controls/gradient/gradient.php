@@ -29,30 +29,26 @@ class Gradient extends Structure {
      */
     public function devm_enqueue_gradient_picker() {
 
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
+        wp_enqueue_style( 'wp-color-picker' );
+            // wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery'], false, true );
 
-        if ( !wp_script_is( 'devm-gradient-handle', 'enqueued' ) ) {
-            wp_enqueue_script( 'devm-gradient-handle', DEVMONSTA_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+        
 
-        }
+        // global $post;
+        // $data                = [];
+        // $default_value_array = [];
 
-        global $post;
-        $data                = [];
-        $default_value_array = [];
+        // if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
 
-        if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
+        //     foreach ( $this->content['value'] as $default_key => $default_value ) {
+        //         $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
+        //     }
 
-            foreach ( $this->content['value'] as $default_key => $default_value ) {
-                $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
-            }
+        // }
 
-        }
+        // $data['defaults'] = $default_value_array;
 
-        $data['defaults'] = $default_value_array;
-
-        wp_localize_script( 'devm-gradient-handle', 'gradient_picker_config', $data );
+        // wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
     }
 
     /**
@@ -164,7 +160,19 @@ class Gradient extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc  ) {
-        $this->devm_enqueue_gradient_picker();
+        global $post;
+        $data                = [];
+        $default_value_array = [];
+
+        if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
+
+            foreach ( $this->content['value'] as $default_key => $default_value ) {
+                $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
+            }
+
+        }
+
+        $data['defaults'] = $default_value_array;
         ?>
             <div <?php echo devm_render_markup( $default_attributes ); ?> >
                 <div class="devm-option-column left">
@@ -175,17 +183,19 @@ class Gradient extends Structure {
 
                         if ( is_array( $value ) && isset( $value['primary'] )  && isset( $value['secondary'] ) ) {
                                 ?>
-                                    <input type="text" class="devm-ctrl devm-gradient-field-primary"
-                                            name="<?php echo esc_html( $name . "[primary]" ); ?>"
-                                            value="<?php echo esc_attr( $value['primary'] ); ?>"
-                                            data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
-                                            
-                                    <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
+                                    <div class="devm-gradient-color-picker" data-config='<?php echo json_encode($data); ?>'>
+                                        <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-primary"
+                                                name="<?php echo esc_html( $name . "[primary]" ); ?>"
+                                                value="<?php echo esc_attr( $value['primary'] ); ?>"
+                                                data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
+                                                
+                                        <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
 
-                                    <input type="text" class="devm-ctrl devm-gradient-field-secondary"
-                                            name="<?php echo esc_html( $name . "[secondary]" ); ?>"
-                                            value="<?php echo esc_attr( $value['secondary'] ); ?>"
-                                            data-default-color="<?php echo esc_attr( $value['secondary'] ); ?>" />
+                                        <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-secondary"
+                                                name="<?php echo esc_html( $name . "[secondary]" ); ?>"
+                                                value="<?php echo esc_attr( $value['secondary'] ); ?>"
+                                                data-default-color="<?php echo esc_attr( $value['secondary'] ); ?>" />
+                                    </div>
                                     
                                 <?php
                         }

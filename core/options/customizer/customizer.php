@@ -259,7 +259,6 @@ class Customizer {
                         )
                     );
                 }
-
             } );
 
         } else {
@@ -330,11 +329,8 @@ class Customizer {
                                 'args'    => $field,
                             ] );
                         }
-
                     }
-
                 }
-
             }
 
             $wp_customize->add_setting( $control['id'] , [
@@ -396,11 +392,8 @@ class Customizer {
                                 'args'    => $field,
                             ] );
                         }
-
                     }
-
                 }
-
             }
 
             $wp_customize->add_setting( $control['id'], [
@@ -459,13 +452,9 @@ class Customizer {
                         $control,
 
                     ] ) );
-
                 }
-
             }
-
         } );
-
     }
 
     /**
@@ -493,11 +482,8 @@ class Customizer {
                     $wp_customize->add_panel( $devm_panel );
                     //$wp_customize->add_panel( $panel_id, $panel );
                 } );
-
             }
-
         }
-
     }
 
     /**
@@ -524,7 +510,6 @@ class Customizer {
                     $devm_section = new \DEVM_WP_Customize_Section( $wp_customize, $section_id, $section );
 
                     $wp_customize->add_section( $devm_section );
-                    //$wp_customize->add_section($section_id, $section);
 
                 } );
 
@@ -573,7 +558,12 @@ class Customizer {
      *      Load Styles & Scripts for controls
      * ===========================================
      */
+<<<<<<< HEAD
     public function load_scripts() {
+=======
+    public function load_scripts()
+    {
+>>>>>>> parent of 0d68c7f... Merge branch 'dev-prappo' into customizer/condition
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('wp-color-picker');
         $colorpicker_l10n = array(
@@ -585,12 +575,24 @@ class Customizer {
                 'defaultLabel'     => __( 'Color value' ),
         );
         wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n ); 
+<<<<<<< HEAD
         wp_enqueue_style( 'devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css' );
         wp_enqueue_style( 'customizer-nested-section-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css' );
         wp_enqueue_script( 'vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false );
         wp_enqueue_script( 'devm-vue', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true );
         wp_enqueue_script( 'customizer-script', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true );
         wp_enqueue_script( 'customizer-nested-section-js', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/customizer-nested-panel.js', [], null, true );
+=======
+        wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
+        wp_enqueue_style('customizer-nested-section-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer-nested-panel.css');
+        wp_enqueue_style('customizer-css', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/css/customizer.css');
+        wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
+        wp_enqueue_script('dm-vue', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_script('customizer-script', DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/script.js', [], null, true);
+        wp_enqueue_script('customizer-nested-section-js',DEVMONSTA_PATH . 'core/options/customizer/libs/assets/js/customizer-nested-panel.js',[],null,true);
+        wp_enqueue_script('dm-vendor-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-init-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
+>>>>>>> parent of 0d68c7f... Merge branch 'dev-prappo' into customizer/condition
     }
 
 }

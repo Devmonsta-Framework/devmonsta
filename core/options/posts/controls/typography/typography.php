@@ -44,13 +44,11 @@ class Typography extends Structure {
      */
     public function devm_enqueue_color_picker() {
 
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
+        // wp_enqueue_style( 'wp-color-picker' );
 
-        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        wp_enqueue_script( 'devm-typo-script-handle', DEVMONSTA_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
+        // wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
+        // wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
+        // wp_enqueue_script( 'dm-typo-script-handle', DM_CORE . 'options/posts/controls/typography/assets/js/scripts.js', ['jquery', 'wp-color-picker', 'select2-js'], false, true );
     }
 
     /**
@@ -73,12 +71,6 @@ class Typography extends Structure {
      * @internal
      */
     public function output() {
-        $font_list             = $this->devm_getGoogleFonts();
-        $data['font_list']     = $font_list;
-        $data['selected_data'] = $this->value;
-        
-        wp_localize_script( 'devm-typo-script-handle', 'typo_config', $data );
-
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -88,7 +80,7 @@ class Typography extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components, $font_list  );
+        $this->generate_markup( $default_attributes, $label, $name, $this->value, $desc, $components );
 
     }
 
@@ -128,16 +120,10 @@ class Typography extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
 
         $this->load_scripts();
-
-        $font_list             = $this->devm_getGoogleFonts();
-        $data['font_list']     = $font_list;
-        $data['selected_data'] = $value;
-        wp_localize_script( 'devm-typo-script-handle', 'typo_config', $data );
 
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
@@ -147,7 +133,7 @@ class Typography extends Structure {
         $default_attributes = $this->prepare_default_attributes( $this->content );
         
         //generate markup for control
-        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list );
+        $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components );
     }
 
     /**
@@ -190,14 +176,19 @@ class Typography extends Structure {
      * @param [type] $font_list
      * @return void
      */
-    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components, $font_list  ) {
+    public function generate_markup( $default_attributes, $label, $name, $value, $desc, $components ) {
+        $font_list             = $this->devm_getGoogleFonts();
+        $data                  = [];
+        $data['font_list']     = $font_list;
+        $data['selected_data'] = $value;
+        // wp_localize_script( 'dm-typo-script-handle', 'typo_config', $data );
         ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?></label>
             </div>
             <div class="devm-option-column right full-width">
-                <ul class="devm-option-typography">
+                <ul class="devm-option-typography" data-config='<?php echo json_encode($data); ?>'>
                 <?php
 
                 if ( is_array( $components ) && !empty( $components ) ) {

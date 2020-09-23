@@ -38,18 +38,18 @@ class RgbaColorPicker extends Structure {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        wp_enqueue_script( 'devm-rgba-handle', DEVMONSTA_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
+        // wp_enqueue_script( 'dm-rgba-handle', DM_CORE . 'options/posts/controls/rgba-color-picker/assets/js/wp-color-picker-alpha.js', ['jquery', 'wp-color-picker'], false, true );
 
-        global $post;
-        $data            = [];
-        $this->default_value = isset( $this->content['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $this->content['value'] ) ? $this->content['value'] : "";
-        $data['default'] = (  ( $this->current_screen == "post" )
-                            && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-                            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-                            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                            : $this->default_value;
-        $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
-        wp_localize_script( 'devm-rgba-handle', 'rgba_color_picker_config', $data );
+        // global $post;
+        // $data            = [];
+        // $this->default_value = isset( $this->content['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $this->content['value'] ) ? $this->content['value'] : "";
+        // $data['default'] = (  ( $this->current_screen == "post" )
+        //                     && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+        //                     && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+        //                     ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+        //                     : $this->default_value;
+        // $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
+        // wp_localize_script( 'dm-rgba-handle', 'rgba_color_picker_config', $data );
     }
 
     /**
@@ -62,7 +62,7 @@ class RgbaColorPicker extends Structure {
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                             ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
-                            : $this->default_value;
+                            : ( isset( $this->content['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $this->content['value'] ) ? $this->content['value'] : "" );
         $this->output();
     }
 
@@ -143,6 +143,15 @@ class RgbaColorPicker extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
+        global $post;
+        $data            = [];
+        $this->default_value = isset( $this->content['value'] ) && preg_match('/rgba\((\s*\d+\s*,){3}[\d\.]+\)/', $this->content['value'] ) ? $this->content['value'] : "";
+        $data['default'] = (  ( $this->current_screen == "post" )
+                            && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                            && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+                            ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                            : $this->default_value;
+        $data['palettes'] = isset( $this->content['palettes'] ) ? $this->content['palettes'] : false;
         ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
@@ -155,7 +164,8 @@ class RgbaColorPicker extends Structure {
                         value="<?php echo esc_attr( $value ); ?>"
                         class="devm-ctrl devm-color-field color-picker-rgb"
                         data-alpha="true"
-                        data-default-color="<?php echo esc_attr( $value ); ?>" />
+                        data-default-color="<?php echo esc_attr( $value ); ?>" 
+                        data-config='<?php echo json_encode($data); ?>'/>
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>

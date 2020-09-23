@@ -55,18 +55,20 @@ class DatetimeRange extends Structure {
         $this->date_time_range_default_data['defaultTime'] =  isset( $date_time_picker_config['defaultTime'] ) && preg_match("/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/", $date_time_picker_config['defaultTime']) ? $date_time_picker_config['defaultTime'] : '12:00';
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
-        wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
-        wp_enqueue_script( 'devm-date-time-range-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
-        wp_enqueue_script( 'devm-date-time-range', DEVMONSTA_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-range-from-post'], false, true );
-        wp_localize_script( 'devm-date-time-range', 'date_time_range_config', $this->date_time_range_default_data );
+        // wp_enqueue_style( 'flatpickr-css', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/css/flatpickr.min.css' );
+        // wp_enqueue_script( 'flatpickr', DEVMONSTA_CORE . 'options/posts/controls/datetime-picker/assets/js/flatpickr.js', ['jquery'] );
+        // wp_enqueue_script( 'devm-date-time-range-from-post', DEVMONSTA_CORE . 'options/posts/controls/datetime-range/assets/js/script.js', ['jquery'] );
+        // wp_enqueue_script( 'devm-date-time-range', DEVMONSTA_CORE . 'options/customizer/controls/datetime-range/assets/js/script.js', ['jquery', 'flatpickr', 'devm-date-time-range-from-post'], false, true );
+        // wp_localize_script( 'devm-date-time-range', 'date_time_range_config', $this->date_time_range_default_data );
     }
 
     public function render() {

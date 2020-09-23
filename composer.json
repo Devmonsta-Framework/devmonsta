@@ -17,6 +17,7 @@
             "core/options/posts/view.php",
             "core/options/posts/structure.php",
             "core/options/posts/validator.php",
+            "core/options/posts/controls.php",
             "core/options/taxonomies/taxonomies.php",
             "core/options/taxonomies/structure.php",
             "core/options/customizer/customizer.php",

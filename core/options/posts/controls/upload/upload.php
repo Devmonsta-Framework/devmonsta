@@ -28,7 +28,7 @@ class Upload extends Structure {
      */
     public function load_upload_scripts() {
         wp_enqueue_media();
-        wp_enqueue_script( 'devm-upload-js', DEVMONSTA_CORE . 'options/posts/controls/upload/assets/js/script.js', ['jquery', 'media-upload'] );
+        wp_enqueue_script( 'media-upload' );
     }
 
     /**

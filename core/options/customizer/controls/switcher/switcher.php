@@ -18,7 +18,7 @@ class Switcher extends Structure {
 
     public $statuses;
 
-    
+
     /**
 	 * Constructor of this control. Must call parent constructor
 	 *
@@ -55,14 +55,16 @@ class Switcher extends Structure {
         $this->choices       = [$this->right_key => $this->right_choice[$this->right_key]];
 
         //generate attributes dynamically for parent tag
+        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
+        // wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
         wp_enqueue_script( 'devm-customizer-switcher', DEVMONSTA_CORE . 'options/customizer/controls/switcher/assets/js/script.js', ['jquery'], time(), true );
     }
 
@@ -86,15 +88,15 @@ class Switcher extends Structure {
                 </div>
 
                 <div class="devm-option-column right devm-switcher">
-                    
-                    <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; 
+
+                    <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value;
         ?>
 
                     <ul class="devm-switcher devm_switcher_item">
                             <li >
                                 <label>
                                     <input class="devm-ctrl devm-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
-                                    
+
                                     <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='devm_switcher_label devm-option-label'></div>
                                 </label>
                             </li>

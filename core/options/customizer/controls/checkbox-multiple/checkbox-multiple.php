@@ -18,7 +18,7 @@ class CheckboxMultiple extends Structure {
 
     public $statuses;
 
-    
+
     /**
 	 * Constructor of this control. Must call parent constructor
 	 *
@@ -60,7 +60,9 @@ class CheckboxMultiple extends Structure {
         $this->choices       = isset( $args[0]['choices'] ) && is_array( $args[0]['choices'] ) ? $args[0]['choices'] : [];
 
         //generate attributes dynamically for parent tag
-        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        if(isset( $args[0] )){
+            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
+        }
     }
 
     /*
@@ -90,7 +92,7 @@ class CheckboxMultiple extends Structure {
                 </div>
 
                 <div class="devm-option-column right <?php echo ( $this->isInline ) ? esc_attr( $this->isInline ) : ""; ?>">
-                    
+
                     <?php $multi_values = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value; ?>
 
                     <ul class="customize-control">
