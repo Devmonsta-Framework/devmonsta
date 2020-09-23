@@ -109,14 +109,14 @@ class Hidden extends Structure {
      */
     public function generate_markup( $default_attributes, $name, $value ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                </div>
-                <div class="devm-option-column right">
-                    <input class="devm-ctrl" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" >
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
             </div>
-    <?php
+            <div class="devm-option-column right">
+                <input class="devm-ctrl" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>" >
+            </div>
+        </div>
+        <?php
     }
 
 

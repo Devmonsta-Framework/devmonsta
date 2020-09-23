@@ -21,22 +21,7 @@ class ImagePicker extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        if ( $this->current_screen == "post" ) {
-            $this->enqueue_image_picker_scripts();
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'enqueue_image_picker_scripts'] );
-
-        }
-
     }
-
-    public function enqueue_image_picker_scripts() {
-        // css
-        wp_enqueue_style( 'devm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) );
-
-    }
-
     /**
      * @internal
      */
@@ -106,8 +91,6 @@ class ImagePicker extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-        //loads all scripts required for taxonomy edit field
-        $this->enqueue_image_picker_scripts();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] )  ? $this->prefix . $this->content['name'] : '';
@@ -135,56 +118,56 @@ class ImagePicker extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?>>
-                <div class="devm-option-column left">
-                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?>>
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+            </div>
 
-                <div class="devm-option-column right full-width">
+            <div class="devm-option-column right full-width">
 
-                    <div class="thumbnails devm-option-image_picker_selector">
-                        <input class="devm-ctrl devm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
-                        <ul>
-                            <?php
-                                if ( is_array( $choices ) && isset( $choices ) ) {
+                <div class="thumbnails devm-option-image_picker_selector">
+                    <input class="devm-ctrl devm-option-image-picker-input" type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+                    <ul>
+                        <?php
+                            if ( is_array( $choices ) && isset( $choices ) ) {
 
-                                    foreach ( $choices as $item_key => $item ) {
-                                        if(is_array($item) && isset($item)){
-                                            $selected    = ( $item_key == $value ) ? 'checked' : '';
-                                            $small_image = isset( $item['small'] ) ? $item['small'] : '';
-                                            $large_image = isset( $item['large'] ) ? $item['large'] : '';
-                                            if(isset($small_image)){
-                                                ?>
-                                                <li data-image_name='<?php echo esc_attr( $item_key ); ?>' >
-    
-                                                    <label>
-                                                        <input <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $name ) . $item_key; ?>" class="devm-ctrl devm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
-    
-                                                        <div class="devm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
-                                                            <?php if ( !empty( $large_image ) ): ?>
-                                                            <div class="devm-img-picker-preview">
-                                                                <img src="<?php echo esc_attr( $large_image ); ?>" />
-                                                            </div>
-                                                            <?php endif;?>
-                                                            <div class="thumbnail">
-                                                                <img src="<?php echo esc_attr( $small_image ); ?>" />
-                                                            </div>
+                                foreach ( $choices as $item_key => $item ) {
+                                    if(is_array($item) && isset($item)){
+                                        $selected    = ( $item_key == $value ) ? 'checked' : '';
+                                        $small_image = isset( $item['small'] ) ? $item['small'] : '';
+                                        $large_image = isset( $item['large'] ) ? $item['large'] : '';
+                                        if(isset($small_image)){
+                                            ?>
+                                            <li data-image_name='<?php echo esc_attr( $item_key ); ?>' >
+
+                                                <label>
+                                                    <input <?php echo esc_attr( $selected ); ?> id="<?php echo esc_attr( $name ) . $item_key; ?>" class="devm-ctrl devm-option-image-picker-input" type="radio" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $item_key ); ?>">
+
+                                                    <div class="devm-img-list" for="<?php echo esc_attr( $name ) . $item_key; ?>">
+                                                        <?php if ( !empty( $large_image ) ): ?>
+                                                        <div class="devm-img-picker-preview">
+                                                            <img src="<?php echo esc_attr( $large_image ); ?>" />
                                                         </div>
-                                                    </label>
-    
-                                                </li>
-                                                <?php
-                                            }
+                                                        <?php endif;?>
+                                                        <div class="thumbnail">
+                                                            <img src="<?php echo esc_attr( $small_image ); ?>" />
+                                                        </div>
+                                                    </div>
+                                                </label>
+
+                                            </li>
+                                            <?php
                                         }
                                     }
                                 }
-                            ?>
-                        </ul>
-                    </div>
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                            }
+                        ?>
+                    </ul>
                 </div>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
-    <?php
+        </div>
+        <?php
     }
 
 }

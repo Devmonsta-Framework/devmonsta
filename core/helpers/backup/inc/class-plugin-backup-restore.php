@@ -246,6 +246,3 @@ class Devm_Plugin_Backup_Restore {
     }
 
 }
-
-// $devm_plugin_obj = new Devm_Plugin_Backup_Restore();
-// devm_print($devm_plugin_obj->devm_get_all_installed_plugins_directory());

@@ -10,11 +10,9 @@
 namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Libs\Posts as LibsPosts;
-use Devmonsta\Libs\Repeater;
 use Devmonsta\Traits\Singleton;
 
-class Posts
-{
+class Posts {
     use Singleton;
 
     protected $data;
@@ -28,8 +26,8 @@ class Posts
         'image-picker',
         'range-slider',
         'date-picker',
-//       'multiselect',
-       'typography',
+        'multiselect',
+        'typography',
         'dimensions',
         'wp-editor',
         'textarea',
@@ -39,7 +37,7 @@ class Posts
         'hidden',
         'oembed',
         'upload',
-       'select',
+        'select',
         'slider',
         'radio',
         'html',
@@ -56,19 +54,18 @@ class Posts
      * =============================
      */
 
-    public function init()
-    {
+    public function init() {
 
         if ( !$this->check_requirements() ) {
             return;
         }
 
-        add_action('admin_init', [$this, 'load_scripts']);
+        add_action( 'admin_init', [$this, 'load_scripts'] );
         $this->load_enqueue();
 
         /** Check if post files exists in active theme directory */
 
-        if (!empty( $this->get_post_files()) ) {
+        if ( !empty( $this->get_post_files() ) ) {
 
             /** Include the file and stract the data  */
             $files = [];
@@ -84,9 +81,10 @@ class Posts
 
             foreach ( get_declared_classes() as $class ) {
 
-                if (is_subclass_of($class, 'Devmonsta\Libs\Posts')) {
+                if ( is_subclass_of( $class, 'Devmonsta\Libs\Posts' ) ) {
                     $post_file_class[] = $class;
                 }
+
             }
 
             /** Get all the properties defined in post file */
@@ -96,11 +94,12 @@ class Posts
             foreach ( $post_file_class as $child_class ) {
                 $post_file = new $child_class;
 
-                if (method_exists($post_file, 'register_controls')) {
+                if ( method_exists( $post_file, 'register_controls' ) ) {
 
                     $post_file->register_controls();
 
                 }
+
             }
 
             /** Get all the metaboxed that has been defined */
@@ -116,20 +115,26 @@ class Posts
             /**
              *  Get Post type anem from the file name
              */
+
             foreach ( $files as $file_name ) {
-                $post_type = basename($file_name, ".php");
+                $post_type = basename( $file_name, ".php" );
 
                 /** Create metabox */
 
                 foreach ( $all_meta_box as $args ) {
+
                     if ( $post_type == $args['post_type'] ) {
                         $this->data = $args;
 
-                        $this->add_meta_box($post_type, $args, $all_controls);
+                        $this->add_meta_box( $post_type, $args, $all_controls );
                     }
+
                 }
+
             }
+
         }
+
         add_action( 'save_post', [$this, 'save'] );
 
     }
@@ -142,13 +147,14 @@ class Posts
      * =========================================
      */
 
-    public function check_requirements()
-    {
+    public function check_requirements() {
         //register script for ajax calls
         $this->register_ajax_callbacks();
 
         global $pagenow;
+
         if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) {return true;}
+
         return false;
     }
 
@@ -159,36 +165,32 @@ class Posts
      * @return  void
      * =========================================================
      */
-    public function load_enqueue()
-    {
-        foreach ($this->controls_list as $control)
-        {
-            $class_name = explode('-', $control);
-            $class_name = array_map('ucfirst', $class_name);
-            $class_name = implode('', $class_name);
+    public function load_enqueue() {
+
+        foreach ( $this->controls_list as $control ) {
+            $class_name    = explode( '-', $control );
+            $class_name    = array_map( 'ucfirst', $class_name );
+            $class_name    = implode( '', $class_name );
             $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
 
-            if (class_exists($control_class))
-            {
+            if ( class_exists( $control_class ) ) {
                 $meta_owner = "post";
-                $control = new $control_class([
-                    'id' => '',
+                $control    = new $control_class( [
+                    'id'    => '',
                     'value' => '',
-                ]);
-                $control->enqueue($meta_owner);
+                ] );
+                $control->enqueue( $meta_owner );
             }
 
         }
 
     }
 
-    public function get_post_files()
-    {
+    public function get_post_files() {
         $files = [];
 
-        foreach (glob(get_template_directory() . '/devmonsta/options/posts/*.php') as $post_files)
-        {
-            array_push($files, $post_files);
+        foreach ( glob( get_template_directory() . '/devmonsta/options/posts/*.php' ) as $post_files ) {
+            array_push( $files, $post_files );
         }
 
         return $files;
@@ -196,31 +198,33 @@ class Posts
 
     /** Add Metabox to the post */
 
-    public function add_meta_box($post_type, $args, $all_controls)
-    {
+    public function add_meta_box( $post_type, $args, $all_controls ) {
 
-        add_action('add_meta_boxes', function () use ($post_type, $args, $all_controls)
-        {
+        add_action( 'add_meta_boxes', function () use ( $post_type, $args, $all_controls ) {
             add_meta_box(
-                $args['id'], // Unique ID / metabox ID
-                $args['title'], // Box title
+                $args['id'],       // Unique ID / metabox ID
+                $args['title'],    // Box title
                 [$this, 'render'], // Content callback, must be of type callable
-                $post_type, // Post type
+                $post_type,        // Post type
                 'normal',
                 'high',
                 [$args, $all_controls]
             );
-        });
+        } );
 
     }
 
     public function render( $post_id, $arr ) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of dd18005... reverted from demo-import branch backup
         $args         = $arr['args'][0];
         $all_controls = $arr['args'][1];
 
-        if (!empty($all_controls))
-            View::instance()->build($args['id'], $all_controls);
+        if ( !empty( $all_controls ) ) {
+            View::instance()->build( $args['id'], $all_controls );
+        }
 
     }
 
@@ -230,18 +234,23 @@ class Posts
      *       And save them into database
      * ========================================
      */
-    public function save($post_id)
-    {
-        $prefix = 'devmonsta_';
-        foreach ($_POST as $key => $value) {
-            if (strpos($key, $prefix) !== false) {
+    public function save( $post_id ) {
+        $prefix        = 'devmonsta_';
+        $controls_data = Controls::get_controls();
+        update_option( 'devmonsta_all_potmeta_controls', $controls_data );
+
+        foreach ( $_POST as $key => $value ) {
+
+            if ( strpos( $key, $prefix ) !== false ) {
                 update_post_meta(
                     $post_id,
                     $key,
-                    $_POST[$key]
+                    devm_sanitize_data( $key, $value )
                 );
             }
+
         }
+
     }
 
     /**
@@ -249,19 +258,28 @@ class Posts
      *      Load Styles & Scripts for controls
      * ===========================================
      */
-    public function load_scripts()
-    {
-        wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
-        wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-//        wp_enqueue_script('devm-vendor-js',DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js',[],null,true);
-//        wp_enqueue_script('devm-init-js',DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js',[],null,true);
-        wp_enqueue_script('devm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
-        wp_enqueue_script('devm-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
-        wp_enqueue_script("jquery-ui-draggable");
-        wp_enqueue_script('devm-repeater', DEVMONSTA_PATH . 'core/options/posts/assets/js/repeater.js', ['jquery'], null, true);
-        wp_localize_script('devm-repeater', 'ajax_object', [
-            'ajax_url' => admin_url('admin-ajax.php')
-        ]);
+    public function load_scripts() {
+        wp_enqueue_style( 'wp-color-picker' );
+        wp_enqueue_script( 'wp-color-picker' );
+        $colorpicker_l10n = [
+            'clear'            => __( 'Clear' ),
+            'clearAriaLabel'   => __( 'Clear color' ),
+            'defaultString'    => __( 'Default' ),
+            'defaultAriaLabel' => __( 'Select default color' ),
+            'pick'             => __( 'Select Color' ),
+            'defaultLabel'     => __( 'Color value' ),
+        ];
+
+        wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n );
+        wp_enqueue_style( 'dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css' );
+        wp_enqueue_script( 'vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false );
+        wp_enqueue_script( 'dm-vendor-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true );
+        wp_enqueue_script( 'dm-init-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true );
+        wp_enqueue_script( 'dm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true );
+        wp_enqueue_script( "jquery-ui-draggable" );
+        wp_localize_script( 'dm-repeater', 'ajax_object', [
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+        ] );
 
     }
 
@@ -270,9 +288,8 @@ class Posts
      *
      * @return void
      */
-    public function register_ajax_callbacks()
-    {
-        add_action('wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", 'action_get_oembed_response']);
+    public function register_ajax_callbacks() {
+        add_action( 'wp_ajax_get_oembed_response', ["Devmonsta\Options\Posts\Controls\Oembed\Oembed", 'action_get_oembed_response'] );
     }
 
 }

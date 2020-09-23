@@ -105,19 +105,19 @@ class Textarea extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label class="devm-option-label" ><?php echo esc_html( $label ); ?> </label>
-                </div>
-                <div class="devm-option-column right">
-                    <textarea
-                        rows="6"
-                        class="devm-option-input devm-ctrl devm-option-textarea"
-                        name="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $value ); ?></textarea>
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label" ><?php echo esc_html( $label ); ?> </label>
             </div>
-    <?php
+            <div class="devm-option-column right">
+                <textarea
+                    rows="6"
+                    class="devm-option-input devm-ctrl devm-option-textarea"
+                    name="<?php echo esc_attr( $name ); ?>"><?php echo esc_attr( $value ); ?></textarea>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+        <?php
     }
 
 }

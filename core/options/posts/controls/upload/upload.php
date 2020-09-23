@@ -28,7 +28,7 @@ class Upload extends Structure {
      */
     public function load_upload_scripts() {
         wp_enqueue_media();
-        wp_enqueue_script( 'devm-upload-js', DEVMONSTA_CORE . 'options/posts/controls/upload/assets/js/script.js', ['jquery', 'media-upload'] );
+        wp_enqueue_script( 'media-upload' );
     }
 
     /**
@@ -38,11 +38,9 @@ class Upload extends Structure {
 
         $content = $this->content;
         global $post;
-
         $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
                         : ( isset( $content['value'] ) ? $content['value'] : "" );
-
         $this->output();
     }
 
@@ -69,7 +67,6 @@ class Upload extends Structure {
             $display          = 'inline-block';
         }
 
-                        
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -85,9 +82,7 @@ class Upload extends Structure {
         $content = $this->content;
         add_filter( 'manage_edit-' . $this->taxonomy . '_columns',
             function ( $columns ) use ( $content, $visible ) {
-
                 $visible = ( isset( $content['show_in_table'] ) && $content['show_in_table'] === true ) ? true : false;
-
                 if ( $visible ) {
                     $columns[$content['name']] =esc_html__( $content['label'], 'devmonsta' );
                 }
@@ -101,18 +96,13 @@ class Upload extends Structure {
 
                 if ( $column_name == $cc['name'] ) {
                     $saved_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
-
                     if ( $image_attributes = wp_get_attachment_image_src( $saved_value, "full" ) ) {
                         $image = '<img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
                         echo esc_html( $image );
                     }
-
                 }
-
                 return $content;
-
             }, 10, 3 );
-
     }
 
     /**
@@ -164,20 +154,19 @@ class Upload extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label  class="devm-option-label"> <?php echo esc_html( $label ); ?> </label>
-                </div>
-                <div class="devm-option-column right">
-                    <div class="devm-option-upload-wrapper">
-                        <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="devm_upload_image_button<?php echo devm_render_markup( $image ); ?> </a>
-                        <input class='devm-ctrl devm-upload' type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
-                        <a href='#' class='devm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <i class='dashicons dashicons-dismiss'></i></a>
-                    </div>
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label  class="devm-option-label"> <?php echo esc_html( $label ); ?> </label>
             </div>
-    <?php
-}
-
+            <div class="devm-option-column right">
+                <div class="devm-option-upload-wrapper">
+                    <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="devm_upload_image_button<?php echo devm_render_markup( $image ); ?> </a>
+                    <input class='devm-ctrl devm-upload' type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
+                    <a href='#' class='devm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <i class='dashicons dashicons-dismiss'></i></a>
+                </div>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+        <?php
+    }
 }

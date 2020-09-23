@@ -42,7 +42,7 @@ class Taxonomies
 
             $taxonomy_file = get_template_directory() .
                 '/devmonsta/options/taxonomies/' .
-                $_GET['taxonomy'] . '.php';
+                sanitize_text_field($_GET['taxonomy'] ) . '.php';
 
             if (file_exists($taxonomy_file)) {
 
@@ -282,17 +282,19 @@ class Taxonomies
      */
     public function save_meta($term_id, $tt_id)
     {
-        // $taxonomy = get_option('devm_taxonomy');
         $prefix = 'devmonsta_';
 
-        foreach ($_POST as $key => $value) {
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls',$controls_data);
 
+        foreach ($_POST as $key => $value)
+        {
             if (strpos($key, $prefix) !== false) {
-
-                add_term_meta($term_id, $key, $_POST[$key]);
+                add_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
             }
-
         }
+
+
 
     }
 
@@ -308,11 +310,14 @@ class Taxonomies
 
         $prefix = 'devmonsta_';
 
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls',$controls_data);
+
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
 
-                update_term_meta($term_id, $key, $_POST[$key]);
+                update_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
             }
 
         }
@@ -384,14 +389,27 @@ class Taxonomies
      */
     public function load_scripts()
     {
-
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('wp-color-picker');
+        $colorpicker_l10n = array(
+                'clear'            => __( 'Clear' ),
+                'clearAriaLabel'   => __( 'Clear color' ),
+                'defaultString'    => __( 'Default' ),
+                'defaultAriaLabel' => __( 'Select default color' ),
+                'pick'             => __( 'Select Color' ),
+                'defaultLabel'     => __( 'Color value' ),
+        );
+        wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n ); 
         wp_enqueue_style('devmonsta-taxonomy-style', DEVMONSTA_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
-        wp_enqueue_style('devmonsta-controls-style', DEVMONSTA_PATH . 'core/options/posts/assets/css/controls.css');
+        wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
-        wp_enqueue_script('devmonsta-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
+        wp_enqueue_script('dm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
         wp_enqueue_script('devmonsta-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-vendor-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
+        wp_enqueue_script('dm-init-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
+
 
     }
 
