@@ -30,9 +30,7 @@ class Checkbox extends Structure {
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
 
         //generate attributes dynamically for parent tag
-        if(isset( $args[0] )){
-            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
-        }
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*

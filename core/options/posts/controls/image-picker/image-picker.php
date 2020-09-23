@@ -32,6 +32,8 @@ class ImagePicker extends Structure {
     }
 
     public function enqueue_image_picker_scripts() {
+        // css
+        wp_enqueue_style( 'devm-image-picker-css', plugins_url( 'image-picker/assets/css/image-picker.css', dirname( __FILE__ ) ) );
 
     }
 

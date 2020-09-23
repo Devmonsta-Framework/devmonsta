@@ -30,6 +30,8 @@ class Switcher extends Structure {
      * @internal
      */
     public function load_switcher_scripts() {
+        //css
+        wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
     }
 
     /**

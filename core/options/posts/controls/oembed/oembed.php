@@ -24,10 +24,10 @@ class Oembed extends Structure {
     }
 
     public function enqueue_oembed_scripts() {
-        // wp_register_script( 'dm-oembed', DM_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
-        // wp_localize_script( 'dm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
-        wp_enqueue_script( 'dm-oembed' );
-        add_action( 'wp_ajax_get_oembed_response', [$this, '_action_get_oembed_response'] );
+        wp_register_script( 'devm-oembed', DEVMONSTA_CORE . 'options/posts/controls/oembed/assets/js/script.js', ['underscore', 'wp-util'], time(), true );
+        wp_localize_script( 'devm-oembed', 'object', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
+        wp_enqueue_script( 'devm-oembed' );
+        add_action( 'wp_ajax_get_oembed_response', [$this, 'action_get_oembed_response'] );
     }
 
     /**
@@ -153,19 +153,25 @@ class Oembed extends Structure {
      */
     public static function action_get_oembed_response() {
 
-        // Post data array from ajax request 
-        $post_array = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-        //Check for valid nonce
-        if ( wp_verify_nonce( $post_array[ '_nonce' ], 'action_get_oembed_response' ) ) {
+        if ( wp_verify_nonce( \DEVM_Request::POST( '_nonce' ), 'action_get_oembed_response' ) ) {
+    
+            require_once DEVMONSTA_DIR . '/core/helpers/class-devm-request.php';
             
-            $url = $post_array[ 'url'];
-            $width = $post_array['preview']['width'];
-            $height = $post_array['preview']['height'];
-            $keep_ratio = $post_array['preview']['height'] == true;
-            $iframe = empty( $keep_ratio ) ? devm_oembed_get( $url, compact( 'width', 'height' ) ) : wp_oembed_get( $url, compact( 'width', 'height' ) );
-
-            echo devm_render_markup( $iframe );
+            $url = \DEVM_Request::POST( 'url' );
+    
+            $width = \DEVM_Request::POST( 'preview/width' );
+    
+            $height = \DEVM_Request::POST( 'preview/height' );
+    
+            $keep_ratio = ( \DEVM_Request::POST( 'preview/keep_ratio' ) === 'true' );
+    
+            $iframe = empty( $keep_ratio ) ?
+    
+            devm_oembed_get( $url, compact( 'width', 'height' ) ) :
+    
+            wp_oembed_get( $url, compact( 'width', 'height' ) );
+    
+            echo devm_render_markup($iframe) ;
             die();
     
         } else {

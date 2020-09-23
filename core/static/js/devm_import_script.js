@@ -10,6 +10,11 @@ jQuery(document).ready(function ($) {
         var name = $(this).attr("data-name");
         var required_plugin = $(this).data('required-plugin');
 
+        // console.log(xml_link);
+        // console.log(xml_data);
+        // console.log(name);
+        // console.log(required_plugin);
+
         $('#devm-importMmodal').modal('show');
 
         $.ajax({

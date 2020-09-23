@@ -23,9 +23,9 @@ class Icon extends Structure {
     }
 
     public function enqueue_icon_scripts() {
-        // wp_enqueue_style( 'dm-fontawesome-css', DM_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
-        // wp_enqueue_style( 'dm-main-css', DM_CORE . 'options/posts/controls/icon/assets/css/main.css' );
-        // wp_enqueue_script( 'dm-asicon', DM_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_style( 'devm-fontawesome-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/font-awesome.min.css' );
+        wp_enqueue_style( 'devm-main-css', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/css/main.css' );
+        wp_enqueue_script( 'devm-asicon', DEVMONSTA_CORE . 'options/posts/controls/icon/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**

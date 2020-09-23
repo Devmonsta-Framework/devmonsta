@@ -33,11 +33,8 @@ class Text extends Structure {
         $this->name          = isset( $args[0]['id'] ) ? $args[0]['id'] : "";
         $this->desc          = isset( $args[0]['desc'] ) ? $args[0]['desc'] : "";
         $this->default_value = isset( $args[0]['value'] ) ? $args[0]['value'] : "";
-        
         //generate attributes dynamically for parent tag
-        if(isset( $args[0] )){
         $this->default_attributes = $this->prepare_default_attributes( $args[0] );
-        }
     }
 
     /**

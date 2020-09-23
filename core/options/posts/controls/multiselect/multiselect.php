@@ -33,9 +33,10 @@ class Multiselect extends Structure {
      * @internal
      */
     public function load_multi_select_scripts() {
-        // wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
-        // wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
-        // wp_enqueue_script( 'dm-multiselect-js', DM_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
+        // devm_print( "multi-select" );
+        wp_enqueue_style( 'select2-css', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/css/select2.min.css' );
+        wp_enqueue_script( 'select2-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/select2.min.js' );
+        wp_enqueue_script( 'devm-multiselect-js', DEVMONSTA_CORE . 'options/posts/controls/multiselect/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
     }
 
     /**

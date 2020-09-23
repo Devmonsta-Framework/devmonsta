@@ -132,7 +132,7 @@ function devm_array_key_get( $keys, $array_or_object, $default_value = null, $ke
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             return devm_array_key_get( $keys, $array_or_object->{$key_or_property}, $default_value );
         } else {
@@ -232,7 +232,7 @@ function devm_array_key_set( $keys, $value, &$array_or_object, $keys_delimiter =
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_set( $keys, $value, $array_or_object->{$key_or_property} );
         } else {
@@ -287,7 +287,7 @@ function devm_array_key_unset( $keys, &$array_or_object, $keys_delimiter = '/' )
 
     if ( isset( $keys[0] ) ) {
 
-        // not used count() for performance reasons
+// not used count() for performance reasons
         if ( $is_object ) {
             devm_array_key_unset( $keys, $array_or_object->{$key_or_property} );
         } else {
@@ -452,6 +452,46 @@ function devm_get_framework_directory( $rel_path = '' ) {
     }
 
     return $dir . $rel_path;
+}
+
+/**
+ * devm_get_path_url( dirname(__FILE__) .'/test.css' ) --> http://site.url/path/to/test.css
+ *
+ * @param string $path
+ *
+ * @return string|null
+ * @since 2.6.11
+ */
+function devm_get_path_url( $path ) {
+    try {
+        $paths_to_urls = DEVM_Cache::get( $cache_key = 'devm:paths_to_urls' );
+    } catch ( DEVM_Cache_Not_Found_Exception $e ) {
+        $wp_upload_dir = wp_upload_dir();
+
+        $paths_to_urls = [
+            devm_fix_path( WP_PLUGIN_DIR )             => plugins_url(),
+            devm_fix_path( get_theme_root() )          => get_theme_root_uri(),
+            devm_fix_path( $wp_upload_dir['basedir'] ) => $wp_upload_dir['baseurl'],
+        ];
+
+        if ( is_multisite() && WPMU_PLUGIN_DIR ) {
+            $paths_to_urls[devm_fix_path( WPMU_PLUGIN_DIR )] = WPMU_PLUGIN_URL;
+        }
+
+        DEVM_Cache::set( $cache_key, $paths_to_urls );
+    }
+
+    $path = devm_fix_path( $path );
+
+    foreach ( $paths_to_urls as $_path => $_url ) {
+
+        if ( preg_match( $regex = '/^' . preg_quote( $_path, '/' ) . '($|\/)/', $path ) ) {
+            return $_url . '/' . preg_replace( $regex, '', $path );
+        }
+
+    }
+
+    return null;
 }
 
 /**
@@ -987,18 +1027,18 @@ function devm_widgets_export() {
     $available_widgets = devm_available_widgets();
     $widget_instances  = [];
 
-    // Loop widgets.
+// Loop widgets.
     foreach ( $available_widgets as $widget_data ) {
         // Get all instances for this ID base.
         $instances = get_option( 'widget_' . $widget_data['id_base'] );
 
-        // Have instances.
+// Have instances.
         if ( !empty( $instances ) ) {
 
-            // Loop instances.
+// Loop instances.
             foreach ( $instances as $instance_id => $instance_data ) {
 
-                // Key is ID (not _multiwidget).
+// Key is ID (not _multiwidget).
                 if ( is_numeric( $instance_id ) ) {
                     $unique_instance_id                    = $widget_data['id_base'] . '-' . $instance_id;
                     $widget_instances[$unique_instance_id] = $instance_data;
@@ -1016,7 +1056,7 @@ function devm_widgets_export() {
 
     foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
 
-        // Skip inactive widgets.
+// Skip inactive widgets.
         if ( 'wp_inactive_widgets' === $sidebar_id ) {
             continue;
         }
@@ -1051,7 +1091,7 @@ function devm_available_widgets() {
 
     foreach ( $widget_controls as $widget ) {
 
-        // No duplicates.
+// No duplicates.
         if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name']    = $widget['name'];
@@ -1062,130 +1102,15 @@ function devm_available_widgets() {
     return $available_widgets;
 }
 
-function devm_sanitize_data( $key, $value ) {
-    $array_valued_controls = [
-        'checkbox-multiple',
-        'dimensions',
-        'gradient',
-        'icon',
-        'multiselect',
-        'typography',
-    ]; // These controls value save as array and user don't have any scope to input invalid string
-
-    $html_valued_controls = [
-        'wp-editor',
-    ]; // These controls value save as HTML
-
-    $email_valued_controls = [
-        'email',
-    ];
-
-    $control_type = devm_get_post_type( $key );
-
-    // Sanitize email type controls
-    if ( in_array( $control_type, $email_valued_controls ) ) {
-        return sanitize_email( $value );
-    }
-
-    if ( in_array( $control_type, $array_valued_controls ) ) {
-        return $value;
-    }
-
-    if ( in_array( $control_type, $html_valued_controls ) ) {
-        return $value;
-    }
-
-    // Sanitize all controls string except array and HTML control.
-    return sanitize_text_field( $value );
-
-}
-
-function devm_sanitize_taxonomy_data( $key, $value ) {
-    $array_valued_controls = [
-        'checkbox-multiple',
-        'dimensions',
-        'gradient',
-        'icon',
-        'multiselect',
-        'typography',
-    ]; // These controls value save as array and user don't have any scope to input invalid string
-
-    $html_valued_controls = [
-        'wp-editor',
-    ]; // These controls value save as HTML
-
-    $email_valued_controls = [
-        'email',
-    ];
-
-    $control_type = devm_get_taxonomy_post_type( $key );
-
-    // Sanitize email type controls
-    if ( in_array( $control_type, $email_valued_controls ) ) {
-        return sanitize_email( $value );
-    }
-
-    if ( in_array( $control_type, $array_valued_controls ) ) {
-        return $value;
-    }
-
-    if ( in_array( $control_type, $html_valued_controls ) ) {
-        return $value;
-    }
-
-    // Sanitize all controls string except array and HTML control.
-    return sanitize_text_field( $value );
-}
-
-function devm_get_all_taxonomy_controls() {
-    return get_option( 'devmonsta_all_taxonomy_controls' );
-}
-
-function devm_get_all_posteta_controls() {
-    return get_option( 'devmonsta_all_potmeta_controls' );
-}
-
-function devm_get_post_type( $control_name ) {
-    $all_controls = devm_get_all_posteta_controls();
-
-    foreach ( $all_controls as $control ) {
-
-        if ( 'devmonsta_' . $control['name'] == $control_name ) {
-            return $control['type'];
-        }
-
-    }
-
-}
-
-function devm_get_taxonomy_post_type( $control_name ) {
-    $all_controls = devm_get_all_taxonomy_controls();
-
-    foreach ( $all_controls as $control ) {
-
-        if ( isset( $control['name'] ) ) {
-
-            if ( 'devmonsta_' . $control['name'] == $control_name ) {
-                return $control['type'];
-            }
-
-        }
-
-    }
-
-}
-
 //demo import file flter
 function devm_import_files() {
-    $demo_data = [];
-    $demo_file = get_stylesheet_directory() . '/devmonsta/theme-demos.php';
+    $demo_data = [ ];
 
-    if ( file_exists( $demo_file ) ) {
+    if(file_exists(get_stylesheet_directory() . '/devmonsta/theme-demos.php')){
         require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
     }
-
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
-
+    
     return $demo_data_array;
 }
 
@@ -1195,6 +1120,7 @@ function devm_widgets_import_data( $data ) {
 
     if ( empty( $data ) || !is_object( $data ) ) {
 
+        return;
         wp_die(
             esc_html__( 'Import data could not be read. Please try a different file.', 'devmonsta' ),
             '',
@@ -1242,7 +1168,7 @@ function devm_widgets_import_data( $data ) {
         $results[$sidebar_id]['message']      = $sidebar_message;
         $results[$sidebar_id]['widgets']      = [];
 
-        // Loop widgets.
+        // Loop widgets.    
         foreach ( $widgets as $widget_instance_id => $widget ) {
 
             $fail = false;
@@ -1266,8 +1192,8 @@ function devm_widgets_import_data( $data ) {
                 // Get existing widgets in this sidebar.
                 $sidebars_widgets = get_option( 'sidebars_widgets' );
                 $sidebar_widgets  = isset( $sidebars_widgets[$use_sidebar_id] ) ? $sidebars_widgets[$use_sidebar_id] : [];
-
                 // Check Inactive if that's where will go.
+
                 // Loop widgets with ID base.
                 $single_widget_instances = !empty( $widget_instances[$id_base] ) ? $widget_instances[$id_base] : [];
 
@@ -1292,7 +1218,6 @@ function devm_widgets_import_data( $data ) {
                     '_multiwidget' => 1,
                 ];
                 $single_widget_instances[] = $widget;
-
                 // Add it.
                 // Get the key it was given.
                 end( $single_widget_instances );
@@ -1353,7 +1278,7 @@ function devm_widgets_import_data( $data ) {
 
                                                                                                                                                                                    // Result for widget instance
             $results[$sidebar_id]['widgets'][$widget_instance_id]['name']         = isset( $available_widgets[$id_base]['name'] ) ? $available_widgets[$id_base]['name'] : $id_base; // Widget name or ID if name not available (not supported by site).
-            $results[$sidebar_id]['widgets'][$widget_instance_id]['title']        = !empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'devmonsta' );             // Show "No Title" if widget instance is untitled.
+            $results[$sidebar_id]['widgets'][$widget_instance_id]['title']        = !empty( $widget['title'] ) ? $widget['title'] : esc_html__( 'No Title', 'devmonsta' );                   // Show "No Title" if widget instance is untitled.
             $results[$sidebar_id]['widgets'][$widget_instance_id]['message_type'] = $widget_message_type;
             $results[$sidebar_id]['widgets'][$widget_instance_id]['message']      = $widget_message;
         }

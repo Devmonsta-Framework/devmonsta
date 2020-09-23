@@ -38,18 +38,18 @@ class ColorPicker extends Structure {
             wp_enqueue_style( 'wp-color-picker' );
         }
 
-        // wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
+        wp_enqueue_script( 'devm-script-handle', DEVMONSTA_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
-        // $data = [];
-        // global $post;
-        // $content = $this->content;
-        // $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-        //                         && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-        //                         ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-        //                         : ( isset( $content['value'] ) && ( preg_match('/^#[a-f0-9]{6}$/i', $content['value']) ) ? $content['value'] : "" );
+        $data = [];
+        global $post;
+        $content = $this->content;
+        $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
+                                && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
+                                ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
+                                : ( isset( $content['value'] ) && ( preg_match('/^#[a-f0-9]{6}$/i', $content['value']) ) ? $content['value'] : "" );
 
-        // $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
-        // wp_localize_script( 'dm-script-handle', 'dm_color_picker_config', $data );
+        $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
+        wp_localize_script( 'devm-script-handle', 'devm_color_picker_config', $data );
 
     }
 
@@ -147,15 +147,6 @@ class ColorPicker extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
-        $data = [];
-        global $post;
-        $content = $this->content;
-        $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-                                && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-                                ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-                                : ( isset( $content['value'] ) && ( preg_match('/^#[a-f0-9]{6}$/i', $content['value']) ) ? $content['value'] : "" );
-
-        $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
         ?>
             <div <?php echo devm_render_markup( $default_attributes ); ?> >
                 <div class="devm-option-column left">
@@ -163,7 +154,7 @@ class ColorPicker extends Structure {
                 </div>
 
                 <div class="devm-option-column right">
-                    <input  type="text" data-config='<?php echo json_encode($data); ?>'
+                    <input  type="text"
                             name="<?php echo esc_attr( $name ); ?>"
                             class="devm-ctrl devm-color-picker-field"
                             value="<?php echo esc_attr( $value );?>"

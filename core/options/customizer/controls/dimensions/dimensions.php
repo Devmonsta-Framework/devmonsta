@@ -23,17 +23,15 @@ class Dimensions extends Structure {
         $this->default_value = isset( $args[0]['value'] ) && is_array( $args[0]['value'] ) ? $args[0]['value'] : [];
 
         //generate attributes dynamically for parent tag
-        if(isset( $args[0] )){
-            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
-        }
+        $this->default_attributes = $this->prepare_default_attributes( $args[0] );
     }
 
     /*
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        // wp_enqueue_style('element-ui', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/css/unpkg.css', [], null, '');
-        // wp_enqueue_script( 'devm-dimensions-components', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
+        wp_enqueue_style('element-ui', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/css/unpkg.css', [], null, '');
+        wp_enqueue_script( 'devm-dimensions-components', DEVMONSTA_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     }
 
 
@@ -57,7 +55,7 @@ class Dimensions extends Structure {
             </div>
             <div class="devm-option-column right devm-vue-app active-script">
                 <devm-dimensions
-                    :dimension="<?php echo ( isset( $savedData['isLinked'] ) && true ==$savedData['isLinked'] ) ? "true" : "false"; ?>"
+                    :dimension="<?php echo ( isset( $savedData['isLinked'] ) && true ==$savedData['isLinked'] ) ? "true" : "false"; ?>"  
                     linked-name="<?php echo esc_attr( $this->name ); ?>[isLinked]"
                     name="<?php echo esc_attr( $this->name ); ?>"
                 >
@@ -69,7 +67,7 @@ class Dimensions extends Structure {
                     ></devm-dimensions-item>
 
                     <devm-dimensions-item
-
+                        
                         name="<?php echo esc_attr( $this->name ); ?>[right]"
                         class="devm-ctrl"
                         value="<?php echo isset( $savedData['right'] ) && is_numeric( $savedData['right'] ) ? esc_html( intval( $savedData['right'] ) ) : 0; ?>"
@@ -77,7 +75,7 @@ class Dimensions extends Structure {
                     ></devm-dimensions-item>
 
                     <devm-dimensions-item
-
+                        
                         name="<?php echo esc_attr( $this->name ); ?>[bottom]"
                         class="devm-ctrl"
                         value="<?php echo isset( $savedData['bottom'] ) && is_numeric( $savedData['bottom'] ) ? esc_html( intval( $savedData['bottom'] ) ) : 0; ?>"
@@ -85,7 +83,7 @@ class Dimensions extends Structure {
                     ></devm-dimensions-item>
 
                     <devm-dimensions-item
-
+                        
                         name="<?php echo esc_attr( $this->name ); ?>[left]"
                         class="devm-ctrl"
                         value="<?php echo isset( $savedData['left'] ) && is_numeric( $savedData['left'] ) ? esc_html( intval( $savedData['left'] ) ) : 0; ?>"
@@ -97,5 +95,5 @@ class Dimensions extends Structure {
         </li>
         <?php
     }
-
+    
 }

@@ -47,32 +47,30 @@ class ColorPicker extends Structure {
         $this->palettes      = isset( $args[0]['palettes'] ) && is_array( $args[0]['palettes'] )? $args[0]['palettes'] : [];
 
         //generate attributes dynamically for parent tag
-        if(isset( $args[0] )){
-            $this->default_attributes = $this->prepare_default_attributes( $args[0] );
-        }
+        // $this->default_attributes = $this->prepare_default_attributes( $args[0], "active-script" );
     }
 
-
+    
     /*
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-
+        
         if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
             wp_enqueue_style( 'wp-color-picker' );
         }
+        
+        wp_enqueue_script( 'devm-script-handle-from-post', DEVMONSTA_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
 
-        // wp_enqueue_script( 'devm-script-handle-from-post', DEVMONSTA_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
-
-        // if ( !wp_script_is( 'devm-customizer-color-handle', 'enqueued' ) ) {
-        //     wp_enqueue_script( 'devm-customizer-color-handle', DEVMONSTA_CORE . 'options/customizer/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker', 'devm-script-handle-from-post'], false, true );
-        // }
+        if ( !wp_script_is( 'devm-customizer-color-handle', 'enqueued' ) ) {
+            wp_enqueue_script( 'devm-customizer-color-handle', DEVMONSTA_CORE . 'options/customizer/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker', 'devm-script-handle-from-post'], false, true );
+        }
 
         $data                   = [];
         $data['default']        = $this->default_value;
         $data['palettes']       = $this->palettes;
 
-        // wp_localize_script( 'devm-customizer-color-handle', 'devm_color_picker_config', $data );
+        wp_localize_script( 'devm-customizer-color-handle', 'devm_color_picker_config', $data );
     }
 
 
@@ -90,9 +88,6 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function render_content() {
-        $data                   = [];
-        $data['default']        = $this->default_value;
-        $data['palettes']       = $this->palettes;
         ?>
             <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
                 <div class="devm-option-column left">
@@ -101,7 +96,7 @@ class ColorPicker extends Structure {
                 <div class="devm-option-column right">
                     <input name="<?php echo isset( $this->name ) ? $this->name : ""; ?>" data-config='<?php echo json_encode($data) ?>' <?php $this->link(); ?> type="text" class="devm-ctrl devm-color-picker-field"
                     data-value="<?php echo esc_html( $this->value ); ?>"
-                            value="<?php echo esc_attr( $this->value ); ?>" data-default-color="<?php echo esc_attr( $this->value ); ?>" />
+                            value="<?php echo esc_attr( $this->value ); ?>" data-default-color="<?php echo esc_attr( $this->value ); ?>" />            
                     <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>
