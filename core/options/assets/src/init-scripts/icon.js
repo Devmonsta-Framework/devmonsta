@@ -1,4 +1,4 @@
-jQuery(document).ready(function(){
+jQuery(window).on('devm-scripts.iconPicker', function(e,val){
     Vue.component('devm-icon-picker', {
         props: ["icon_list", "name", "default_icon_type", "default_icon"],
         template: `
@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
                     <input v-if="!wp.customize" class="devm-ctrl" type="hidden" :name="name" v-model="savedIconClass">
                     <input v-if="!wp.customize" type="hidden" :name="name + '_type'" :value="iconType">
                     
-                    <input v-if="wp.customize" type="hidden" class="devm-ctrl devm-color-picker" :name="name" v-model="customizerdata" :data-customize-setting-link="name"  />
+                    <input v-if="wp.customize" type="hidden" class="devm-icon-picker" :name="name" v-model="customizerdata" :data-customize-setting-link="name"  />
                 </div>
                 <transition name="fade">
                     <devm-icon-modal v-if="showModal" :iconList="iconList" :default_icon_type="default_icon_type" :default_icon="default_icon" @picked-icon="pickedIconClass" @close-modal="closeModal" @save-icon="saveIcon" @icon-type="changeIconType"></devm-icon-modal>
@@ -80,14 +80,16 @@ jQuery(document).ready(function(){
                 this.savedIconClass = this.pickedIcon;
                 this.iconType = this.tempiconType;
                 this.customizerdata = JSON.stringify({iconType: this.iconType, icon: this.pickedIcon});
-                jQuery(this.$el).find('.devm-ctrl').trigger('change', [this.pickedIcon])
+                jQuery(this.$el).find('.devm-icon-picker').trigger('change', [this.pickedIcon])
             },
             changeIconType: function (value) {
                 this.tempiconType = value;
             }
         },
         mounted: function(){
-            jQuery(this.$el).find('.devm-ctrl').trigger('change', [this.pickedIcon])
+            this.customizerdata = JSON.stringify({iconType: this.iconType, icon: this.default_icon});
+            
+            jQuery(this.$el).find('.devm-icon-picker').trigger('change', [this.default_icon])
         },
         created: function () {
             this.iconList = JSON.parse(this.icon_list);
@@ -187,4 +189,8 @@ jQuery(document).ready(function(){
             }
         }
     });
+});
+
+jQuery(document).ready(function($){
+    jQuery(window).trigger('devm-scripts.iconPicker');
 });

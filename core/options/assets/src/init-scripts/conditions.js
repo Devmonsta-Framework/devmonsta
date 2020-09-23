@@ -27,7 +27,7 @@ jQuery(window).on('devm-scripts.conditions',function($){
         }
     }
 
-    jQuery(document).on('input change','.devm-ctrl', function(e, val){
+    jQuery(document).on('input change','.devm-ctrl,.devm-icon-picker', function(e, val){
         var currentControlValue = val ? val : jQuery(this).val(),
             conditionalInputs = jQuery('.devm-condition-active'),
             currentControlName = jQuery(this).attr('name'),
@@ -37,9 +37,13 @@ jQuery(window).on('devm-scripts.conditions',function($){
             // checkbox
             if(self.attr('type') == 'checkbox'){
                 var checkboxEl = jQuery(this).parents('.devm-option-column').find('input:checked');
-                jQuery(this).parents('.devm-option-column').find('input:checked').each(function(item){
-                    values.push(jQuery(this).val());
-                });
+
+                if(checkboxEl.length > 1){
+                    jQuery(this).parents('.devm-option-column').find('input:checked').each(function(item){
+                        values.push(jQuery(this).val());
+                    });
+                }
+               
                 currentControlValue = checkboxEl.length ? (checkboxEl.val() == 'true' ? true : checkboxEl.val() ): false;
             }
             // radio
@@ -83,7 +87,7 @@ jQuery(window).on('devm-scripts.conditions',function($){
                     oparator = condition.operator,
                     value = condition.value;
                     // color picker
-                    if(self.hasClass('devm-color-picker-field')){
+                    if(typeof value == 'string' && self.hasClass('devm-color-picker-field')){
                         value = value.toLowerCase();
                     } 
 

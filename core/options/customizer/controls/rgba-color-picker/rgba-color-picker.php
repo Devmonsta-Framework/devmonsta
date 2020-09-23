@@ -95,7 +95,7 @@ class RgbaColorPicker extends Structure {
                 </div>
 
                 <div class="devm-option-column right">
-                    <input class="alpha-color-control devm-ctrl devm-color-field color-picker-rgb" type="text" data-show-opacity="true" data-palette="<?php echo esc_attr( $this->palettes ); ?>" data-alpha="true" data-config='<?php echo json_encode($data); ?>' data-default-color="<?php echo esc_attr( $this->value ); ?>" <?php $this->link();?>  data-value="<?php echo esc_html( $this->value ); ?>" />
+                    <input class="alpha-color-control devm-ctrl devm-color-field color-picker-rgb" name="<?php echo esc_attr( $this->name ); ?>" type="text" data-show-opacity="true" data-palette="<?php echo esc_attr( $this->palettes ); ?>" data-alpha="true" data-config='<?php echo json_encode($data); ?>' data-default-color="<?php echo esc_attr( $this->value ); ?>" <?php $this->link();?>  data-value="<?php echo esc_html( $this->value ); ?>" />
                     <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
             </li>

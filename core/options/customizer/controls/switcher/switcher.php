@@ -95,7 +95,7 @@ class Switcher extends Structure {
                     <ul class="devm-switcher devm_switcher_item">
                             <li >
                                 <label>
-                                    <input class="devm-ctrl devm-control-switcher" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
+                                    <input class="devm-ctrl devm-control-switcher" name='<?php echo esc_attr( $this->name ); ?>' data-right_key="<?php echo esc_attr( $this->right_key ); ?>" data-left_key="<?php echo esc_attr( $this->left_key ); ?>" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
 
                                     <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='devm_switcher_label devm-option-label'></div>
                                 </label>

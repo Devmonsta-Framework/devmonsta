@@ -541,7 +541,7 @@ class Customizer {
             'dropdown-pages',
             'email',
             'url',
-            'number',
+            // 'number',
             'hidden',
             'date',
             'media',
