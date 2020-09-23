@@ -42,14 +42,6 @@ final class Bootstrap {
         \Devmonsta\Options\Taxonomies\Taxonomies::instance()->init();
         \Devmonsta\Rest::instance()->init();
 
-        //include file to backup data
-        require dirname( __FILE__ ) . '/backup/export.php';
-<<<<<<< HEAD
-        require dirname( __FILE__ ) . '/backup/export-timetable-plugin-data.php';
-        require dirname( __FILE__ ) . '/backup/demo-importer.php';
-        require dirname( __FILE__ ) . '/autoload.php';
-=======
->>>>>>> parent of dd18005... reverted from demo-import branch backup
     }
 
 }

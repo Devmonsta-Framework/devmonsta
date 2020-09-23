@@ -4,13 +4,15 @@ namespace Devmonsta\Options\Posts;
 
 use Devmonsta\Traits\Singleton;
 
-class View {
+class View
+{
 
 	use Singleton;
 
 	protected $meta_owner = "post";
 
-<<<<<<< HEAD
+
+
 	/**
 	 * Build the metbox for the post
 	 *
@@ -18,15 +20,19 @@ class View {
 	 * @return      void
 	 */
 
-	public function build( $box_id, $controls ) {
+	public function build($box_id, $controls)
+	{
 
-		echo '<div class="devm-box">';
-		// This html for wrapper purpose
-		foreach ( $controls as $control ) {
-			if ( $control['box_id'] == $box_id ) {
-				$this->render( $control );
+
+		echo '<div class="devm-box">'; // This html for wrapper purpose
+
+		foreach ($controls as $control) {
+
+			if ($control['box_id'] == $box_id) {
+				$this->render($control);
 			}
 		}
+
 		echo '</div>';
 	}
 
@@ -38,18 +44,19 @@ class View {
 	 * @access      public
 	 * @return      void
 	 */
-	public function render( $control_content ) {
+	public function render($control_content)
+	{
 
-		if ( isset( $control_content['type'] ) ) {
 
-			if ( $control_content['type'] == 'repeater' ) {
+		if (isset($control_content['type'])) {
 
-				$this->build_repeater( $control_content );
+			if ($control_content['type'] == 'repeater') {
+
+				$this->build_repeater($control_content);
 			}
 
-			$this->build_controls( $control_content );
+			$this->build_controls($control_content);
 		}
-
 	}
 
 	/**
@@ -59,103 +66,38 @@ class View {
 	 * @return  void
 	 */
 
-	public function build_controls( $control_content ) {
-		$class_name    = explode( '-', $control_content['type'] );
-		$class_name    = array_map( 'ucfirst', $class_name );
-		$class_name    = implode( '', $class_name );
+	public function build_controls($control_content)
+	{
+		$class_name = explode('-', $control_content['type']);
+		$class_name = array_map('ucfirst', $class_name);
+		$class_name = implode('', $class_name);
 		$control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
 
-		if ( class_exists( $control_class ) ) {
+		if (class_exists($control_class)) {
 
-			$control = new $control_class( $control_content );
+			$control = new $control_class($control_content);
 			$control->init();
-			$control->enqueue( $this->meta_owner );
+			$control->enqueue($this->meta_owner);
 			$control->render();
 
 		} else {
 
-			$file = plugin_dir_path( __FILE__ ) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
+			$file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
 
-			if ( file_exists( $file ) ) {
-=======
-    /**
-     * Build the metbox for the post
-     *
-     * @access      public
-     * @return      void
-     */
-
-    public function build( $box_id, $controls ) {
-
-        echo '<div class="devm-box">';
-        // This html for wrapper purpose
-        foreach ( $controls as $control ) {
-            if ( $control['box_id'] == $box_id ) {
-                $this->render( $control );
-            }
-        }
-        echo '</div>';
-    }
-
-    /**
-     * Render markup view for the control
-     * defined in theme. It will pass the data according to the
-     * control type
-     *
-     * @access      public
-     * @return      void
-     */
-    public function render( $control_content ) {
-
-        if ( isset( $control_content['type'] ) ) {
-
-            if ( $control_content['type'] == 'repeater' ) {
-
-                $this->build_repeater( $control_content );
-            }
-
-            $this->build_controls( $control_content );
-        }
-
-    }
->>>>>>> parent of dd18005... reverted from demo-import branch backup
+			if (file_exists($file)) {
 
 				include_once $file;
 
-<<<<<<< HEAD
-				if ( class_exists( $control_class ) ) {
+				if (class_exists($control_class)) {
 
-					$control = new $control_class( $control_content );
+					$control = new $control_class($control_content);
 					$control->init();
-					$control->enqueue( $this->meta_owner );
+					$control->enqueue($this->meta_owner);
 					$control->render();
 				}
-
 			}
-
 		}
-
 	}
-=======
-    public function build_controls( $control_content ) {
-        $class_name    = explode( '-', $control_content['type'] );
-        $class_name    = array_map( 'ucfirst', $class_name );
-        $class_name    = implode( '', $class_name );
-        $control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
-
-        if ( class_exists( $control_class ) ) {
-
-            $control = new $control_class( $control_content );
-            $control->init();
-            $control->enqueue( $this->meta_owner );
-            $control->render();
-
-        } else {
-
-            $file = plugin_dir_path( __FILE__ ) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
-
-            if ( file_exists( $file ) ) {
->>>>>>> parent of dd18005... reverted from demo-import branch backup
 
 	/**
 	 * Build repeater controls
@@ -164,122 +106,97 @@ class View {
 	 * @return  void
 	 */
 
-<<<<<<< HEAD
-	public function build_repeater( $control_data ) {
+	public function build_repeater($control_data)
+	{
 		/**
 		 * Incomplete code , just testing , do not read or use
 		 */
-		if ( isset( $control_data['controls'] ) ) {
+		if (isset($control_data['controls'])) {
 
 			?>
-=======
-                if ( class_exists( $control_class ) ) {
+			<div id="<?php echo esc_attr( $control_data['name'] ); ?>" class="devm-option form-field ">
 
-                    $control = new $control_class( $control_content );
-                    $control->init();
-                    $control->enqueue( $this->meta_owner );
-                    $control->render();
-                }
+				<div class='devm-option-column left'>
+					<label class="devm-option-label"><?php echo esc_html( $control_data['label'] ); ?> </label>
+				</div>
 
-            }
 
-        }
+				<div class='devm-option-column devm-repeater-column right'>
 
-    }
+					<div class="devm-repeater-control devm-repeater-sample">
+						<a href="#" data-id="<?php echo esc_attr( $control_data['name'] ); ?>" class="devm-repeater-control-action">Control
+							<button type="button" data-id="<?php echo esc_attr( $control_data['name'] ); ?>"
+							        class="components-button devm-editor-post-trash is-link"><span
+									class="dashicons dashicons-dismiss"></span></button>
+						</a>
 
-    /**
-     * Build repeater controls
-     *
-     * @access  public
-     * @return  void
-     */
-
-    public function build_repeater( $control_data ) {
-        /**
-         * Incomplete code , just testing , do not read or use
-         */
-        if ( isset( $control_data['controls'] ) ) {
-
-            ?>
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-            <div id="<?php echo esc_attr( $control_data['name'] ); ?>" class="devm-option form-field ">
-
-                <div class='devm-option-column left'>
-                    <label class="devm-option-label"><?php echo esc_html( $control_data['label'] ); ?> </label>
-                </div>
-                <div class='devm-option-column devm-repeater-column right'>
-                    <div class="devm-repeater-control devm-repeater-sample">
-                        <a href="#" data-id="<?php echo esc_attr( $control_data['name'] ); ?>"
-                           class="devm-repeater-control-action">Control
-                            <button type="button" data-id="<?php echo esc_attr( $control_data['name'] ); ?>"
-                                    class="components-button devm-editor-post-trash is-link"><span
-                                        class="dashicons dashicons-dismiss"></span></button>
-                        </a>
-                        <div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_data['name'] ); ?>">
-                            <div class="devm-repeater-inner-controls-inner">
-                                <div class="devm-repeater-popup-heading">
-                                    <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
-                                </div>
-                                <div class="devm-repeater-popup-data">
-<<<<<<< HEAD
+						<div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_data['name'] ); ?>">
+							<div class="devm-repeater-inner-controls-inner">
+								<div class="devm-repeater-popup-heading">
+									<span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
+								</div>
+								<div class="devm-repeater-popup-data">
 									<?php
 									ob_start();
-									$this->repeater_controls( $control_data );
+									$this->repeater_controls($control_data);
 									$output = ob_get_clean();
 
-									echo str_replace( "active-script", '', $output );
+									echo str_replace("active-script", '', $output);
 									?>
-=======
-                                    <?php
-                                    ob_start();
-                                    $this->repeater_controls( $control_data );
-                                    $output = ob_get_clean();
+								</div>
+								<div class="devm-repeater-popup-footer">
+								</div>
+							</div>
+						</div>
+					</div>
 
-                                    echo str_replace( "active-script", '', $output );
-                                    ?>
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-                                </div>
-                                <div class="devm-repeater-popup-footer">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="devm-repeater-control-list-<?php echo esc_attr( $control_data['name'] ); ?>"
-                         class="devm-repeater-control-list">
-                    </div>
-                    <a href='' data-id='<?php echo esc_attr( $control_data['name'] ); ?>'
-                       class='devm-repeater-add-new button'><?php echo esc_html( $control_data['add_new'] ); ?></a>
-                </div>
-            </div>
-<<<<<<< HEAD
+					<div id="devm-repeater-control-list-<?php echo esc_attr( $control_data['name'] ); ?>"
+					     class="devm-repeater-control-list">
+
+					</div>
+
+
+					<a href='' data-id='<?php echo esc_attr( $control_data['name'] ); ?>'
+					   class='devm-repeater-add-new button'><?php echo esc_html( $control_data['add_new'] ); ?></a>
+				</div>
+			</div>
+
 			<?php
 		}
 	}
 
-	public function repeater_controls( $control_data ) {
+	public function repeater_controls($control_data)
+	{
+		foreach ($control_data['controls'] as $control_content) {
 
-		foreach ( $control_data['controls'] as $control_content ) {
-			if ( $control_content['type'] == 'repeater' ) {
-				$this->repeater_control_markup( $control_content );
-			}
+			if ($control_content['type'] == 'repeater')
+				$this->repeater_control_markup($control_content);
+
 			$name = $control_content['name'];
-			unset( $control_content['name'] );
+			unset($control_content['name']);
 			$control_content['name'] = $name;
-			$class_name              = explode( '-', $control_content['type'] );
-			$class_name              = array_map( 'ucfirst', $class_name );
-			$class_name              = implode( '', $class_name );
-			$control_class           = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+			$class_name = explode('-', $control_content['type']);
+			$class_name = array_map('ucfirst', $class_name);
+			$class_name = implode('', $class_name);
+			$control_class = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
 
-			if ( class_exists( $control_class ) ) {
-				$control = new $control_class( $control_content );
+			if (class_exists($control_class)) {
+
+				$control = new $control_class($control_content);
 				$control->init();
 				$control->render();
+
 			} else {
-				$file = plugin_dir_path( __FILE__ ) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
-				if ( file_exists( $file ) ) {
+
+				$file = plugin_dir_path(__FILE__) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
+
+				if (file_exists($file)) {
+
 					include_once $file;
-					if ( class_exists( $control_class ) ) {
-						$control = new $control_class( $control_content );
+
+					if (class_exists($control_class)) {
+
+						$control = new $control_class($control_content);
 						$control->init();
 						$control->render();
 					}
@@ -288,127 +205,72 @@ class View {
 		}
 	}
 
-	public function repeater_control_markup( $control_content ) {
+
+	public function repeater_control_markup($control_content)
+	{
 		?>
-=======
-            <?php
-        }
-    }
+		<div class='devm-option form-field devm-repeater-child'>
+			<div class='devm-option-column left'>
+				<label class='devm-option-label'><?php echo esc_html( $control_content['lable'] ); ?> </label>
+			</div>
+			<div class='devm-option-column right'>
 
-    public function repeater_controls( $control_data ) {
-        foreach ( $control_data['controls'] as $control_content ) {
+				<div class='devm-option-column devm-repeater-column right'>
 
-            if ( $control_content['type'] == 'repeater' ) {
-                $this->repeater_control_markup( $control_content );
-            }
+					<div class="devm-repeater-control devm-repeater-sample">
+						<a href="#" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
+						   class="devm-repeater-control-action">Control
 
-            $name = $control_content['name'];
-            unset( $control_content['name'] );
-            $control_content['name'] = $name;
-            $class_name              = explode( '-', $control_content['type'] );
-            $class_name              = array_map( 'ucfirst', $class_name );
-            $class_name              = implode( '', $class_name );
-            $control_class           = 'Devmonsta\Options\Posts\Controls\\' . $class_name . '\\' . $class_name;
+							<button type="button" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
+							        class="components-button devm-editor-post-trash is-link">
+								<span class="dashicons dashicons-dismiss"></span>
+							</button>
 
-            if ( class_exists( $control_class ) ) {
-                $control = new $control_class( $control_content );
-                $control->init();
-                $control->render();
-            } else {
-                $file = plugin_dir_path( __FILE__ ) . 'controls/' . $control_content['type'] . '/' . $control_content['type'] . '.php';
-                if ( file_exists( $file ) ) {
-                    include_once $file;
-                    if ( class_exists( $control_class ) ) {
-                        $control = new $control_class( $control_content );
-                        $control->init();
-                        $control->render();
-                    }
-                }
-            }
-        }
-    }
+						</a>
 
-    public function repeater_control_markup( $control_content ) {
-        ?>
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-        <div class='devm-option form-field devm-repeater-child'>
-            <div class='devm-option-column left'>
-                <label class='devm-option-label'><?php echo esc_html( $control_content['lable'] ); ?> </label>
-            </div>
-            <div class='devm-option-column right'>
-                <div class='devm-option-column devm-repeater-column right'>
-                    <div class="devm-repeater-control devm-repeater-sample">
-                        <a href="#" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
-                           class="devm-repeater-control-action">Control
-                            <button type="button" data-id="<?php echo esc_attr( $control_content['name'] ); ?>"
-                                    class="components-button devm-editor-post-trash is-link">
-                                <span class="dashicons dashicons-dismiss"></span>
-                            </button>
-                        </a>
-<<<<<<< HEAD
-                        <div class="devm-repeater-inner-controls"
-                             id="<?php echo esc_attr( $control_content['name'] ); ?>">
-=======
-                        <div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_content['name'] ); ?>">
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-                            <div class="devm-repeater-inner-controls-inner">
-                                <div class="devm-repeater-popup-heading">
-                                    <span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
-                                </div>
-                                <div class="devm-repeater-popup-data">
-<<<<<<< HEAD
+						<div class="devm-repeater-inner-controls" id="<?php echo esc_attr( $control_content['name'] ); ?>">
+
+							<div class="devm-repeater-inner-controls-inner">
+
+								<div class="devm-repeater-popup-heading">
+									<span class="devm-repeater-popup-close dashicons dashicons-no-alt"></span>
+								</div>
+
+								<div class="devm-repeater-popup-data">
 									<?php
 									ob_start();
-									$this->sub_repeater_controls( $control_content['controls'] );
+									$this->sub_repeater_controls($control_content['controls']);
 									$output = ob_get_clean();
 
-									echo str_replace( "active-script", '', $output );
+									echo str_replace("active-script", '', $output);
 									?>
-=======
-                                    <?php
-                                    ob_start();
-                                    $this->sub_repeater_controls( $control_content['controls'] );
-                                    $output = ob_get_clean();
+								</div>
 
-                                    echo str_replace( "active-script", '', $output );
-                                    ?>
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-                                </div>
-                                <div class="devm-repeater-popup-footer"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="devm-repeater-control-list"></div>
-<<<<<<< HEAD
-                    <a href='' data-id='<?php echo esc_attr( $control_content['name'] ); ?>'
-                       class='devm-repeater-add-new button'>
-						<?php echo esc_html__( "Add New", "devmonsta" ); ?>
-=======
-                    <a href='' data-id='<?php echo esc_attr( $control_content['name'] ); ?>' class='devm-repeater-add-new button'>
-                    <?php echo esc_html__("Add New", "devmonsta");?>
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-                    </a>
-                </div>
-            </div>
-        </div>
-<<<<<<< HEAD
+								<div class="devm-repeater-popup-footer"></div>
+
+							</div>
+						</div>
+					</div>
+
+					<div class="devm-repeater-control-list"></div>
+
+					<a href='' data-id='<?php echo esc_attr( $control_content['name'] ); ?>' class='devm-repeater-add-new button'>Add
+						New</a>
+				</div>
+			</div>
+		</div>
+
 		<?php
+
 	}
 
-	public function sub_repeater_controls( $control_contents ) {
-		foreach ( $control_contents as $control_content ) {
-			$this->build_controls( $control_content );
+	public function sub_repeater_controls($control_contents)
+	{
+		foreach ($control_contents as $control_content) {
+
+			$this->build_controls($control_content);
+
 		}
+
 	}
-=======
-        <?php
-    }
-
-    public function sub_repeater_controls( $control_contents ) {
-        foreach ( $control_contents as $control_content ) {
-            $this->build_controls( $control_content );
-        }
-    }
->>>>>>> parent of dd18005... reverted from demo-import branch backup
-
 }
