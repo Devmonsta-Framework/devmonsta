@@ -30,7 +30,7 @@ class DEVM_HTML_Compression
 
 		$savings = round($savings, 2);
 
-		return '<!--HTML compressed, size saved '.$savings.'%. From '.$raw.' bytes, now '.$compressed.' bytes-->';
+		return '<!--Devmonsta compressed HTML , size saved '.$savings.'%. From '.$raw.' bytes, now '.$compressed.' bytes-->';
 	}
 	protected function minifyHTML($html)
 	{
