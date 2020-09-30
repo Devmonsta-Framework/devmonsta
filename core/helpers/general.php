@@ -1363,3 +1363,45 @@ function devm_widgets_import_data( $data ) {
     // Return results.
     return apply_filters( 'devm_widgets_import_results', $results );
 }
+
+
+/**
+ * devm_get_path_url( dirname(__FILE__) .'/test.css' ) --> http://site.url/path/to/test.css
+ *
+ * @param string $path
+ *
+ * @return string|null
+ * @since 2.6.11
+ */
+function devm_get_path_url( $path ) {
+    try {
+        $paths_to_urls = DEVM_Cache::get( $cache_key = 'devm:paths_to_urls' );
+    } catch ( DEVM_Cache_Not_Found_Exception $e ) {
+        $wp_upload_dir = wp_upload_dir();
+
+        $paths_to_urls = [
+            devm_fix_path( WP_PLUGIN_DIR )             => plugins_url(),
+            devm_fix_path( get_theme_root() )          => get_theme_root_uri(),
+            devm_fix_path( $wp_upload_dir['basedir'] ) => $wp_upload_dir['baseurl'],
+        ];
+
+        if ( is_multisite() && WPMU_PLUGIN_DIR ) {
+            $paths_to_urls[devm_fix_path( WPMU_PLUGIN_DIR )] = WPMU_PLUGIN_URL;
+        }
+
+        DEVM_Cache::set( $cache_key, $paths_to_urls );
+    }
+
+    $path = devm_fix_path( $path );
+
+    foreach ( $paths_to_urls as $_path => $_url ) {
+
+        if ( preg_match( $regex = '/^' . preg_quote( $_path, '/' ) . '($|\/)/', $path ) ) {
+            return $_url . '/' . preg_replace( $regex, '', $path );
+        }
+
+    }
+
+    return null;
+}
+
