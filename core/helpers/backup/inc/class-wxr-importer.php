@@ -986,8 +986,8 @@ class Devm_WXR_Importer extends WP_Importer {
                             $value = maybe_unserialize( $meta['value'] );
                         }
 
-                        add_post_meta( $post_id, $key, $value );
-                        do_action( 'import_post_meta', $post_id, $key, $value );
+                        add_post_meta( $post_id, $key, wp_slash( $value ) );
+                        do_action( 'import_post_meta', $post_id, $key,  wp_slash( $value ) );
 
 // if the post has a featured image, take note of this in case of remap
                         if ( '_thumbnail_id' == $key ) {
