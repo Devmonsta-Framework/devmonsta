@@ -938,6 +938,10 @@ function devm_theme_option( $option_name, $default = false ) {
 
 }
 
+function devm_theme_media_option( $media_id ){
+		return wp_get_attachment_metadata(devm_theme_option($media_id));
+}
+
 function devm_theme_control_default_control( $control_name ) {
 
     $control = devm_get_theme_control( $control_name );
