@@ -57,7 +57,7 @@ class Switcher extends Structure {
         $right_choice = isset( $this->content['right-choice'] ) ? $this->content['right-choice'] : '';
         $left_key     = $this->array_key_first( $left_choice );
         $right_key    = $this->array_key_first( $right_choice );
-                              
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -111,7 +111,7 @@ class Switcher extends Structure {
         $left_key           = $this->array_key_first( $left_choice );
         $right_key          = $this->array_key_first( $right_choice );
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 

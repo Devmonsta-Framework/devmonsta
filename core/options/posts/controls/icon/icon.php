@@ -31,7 +31,7 @@ class Icon extends Structure {
         //grab default icon data from theme array
         $this->default_icon = isset( $content['value']['icon'] ) ? $content['value']['icon'] : "fab fa-500px";
         $this->default_icon_type = isset( $content['value']['type'] ) ? $content['value']['type'] : "devm-font-awesome";
-        
+
         $icon_data              = [];
         $icon_data['icon_name'] = (  ( $this->current_screen == "post" )
                                     && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
@@ -60,7 +60,7 @@ class Icon extends Structure {
 
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
-        
+
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $this->value['icon_type'], $this->value['icon_name'] );
 
@@ -109,12 +109,12 @@ class Icon extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $icon               = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $icon_type          = (  ( "" != get_term_meta( $term->term_id, $name . "_type", true ) ) && ( !is_null( get_term_meta( $term->term_id, $name . "_type", true ) ) ) ) ? get_term_meta( $term->term_id, $name . "_type", true ) : "";
-        
+
         $iconEncoded = json_encode( $iconList );
 
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
-        
+
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $desc, $iconEncoded, $icon_type, $icon );
     }

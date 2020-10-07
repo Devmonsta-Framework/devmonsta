@@ -56,7 +56,7 @@ class Gradient extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -113,7 +113,7 @@ class Gradient extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -159,7 +159,7 @@ class Gradient extends Structure {
                                 name="<?php echo esc_html( $name . "[primary]" ); ?>"
                                 value="<?php echo esc_attr( $value['primary'] ); ?>"
                                 data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
-                                
+
                         <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
 
                         <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-secondary"

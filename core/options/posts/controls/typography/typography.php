@@ -47,7 +47,7 @@ class Typography extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $components         = isset( $this->content['components'] ) && is_array( $this->content['components'] ) ? $this->content['components'] : [];
-                        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -97,10 +97,10 @@ class Typography extends Structure {
         $label      = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $components = isset( $this->content['components'] ) && is_array( $this->content['components'] ) ? $this->content['components'] : [];
-      
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
-        
+
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc, $components );
     }

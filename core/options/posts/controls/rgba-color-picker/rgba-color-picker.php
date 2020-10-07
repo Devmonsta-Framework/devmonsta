@@ -21,7 +21,7 @@ class RgbaColorPicker extends Structure {
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
     }
-    
+
     /**
      * @internal
      */
@@ -43,7 +43,7 @@ class RgbaColorPicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -89,7 +89,7 @@ class RgbaColorPicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -129,7 +129,7 @@ class RgbaColorPicker extends Structure {
                         value="<?php echo esc_attr( $value ); ?>"
                         class="devm-ctrl devm-color-field color-picker-rgb"
                         data-alpha="true"
-                        data-default-color="<?php echo esc_attr( $value ); ?>" 
+                        data-default-color="<?php echo esc_attr( $value ); ?>"
                         data-config='<?php echo json_encode($data); ?>'/>
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>

@@ -28,8 +28,8 @@ class DatePicker extends Structure {
     public function render() {
         $content = $this->content;
         $default_value = isset( $content['value'] ) ? date('Y-m-d', strtotime($content['value'])) : "";
-        
-        global $post; 
+
+        global $post;
         $this->value = (  ( $this->current_screen == "post" )
                             && ( !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                             && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
@@ -45,7 +45,7 @@ class DatePicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -93,7 +93,7 @@ class DatePicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = ( !is_null( get_term_meta( $term->term_id, $name, true ) ) && "" != get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -116,18 +116,19 @@ class DatePicker extends Structure {
         $data['minDate'] = isset( $this->content['min-date'] ) ? date("Y-m-d", strtotime($this->content['min-date'])) : "today";
         $data['maxDate'] = isset( $this->content['max-date'] ) ? date("Y-m-d", strtotime($this->content['max-date'])) : false;
         ?>
-        <div <?php echo devm_render_markup( $default_attributes ); ?> >
-            <div class="devm-option-column left">
-                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-            <div class="devm-option-column right">
-                <input type="text" name="<?php echo esc_attr( $name ); ?>" data-min-Date="<?php echo esc_attr($data['minDate']); ?>" data-max-Date="<?php echo esc_attr($data['maxDate']); ?>"  data-mondey-first="<?php echo esc_attr($data['mondayFirst']); ?>"
-                    class="devm-option-input devm-ctrl devm-option-input-date-picker"
-                    value="<?php echo esc_attr( $value ); ?>">
-                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                <div class="devm-option-column right">
+                    <input type="text" name="<?php echo esc_attr( $name ); ?>" data-min-Date="<?php echo esc_attr($data['minDate']); ?>" data-max-Date="<?php echo esc_attr($data['maxDate']); ?>"  data-mondey-first="<?php echo esc_attr($data['mondayFirst']); ?>"
+                        class="devm-option-input devm-ctrl devm-option-input-date-picker"
+                        value="<?php echo esc_attr( $value ); ?>">
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
             </div>
-        </div>
+      
         <?php
     }
 

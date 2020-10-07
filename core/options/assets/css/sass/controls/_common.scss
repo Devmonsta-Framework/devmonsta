@@ -396,6 +396,12 @@
             border: 1px solid #aaa;
             border-radius: 4px;
         }
+        &.devm-condition-active{
+            display: none !important;
+            &.open{
+                display: block !important;
+            }
+        }
     }
 }
 
@@ -563,8 +569,11 @@
     }
     .devm-option{
         order: 1;
-        &.devm-condition-active.open{
-            display: flex;
+        &.devm-condition-active{
+            display: none !important;
+            &.open{
+                display: flex !important;
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ class CheckboxMultiple extends Structure {
         $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $choices  = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -106,7 +106,7 @@ class CheckboxMultiple extends Structure {
         $value   = ( !empty( get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $choices = isset( $this->content['choices'] ) && is_array( $this->content['choices'] )? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
-      
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 

@@ -29,7 +29,7 @@ class ColorPicker extends Structure {
 
         $content = $this->content;
         global $post;
-        $this->value   = (  ( $this->current_screen == "post" ) 
+        $this->value   = (  ( $this->current_screen == "post" )
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
                             get_post_meta( $post->ID, $this->prefix . $content['name'], true )
@@ -45,7 +45,7 @@ class ColorPicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -94,7 +94,7 @@ class ColorPicker extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -124,20 +124,20 @@ class ColorPicker extends Structure {
 
         $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
         ?>
-        <div <?php echo devm_render_markup( $default_attributes ); ?> >
-            <div class="devm-option-column left">
-                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-            </div>
+            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+                <div class="devm-option-column left">
+                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
+                </div>
 
-            <div class="devm-option-column right">
-                <input  type="text" data-config='<?php echo json_encode($data); ?>'
-                        name="<?php echo esc_attr( $name ); ?>"
-                        class="devm-ctrl devm-color-picker-field"
-                        value="<?php echo esc_attr( $value );?>"
-                        data-default-color="<?php echo esc_attr( $value );?>" />
-                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                <div class="devm-option-column right">
+                    <input  type="text" data-config='<?php echo json_encode($data); ?>'
+                            name="<?php echo esc_attr( $name ); ?>"
+                            class="devm-ctrl devm-color-picker-field"
+                            value="<?php echo esc_attr( $value );?>"
+                            data-default-color="<?php echo esc_attr( $value );?>" />
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                </div>
             </div>
-        </div>
         <?php
     }
 

@@ -80,7 +80,7 @@ class Multiselect extends Structure {
                     <label class="devm-option-label"><?php echo esc_html( $this->label ); ?> </label>
                 </div>
                 <div class="devm-option-column right">
-                    <select class="devm-ctrl devm_multi_select" <?php $this->link(); ?> multiple="multiple" style="height: 100%;" data-value="<?php echo esc_html( json_encode($this->value) ); ?>">
+                    <select name="<?php echo esc_attr( $this->name ); ?>" class="devm-ctrl devm_multi_select" <?php $this->link(); ?> multiple="multiple" style="height: 100%;" data-value="<?php echo esc_html( json_encode($this->value) ); ?>">
                         <?php
                         if(isset($this->choices) && is_array($this->choices)){
                             foreach ( $this->choices as $value => $label ) {

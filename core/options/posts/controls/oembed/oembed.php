@@ -51,7 +51,7 @@ class Oembed extends Structure {
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $wrapper_attr['data-nonce']   = wp_create_nonce( 'action_get_oembed_response' );
         $wrapper_attr['data-preview'] = isset( $this->content['preview'] ) ? json_encode( $this->content['preview'] ) : "";
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -104,8 +104,8 @@ class Oembed extends Structure {
         $value                        = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $wrapper_attr['data-nonce']   = wp_create_nonce( 'action_get_oembed_response' );
         $wrapper_attr['data-preview'] = isset( $this->content['preview'] ) ? json_encode( $this->content['preview'] ) : "";
-        
-                
+
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -149,12 +149,12 @@ class Oembed extends Structure {
      */
     public static function action_get_oembed_response() {
 
-        // Post data array from ajax request 
+        // Post data array from ajax request
         $post_array = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
         //Check for valid nonce
         if ( wp_verify_nonce( $post_array[ '_nonce' ], 'action_get_oembed_response' ) ) {
-            
+
             $url = $post_array[ 'url'];
             $width = $post_array['preview']['width'];
             $height = $post_array['preview']['height'];
@@ -163,7 +163,7 @@ class Oembed extends Structure {
 
             echo devm_render_markup( $iframe );
             die();
-    
+
         } else {
             echo esc_html_e('Invalid nonce', 'devmonsta');
             die();

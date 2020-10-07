@@ -46,7 +46,7 @@ class Dimensions extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app active-script" );
 
@@ -104,14 +104,14 @@ class Dimensions extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) && ( "" != get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-                        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
     }
-    
+
     /**
      * Renders markup with given attributes
      *
@@ -131,7 +131,7 @@ class Dimensions extends Structure {
 
             <div class="devm-option-column right">
                 <devm-dimensions
-                    :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>" 
+                    :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>"
                     linked-name="<?php echo esc_attr( $name ); ?>[isLinked]">
                     <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"

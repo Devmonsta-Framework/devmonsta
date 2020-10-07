@@ -92,7 +92,7 @@ class DatetimePicker extends Structure {
             </div>
 
             <div class="devm-option-column right">
-                <input <?php $this->link();?> type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-picker" data-config='<?php echo json_encode($date_time_picker_data); ?>'
+                <input <?php $this->link();?> name="<?php echo esc_attr( $this->name ); ?>" type="text" class="devm-option-input devm-ctrl devm-option-input-datetime-picker" data-config='<?php echo json_encode($date_time_picker_data); ?>'
                     value="<?php echo esc_attr( $this->value ); ?>"  data-value="<?php echo esc_html( $this->value ); ?>">
                 <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
             </div>
