@@ -27,33 +27,6 @@ class Gradient extends Structure {
     /**
      * @internal
      */
-    public function devm_enqueue_gradient_picker() {
-
-        wp_enqueue_style( 'wp-color-picker' );
-            // wp_enqueue_script( 'dm-gradient-handle', DM_CORE . 'options/posts/controls/gradient/assets/js/script.js', ['jquery'], false, true );
-
-        
-
-        // global $post;
-        // $data                = [];
-        // $default_value_array = [];
-
-        // if ( is_array( $this->content['value'] ) && !empty( $this->content['value'] ) ) {
-
-        //     foreach ( $this->content['value'] as $default_key => $default_value ) {
-        //         $default_value_array[$default_key] = preg_match('/^#[a-f0-9]{6}$/i', $default_value) ? $default_value : "#FFFFFF";
-        //     }
-
-        // }
-
-        // $data['defaults'] = $default_value_array;
-
-        // wp_localize_script( 'dm-gradient-handle', 'gradient_picker_config', $data );
-    }
-
-    /**
-     * @internal
-     */
     public function render() {
         $content = $this->content;
         global $post;
@@ -65,7 +38,6 @@ class Gradient extends Structure {
             foreach ( $content['value'] as $default_key => $default_value ) {
                 $default_value_array[$default_key] = $default_value;
             }
-
         }
 
         $this->value = (  ( $this->current_screen == "post" )
@@ -84,7 +56,7 @@ class Gradient extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -141,7 +113,7 @@ class Gradient extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -174,37 +146,35 @@ class Gradient extends Structure {
 
         $data['defaults'] = $default_value_array;
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
-                <div class="devm-option-column right">
-                    <?php
-
-                        if ( is_array( $value ) && isset( $value['primary'] )  && isset( $value['secondary'] ) ) {
-                                ?>
-                                    <div class="devm-gradient-color-picker" data-config='<?php echo json_encode($data); ?>'>
-                                        <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-primary"
-                                                name="<?php echo esc_html( $name . "[primary]" ); ?>"
-                                                value="<?php echo esc_attr( $value['primary'] ); ?>"
-                                                data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
-                                                
-                                        <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
-
-                                        <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-secondary"
-                                                name="<?php echo esc_html( $name . "[secondary]" ); ?>"
-                                                value="<?php echo esc_attr( $value['secondary'] ); ?>"
-                                                data-default-color="<?php echo esc_attr( $value['secondary'] ); ?>" />
-                                    </div>
-                                    
-                                <?php
-                        }
-
-            ?>
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p> </small>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label  class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-    <?php
+            <div class="devm-option-column right">
+                <?php
+                if ( is_array( $value ) && isset( $value['primary'] )  && isset( $value['secondary'] ) ) {
+                    ?>
+                    <div class="devm-gradient-color-picker" data-config='<?php echo json_encode($data); ?>'>
+                        <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-primary"
+                                name="<?php echo esc_html( $name . "[primary]" ); ?>"
+                                value="<?php echo esc_attr( $value['primary'] ); ?>"
+                                data-default-color="<?php echo esc_attr( $value['primary'] ); ?>" />
+
+                        <span class="delimiter"><?php esc_html_e( "To", "devmonsta" );?></span>
+
+                        <input type="text" class="devm-ctrl devm-gradient-field devm-gradient-field-secondary"
+                                name="<?php echo esc_html( $name . "[secondary]" ); ?>"
+                                value="<?php echo esc_attr( $value['secondary'] ); ?>"
+                                data-default-color="<?php echo esc_attr( $value['secondary'] ); ?>" />
+                    </div>
+                    <?php
+                }
+
+                ?>
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?></p> </small>
+            </div>
+        </div>
+        <?php
     }
 
 }

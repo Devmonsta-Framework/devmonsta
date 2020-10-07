@@ -116,7 +116,7 @@ class Radio extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $desc, $value, $isInline, $choices ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
@@ -135,9 +135,9 @@ class Radio extends Structure {
                         }
                     }
                 ?>
-                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 }

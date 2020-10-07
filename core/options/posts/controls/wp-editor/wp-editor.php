@@ -20,15 +20,8 @@ class WpEditor extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        add_action( 'admin_enqueue_scripts', [$this, 'load_wpeditor_scripts'] );
     }
 
-    /**
-     * @internal
-     */
-    public function load_wpeditor_scripts() {
-        wp_enqueue_script( 'devm-wpeditor-js', DEVMONSTA_CORE . 'options/posts/controls/wp-editor/assets/js/script.js', ['jquery'] );
-    }
 
     /**
      * @internal
@@ -102,8 +95,6 @@ class WpEditor extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-        //load scripts required for this control
-        $this->load_wpeditor_scripts();
 
         $label                     = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name                      = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';

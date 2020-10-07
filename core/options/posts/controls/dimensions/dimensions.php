@@ -21,13 +21,6 @@ class Dimensions extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        add_action( 'init', [$this, 'enqueue_dimensions_scripts'] );
-    }
-
-    public function enqueue_dimensions_scripts() {
-        // wp_enqueue_style( 'dm-dimensions-css', DM_CORE . 'options/posts/controls/dimensions/assets/css/style.css', [], time(), true );
-        // wp_enqueue_script( 'dm-dimensions', DM_CORE . 'options/posts/controls/dimensions/assets/js/script.js', ['jquery'], time(), true );
     }
 
     /**
@@ -53,7 +46,7 @@ class Dimensions extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app active-script" );
 
@@ -107,21 +100,18 @@ class Dimensions extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
-        //load required scripts to run this control
-        $this->enqueue_dimensions_scripts();
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) && ( "" != get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
-                        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content, "devm-vue-app" );
 
         //generate markup for control
         $this->generate_markup( $default_attributes, $label, $name, $value, $desc );
     }
-    
+
     /**
      * Renders markup with given attributes
      *
@@ -133,18 +123,16 @@ class Dimensions extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc ) {
-
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
 
             <div class="devm-option-column right">
                 <devm-dimensions
-                    :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>" 
-                    linked-name="<?php echo esc_attr( $name ); ?>[isLinked]"
-                >
+                    :dimension="<?php echo ( isset( $value['isLinked'] ) && true == $value['isLinked'] ) ? "true" : "false"; ?>"
+                    linked-name="<?php echo esc_attr( $name ); ?>[isLinked]">
                     <devm-dimensions-item
                         name="<?php echo esc_attr( $name ); ?>[top]"
                         class="devm-ctrl"
@@ -176,6 +164,6 @@ class Dimensions extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 }

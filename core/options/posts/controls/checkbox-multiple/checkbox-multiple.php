@@ -56,7 +56,7 @@ class CheckboxMultiple extends Structure {
         $desc     = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $choices  = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -106,7 +106,7 @@ class CheckboxMultiple extends Structure {
         $value   = ( !empty( get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? maybe_unserialize( get_term_meta( $term->term_id, $name, true ) ) : [];
         $choices = isset( $this->content['choices'] ) && is_array( $this->content['choices'] )? $this->content['choices'] : [];
         $isInline = ( $this->content['inline'] ) ? "inline" : "list";
-      
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -127,34 +127,34 @@ class CheckboxMultiple extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices, $isInline ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> helllo world</label>
-                </div>
-
-                <div class="devm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
-                    <?php
-                        if ( is_array( $choices ) && !empty( $choices ) ) {
-                            foreach ( $choices as $id => $element ) {
-                                if ( is_array( $value ) && in_array( $id, $value ) ) {
-                                    $checked = 'checked="checked"';
-                                } else {
-                                    $checked = null;
-                                }
-                                ?>
-                                <label class="devm-option-label-list">
-                                    <input class="devm-ctrl oka" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
-                                        value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
-                                        <?php echo esc_html( $element ); ?>
-                                </label>
-                                <?php
-                            }
-                        }
-                    ?>
-                    <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
-                    <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
-    <?php
+
+            <div class="devm-option-column right <?php echo ( $isInline ) ? esc_attr( $isInline ) : ""; ?>">
+                <?php
+                    if ( is_array( $choices ) && !empty( $choices ) ) {
+                        foreach ( $choices as $id => $element ) {
+                            if ( is_array( $value ) && in_array( $id, $value ) ) {
+                                $checked = 'checked="checked"';
+                            } else {
+                                $checked = null;
+                            }
+                            ?>
+                            <label class="devm-option-label-list">
+                                <input class="devm-ctrl oka" type="checkbox" name="<?php echo esc_attr( $name ); ?>[]"
+                                    value="<?php echo esc_attr( $id ); ?>" <?php echo esc_attr( $checked ); ?> />
+                                    <?php echo esc_html( $element ); ?>
+                            </label>
+                            <?php
+                        }
+                    }
+                ?>
+                <input type="text" value="default" name="<?php echo esc_attr( $name ); ?>[]" style="display: none">
+                <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
+            </div>
+        </div>
+        <?php
     }
 }

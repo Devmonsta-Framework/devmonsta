@@ -21,22 +21,6 @@ class Slider extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        add_action( 'init', [$this, 'enqueue_slider_scripts'] );
-    }
-
-    /**
-     * @internal
-     */
-    public function enqueue_slider_scripts() {
-        // wp_enqueue_style( 'dm-slider-asrange-css', DM_CORE . 'options/posts/controls/slider/assets/css/asRange.css' );
-        if ( !wp_script_is( 'dm-slider-asrange', 'enqueued' ) ) {
-            // wp_enqueue_script( 'dm-slider-asrange', DM_CORE . 'options/posts/controls/slider/assets/js/jquery-asRange.min.js' );
-        }
-        // wp_enqueue_script( 'dm-slider-script', DM_CORE . 'options/posts/controls/slider/assets/js/script.js', ['jquery', 'dm-slider-asrange'], time(), true );
-
-        //get slider settings from theme
-        
-        // wp_localize_script( 'dm-slider-script', 'dm_slider_config', $dm_slider_data );
     }
 
     /**
@@ -64,7 +48,7 @@ class Slider extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -108,14 +92,11 @@ class Slider extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
-        //loads scripts for taxonomy edit field
-        $this->enqueue_slider_scripts();
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -149,7 +130,7 @@ class Slider extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 
 }

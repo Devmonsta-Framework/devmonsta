@@ -20,37 +20,6 @@ class ColorPicker extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-
-        if ( $this->current_screen == "post" ) {
-            $this->devm_enqueue_color_picker();
-        } elseif ( $this->current_screen == "taxonomy" ) {
-            add_action( 'init', [$this, 'devm_enqueue_color_picker'] );
-        }
-
-    }
-
-    /**
-     * @internal
-     */
-    function devm_enqueue_color_picker() {
-
-        if ( !wp_style_is( 'wp-color-picker', 'enqueued' ) ) {
-            wp_enqueue_style( 'wp-color-picker' );
-        }
-
-        // wp_enqueue_script( 'dm-script-handle', DM_CORE . 'options/posts/controls/color-picker/assets/js/script.js', ['jquery', 'wp-color-picker'], false, true );
-
-        // $data = [];
-        // global $post;
-        // $content = $this->content;
-        // $data['default'] = (  ( $this->current_screen == "post" ) && ( "" != get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) )
-        //                         && !is_null( get_post_meta( $post->ID, $this->prefix . $this->content['name'], true ) ) )
-        //                         ? get_post_meta( $post->ID, $this->prefix . $this->content['name'], true )
-        //                         : ( isset( $content['value'] ) && ( preg_match('/^#[a-f0-9]{6}$/i', $content['value']) ) ? $content['value'] : "" );
-
-        // $data['palettes'] = isset( $content['palettes'] ) && is_array( $content['palettes'] ) ? $content['palettes'] : false;
-        // wp_localize_script( 'dm-script-handle', 'dm_color_picker_config', $data );
-
     }
 
     /**
@@ -60,7 +29,7 @@ class ColorPicker extends Structure {
 
         $content = $this->content;
         global $post;
-        $this->value   = (  ( $this->current_screen == "post" ) 
+        $this->value   = (  ( $this->current_screen == "post" )
                             && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) )
                             && !empty( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) ?
                             get_post_meta( $post->ID, $this->prefix . $content['name'], true )
@@ -76,7 +45,7 @@ class ColorPicker extends Structure {
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -120,14 +89,12 @@ class ColorPicker extends Structure {
      * @internal
      */
     public function edit_fields( $term, $taxonomy ) {
-        //enqueue scripts and styles for color picker
-        $this->devm_enqueue_color_picker();
 
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : "";
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-                
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -171,7 +138,7 @@ class ColorPicker extends Structure {
                     <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
                 </div>
             </div>
-    <?php
-}
+        <?php
+    }
 
 }

@@ -22,16 +22,6 @@ class Select extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        add_action( 'init', [$this, 'load_select_scripts'] );
-    }
-
-    /**
-     * @internal
-     */
-    public function load_select_scripts() {
-        // wp_enqueue_style( 'select2-css', DM_CORE . 'options/posts/controls/select/assets/css/select2.min.css' );
-        // wp_enqueue_script( 'select2-js', DM_CORE . 'options/posts/controls/select/assets/js/select2.min.js', ['jquery'] );
-        // wp_enqueue_script( 'dm-select-js', DM_CORE . 'options/posts/controls/select/assets/js/script.js', ['jquery', 'select2-js'], time(), true );
     }
 
     /**
@@ -40,7 +30,7 @@ class Select extends Structure {
     public function render() {
         $content = $this->content;
         global $post;
-        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) ) 
+        $this->value   = (  ( $this->current_screen == "post" ) && !is_null( get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) && ( "" != get_post_meta( $post->ID, $this->prefix . $content['name'], true ) ) )
                         ? get_post_meta( $post->ID, $this->prefix . $content['name'], true )
                         : ( isset( $content['value'] ) ? $content['value'] : "" );
         $this->output();
@@ -54,7 +44,7 @@ class Select extends Structure {
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -90,23 +80,17 @@ class Select extends Structure {
                     $selected_data  = "";
 
                     if ( is_array( $choices ) && !empty( $choices ) ) {
-
                         foreach ( $choices as $key => $val ) {
-
                             if ( $key == $selected_value ) {
                                 $selected_data = $val;
                                 break;
                             }
-
                         }
-
                         echo esc_html( $selected_data );
                     }
-
                 }
 
                 return $content;
-
             }, 10, 3 );
 
     }
@@ -120,7 +104,7 @@ class Select extends Structure {
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
         $choices            = isset( $this->content['choices'] ) && is_array( $this->content['choices'] ) ? $this->content['choices'] : [];
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -141,29 +125,29 @@ class Select extends Structure {
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $choices ) {
         ?>
-            <div <?php echo devm_render_markup( $default_attributes ); ?> >
-                <div class="devm-option-column left">
-                    <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
-                </div>
-
-                <div class="devm-option-column right">
-                    <select class="devm-ctrl devm_select" name="<?php echo esc_attr( $name ); ?>">
-                        <?php
-                            if ( is_array( $choices ) && !empty( $choices ) ) {
-                                foreach ( $choices as $key => $val ) {
-                                    $is_selected = ( $key == $value ) ? 'selected' : '';
-                                    ?>
-                                    <option value="<?php echo esc_html( $key ); ?>"
-                                        <?php echo esc_html( $is_selected ); ?>>
-                                        <?php echo esc_html( $val ); ?>
-                                    <?php
-                                }
-                            }
-                        ?>
-                    </select>
-                    <span class="devm-option-desc"><?php echo esc_html( $desc ); ?> </span>
-                </div>
+        <div <?php echo devm_render_markup( $default_attributes ); ?> >
+            <div class="devm-option-column left">
+                <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
             </div>
+
+            <div class="devm-option-column right">
+                <select class="devm-ctrl devm_select" name="<?php echo esc_attr( $name ); ?>">
+                    <?php
+                        if ( is_array( $choices ) && !empty( $choices ) ) {
+                            foreach ( $choices as $key => $val ) {
+                                $is_selected = ( $key == $value ) ? 'selected' : '';
+                                ?>
+                                <option value="<?php echo esc_html( $key ); ?>"
+                                    <?php echo esc_html( $is_selected ); ?>>
+                                    <?php echo esc_html( $val ); ?>
+                                <?php
+                            }
+                        }
+                    ?>
+                </select>
+                <span class="devm-option-desc"><?php echo esc_html( $desc ); ?> </span>
+            </div>
+        </div>
         <?php
     }
 }

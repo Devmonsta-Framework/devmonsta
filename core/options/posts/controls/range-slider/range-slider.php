@@ -22,20 +22,6 @@ class RangeSlider extends Structure {
      */
     public function enqueue( $meta_owner ) {
         $this->current_screen = $meta_owner;
-        ( $this->current_screen == "post" ) ? $this->enqueue_slider_scripts() : add_action( 'init', [$this, 'enqueue_slider_scripts'] );
-
-    }
-
-    /**
-     * @internal
-     */
-    public function enqueue_slider_scripts() {
-        // wp_enqueue_style( 'asRange-css', DM_CORE . 'options/posts/controls/range-slider/assets/css/asRange.css' );
-        // wp_enqueue_script( 'asRange-js', DM_CORE . 'options/posts/controls/range-slider/assets/js/jquery-asRange.js' );
-        // wp_enqueue_script( 'dm-range-slider', DM_CORE . 'options/posts/controls/range-slider/assets/js/script.js', ['jquery', 'asRange-js'], time(), true );
-
-        // wp_localize_script( 'dm-range-slider', 'range_slider_config', $range_slider_data );
-
     }
 
     /**
@@ -61,7 +47,7 @@ class RangeSlider extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -105,13 +91,11 @@ class RangeSlider extends Structure {
      */
     public function edit_fields( $term, $taxonomy ) {
 
-        $this->enqueue_slider_scripts();
-
         $label              = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name               = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc               = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value              = (  ( "" != get_term_meta( $term->term_id, $name, true ) ) && ( !is_null( get_term_meta( $term->term_id, $name, true ) ) ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        
+
         //generate attributes dynamically for parent tag
         $default_attributes = $this->prepare_default_attributes( $this->content );
 
@@ -134,7 +118,7 @@ class RangeSlider extends Structure {
         $range_slider_data['min']  = isset( $range_slider_config['min'] ) && is_numeric( $range_slider_config['min'] ) ? $range_slider_config['min'] : 0;
         $range_slider_data['max']  = isset( $range_slider_config['max'] )  && is_numeric( $range_slider_config['max'] )? $range_slider_config['max'] : 100;
         $range_slider_data['step'] = isset( $range_slider_config['step'] )  && is_numeric( $range_slider_config['step'] )? $range_slider_config['step'] : 1;
-        ?>  
+        ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
                 <label class="devm-option-label"><?php echo esc_html( $label ); ?> </label>
@@ -146,6 +130,6 @@ class RangeSlider extends Structure {
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
         </div>
-    <?php
+        <?php
     }
 }
