@@ -16,7 +16,7 @@ jQuery(window).on('devm-scripts.iconPicker', function(e,val){
                        <div class="devm-close-icon" @click="removeIcon" v-if="savedIconClass"><i class="fas fa-times"></i></div>
                     </div>
                     <button class="devm-add-icon-btn button" @click.prevent="openModal">{{ iconBtnText }}</button>
-                    <input v-if="!wp.customize" class="devm-ctrl" type="hidden" :name="name" v-model="savedIconClass">
+                    <input v-if="!wp.customize" class="devm-icon-picker" type="hidden" :name="name" v-model="savedIconClass">
                     <input v-if="!wp.customize" type="hidden" :name="name + '_type'" :value="iconType">
                     
                     <input v-if="wp.customize" type="hidden" class="devm-icon-picker" :name="name" v-model="customizerdata" :data-customize-setting-link="name"  />
@@ -78,7 +78,9 @@ jQuery(window).on('devm-scripts.iconPicker', function(e,val){
                 this.showModal = false;
                 this.save = true;
                 this.savedIconClass = this.pickedIcon;
+                this.default_icon = this.pickedIcon;
                 this.iconType = this.tempiconType;
+                this.default_icon_type = this.tempiconType;
                 this.customizerdata = JSON.stringify({iconType: this.iconType, icon: this.pickedIcon});
                 jQuery(this.$el).find('.devm-icon-picker').trigger('change', [this.pickedIcon])
             },
