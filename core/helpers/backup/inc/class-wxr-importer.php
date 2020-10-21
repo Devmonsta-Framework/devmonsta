@@ -78,6 +78,11 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->backfill_attachment_urls();
         $this->remap_featured_images();
 
+        /**
+         * Execute the after all import actions.
+         */
+        do_action('devm/after_all_import_execution_complete');
+
         $this->import_end();
     }
 
@@ -86,12 +91,19 @@ class Devm_WXR_Importer extends WP_Importer {
      */
     public function process_external_plugin_data(){
 
-        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-        $plugin_to_check = 'mp-timetable/mp-timetable.php';
-    
-        if ( in_array( $plugin_to_check, $active_plugins ) ) {
+        if ( $this->check_if_plugin_active( 'mp-timetable/mp-timetable.php' ) ) {
             $this->process_time_slot();
         }
+    }
+
+    public function check_if_plugin_active( $slug ){
+        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+        $plugin_to_check = $slug;
+        if ( in_array( $plugin_to_check, $active_plugins ) ) {
+            return true;
+        }
+
+        return false;
     }
     
     /**
@@ -140,34 +152,22 @@ class Devm_WXR_Importer extends WP_Importer {
     }
     
 
+    /**
+     * Update reading settings value
+     */
     function update_reading_setting( $file ) {
-        // error_log("update reading settings started");
         $xml_file = simplexml_load_file( $file );
 
         if ( property_exists( $xml_file->channel, "settings" ) ) {
-            $settings = (array) $xml_file->channel->settings;
-            $setting  = (array) $settings["setting"];
+            $settings = $xml_file->channel->settings;
 
-            // error_log("settings node : " . var_dump($setting));
-            foreach ( $setting as $s ) {
-                $obj_to_array = (array) $s;
-                $key          = $obj_to_array["key"];
-                $value        = $obj_to_array["value"];
-                if ( "page_on_front" == $key ) {
-                    $page_id = $this->devm_get_id_by_slug( $value, 'page' );
-                    update_option( $key, $page_id );
-                    // error_log("updated page on front with page id : " . $page_id);
-                }
-
-                if ( "show_on_front" == $key ) {
-                    update_option( $key, $value );
-                    // error_log("updated show on front with value : " . $value);
-                }
-
-            }
-
+            $page_slug_on_front = $settings->page_on_front;
+            $show_on_front = $settings->show_on_front;
+            $page_id = $this->devm_get_id_by_slug( $page_slug_on_front, 'page' );
+            
+            update_option( "page_on_front", $page_id );
+            update_option( "show_on_front", $show_on_front."" );
         }
-
     }
 
     public function devm_update_primary_menu( $file ) {
@@ -226,13 +226,16 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->get_authors_from_import( $import_data );
         $this->terms           = $import_data['terms'];
         $this->posts           = $import_data['posts'];
-        $this->time_slots      = $import_data['time_slots'];
         $this->categories      = $import_data['categories'];
         $this->tags            = $import_data['tags'];
         $this->elementors      = $import_data['elementor'];
         $this->customizers     = $import_data['theme_mod_array'];
         $this->sidebar_widgets = $import_data['sidebar_widgets'];
         $this->base_url        = esc_url( $import_data['base_url'] );
+
+        if( $this->check_if_plugin_active('mp-timetable/mp-timetable.php') ){
+            $this->time_slots      = isset( $import_data['time_slots'] ) ? $import_data['time_slots'] : [];
+        }
 
         wp_defer_term_counting( true );
         wp_defer_comment_counting( true );
