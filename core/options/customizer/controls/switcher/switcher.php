@@ -5,7 +5,7 @@ use Devmonsta\Options\Customizer\Structure;
 
 class Switcher extends Structure {
 
-    public $label, $name, $desc, $default_value, $value, $choices, $isInline, $default_attributes;
+    public $label, $name, $desc, $default_value, $value, $choices, $isInline, $default_attributes, $left_key, $right_key;
 
     /**
 	 * The type of customize control being rendered.
@@ -46,10 +46,22 @@ class Switcher extends Structure {
         $this->left_choice   = isset( $args[0]['left-choice'] ) && is_array( $args[0]['left-choice'] ) ? $args[0]['left-choice'] : [];
         $this->right_choice  = isset( $args[0]['right-choice'] ) && is_array( $args[0]['right-choice'] ) ? $args[0]['right-choice'] : [];
 
+        // $this->left_key      = $this->array_key_first( $this->left_choice );
+        // $this->right_key     = $this->array_key_first( $this->right_choice );
+
         $temp_left_key       = $this->array_key_first( $this->left_choice );
         $temp_right_key      = $this->array_key_first( $this->right_choice );
         $this->left_key      = $temp_left_key === 0  ? false : ( $temp_left_key === 1 ? true : $temp_left_key );
         $this->right_key     = $temp_right_key === 0  ? false : ( $temp_right_key === 1 ? true : $temp_right_key );
+
+        
+        // devm_print( $temp_left_key );
+        // devm_print( $temp_right_key );
+        // devm_print( "--------------" );
+        // devm_print( $this->left_key );
+        // devm_print( $this->right_key );
+
+
 
         $this->default_value = [];
         if ( isset( $args[0]['value'] ) ) {
@@ -92,11 +104,12 @@ class Switcher extends Structure {
             <div class="devm-option-column right devm-switcher">
                 <?php 
                 $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value;
+                // devm_print( $saved_value ); devm_print( $this->right_key ); devm_print( $this->left_key );
                 ?>
                 <ul class="devm-switcher devm_switcher_item">
                     <li >
                         <label>
-                            <input class="devm-ctrl devm-control-switcher" name='<?php echo esc_attr( $this->name ); ?>' data-right_key="<?php echo esc_attr( $this->right_key ); ?>" data-left_key="<?php echo esc_attr( $this->left_key ); ?>" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
+                            <input class="devm-ctrl devm-control-switcher" name='<?php echo esc_attr( $this->name ); ?>' data-right_key="<?php echo $this->right_key ; ?>" data-left_key="<?php echo $this->left_key; ?>" type="checkbox" value="<?php echo $this->right_key; ?>" <?php  checked( in_array( $this->right_key, $saved_value ) ); ?> />
                             <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='devm_switcher_label devm-option-label'></div>
                         </label>
                     </li>
