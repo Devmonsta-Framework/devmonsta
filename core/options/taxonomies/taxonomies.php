@@ -42,7 +42,7 @@ class Taxonomies
 
             $taxonomy_file = get_template_directory() .
                 '/devmonsta/options/taxonomies/' .
-                sanitize_text_field($_GET['taxonomy'] ) . '.php';
+                sanitize_text_field($_GET['taxonomy']) . '.php';
 
             if (file_exists($taxonomy_file)) {
 
@@ -80,13 +80,9 @@ class Taxonomies
 
 
                     $this->build_taxonomoy($taxonomy, $controls);
-
                 }
-
             }
-
         }
-
     }
 
     public function check_requirements()
@@ -95,7 +91,6 @@ class Taxonomies
         if ($pagenow == 'edit-tags.php' || $pagenow == 'term.php') {
 
             return true;
-
         }
 
         return false;
@@ -170,7 +165,6 @@ class Taxonomies
                         $control_class,
                         $taxonomy
                     );
-
                 } else {
 
                     $file = DEVMONSTA_DIR .
@@ -188,18 +182,11 @@ class Taxonomies
                                 $control_class,
                                 $taxonomy
                             );
-
                         }
                     }
-
-
-
                 }
-
             }
-
         }
-
     }
 
     protected function build_taxonomy_content($control, $control_class, $taxonomy)
@@ -245,8 +232,6 @@ class Taxonomies
                     $control_object->init();
                     $control_object->enqueue($this->meta_owner);
                     $control_object->edit_fields($term, $taxonomy);
-
-
                 } else {
 
                     $file = DEVMONSTA_DIR . '/core/options/posts/controls/' . $control['type'] . '/' . $control['type'] . '.php';
@@ -263,14 +248,9 @@ class Taxonomies
                             $control->edit_fields($term, $taxonomy);
                         }
                     }
-
-
                 }
-
             }
-
         }
-
     }
 
     /**
@@ -284,18 +264,16 @@ class Taxonomies
     {
         $prefix = 'devmonsta_';
 
-        $controls_data = Controls::get_controls();
-        update_option('devmonsta_all_taxonomy_controls',$controls_data);
+        include('controls.php');
 
-        foreach ($_POST as $key => $value)
-        {
+        $controls_data = Controls::get_controls();
+        update_option('devmonsta_all_taxonomy_controls', $controls_data);
+
+        foreach ($_POST as $key => $value) {
             if (strpos($key, $prefix) !== false) {
-                add_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
+                add_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key, $value));
             }
         }
-
-
-
     }
 
     /**
@@ -309,19 +287,17 @@ class Taxonomies
     {
 
         $prefix = 'devmonsta_';
-
+        include('controls.php');
         $controls_data = Controls::get_controls();
-        update_option('devmonsta_all_taxonomy_controls',$controls_data);
+        update_option('devmonsta_all_taxonomy_controls', $controls_data);
 
         foreach ($_POST as $key => $value) {
 
             if (strpos($key, $prefix) !== false) {
 
-                update_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key,$value));
+                update_term_meta($term_id, $key, devm_sanitize_taxonomy_data($key, $value));
             }
-
         }
-
     }
 
     /**
@@ -365,21 +341,17 @@ class Taxonomies
 
 
                     $this->build_taxonomoy_edit_fields($term, $taxonomy, $controls);
-
                 }
             }
 
             $this->build_taxonomoy_edit_fields($term, $taxonomy, $this->controls);
-
         }
-
     }
 
     public function edit_meta($term, $taxonomy)
     {
 
         $this->get_edit_controls($term, $taxonomy);
-
     }
 
     /**
@@ -392,25 +364,22 @@ class Taxonomies
         wp_enqueue_style('wp-color-picker');
         wp_enqueue_script('wp-color-picker');
         $colorpicker_l10n = array(
-                'clear'            => __( 'Clear' ),
-                'clearAriaLabel'   => __( 'Clear color' ),
-                'defaultString'    => __( 'Default' ),
-                'defaultAriaLabel' => __( 'Select default color' ),
-                'pick'             => __( 'Select Color' ),
-                'defaultLabel'     => __( 'Color value' ),
+            'clear'            => __('Clear'),
+            'clearAriaLabel'   => __('Clear color'),
+            'defaultString'    => __('Default'),
+            'defaultAriaLabel' => __('Select default color'),
+            'pick'             => __('Select Color'),
+            'defaultLabel'     => __('Color value'),
         );
-        wp_localize_script( 'wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n ); 
+        wp_localize_script('wp-color-picker', 'wpColorPickerL10n', $colorpicker_l10n);
         wp_enqueue_style('devmonsta-taxonomy-style', DEVMONSTA_PATH . 'core/options/taxonomies/libs/assets/css/style.css');
         wp_enqueue_style('dm-main-style', DEVMONSTA_PATH . 'core/options/assets/css/main.css');
         wp_enqueue_script('vue-js', DEVMONSTA_PATH . 'core/options/posts/assets/js/vue.min.js', [], null, false);
         wp_enqueue_script('dm-color-picker', DEVMONSTA_PATH . 'core/options/posts/assets/js/script.js', [], null, true);
         wp_enqueue_script('jquery-deparam', plugin_dir_url(__FILE__) . '/libs/assets/js/jquery-deparam.js', ['jquery'], null, true);
-        wp_enqueue_script('devmonsta-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
+        // wp_enqueue_script('devmonsta-conditions', DEVMONSTA_PATH . 'core/options/posts/assets/js/conditions.js', [], null, true);
         wp_enqueue_script('devmonsta-taxonomy-script', plugin_dir_url(__FILE__) . '/libs/assets/js/script.js', ['jquery'], null, true);
         wp_enqueue_script('dm-vendor-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-vendor-scripts.bundle.js', ['jquery'], null, true);
         wp_enqueue_script('dm-init-js', DEVMONSTA_PATH . 'core/options/assets/js/dm-init-scripts.bundle.js', ['jquery'], null, true);
-
-
     }
-
 }
