@@ -1,18 +1,12 @@
 jQuery(document).ready(function ($) {
+    $('.devm-swticher-box').on('change', function(){
+        var name        = $(this).data('name'),
+            left_choice = $(this).data('left_choice'),
+            right_choice = $(this).data('right_choice'),
+            value = ($(this).is(':checked') === true ? right_choice : left_choice );
 
-    /* === Script For Switcher Control === */
-
-    $('.devm-control-switcher').on(
-        'change',
-        function () {
-            var current_object = $(this);
-            var checked = current_object.parents('.devm-switcher').find('input[type="checkbox"]:checked');
-            
-            if (checked.length == 0) {
-                current_object.parents('.devm-switcher').find('input[type="hidden"]').val(current_object.parents('.devm-switcher').find('input[type="hidden"]').data("unchecked_value")).trigger('change');
-            } else {
-               current_object.parents('.devm-switcher').find('input[type="hidden"]').val(this.value).trigger('change');
-            }
-        }
-    );
+        wp.customize( name, function ( obj ) {
+            obj.set( value );
+        } );
+    });
 });

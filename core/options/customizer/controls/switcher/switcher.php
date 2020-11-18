@@ -64,7 +64,6 @@ class Switcher extends Structure {
      ** Enqueue control related scripts/styles
      */
     public function enqueue() {
-        // wp_enqueue_style( 'devm-switcher', DEVMONSTA_CORE . 'options/posts/controls/switcher/assets/css/dm-switcher.css');
         wp_enqueue_script( 'devm-customizer-switcher', DEVMONSTA_CORE . 'options/customizer/controls/switcher/assets/js/script.js', ['jquery'], time(), true );
     }
 
@@ -81,6 +80,7 @@ class Switcher extends Structure {
      * @internal
      */
     public function render_content() {
+        $value = !empty($this->value()) ? $this->value() : $this->value[0];
         ?>
             <li <?php echo devm_render_markup( $this->default_attributes ); ?>>
                 <div class="devm-option-column left">
@@ -88,22 +88,19 @@ class Switcher extends Structure {
                 </div>
 
                 <div class="devm-option-column right devm-switcher">
-
-                    <?php $saved_value = !is_array( $this->value ) ? explode( ',', $this->value ) : $this->value;
-        ?>
-
                     <ul class="devm-switcher devm_switcher_item">
-                            <li >
-                                <label>
-                                    <input class="devm-ctrl devm-control-switcher" name='<?php echo esc_attr( $this->name ); ?>' data-right_key="<?php echo esc_attr( $this->right_key ); ?>" data-left_key="<?php echo esc_attr( $this->left_key ); ?>" type="checkbox" value="<?php echo esc_attr( $this->right_key ); ?>" <?php checked( in_array( $this->right_key, $saved_value ) ); ?> />
+                        <li >
+                            <label>
+                                <input class="devm-swticher-box devm-control-switcher" data-left_choice="<?php echo esc_attr( (string)$this->left_key ); ?>" data-right_choice="<?php echo esc_attr( (string)$this->right_key ); ?>" data-name="<?php echo $this->name; ?>" type="checkbox" <?php echo $this->right_key == $value ? 'checked="checked"' : ''; ?>>
 
-                                    <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='devm_switcher_label devm-option-label'></div>
-                                </label>
-                            </li>
-                        <input data-unchecked_value="<?php echo esc_attr($this->left_key); ?>" type="hidden" <?php $this->link(); ?> value="<?php echo esc_attr( implode( ',', $saved_value ) ); ?>" />
+                                <div data-left="<?php echo esc_attr( $this->left_choice[$this->left_key] ); ?>" data-right="<?php echo esc_attr( $this->right_choice[$this->right_key] ); ?>" class='devm_switcher_label devm-option-label'></div>
+                            </label>
+                        </li>
+                        <input type="hidden" <?php $this->link();?>  data-value="<?php echo esc_attr($value); ?>" value="<?php echo esc_attr( $this->value() ); ?>" class="devm-ctrl">
                     </ul>
                     <p class="devm-option-desc"><?php echo esc_html( $this->desc ); ?> </p>
                 </div>
+
             </li>
     <?php
     }
