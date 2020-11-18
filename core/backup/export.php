@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Export Elementor style files
+ *
+ * @return void
+ */
 function devm_export_elementor_css_file() {
     try {
         $uploads = wp_upload_dir();
@@ -26,6 +31,11 @@ function devm_export_elementor_css_file() {
 
 }
 
+/**
+ * Export customizer data
+ *
+ * @return void
+ */
 function devm_export_option_file() {
     $theme_name  = strtolower( get_option( 'current_theme' ) );
     $option_name = "theme_mods_" . $theme_name;
@@ -41,6 +51,11 @@ function devm_export_option_file() {
     <?php
 }
 
+/**
+ * Export menu data
+ *
+ * @return void
+ */
 function devm_export_primary_menu_slug() {
     $menu_name         = 'primary';
     $locations         = get_nav_menu_locations();
@@ -55,6 +70,11 @@ function devm_export_primary_menu_slug() {
     <?php
 }
 
+/**
+ * Export widget data
+ *
+ * @return void
+ */
 function devm_export_widget_option() {
     $data = devm_widgets_export();
     ?>
@@ -64,6 +84,11 @@ function devm_export_widget_option() {
     <?php
 }
 
+/**
+ * Export site settings
+ *
+ * @return void
+ */
 function devm_export_settings() {
     $page_on_front_settings = get_option( "page_on_front", "0" );
     $page_slug_value        = get_post_field( 'post_name', $page_on_front_settings );
@@ -81,6 +106,7 @@ function devm_export_settings() {
     </wp:base_details>
     <?php
 }
+
 add_action( "rss2_head", "devm_export_elementor_css_file" );
 add_action( "rss2_head", "devm_export_option_file" );
 add_action( "rss2_head", "devm_export_primary_menu_slug" );
