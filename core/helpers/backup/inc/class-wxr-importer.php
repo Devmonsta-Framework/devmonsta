@@ -22,16 +22,18 @@ class Devm_WXR_Importer extends WP_Importer {
 
     // information to import from WXR file
     var $version;
-    var $authors         = [];
-    var $posts           = [];
-    var $terms           = [];
-    var $categories      = [];
-    var $tags            = [];
-    var $customizers     = [];
-    var $widget_sidebars = [];
-    var $elementors      = [];
-    var $base_url        = '';
-    var $time_slots      = [];
+    var $authors                = [];
+    var $posts                  = [];
+    var $terms                  = [];
+    var $categories             = [];
+    var $tags                   = [];
+    var $customizers            = [];
+    var $widget_sidebars        = [];
+    var $elementors             = [];
+    var $base_url               = '';
+    var $base_content_url       = '';
+    var $base_site_url          = '';
+    var $time_slots             = [];
 
     // mappings from old information to new
     var $processed_authors    = [];
@@ -55,6 +57,12 @@ class Devm_WXR_Importer extends WP_Importer {
     function import( $file ) {
         add_filter( 'import_post_meta_key', [ $this, 'is_valid_meta_key' ] );
         add_filter( 'http_request_timeout', [ &$this, 'bump_request_timeout' ] );
+
+        
+        /**
+         * Execute the after all import actions.
+         */
+        do_action('devm/before_import_execution_start');
 
         $this->import_start( $file );
 
@@ -210,8 +218,6 @@ class Devm_WXR_Importer extends WP_Importer {
             die();
         }
 
-        error_log( "step 1" . $file );
-
         //$import_data holds array of paresed data from xml file
         $import_data = $this->parse( $file );
 
@@ -232,6 +238,8 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->customizers     = $import_data['theme_mod_array'];
         $this->sidebar_widgets = $import_data['sidebar_widgets'];
         $this->base_url        = esc_url( $import_data['base_url'] );
+        $this->base_site_url   = esc_url( $import_data['site_url'] );
+        $this->base_content_url= esc_url( $import_data['content_url'] );
 
         if( $this->check_if_plugin_active('mp-timetable/mp-timetable.php') ){
             $this->time_slots      = isset( $import_data['time_slots'] ) ? $import_data['time_slots'] : [];
@@ -804,7 +812,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
                     $remote_url = !empty( $post['attachment_url'] ) ? $post['attachment_url'] : $post['guid'];
 
-// try to use _wp_attached file for upload folder placement to ensure the same location as the export site
+                    // try to use _wp_attached file for upload folder placement to ensure the same location as the export site
                     // e.g. location is 2003/05/image.jpg but the attachment post_date is 2010/09, see media_handle_upload()
                     $postdata['upload_date'] = $post['post_date'];
 
@@ -824,8 +832,6 @@ class Devm_WXR_Importer extends WP_Importer {
                         }
 
                     }
-
-                    // error_log("devmonsta inserted into attachment block with url: " .  $remote_url);
                     $comment_post_ID = $post_id = $this->process_attachment( $postdata, $remote_url );
                 } else {
                     $comment_post_ID = $post_id = wp_insert_post( $postdata, true );
@@ -981,18 +987,28 @@ class Devm_WXR_Importer extends WP_Importer {
 
                     }
 
-// post meta
+                    // post meta
                     if ( $key ) {
 
-// export gets meta straight from the DB so could have a serialized string
+                        // export gets meta straight from the DB so could have a serialized string
                         if ( !$value ) {
                             $value = maybe_unserialize( $meta['value'] );
+                        }
+
+                        if( $key == "_elementor_data" ){
+                            $current_site_url      = get_site_url();
+                            $current_site_url      = str_replace( '/', '\/', $current_site_url );
+
+                            $demo_site_url = $this->base_site_url;
+                            $demo_site_url = str_replace( '/', '\/', $demo_site_url );
+                            
+                            $value          = str_replace( $demo_site_url, $current_site_url, $value );
                         }
 
                         add_post_meta( $post_id, $key, wp_slash( $value ) );
                         do_action( 'import_post_meta', $post_id, $key,  wp_slash( $value ) );
 
-// if the post has a featured image, take note of this in case of remap
+                        // if the post has a featured image, take note of this in case of remap
                         if ( '_thumbnail_id' == $key ) {
                             $this->featured_images[$post_id] = (int) $value;
                         }
@@ -1143,8 +1159,6 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function process_attachment( $post, $url ) {
 
-// error_log("devmonsta started attachment processing: " .  $url);
-
         if ( !$this->fetch_attachments ) {
             return new WP_Error(
                 'attachment_processing_error',
@@ -1152,14 +1166,12 @@ class Devm_WXR_Importer extends WP_Importer {
             );
         }
 
-// if the URL is absolute, but does not contain address, then upload it assuming base_site_url
+        // if the URL is absolute, but does not contain address, then upload it assuming base_site_url
         if ( preg_match( '|^/[\w\W]+$|', $url ) ) {
             $url = rtrim( $this->base_url, '/' ) . $url;
         }
 
         $upload = $this->fetch_remote_file( $url, $post );
-
-// error_log("devmonsta started attachment downloading: " . print_r($upload));
         if ( is_wp_error( $upload ) ) {
             return $upload;
         }
@@ -1167,7 +1179,6 @@ class Devm_WXR_Importer extends WP_Importer {
         if ( $info = wp_check_filetype( $upload['file'] ) ) {
             $post['post_mime_type'] = $info['type'];
         } else {
-            // error_log("devmonsta started attachment downloading: Invalid file type");
             return new WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'devmonsta' ) );
         }
 
@@ -1177,7 +1188,7 @@ class Devm_WXR_Importer extends WP_Importer {
         $post_id = wp_insert_attachment( $post, $upload['file'] );
         wp_update_attachment_metadata( $post_id, wp_generate_attachment_metadata( $post_id, $upload['file'] ) );
 
-// remap resized image URLs, works by stripping the extension and remapping the URL stub.
+        // remap resized image URLs, works by stripping the extension and remapping the URL stub.
         if ( preg_match( '!^image/!', $info['type'] ) ) {
             $parts = pathinfo( $url );
             $name  = basename( $parts['basename'], ".{$parts['extension']}" ); // PATHINFO_FILENAME in PHP 5.2
@@ -1217,7 +1228,6 @@ class Devm_WXR_Importer extends WP_Importer {
 // request failed
         if ( !$headers ) {
             @unlink( $upload['file'] );
-            // error_log("devmonsta attachment download error : Remote server did not respond " . $file_name);
             return new WP_Error( 'import_file_error', __( 'Remote server did not respond', 'devmonsta' ) );
         }
 
@@ -1226,25 +1236,13 @@ class Devm_WXR_Importer extends WP_Importer {
 // make sure the fetch was successful
         if ( $remote_response_code != '200' ) {
             @unlink( $upload['file'] );
-            // error_log("devmonsta attachment download error : Remote server returned error response " . $remote_response_code);
             return new WP_Error( 'import_file_error', sprintf( __( 'Remote server returned error response %1$d %2$s', 'devmonsta' ), esc_html( $remote_response_code ), get_status_header_desc( $remote_response_code ) ) );
         }
 
         $filesize = filesize( $upload['file'] );
 
-// if (isset($headers['content-length']) && $filesize != $headers['content-length']) {
-
-//     @unlink($upload['file']);
-
-//     error_log("devmonsta attachment download error : Remote file is incorrect size " . $filesize);
-
-//     return new WP_Error('import_file_error', __('Remote file is incorrect size', 'devmonsta'));
-
-// }
-
         if ( 0 == $filesize ) {
             @unlink( $upload['file'] );
-            // error_log("devmonsta attachment download error : Zero size file downloaded");
             return new WP_Error( 'import_file_error', __( 'Zero size file downloaded', 'devmonsta' ) );
         }
 
@@ -1252,7 +1250,6 @@ class Devm_WXR_Importer extends WP_Importer {
 
         if ( !empty( $max_size ) && $filesize > $max_size ) {
             @unlink( $upload['file'] );
-            // error_log("devmonsta attachment download error : Remote file is too large");
             return new WP_Error( 'import_file_error', sprintf( __( 'Remote file is too large, limit is %s', 'devmonsta' ), size_format( $max_size ) ) );
         }
 
@@ -1362,7 +1359,6 @@ class Devm_WXR_Importer extends WP_Importer {
      */
     function parse( $file ) {
         $parser = new Devm_WXR_Parser();
-        error_log( "step 2". $file );
         return $parser->parse( $file );
     }
 

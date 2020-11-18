@@ -26,8 +26,6 @@ function devm_export_elementor_css_file() {
 
 }
 
-add_action( "rss2_head", "devm_export_elementor_css_file" );
-
 function devm_export_option_file() {
     $theme_name  = strtolower( get_option( 'current_theme' ) );
     $option_name = "theme_mods_" . $theme_name;
@@ -43,8 +41,6 @@ function devm_export_option_file() {
     <?php
 }
 
-add_action( "rss2_head", "devm_export_option_file" );
-
 function devm_export_primary_menu_slug() {
     $menu_name         = 'primary';
     $locations         = get_nav_menu_locations();
@@ -59,8 +55,6 @@ function devm_export_primary_menu_slug() {
     <?php
 }
 
-add_action( "rss2_head", "devm_export_primary_menu_slug" );
-
 function devm_export_widget_option() {
     $data = devm_widgets_export();
     ?>
@@ -70,18 +64,25 @@ function devm_export_widget_option() {
     <?php
 }
 
-add_action( "rss2_head", "devm_export_widget_option" );
-
-function devm_export_reading_settings() {
+function devm_export_settings() {
     $page_on_front_settings = get_option( "page_on_front", "0" );
     $page_slug_value        = get_post_field( 'post_name', $page_on_front_settings );
     $show_on_front_value    = get_option( "show_on_front", "page" );
+    $content_url            = content_url();
+    $site_url               = get_site_url();
     ?>
     <settings>
         <page_on_front><?php echo devm_cdata( $page_slug_value ); ?></page_on_front>
         <show_on_front><?php echo devm_cdata( $show_on_front_value ); ?></show_on_front>
     </settings>
+    <wp:base_details>
+        <wp:site_url><?php echo devm_cdata( $site_url ); ?></wp:site_url>
+        <wp:content_url><?php echo devm_cdata( $content_url ); ?></wp:content_url>
+    </wp:base_details>
     <?php
 }
-
-add_action( "rss2_head", "devm_export_reading_settings" );
+add_action( "rss2_head", "devm_export_elementor_css_file" );
+add_action( "rss2_head", "devm_export_option_file" );
+add_action( "rss2_head", "devm_export_primary_menu_slug" );
+add_action( "rss2_head", "devm_export_widget_option" );
+add_action( "rss2_head", "devm_export_settings" );

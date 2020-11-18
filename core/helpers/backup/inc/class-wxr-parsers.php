@@ -295,19 +295,29 @@ class Devm_WXR_Parser_SimpleXML
 				array_push($activated_plugins, $slug);
 			}
 		}
+		
+		$site_url 		=  "";
+		$content_url 	=  "";
+		foreach ($xml->xpath('/rss/channel/wp:base_details') as $base_details) {
+			$details 		= $base_details->children($namespaces['wp']);
+			$site_url 		=  $details->site_url;
+			$content_url 	=  $details->content_url;
+		}
 
 		$parsed_data = array(
-			'elementor' => $elementor_file,
-			'sidebar_widgets' => $sidebar_widget,
-			"theme_mod_array" => $theme_mod_array,
+			'elementor' 		=> $elementor_file,
+			'sidebar_widgets' 	=> $sidebar_widget,
+			"theme_mod_array" 	=> $theme_mod_array,
 			"activated_plugins" => $activated_plugins,
-			'authors' => $authors,
-			'posts' => $posts,
-			'categories' => $categories,
-			'tags' => $tags,
-			'terms' => $terms,
-			'base_url' => $base_url,
-			'version' => $wxr_version
+			'authors' 			=> $authors,
+			'posts' 			=> $posts,
+			'categories' 		=> $categories,
+			'tags' 				=> $tags,
+			'terms' 			=> $terms,
+			'base_url' 			=> $base_url,
+			'site_url' 			=> $site_url,
+			'content_url' 		=> $content_url,
+			'version' 			=> $wxr_version
 		);
 
 		
