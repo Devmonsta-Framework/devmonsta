@@ -42,10 +42,5 @@ coming soon
 
 
 == Changelog ==
-version: 1.0.2
-    * Fix typography control for customizer
-    * Fix Upate button on taxonomy page
-    * Fix switcher control 
-    
 version: 1.0.1
     * Added condition to the customizer control
