@@ -3,7 +3,7 @@ Contributors: devmonsta
 Tags: customizer, Demo content install
 Requires at least: 5.0
 Tested up to: 5.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,5 +42,11 @@ coming soon
 
 
 == Changelog ==
+version: 1.0.2
+    * Fix typography control for customizer
+    * Fix Upate button on taxonomy page
+    * Fix switcher control 
+    * Fix typography control for taxonomy
+
 version: 1.0.1
     * Added condition to the customizer control
