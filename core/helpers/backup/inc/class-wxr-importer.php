@@ -69,12 +69,14 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->get_author_mapping();
 
         wp_suspend_cache_invalidation( true );
+        
+
+        $this->process_widgets_sidebar();
         $this->process_categories();
         $this->process_tags();
         $this->process_terms();
         $this->process_elementor_css();
         $this->process_customizers();
-        $this->process_widgets_sidebar();
         $this->process_posts();
 		$this->process_external_plugin_data();
         $this->update_reading_setting( $file );
@@ -90,7 +92,6 @@ class Devm_WXR_Importer extends WP_Importer {
          * Execute the after all import actions.
          */
         do_action('devm/after_all_import_execution_complete');
-
         $this->import_end();
     }
 
