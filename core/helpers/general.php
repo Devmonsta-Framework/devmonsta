@@ -932,6 +932,16 @@ function devm_taxonomy($term_id, $key = '', $single = true)
     return get_term_meta($term_id, $key, $single);
 }
 
+// function devm_theme_option( $option_name, $default = false ) {
+
+//     if ( get_theme_mod( $option_name ) ) {
+//         return get_theme_mod( $option_name, $default );
+//     }
+
+//     return devm_theme_control_default_control( $option_name );
+
+// }
+
 function devm_theme_option($option_name, $default = false)
 {
     if (get_theme_mod($option_name)) {
@@ -1000,87 +1010,81 @@ function devm_backups_destination_directory()
     return devm_fix_path($uploads['basedir'] . "/elementor/css/");
 }
 
-
-function devm_widgets_export() {
+function devm_widgets_export()
+{
 
     $available_widgets = devm_available_widgets();
     $widget_instances  = [];
 
     // Loop widgets.
-    foreach ( $available_widgets as $widget_data ) {
+    foreach ($available_widgets as $widget_data) {
         // Get all instances for this ID base.
-        $instances = get_option( 'widget_' . $widget_data['id_base'] );
+        $instances = get_option('widget_' . $widget_data['id_base']);
 
         // Have instances.
-        if ( !empty( $instances ) ) {
+        if (!empty($instances)) {
 
             // Loop instances.
-            foreach ( $instances as $instance_id => $instance_data ) {
+            foreach ($instances as $instance_id => $instance_data) {
 
                 // Key is ID (not _multiwidget).
-                if ( is_numeric( $instance_id ) ) {
+                if (is_numeric($instance_id)) {
                     $unique_instance_id                    = $widget_data['id_base'] . '-' . $instance_id;
                     $widget_instances[$unique_instance_id] = $instance_data;
                 }
-
             }
-
         }
-
     }
 
     // Gather sidebars with their widget instances.
-    $sidebars_widgets          = get_option( 'sidebars_widgets' );
+    $sidebars_widgets          = get_option('sidebars_widgets');
     $sidebars_widget_instances = [];
 
-    foreach ( $sidebars_widgets as $sidebar_id => $widget_ids ) {
+    foreach ($sidebars_widgets as $sidebar_id => $widget_ids) {
 
         // Skip inactive widgets.
-        if ( 'wp_inactive_widgets' === $sidebar_id ) {
+        if ('wp_inactive_widgets' === $sidebar_id) {
             continue;
         }
 
-        if ( !is_array( $widget_ids ) || empty( $widget_ids ) ) {
+        if (!is_array($widget_ids) || empty($widget_ids)) {
             continue;
         }
 
-        foreach ( $widget_ids as $widget_id ) {
-            if ( isset( $widget_instances[$widget_id] ) ) {
+        foreach ($widget_ids as $widget_id) {
+            if (isset($widget_instances[$widget_id])) {
                 $sidebars_widget_instances[$sidebar_id][$widget_id] = $widget_instances[$widget_id];
             }
-
         }
-
     }
 
     // Filter pre-encoded data.
-    $data = apply_filters( 'devm_unencoded_export_data', $sidebars_widget_instances );
+    $data = apply_filters('devm_unencoded_export_data', $sidebars_widget_instances);
 
     // Encode the data for file contents.
-    $encoded_data = wp_json_encode( $data );
+    $encoded_data = wp_json_encode($data);
 
     // Return contents.
-    return apply_filters( 'devm_generate_export_data', $encoded_data );
+    return apply_filters('devm_generate_export_data', $encoded_data);
 }
 
-function devm_available_widgets() {
+function devm_available_widgets()
+{
     global $wp_registered_widget_controls;
     $widget_controls   = $wp_registered_widget_controls;
     $available_widgets = [];
 
-    foreach ( $widget_controls as $widget ) {
+    foreach ($widget_controls as $widget) {
 
         // No duplicates.
-        if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
+        if (!empty($widget['id_base']) && !isset($available_widgets[$widget['id_base']])) {
             $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
             $available_widgets[$widget['id_base']]['name']    = $widget['name'];
         }
-
     }
 
     return $available_widgets;
 }
-
 
 function devm_sanitize_data($key, $value)
 {
@@ -1210,159 +1214,146 @@ function devm_import_files()
     return $demo_data_array;
 }
 
-function devm_widgets_import_data( $data ) {
+function devm_widgets_import_data($data)
+{
+
     global $wp_registered_sidebars;
 
-    if ( empty( $data ) || ! is_object( $data ) ) {
-        return new \WP_Error(
-            'corrupted_widget_import_data',
-            __( 'Error: Widget import data could not be read. Please try a different file.', 'pt-ocdi' )
+    if (empty($data) || !is_object($data)) {
+
+        wp_die(
+            esc_html__('Import data could not be read. Please try a different file.', 'devmonsta'),
+            '',
+            [
+                'back_link' => true,
+            ]
         );
     }
 
-    // Hook before import.
-    do_action( 'pt-ocdi/widget_importer_before_widgets_import' );
-    $data = apply_filters( 'pt-ocdi/before_widgets_import_data', $data );
+    $available_widgets = devm_available_widgets();
+    $widget_instances  = [];
 
-    // Get all available widgets site supports.
-    $available_widgets = test_available_widgets();
-
-    // Get all existing widget instances.
-    $widget_instances = array();
-
-    foreach ( $available_widgets as $widget_data ) {
-        $widget_instances[ $widget_data['id_base'] ] = get_option( 'widget_' . $widget_data['id_base'] );
+    foreach ($available_widgets as $widget_data) {
+        $widget_instances[$widget_data['id_base']] = get_option('widget_' . $widget_data['id_base']);
     }
 
     // Begin results.
-    $results = array();
-
-
-    // static data
-    $static = '{"sidebar-1":{"search-2":{"title":""},"recent-posts-2":{"title":"Recent Posts","number":5,"show_date":false},"recent-comments-2":{"title":"Recent Comments","number":5},"archives-2":{"title":"Archives","count":0,"dropdown":0},"categories-2":{"title":"Categories","count":0,"hierarchical":0,"dropdown":0}},"footer-widget-1":{"text-2":{"title":"About Us","text":"Hidden Hills property with mountain and city view boast nine bedrooms including a master suite with private terrace and an entertainment. wing which includes a 20-seat theater.\r\n<ul class=\"footer-info\">\r\n \t<li><i class=\"fa fa-home\"><\/i> 15 Cliff St, New York NY 10038, USA<\/li>\r\n \t<li><i class=\"fa fa-phone\"><\/i> +1 212-602-9641<\/li>\r\n \t<li><i class=\"fa fa-envelope\"><\/i>info@example.com<\/li>\r\n<\/ul>","filter":true,"visual":true}},"footer-widget-2":{"tag_cloud-2":{"title":"Tags","count":0,"taxonomy":"post_tag"}},"footer-widget-3":{"text-3":{"title":"","text":"<img class=\"alignright wp-image-92 size-medium\" src=\"https:\/\/themefunction.com\/wp\/newseqo\/lite\/wp-content\/uploads\/sites\/3\/2020\/04\/widget-banner-228x300.jpg\" alt=\"\" width=\"228\" height=\"300\" \/>","filter":true,"visual":true}}}';
-    $data = json_decode( $static );
-
-    error_log( json_encode($data) );
+    $results = [];
 
     // Loop import data's sidebars.
-    foreach ( $data as $sidebar_id => $widgets ) {
+    foreach ($data as $sidebar_id => $widgets) {
+
         // Skip inactive widgets (should not be in export file).
-        if ( 'wp_inactive_widgets' == $sidebar_id ) {
+        if ('wp_inactive_widgets' === $sidebar_id) {
             continue;
         }
 
-        // Check if sidebar is available on this site. Otherwise add widgets to inactive, and say so.
-        if ( isset( $wp_registered_sidebars[ $sidebar_id ] ) ) {
+        // Check if sidebar is available on this site.
+
+        // Otherwise add widgets to inactive, and say so.
+        if (isset($wp_registered_sidebars[$sidebar_id])) {
             $sidebar_available    = true;
             $use_sidebar_id       = $sidebar_id;
             $sidebar_message_type = 'success';
             $sidebar_message      = '';
-        }
-        else {
+        } else {
             $sidebar_available    = false;
-            $use_sidebar_id       = 'wp_inactive_widgets'; // Add to inactive if sidebar does not exist in theme.
+            $use_sidebar_id       = 'wp_inactive_widgets';
             $sidebar_message_type = 'error';
-            $sidebar_message      = __( 'Sidebar does not exist in theme (moving widget to Inactive)', 'pt-ocdi' );
+            $sidebar_message      = esc_html__('Widget area does not exist in theme (using Inactive)', 'devmonsta');
         }
 
-        // Result for sidebar.
-        $results[ $sidebar_id ]['name']         = ! empty( $wp_registered_sidebars[ $sidebar_id ]['name'] ) ? $wp_registered_sidebars[ $sidebar_id ]['name'] : $sidebar_id; // Sidebar name if theme supports it; otherwise ID.
-        $results[ $sidebar_id ]['message_type'] = $sidebar_message_type;
-        $results[ $sidebar_id ]['message']      = $sidebar_message;
-        $results[ $sidebar_id ]['widgets']      = array();
+        $results[$sidebar_id]['name']         = !empty($wp_registered_sidebars[$sidebar_id]['name']) ? $wp_registered_sidebars[$sidebar_id]['name'] : $sidebar_id;
+        $results[$sidebar_id]['message_type'] = $sidebar_message_type;
+        $results[$sidebar_id]['message']      = $sidebar_message;
+        $results[$sidebar_id]['widgets']      = [];
 
         // Loop widgets.
-        foreach ( $widgets as $widget_instance_id => $widget ) {
+        foreach ($widgets as $widget_instance_id => $widget) {
+
             $fail = false;
 
             // Get id_base (remove -# from end) and instance ID number.
-            $id_base            = preg_replace( '/-[0-9]+$/', '', $widget_instance_id );
-            $instance_id_number = str_replace( $id_base . '-', '', $widget_instance_id );
+            $id_base            = preg_replace('/-[0-9]+$/', '', $widget_instance_id);
+            $instance_id_number = str_replace($id_base . '-', '', $widget_instance_id);
 
             // Does site support this widget?
-            if ( ! $fail && ! isset( $available_widgets[ $id_base ] ) ) {
+            if (!$fail && !isset($available_widgets[$id_base])) {
                 $fail                = true;
                 $widget_message_type = 'error';
-                $widget_message      = __( 'Site does not support widget', 'pt-ocdi' ); // Explain why widget not imported.
+                $widget_message      = esc_html__('Site does not support widget', 'devmonsta'); // Explain why widget not imported.
             }
-            $widget = apply_filters( 'pt-ocdi/widget_settings', $widget ); // Object.
 
-            $widget = json_decode( json_encode( $widget ), true );
+            $widget = json_decode(wp_json_encode($widget), true);
+            $widget = apply_filters('devm_widget_settings_array', $widget);
 
-            $widget = apply_filters( 'pt-ocdi/widget_settings_array', $widget );
+            if (!$fail && isset($widget_instances[$id_base])) {
 
-            // Does widget with identical settings already exist in same sidebar?
-            if ( ! $fail && isset( $widget_instances[ $id_base ] ) ) {
-                
-                error_log("first if");
-                    
                 // Get existing widgets in this sidebar.
-                $sidebars_widgets = get_option( 'sidebars_widgets' );
-                $sidebar_widgets  = isset( $sidebars_widgets[ $use_sidebar_id ] ) ? $sidebars_widgets[ $use_sidebar_id ] : array(); // Check Inactive if that's where will go.
+                $sidebars_widgets = get_option('sidebars_widgets');
+                $sidebar_widgets  = isset($sidebars_widgets[$use_sidebar_id]) ? $sidebars_widgets[$use_sidebar_id] : [];
 
+                // Check Inactive if that's where will go.
                 // Loop widgets with ID base.
-                $single_widget_instances = ! empty( $widget_instances[ $id_base ] ) ? $widget_instances[ $id_base ] : array();
-                foreach ( $single_widget_instances as $check_id => $check_widget ) {
+                $single_widget_instances = !empty($widget_instances[$id_base]) ? $widget_instances[$id_base] : [];
+
+                foreach ($single_widget_instances as $check_id => $check_widget) {
+
                     // Is widget in same sidebar and has identical settings?
-                    if ( in_array( "$id_base-$check_id", $sidebar_widgets ) && (array) $widget == $check_widget ) {
+                    if (in_array("$id_base-$check_id", $sidebar_widgets, true) && (array) $widget === $check_widget) {
                         $fail                = true;
                         $widget_message_type = 'warning';
-                        $widget_message      = __( 'Widget already exists', 'pt-ocdi' ); // Explain why widget not imported.
-
+                        // Explain why widget not imported.
+                        $widget_message = esc_html__('Widget already exists', 'devmonsta');
                         break;
                     }
                 }
             }
 
-            // No failure.
-            if ( ! $fail ) {
-                error_log("enetered second if - no fail");
+            if (!$fail) {
+                $single_widget_instances = get_option('widget_' . $id_base);
+                $single_widget_instances = !empty($single_widget_instances) ? $single_widget_instances : [
+                    '_multiwidget' => 1,
+                ];
+                $single_widget_instances[] = $widget;
 
-                // Add widget instance.
-                $single_widget_instances   = get_option( 'widget_' . $id_base ); // All instances for that widget ID base, get fresh every time.
-                $single_widget_instances   = ! empty( $single_widget_instances ) ? $single_widget_instances : array( '_multiwidget' => 1 ); // Start fresh if have to.
-                $single_widget_instances[] = $widget; // Add it.
-
+                // Add it.
                 // Get the key it was given.
-                end( $single_widget_instances );
-                $new_instance_id_number = key( $single_widget_instances );
+                end($single_widget_instances);
+                $new_instance_id_number = key($single_widget_instances);
 
-                // If key is 0, make it 1.
-                // When 0, an issue can occur where adding a widget causes data from other widget to load, and the widget doesn't stick (reload wipes it).
-                if ( '0' === strval( $new_instance_id_number ) ) {
+                if ('0' === strval($new_instance_id_number)) {
                     $new_instance_id_number                           = 1;
-                    $single_widget_instances[ $new_instance_id_number ] = $single_widget_instances[0];
-                    unset( $single_widget_instances[0] );
+                    $single_widget_instances[$new_instance_id_number] = $single_widget_instances[0];
+                    unset($single_widget_instances[0]);
                 }
 
-                // Move _multiwidget to end of array for uniformity.
-                if ( isset( $single_widget_instances['_multiwidget'] ) ) {
+                if (isset($single_widget_instances['_multiwidget'])) {
                     $multiwidget = $single_widget_instances['_multiwidget'];
-                    unset( $single_widget_instances['_multiwidget'] );
+                    unset($single_widget_instances['_multiwidget']);
                     $single_widget_instances['_multiwidget'] = $multiwidget;
                 }
 
                 // Update option with new widget.
-                update_option( 'widget_' . $id_base, $single_widget_instances );
+                update_option('widget_' . $id_base, $single_widget_instances);
 
-                // Assign widget instance to sidebar.
-                $sidebars_widgets = get_option( 'sidebars_widgets' ); // Which sidebars have which widgets, get fresh every time.
+                $sidebars_widgets = get_option('sidebars_widgets');
 
-                // error_log( "saved widgets : " . $sidebars_widgets );
-
-                if ( ! $sidebars_widgets ) {
-                    $sidebars_widgets = array();
+                if (!$sidebars_widgets) {
+                    $sidebars_widgets = [];
                 }
 
-                $new_instance_id = $id_base . '-' . $new_instance_id_number; // Use ID number from new widget instance.
-                $sidebars_widgets[ $use_sidebar_id ][] = $new_instance_id; // Add new instance to sidebar.
+                // Use ID number from new widget instance.
+                $new_instance_id = $id_base . '-' . $new_instance_id_number;
 
-                // error_log("----------------------------------------------------------");
-				// error_log( "before update option: "  . serialize( $sidebars_widgets ));
-                update_option( 'sidebars_widgets', $sidebars_widgets ); // Save the amended data.
+                // Add new instance to sidebar.
+                $sidebars_widgets[$use_sidebar_id][] = $new_instance_id;
+
+                // Save the amended data.
+                update_option('sidebars_widgets', $sidebars_widgets);
 
                 // After widget import action.
-                $after_widget_import = array(
+                $after_widget_import = [
                     'sidebar'           => $use_sidebar_id,
                     'sidebar_old'       => $sidebar_id,
                     'widget'            => $widget,
@@ -1371,36 +1362,30 @@ function devm_widgets_import_data( $data ) {
                     'widget_id_old'     => $widget_instance_id,
                     'widget_id_num'     => $new_instance_id_number,
                     'widget_id_num_old' => $instance_id_number,
-                );
+                ];
 
                 // Success message.
-                if ( $sidebar_available ) {
+                if ($sidebar_available) {
                     $widget_message_type = 'success';
-                    $widget_message      = __( 'Imported', 'pt-ocdi' );
-                }
-                else {
+                    $widget_message      = esc_html__('Imported', 'devmonsta');
+                } else {
                     $widget_message_type = 'warning';
-                    $widget_message      = __( 'Imported to Inactive', 'pt-ocdi' );
+                    $widget_message      = esc_html__('Imported to Inactive', 'devmonsta');
                 }
             }
 
-            error_log("after second if");
-
-            // Result for widget instance.
-            $results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['name']         = isset( $available_widgets[ $id_base ]['name'] ) ? $available_widgets[ $id_base ]['name'] : $id_base; // Widget name or ID if name not available (not supported by site).
-            $results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['title']        = ! empty( $widget['title'] ) ? $widget['title'] : __( 'No Title', 'pt-ocdi' ); // Show "No Title" if widget instance is untitled.
-            $results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message_type'] = $widget_message_type;
-            $results[ $sidebar_id ]['widgets'][ $widget_instance_id ]['message']      = $widget_message;
-
+            // Result for widget instance
+            $results[$sidebar_id]['widgets'][$widget_instance_id]['name']         = isset($available_widgets[$id_base]['name']) ? $available_widgets[$id_base]['name'] : $id_base; // Widget name or ID if name not available (not supported by site).
+            $results[$sidebar_id]['widgets'][$widget_instance_id]['title']        = !empty($widget['title']) ? $widget['title'] : esc_html__('No Title', 'devmonsta');             // Show "No Title" if widget instance is untitled.
+            $results[$sidebar_id]['widgets'][$widget_instance_id]['message_type'] = $widget_message_type;
+            $results[$sidebar_id]['widgets'][$widget_instance_id]['message']      = $widget_message;
         }
     }
 
-    // Hook after import.
-    do_action( 'pt-ocdi/widget_importer_after_widgets_import' );
-
     // Return results.
-    return apply_filters( 'pt-ocdi/widget_import_results', $results );
+    return apply_filters('devm_widgets_import_results', $results);
 }
+
 
 /**
  * devm_get_path_url( dirname(__FILE__) .'/test.css' ) --> http://site.url/path/to/test.css
@@ -1440,20 +1425,4 @@ function devm_get_path_url($path)
     }
 
     return null;
-}
-
-function test_available_widgets() {
-    global $wp_registered_widget_controls;
-
-    $widget_controls   = $wp_registered_widget_controls;
-    $available_widgets = array();
-
-    foreach ( $widget_controls as $widget ) {
-        if ( ! empty( $widget['id_base'] ) && ! isset( $available_widgets[ $widget['id_base'] ] ) ) {
-            $available_widgets[ $widget['id_base'] ]['id_base'] = $widget['id_base'];
-            $available_widgets[ $widget['id_base'] ]['name']    = $widget['name'];
-        }
-    }
-
-    return apply_filters( 'pt-ocdi/available_widgets', $available_widgets );
 }
