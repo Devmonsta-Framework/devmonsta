@@ -172,7 +172,7 @@ class Typography extends Structure {
                                         <select class="devm-ctrl google-fonts-list" name="<?php echo esc_attr( $name ) ?>[family]">
                                         <?php
                                         foreach ( $font_list as $key => $item ) {
-                                            $selected = ( $item->family == esc_html( $value["family"] )) ? 'selected' : '';
+                                            $selected = ( $item->family == esc_html( isset($value["family"] ))) ? 'selected' : '';
                                             ?>
                                             <option value="<?php echo esc_attr( $item->family ); ?>" <?php echo esc_attr( $selected ); ?> ><?php echo esc_html( $item->family ); ?></option>
                                             <?php
