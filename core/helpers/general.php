@@ -1191,10 +1191,9 @@ function devm_get_taxonomy_post_type( $control_name ) {
 //demo import file flter
 function devm_import_files() {
     $demo_data = [];
-    $demo_file = get_stylesheet_directory() . '/devmonsta/theme-demos.php';
-
+    $demo_file = get_template_directory() . '/devmonsta/theme-demos.php';
     if ( file_exists( $demo_file ) ) {
-        require get_stylesheet_directory() . '/devmonsta/theme-demos.php';
+        require $demo_file;
     }
 
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
@@ -1217,7 +1216,7 @@ function devm_widgets_import_data( $data ) {
     $data = apply_filters( 'devm/before_widgets_import_data', $data );
 
     // Get all available widgets site supports.
-    $available_widgets = import_available_widgets();
+    $available_widgets = devm_available_widgets();
 
     // Get all existing widget instances.
     $widget_instances = [];
@@ -1427,22 +1426,4 @@ function devm_get_path_url( $path ) {
     }
 
     return null;
-}
-
-function import_available_widgets() {
-    global $wp_registered_widget_controls;
-
-    $widget_controls   = $wp_registered_widget_controls;
-    $available_widgets = [];
-
-    foreach ( $widget_controls as $widget ) {
-
-        if ( !empty( $widget['id_base'] ) && !isset( $available_widgets[$widget['id_base']] ) ) {
-            $available_widgets[$widget['id_base']]['id_base'] = $widget['id_base'];
-            $available_widgets[$widget['id_base']]['name']    = $widget['name'];
-        }
-
-    }
-
-    return apply_filters( 'devm/available_widgets', $available_widgets );
 }
