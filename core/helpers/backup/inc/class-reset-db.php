@@ -23,6 +23,7 @@ class Devm_Reset_DB {
         $this->truncate_tables();
         $this->delete_transients();
         $this->reset_theme_options();
+        $this->flush_sidebar_widgets();
     }
 
     /**
@@ -64,6 +65,18 @@ class Devm_Reset_DB {
 
         do_action( 'devm_reset_theme_options', $count );
         // error_log("reset theme options " . $count);
+    }
+
+    function flush_sidebar_widgets() {
+        $sidebars_widgets = get_option( 'sidebars_widgets' );
+        if( is_array( $sidebars_widgets )){
+            foreach( $sidebars_widgets as  $sidebar => $widgets ){
+                if( is_array( $widgets ) ) {
+                    $sidebars_widgets[$sidebar] = [];
+                }
+            }
+        }
+        update_option( 'sidebars_widgets', $sidebars_widgets );
     }
 
     /**
