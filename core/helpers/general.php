@@ -1188,19 +1188,43 @@ function devm_get_taxonomy_post_type( $control_name ) {
 
 }
 
-//demo import file flter
+/**
+ * Return demo file path from theme
+ *
+ * @return void
+ */ 
+function devm_demo_file_path() {
+    if( file_exists( get_stylesheet_directory(  ) . '/devmonsta/theme-demos.php' ) ){
+        $demo_file  = get_stylesheet_directory(  ) . '/devmonsta/theme-demos.php';
+    } else {
+        $demo_file = get_template_directory() . '/devmonsta/theme-demos.php';
+    }
+    return apply_filters( 'devm_demo_file_path', $demo_file );
+}
+
+/**
+ * Returns demo array from theme directory
+ *
+ * @return void
+ */
 function devm_import_files() {
     $demo_data = [];
-    $demo_file = get_template_directory() . '/devmonsta/theme-demos.php';
+    $demo_file = devm_demo_file_path();
     if ( file_exists( $demo_file ) ) {
         require $demo_file;
     }
-
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
 
     return $demo_data_array;
 }
 
+
+/**
+ * import widget data from XML file
+ *
+ * @param [type] $data
+ * @return void
+ */
 function devm_widgets_import_data( $data ) {
     global $wp_registered_sidebars;
 

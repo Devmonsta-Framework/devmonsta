@@ -54,15 +54,12 @@ class Devm_WXR_Importer extends WP_Importer {
      *
      * @param string $file Path to the WXR file for importing
      */
-    function import( $file ) {
+    function import( $file, $selected_demo_array = [] ) {
         add_filter( 'import_post_meta_key', [ $this, 'is_valid_meta_key' ] );
         add_filter( 'http_request_timeout', [ &$this, 'bump_request_timeout' ] );
 
-        
-        /**
-         * Execute the after all import actions.
-         */
-        do_action('devm/before_import_execution_start');
+        //Executes before starting import action.
+        do_action('devm_before_import_execution_start');
 
         $this->import_start( $file );
 
@@ -70,7 +67,6 @@ class Devm_WXR_Importer extends WP_Importer {
 
         wp_suspend_cache_invalidation( true );
         
-
         $this->process_widgets_sidebar();
         $this->process_categories();
         $this->process_tags();
@@ -88,11 +84,18 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->backfill_attachment_urls();
         $this->remap_featured_images();
 
-        /**
-         * Execute the after all import actions.
-         */
-        do_action('devm/after_all_import_execution_complete');
+        // Execute the after all import actions.
         $this->import_end();
+        
+        //get demo file path
+        $demo_file = devm_demo_file_path();
+        if ( file_exists( $demo_file ) ) {
+            require $demo_file;
+        }
+
+        //Executes after ending import action.
+        do_action('devm_after_import_execution_end', $selected_demo_array );
+       
     }
 
     /**

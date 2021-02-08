@@ -9,6 +9,7 @@ jQuery(document).ready(function ($) {
         var nonce = $(this).attr("data-nonce");
         var name = $(this).attr("data-name");
         var required_plugin = $(this).data('required-plugin');
+        var xml_selected_demo   = $(this).data('selected_demo');
 
         $('#devm-importMmodal').modal('show');
 
@@ -20,11 +21,11 @@ jQuery(document).ready(function ($) {
                 action: "devm_import_config",
                 xml_link: xml_link,
                 xml_data: xml_data,
+                xml_selected_demo: xml_selected_demo,
                 nonce: nonce,
                 name: name
             },
             success: function (response) {
-                // console.log(required_plugin);
                 var config = {
                         ...response.data,
                         required_plugin
@@ -90,6 +91,7 @@ jQuery(document).ready(function ($) {
             nonce = config_data.nonce,
             devm_delete_data = false
         required_plugin = config_data.required_plugin;
+        selected_demo   = config_data.selected_demo;
         // active section
         self.addClass('active').siblings().removeClass('active');
 
@@ -102,6 +104,7 @@ jQuery(document).ready(function ($) {
         var config = {
             'devm_delete_data': devm_delete_data,
             'required_plugin': required_plugin,
+            'selected_demo': selected_demo,
             'xml_link': config_data
         };
 
