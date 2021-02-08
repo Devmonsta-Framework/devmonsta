@@ -51,7 +51,7 @@ class DEVM_Helpers {
             // Download the content import file.
             $downloaded_files['content'] = $downloader->download_file( $import_file_info['import_file_url'], $content_filename );
 
-// Return from this function if there was an error.
+            // Return from this function if there was an error.
             if ( is_wp_error( $downloaded_files['content'] ) ) {
                 return $downloaded_files['content'];
             }
@@ -65,7 +65,7 @@ class DEVM_Helpers {
             // Download the widgets import file.
             $downloaded_files['widgets'] = $downloader->download_file( $import_file_info['import_widget_file_url'], $widget_filename );
 
-// Return from this function if there was an error.
+            // Return from this function if there was an error.
             if ( is_wp_error( $downloaded_files['widgets'] ) ) {
                 return $downloaded_files['widgets'];
             }
@@ -84,7 +84,7 @@ class DEVM_Helpers {
             // Download the customizer import file.
             $downloaded_files['customizer'] = $downloader->download_file( $import_file_info['import_customizer_file_url'], $customizer_filename );
 
-// Return from this function if there was an error.
+            // Return from this function if there was an error.
             if ( is_wp_error( $downloaded_files['customizer'] ) ) {
                 return $downloaded_files['customizer'];
             }
@@ -208,7 +208,7 @@ class DEVM_Helpers {
     private static function check_wp_filesystem_credentials() {
         require_once ABSPATH . 'wp-admin/includes/file.php';
 
-// Check if the file-system method is 'direct', if not display an error.
+        // Check if the file-system method is 'direct', if not display an error.
         if ( !( 'direct' === get_filesystem_method() ) ) {
             return new \WP_Error(
                 'no_direct_file_access',
@@ -241,7 +241,7 @@ class DEVM_Helpers {
             );
         }
 
-// Now we have credentials, try to get the wp_filesystem running.
+        // Now we have credentials, try to get the wp_filesystem running.
         if ( !WP_Filesystem( $creds ) ) {
             return new \WP_Error(
                 'wrong_login_credentials',
@@ -311,7 +311,7 @@ class DEVM_Helpers {
     public static function verify_ajax_call() {
         check_ajax_referer( 'devm-ajax-verification', 'security' );
 
-// Check if user has the WP capability to import data.
+        // Check if user has the WP capability to import data.
         if ( !current_user_can( 'import' ) ) {
             wp_die(
                 sprintf(
@@ -351,7 +351,7 @@ class DEVM_Helpers {
         $widget_file_info     = wp_handle_upload( $_FILES['widget_file'], $upload_overrides );
         $customizer_file_info = wp_handle_upload( $_FILES['customizer_file'], $upload_overrides );
 
-// Process content import file.
+        // Process content import file.
         if ( $content_file_info && !isset( $content_file_info['error'] ) ) {
             // Set uploaded content file.
             $selected_import_files['content'] = $content_file_info['file'];
@@ -367,7 +367,7 @@ class DEVM_Helpers {
             );
         }
 
-// Process widget import file.
+        // Process widget import file.
         if ( $widget_file_info && !isset( $widget_file_info['error'] ) ) {
             // Set uploaded widget file.
             $selected_import_files['widgets'] = $widget_file_info['file'];
@@ -383,7 +383,7 @@ class DEVM_Helpers {
             );
         }
 
-// Process Customizer import file.
+        // Process Customizer import file.
         if ( $customizer_file_info && !isset( $customizer_file_info['error'] ) ) {
             // Set uploaded customizer file.
             $selected_import_files['customizer'] = $customizer_file_info['file'];

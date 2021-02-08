@@ -51,8 +51,6 @@ class Devm_Importer
 			$wp_import->fetch_attachments = true;
 
 			ob_start();
-
-			// error_log("devm started import: " .  $import_file);
 			$wp_import->import( $import_file, $selected_demo_array );
 			ob_end_clean();
 			flush_rewrite_rules();

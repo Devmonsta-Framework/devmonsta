@@ -37,8 +37,6 @@ class Devm_Reset_DB {
             $wpdb->query( 'SET foreign_key_checks = 0' );
             $wpdb->query( 'TRUNCATE TABLE ' . $wpdb->prefix . $tbl );
         }
-
-        // error_log("truncate " . sizeof($tables));
     }
 
     /**
@@ -64,7 +62,6 @@ class Devm_Reset_DB {
         $count = $wpdb->query( "DELETE FROM $wpdb->options WHERE option_name LIKE 'theme_mods\_%' OR option_name LIKE 'mods\_%'" );
 
         do_action( 'devm_reset_theme_options', $count );
-        // error_log("reset theme options " . $count);
     }
 
     function flush_sidebar_widgets() {

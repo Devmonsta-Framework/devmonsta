@@ -265,14 +265,14 @@ class DEVM_Demo_Importer {
             }
 
             if ( ini_get( 'max_execution_time' ) !== '0' ) {
-                error_log( "timeout could not be updated to unlimited." );
+                // error_log( "timeout could not be updated to unlimited." );
 
                 if ( set_time_limit( 600 ) !== true ) {
                     ini_set( 'max_execution_time', 600 );
                 }
 
                 if ( ini_get( 'max_execution_time' ) !== '600' ) {
-                    error_log( "timeout could not be updated." );
+                    // error_log( "timeout could not be updated." );
                 }
 
             }
