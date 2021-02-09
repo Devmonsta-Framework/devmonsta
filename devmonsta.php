@@ -4,7 +4,7 @@
  * Plugin Name: Devmonsta
  * Plugin URI: http://devmonsta.com/
  * Description: A free WordPress custimiser with post meta options with Demo content installation that will help you develop premium themes fast & easy.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: 	devmonsta
  * Author URI: http://devmonsta.com
  * License: GPL3+
