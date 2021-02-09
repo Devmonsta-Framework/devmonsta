@@ -54,31 +54,31 @@ class Devm_WXR_Importer extends WP_Importer {
      *
      * @param string $file Path to the WXR file for importing
      */
-    function import( $file ) {
+    function import( $file, $selected_demo_array = [] ) {
         add_filter( 'import_post_meta_key', [ $this, 'is_valid_meta_key' ] );
         add_filter( 'http_request_timeout', [ &$this, 'bump_request_timeout' ] );
 
-        
-        /**
-         * Execute the after all import actions.
-         */
-        do_action('devm/before_import_execution_start');
+        //Executes before starting import action.
+        do_action('devm_before_import_execution_start');
 
+        // Execute the before all import actions.
         $this->import_start( $file );
 
         $this->get_author_mapping();
 
         wp_suspend_cache_invalidation( true );
+        
+        $this->process_widgets_sidebar();
         $this->process_categories();
         $this->process_tags();
         $this->process_terms();
         $this->process_elementor_css();
         $this->process_customizers();
-        $this->process_widgets_sidebar();
         $this->process_posts();
-		$this->process_external_plugin_data();
+		$this->process_external_modules( $selected_demo_array );
         $this->update_reading_setting( $file );
         $this->devm_update_primary_menu( $file );
+
         wp_suspend_cache_invalidation( false );
 
         // update incorrect/missing information in the DB
@@ -86,46 +86,62 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->backfill_attachment_urls();
         $this->remap_featured_images();
 
-        /**
-         * Execute the after all import actions.
-         */
-        do_action('devm/after_all_import_execution_complete');
-
+        // Execute the after all import actions.
         $this->import_end();
+
+        //Executes after ending import action.
+        do_action('devm_after_import_execution_end', $selected_demo_array );
+       
     }
 
     /**
      * process all external plugin data
      */
-    public function process_external_plugin_data(){
+    public function process_external_modules( $selected_demo_array ){
 
+        $external_modules = !empty( $selected_demo_array['modules'] ) ? $selected_demo_array['modules'] : [];
+
+        if( is_array( $external_modules ) && !empty( $external_modules ) ){
+            foreach( $external_modules as $key => $value ){
+
+                if( !empty($value['src'] ) ){
+                    $this->import_module( $key, $value['src'] );
+                }
+            }
+        }
+        
+        //check and import mp-timetable plugin data
         if ( $this->check_if_plugin_active( 'mp-timetable/mp-timetable.php' ) ) {
-            $this->process_time_slot();
+            $this->import_mptimetable_data();
         }
     }
 
-    public function check_if_plugin_active( $slug ){
-        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-        $plugin_to_check = $slug;
-        if ( in_array( $plugin_to_check, $active_plugins ) ) {
-            return true;
-        }
+    public function import_module($module_name, $module_source){
+        $file_name      = DEVMONSTA_DIR . '/core/helpers/backup/inc/modules/'.$module_name.'.php';
+        $class_name     = 'Devmonsta\Core\Helpers\Backup\Inc\Modules\\' . ucfirst($module_name);
+        if( file_exists( $file_name ) ){
 
-        return false;
+            include $file_name;
+
+            if(class_exists( $class_name )){
+                $module_class = new $class_name;
+                $module_class->set_source( $module_source )->process_data();
+            }
+        }
     }
-    
+
     /**
      * process timeshot plugin data
      *
      * @return void
      */
-	public function process_time_slot() {
+	public function import_mptimetable_data() {
 		global $wpdb;
         $table_name = $wpdb->prefix . "mp_timetable_data";
 		$rows_affected = array();
         $time_slots = $this->time_slots;
-		if (!empty($time_slots)) {
-			foreach ($time_slots as $time_slot) {
+		if ( !empty($time_slots) ) {
+			foreach ( $time_slots as $time_slot ) {
 				$exist_time_slot = $this->post_time_slot_exist($time_slot);
 				if (!$exist_time_slot) {
 					$rows_affected[] = $wpdb->insert($table_name, array(
@@ -140,6 +156,20 @@ class Devm_WXR_Importer extends WP_Importer {
 			}
 		}
     }
+    
+    /**
+     * Check if specific plugin is active
+     */
+    public function check_if_plugin_active( $slug ){
+        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+        $plugin_to_check = $slug;
+        if ( in_array( $plugin_to_check, $active_plugins ) ) {
+            return true;
+        }
+
+        return false;
+    }
+    
 
 	/**
 	 * Exist time slot
@@ -359,7 +389,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
             }
 
-// failsafe: if the user_id was invalid, default to the current user
+            // failsafe: if the user_id was invalid, default to the current user
             if ( !isset( $this->author_mapping[$santized_old_login] ) ) {
                 if ( $old_id ) {
                     $this->processed_authors[$old_id] = (int) get_current_user_id();
@@ -764,7 +794,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
                 if ( $post_parent ) {
 
-// if we already know the parent, map it to the new local ID
+                    // if we already know the parent, map it to the new local ID
                     if ( isset( $this->processed_posts[$post_parent] ) ) {
                         $post_parent = $this->processed_posts[$post_parent];
                         // otherwise record the parent for later
@@ -868,7 +898,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
             $post['terms'] = apply_filters( 'wp_import_post_terms', $post['terms'], $post_id, $post );
 
-// add categories, tags and other terms
+            // add categories, tags and other terms
             if ( !empty( $post['terms'] ) ) {
                 $terms_to_set = [];
                 foreach ( $post['terms'] as $term ) {
@@ -914,7 +944,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
             $post['comments'] = apply_filters( 'wp_import_post_comments', $post['comments'], $post_id, $post );
 
-// add/update comments
+        // add/update comments
             if ( !empty( $post['comments'] ) ) {
                 $num_comments      = 0;
                 $inserted_comments = [];
@@ -942,7 +972,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
                 foreach ( $newcomments as $key => $comment ) {
 
-// if this is a new post we can skip the comment_exists() check
+        // if this is a new post we can skip the comment_exists() check
                     if ( !$post_exists || !comment_exists( $comment['comment_author'], $comment['comment_date'] ) ) {
                         if ( isset( $inserted_comments[$comment['comment_parent']] ) ) {
                             $comment['comment_parent'] = $inserted_comments[$comment['comment_parent']];
@@ -972,7 +1002,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
             $post['postmeta'] = apply_filters( 'wp_import_post_meta', $post['postmeta'], $post_id, $post );
 
-// add/update post meta
+        // add/update post meta
             if ( !empty( $post['postmeta'] ) ) {
                 foreach ( $post['postmeta'] as $meta ) {
                     $key   = apply_filters( 'import_post_meta_key', $meta['key'], $post_id, $post );
@@ -1031,7 +1061,7 @@ class Devm_WXR_Importer extends WP_Importer {
             if ( !taxonomy_exists( $data['taxonomy'] ) ) {
                 $attribute_name = wc_sanitize_taxonomy_name( str_replace( 'pa_', '', $data['taxonomy'] ) );
 
-// Create the taxonomy
+        // Create the taxonomy
                 if ( !in_array( $attribute_name, wc_get_attribute_taxonomies() ) ) {
                     $attribute = [
                         'attribute_label'   => $attribute_name,
@@ -1064,7 +1094,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function process_menu_item( $item ) {
 
-// skip draft, orphaned menu items
+        // skip draft, orphaned menu items
         if ( 'draft' == $item['status'] ) {
             return;
         }
@@ -1072,7 +1102,7 @@ class Devm_WXR_Importer extends WP_Importer {
         $menu_slug = false;
         if ( isset( $item['terms'] ) ) {
 
-// loop through terms, assume first nav_menu term is correct menu
+        // loop through terms, assume first nav_menu term is correct menu
             foreach ( $item['terms'] as $term ) {
                 if ( 'nav_menu' == $term['domain'] ) {
                     $menu_slug = $term['slug'];
@@ -1083,7 +1113,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
         }
 
-// no nav_menu term associated with this menu item
+        // no nav_menu term associated with this menu item
         if ( !$menu_slug ) {
             _e( 'Menu item skipped due to missing menu slug', 'devmonsta' );
             echo '<br />';
@@ -1225,7 +1255,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
         $headers = wp_remote_retrieve_headers( $remote_response );
 
-// request failed
+        // request failed
         if ( !$headers ) {
             @unlink( $upload['file'] );
             return new WP_Error( 'import_file_error', __( 'Remote server did not respond', 'devmonsta' ) );
@@ -1233,7 +1263,7 @@ class Devm_WXR_Importer extends WP_Importer {
 
         $remote_response_code = wp_remote_retrieve_response_code( $remote_response );
 
-// make sure the fetch was successful
+        // make sure the fetch was successful
         if ( $remote_response_code != '200' ) {
             @unlink( $upload['file'] );
             return new WP_Error( 'import_file_error', sprintf( __( 'Remote server returned error response %1$d %2$s', 'devmonsta' ), esc_html( $remote_response_code ), get_status_header_desc( $remote_response_code ) ) );
@@ -1256,9 +1286,9 @@ class Devm_WXR_Importer extends WP_Importer {
         // keep track of the old and new urls so we can substitute them later
         $this->url_remap[$url]          = $upload['url'];
         $this->url_remap[$post['guid']] = $upload['url'];
-// r13735, really needed?
+        // r13735, really needed?
 
-// keep track of the destination if the remote url is redirected somewhere else
+        // keep track of the destination if the remote url is redirected somewhere else
         if ( isset( $headers['x-final-location'] ) && $headers['x-final-location'] != $url ) {
             $this->url_remap[$headers['x-final-location']] = $upload['url'];
         }
@@ -1269,7 +1299,7 @@ class Devm_WXR_Importer extends WP_Importer {
     function backfill_parents() {
         global $wpdb;
 
-// find parents for post orphans
+        // find parents for post orphans
         foreach ( $this->post_orphans as $child_id => $parent_id ) {
             $local_child_id = $local_parent_id = false;
             if ( isset( $this->processed_posts[$child_id] ) ) {
@@ -1294,7 +1324,7 @@ class Devm_WXR_Importer extends WP_Importer {
             $this->process_menu_item( $item );
         }
 
-// find parents for menu item orphans
+        // find parents for menu item orphans
         foreach ( $this->menu_item_orphans as $child_id => $parent_id ) {
             $local_child_id = $local_parent_id = 0;
             if ( isset( $this->processed_menu_items[$child_id] ) ) {
@@ -1335,12 +1365,12 @@ class Devm_WXR_Importer extends WP_Importer {
      */
     function remap_featured_images() {
 
-// cycle through posts that have a featured image
+        // cycle through posts that have a featured image
         foreach ( $this->featured_images as $post_id => $value ) {
             if ( isset( $this->processed_posts[$value] ) ) {
                 $new_id = $this->processed_posts[$value];
 
-// only update if there's a difference
+        // only update if there's a difference
                 if ( $new_id != $value ) {
                     update_post_meta( $post_id, '_thumbnail_id', $new_id );
                 }
@@ -1423,3 +1453,7 @@ class Devm_WXR_Importer extends WP_Importer {
     }
 
 }
+
+
+// $importer = new Devm_WXR_Importer();
+// $importer->import_module('revslider', get_template_directory() . "/sliders/home-default/slider.zip" );

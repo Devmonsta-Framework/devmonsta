@@ -7,7 +7,6 @@ class Devm_WXR_Parser
 		// Attempt to use proper XML parsers first
 		if (extension_loaded('simplexml')) {
 			$parser = new Devm_WXR_Parser_SimpleXML;
-			// error_log("step 3 ". $file);
 			$result = $parser->parse($file);
 
 			// If SimpleXML succeeds or this is an invalid WXR file then return the results
@@ -64,7 +63,6 @@ class Devm_WXR_Parser_SimpleXML
 			$old_value = libxml_disable_entity_loader(true);
 		}
 		// $success = $dom->loadXML(file_get_contents($file));
-		error_log( "step 4 " . $file );
 
 		$success = $dom->loadXML($wp_filesystem->get_contents($file));
 		if (!is_null($old_value)) {

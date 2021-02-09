@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Hook for adding the custom plugin page header
  */
@@ -7,80 +6,79 @@ do_action( 'devm/plugin_page_header' );
 ?>
 
 <div class="about-wrap wrap devm-container">
-
 	<?php ob_start();?>
 	<h1 class="devm--importer-title"><span class="devm--importer-title__icon devm devm-cog-icon1"></span><?php esc_html_e( 'Devmonsta Demo Install', 'devmonsta' );?></h1>
 	<?php
-$plugin_title = ob_get_clean();
+	$plugin_title = ob_get_clean();
 
-// Display the plugin title (can be replaced with custom title text through the filter below).
-echo wp_kses_post( apply_filters( 'devm/plugin_page_title', $plugin_title ) );
+	// Display the plugin title (can be replaced with custom title text through the filter below).
+	echo wp_kses_post( apply_filters( 'devm/plugin_page_title', $plugin_title ) );
 
-// Display warrning if PHP safe mode is enabled, since we wont be able to change the max_execution_time.
-if ( ini_get( 'safe_mode' ) ) {
-    printf(
-        esc_html__( '%sWarning: your server is using %sPHP safe mode%s. This means that you might experience server timeout errors.%s', 'devmonsta' ),
-        '<div class="notice  notice-warning  is-dismissible"><p>',
-        '<strong>',
-        '</strong>',
-        '</p></div>'
-    );
-}
+	// Display warrning if PHP safe mode is enabled, since we wont be able to change the max_execution_time.
+	if ( ini_get( 'safe_mode' ) ) {
+		printf(
+			esc_html__( '%sWarning: your server is using %sPHP safe mode%s. This means that you might experience server timeout errors.%s', 'devmonsta' ),
+			'<div class="notice  notice-warning  is-dismissible"><p>',
+			'<strong>',
+			'</strong>',
+			'</p></div>'
+		);
+	}
 
-// Start output buffer for displaying the plugin intro text.
-ob_start();
-?>
-
+	// Start output buffer for displaying the plugin intro text.
+	ob_start();
+	?>
 	<div class="devm__intro-notice  notice  notice-warning  is-dismissible">
 		<p><?php esc_html_e( 'Before you begin, make sure all the required plugins are activated.', 'devmonsta' );?></p>
 	</div>
-
 	<?php
-$plugin_intro_text = ob_get_clean();
+	$plugin_intro_text = ob_get_clean();
 
-// Display the plugin intro text (can be replaced with custom text through the filter below).
-echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text ) );
-?>
-	<?php
+	// Display the plugin intro text (can be replaced with custom text through the filter below).
+	echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text ) );
+	$demo_files = devm_import_files();
 
-		$demo_files = devm_import_files();
-		// devm_print( count( $demo_files ) );
-
-	?>
-	<?php if ( count( $demo_files ) < 1 ): ?>
+	if ( count( $demo_files ) < 1 ): 
+		?>
 		<div class="notice  notice-info  is-dismissible">
 			<p><?php esc_html_e( 'There are no predefined import files available in this theme. Please upload the import files manually!', 'devmonsta' );?></p>
 		</div>
-	<?php endif;?>
+		<?php 
+	endif;
+	?>
 
 	<!-- Show demo import options -->
-
-
 	<div class="devm--demo-preview-list">
 		<?php
-
-			foreach ( $demo_files as $single_demo_file ) {
-				$nonce = wp_create_nonce( "devm_demo_import_nonce" );
-				$link  = admin_url( 'admin-ajax.php?action=devm_import_demo&nonce=' . $nonce );
-				?>
-						<div class="card devm--demo-preview-list__item">
-							<div class="devm--demo-preivew-inner">
-								<div class="devm--demo-preview-list__item--thumb" style="background-image:url(<?php echo esc_url( $single_demo_file["import_preview_image_url"] ); ?>)"></div>
-								<div class="card-body">
-									<h3 class="card-title"><?php echo esc_html( $single_demo_file["import_title"] ); ?></h3>
-
-									<div class="devm-preview-btn-list">
-										<a href="#" class="attr-btn-primary devm-preview-btn"><span class="devm-preview-btn-icon devm devm-laptop"></span><?php esc_html_e( 'Preview', 'devmonsta' );?></a>
-
-										<button data-required-plugin='<?php echo json_encode( $single_demo_file['required_plugin'] ); ?>' class="devm-special-preview-btn devm_import_btn btn attr-btn-primary" data-nonce="<?php echo esc_attr( $nonce ); ?>" data-name="<?php echo esc_attr( $single_demo_file["import_title"] ); ?>" data-xml_link="<?php echo esc_url( $single_demo_file['import_file_url'] ); ?>"><span class="devm-special-preview-btn-icon devm devm-download1"></span><?php echo esc_html__( 'Import', 'devmonsta' ); ?></button>
-									</div>
-								</div>
-							</div>
-						</div>
-					<?php
-			}
-
+		foreach ( $demo_files as $single_demo_file ) {
+			$nonce = wp_create_nonce( "devm_demo_import_nonce" );
+			$link  = admin_url( 'admin-ajax.php?action=devm_import_demo&nonce=' . $nonce );
 			?>
+			<div class="card devm--demo-preview-list__item">
+				<div class="devm--demo-preivew-inner">
+					<div class="devm--demo-preview-list__item--thumb" style="background-image:url(<?php echo esc_url( $single_demo_file["import_preview_image_url"] ); ?>)"></div>
+					<div class="card-body">
+						<h3 class="card-title"><?php echo esc_html( $single_demo_file["import_title"] ); ?></h3>
+
+						<div class="devm-preview-btn-list">
+							<a href="#" class="attr-btn-primary devm-preview-btn"><span class="devm-preview-btn-icon devm devm-laptop"></span><?php esc_html_e( 'Preview', 'devmonsta' );?></a>
+
+							<button data-selected_demo='<?php echo json_encode( $single_demo_file ); ?>'
+								data-required-plugin='<?php echo json_encode( $single_demo_file['required_plugin'] ); ?>'
+								class="devm-special-preview-btn devm_import_btn btn attr-btn-primary"
+								data-nonce="<?php echo esc_attr( $nonce ); ?>"
+								data-name="<?php echo esc_attr( $single_demo_file["import_title"] ); ?>"
+								data-xml_link="<?php echo esc_url( $single_demo_file['import_file_url'] ); ?>">
+								<span class="devm-special-preview-btn-icon devm devm-download1"></span><?php echo esc_html__( 'Import', 'devmonsta' ); ?>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+
+	?>
 	</div>
 	<div class="devm__response  js-devm-ajax-response"></div>
 </div>
@@ -90,7 +88,6 @@ echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text )
 	<div class="attr-modal-dialog attr-modal-dialog-centered" role="attr-document">
 		<div class="attr-modal-content">
 			<div class="attr-modal-body devm-import-flip-next devm-modal-main-content" data-step="1">
-
 				<div class="devm-single-content">
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-1.png'; ?>" alt=""></div>
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-2.png'; ?>" alt=""></div>
@@ -98,7 +95,6 @@ echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text )
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-4.png'; ?>" alt=""></div>
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-5.png'; ?>" alt=""></div>
 				</div>
-
 				<div class="devm-single-content">
 					<div class="devm-importer-data">
 						<div class="devm-single-importer welcome" data-step="welcome">
@@ -122,12 +118,15 @@ echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text )
 						</div>
 
 						<div class="devm-single-importer plugin_install" data-step="plugin_install">
-							<h1 class="devm-importer-data--welcome-title"><?php esc_html_e( 'Required Plugins', 'devmonsta' );?></h1>
-							<div class="devm-importer-plugin-list"></div>
+							<h1 class="devm-importer-data--welcome-title">
+								<?php esc_html_e( 'Required Plugins', 'devmonsta' );?>
+							</h1>
+							<div class="devm-importer-plugin-list">
+							</div>
 							<div class="devm-importer-additional-data">
-
 								<div class="attr-progress devm-progress-bar">
-									<div class="attr-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+									<div class="attr-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -147,7 +146,6 @@ echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text )
 								<p><?php esc_html_e( 'Demo has been successfully imported!', 'devmonsta' )?></p>
 							</div>
 						</div>
-
 					</div>
 					<div class="devm-importer-buttons">
 						<div class="devm-importer-final-buttons">
@@ -171,18 +169,15 @@ echo wp_kses_post( apply_filters( 'devm/plugin_intro_text', $plugin_intro_text )
 								<?php echo esc_html__( 'Continue', 'devmonsta' ); ?>
 							</button>
 						</div>
-
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<span data-dismiss="modal" class="devm-close-btn devm-importer-close-modal devm devm-cancel"></span>
 	</div>
+</div>
 
-
-
-	<?php
+<?php
 /**
  * Hook for adding the custom admin page footer
  */

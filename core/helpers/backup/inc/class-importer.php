@@ -25,7 +25,7 @@ class Devm_Importer
 		return $file_path;
 	}
 
-	public function import_dummy_xml($filepath = null)
+	public function import_dummy_xml($filepath = null, $selected_demo_array = [])
 	{
 		if (is_null($filepath)) {
 			$import_file = $this->get_import_file_path('devm_production.xml');
@@ -34,6 +34,7 @@ class Devm_Importer
 		}
 
 		require_once ABSPATH . 'wp-admin/includes/import.php';
+
 		if (!class_exists('WP_Importer')) {
 			$class_wp_importer = ABSPATH . 'wp-admin/includes/class-wp-importer.php';
 
@@ -50,9 +51,7 @@ class Devm_Importer
 			$wp_import->fetch_attachments = true;
 
 			ob_start();
-
-			// error_log("devm started import: " .  $import_file);
-			$wp_import->import($import_file);
+			$wp_import->import( $import_file, $selected_demo_array );
 			ob_end_clean();
 			flush_rewrite_rules();
 			return true;

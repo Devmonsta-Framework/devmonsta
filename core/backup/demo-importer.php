@@ -134,19 +134,21 @@ class DEVM_Demo_Importer {
     private function __wakeup() {
     }
 
+
     function devm_import_config() {
 
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
-            exit( "Woof Woof Woof" );
+            exit( "Access denied" );
         }
 
         $result_array = [
-            "status"   => 1,
-            'xml_link' => esc_url( $_POST["xml_link"] ),
-            'xml_data' => $_POST['xml_data'],
-            'nonce'    => $_POST["nonce"],
-            'name'     => sanitize_title_with_dashes( $_POST['name'] ),
-            "messages" => [
+            "status"                => 1,
+            'xml_link'              => esc_url( $_POST["xml_link"] ),
+            'xml_data'              => $_POST['xml_data'],
+            'xml_selected_demo'     => $_POST['xml_selected_demo'],
+            'nonce'                 => $_POST["nonce"],
+            'name'                  => sanitize_title_with_dashes( $_POST['name'] ),
+            "messages"  => [
                 " data message one",
                 "delete previous data message two",
                 "delete previous data message three",
@@ -162,10 +164,15 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
+    /**
+     * Erase existing data in checkbox selected
+     *
+     * @return void
+     */
     function devm_import_erase_data() {
 
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
-            exit( "Woof Woof Woof" );
+            exit( "Access Denied" );
         }
 
         $result_array = [
@@ -190,10 +197,15 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
+    /**
+     * Install and active all required plugins
+     *
+     * @return void
+     */
     function devm_import_plugin_install() {
 
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
-            exit( "Woof Woof Woof" );
+            exit( "Access Denied" );
         }
 
         $config_data            = $_POST["config"];
@@ -216,11 +228,16 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
+    /**
+     * Handle XML import
+     *
+     * @return void
+     */
     function devm_import_demo_ajax_call_back() {
 
-// nonce check for an extra layer of security, the function will exit if it fails
+        // nonce check for an extra layer of security, the function will exit if it fails
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
-            exit( "Woof Woof Woof" );
+            exit( "Access Denied" );
         }
 
         $xml_config = $_POST['config'];
@@ -248,14 +265,14 @@ class DEVM_Demo_Importer {
             }
 
             if ( ini_get( 'max_execution_time' ) !== '0' ) {
-                error_log( "timeout could not be updated to unlimited." );
+                // error_log( "timeout could not be updated to unlimited." );
 
                 if ( set_time_limit( 600 ) !== true ) {
                     ini_set( 'max_execution_time', 600 );
                 }
 
                 if ( ini_get( 'max_execution_time' ) !== '600' ) {
-                    error_log( "timeout could not be updated." );
+                    // error_log( "timeout could not be updated." );
                 }
 
             }
@@ -279,7 +296,8 @@ class DEVM_Demo_Importer {
             try {
                 $error = esc_html__( 'Data import failed', 'devm' );
 
-                $return_success = $im->import_dummy_xml( $devm_imported_file_path );
+                $selected_demo_array = $_POST['config']["xml_link"]["xml_selected_demo"];
+                $return_success = $im->import_dummy_xml( $devm_imported_file_path, $selected_demo_array );
                 if ( $return_success ) {
                     wp_send_json_success( $result );
                 } else {
@@ -300,10 +318,15 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
+    /**
+     * Prepare all messages and data before starting demo import
+     *
+     * @return void
+     */
     function devm_import_content_before() {
 
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
-            exit( "Woof Woof Woof" );
+            exit( "Access Denied" );
         }
 
         $result_array = [
