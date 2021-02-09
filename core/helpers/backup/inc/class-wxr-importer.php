@@ -61,6 +61,7 @@ class Devm_WXR_Importer extends WP_Importer {
         //Executes before starting import action.
         do_action('devm_before_import_execution_start');
 
+        // Execute the before all import actions.
         $this->import_start( $file );
 
         $this->get_author_mapping();
@@ -74,9 +75,10 @@ class Devm_WXR_Importer extends WP_Importer {
         $this->process_elementor_css();
         $this->process_customizers();
         $this->process_posts();
-		$this->process_external_plugin_data();
+		$this->process_external_modules( $selected_demo_array );
         $this->update_reading_setting( $file );
         $this->devm_update_primary_menu( $file );
+
         wp_suspend_cache_invalidation( false );
 
         // update incorrect/missing information in the DB
@@ -86,12 +88,6 @@ class Devm_WXR_Importer extends WP_Importer {
 
         // Execute the after all import actions.
         $this->import_end();
-        
-        //get demo file path
-        $demo_file = devm_demo_file_path();
-        if ( file_exists( $demo_file ) ) {
-            require $demo_file;
-        }
 
         //Executes after ending import action.
         do_action('devm_after_import_execution_end', $selected_demo_array );
@@ -101,35 +97,45 @@ class Devm_WXR_Importer extends WP_Importer {
     /**
      * process all external plugin data
      */
-    public function process_external_plugin_data(){
+    public function process_external_modules( $selected_demo_array ){
 
+        $external_modules = $selected_demo_array['modules'];
+
+        //check and import revslider data
+        if( !empty( $external_modules['revslider']['src'] ) ){
+            $this->import_revslider_data( $external_modules['revslider']['src'] );
+        }
+        
+        //check and import mp-timetable plugin data
         if ( $this->check_if_plugin_active( 'mp-timetable/mp-timetable.php' ) ) {
-            $this->process_time_slot();
+            $this->import_mptimetable_data();
         }
     }
 
-    public function check_if_plugin_active( $slug ){
-        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
-        $plugin_to_check = $slug;
-        if ( in_array( $plugin_to_check, $active_plugins ) ) {
-            return true;
-        }
 
-        return false;
+    /**
+     * Import Sliders from revslider source
+     */
+    public function import_revslider_data( $source_url ){
+        if ( class_exists( 'RevSliderSlider' ) ) {
+            $filepath = $source_url;
+            $slider   = new RevSliderSlider();
+            $slider->importSliderFromPost( true, true, $filepath );
+        }
     }
-    
+
     /**
      * process timeshot plugin data
      *
      * @return void
      */
-	public function process_time_slot() {
+	public function import_mptimetable_data() {
 		global $wpdb;
         $table_name = $wpdb->prefix . "mp_timetable_data";
 		$rows_affected = array();
         $time_slots = $this->time_slots;
-		if (!empty($time_slots)) {
-			foreach ($time_slots as $time_slot) {
+		if ( !empty($time_slots) ) {
+			foreach ( $time_slots as $time_slot ) {
 				$exist_time_slot = $this->post_time_slot_exist($time_slot);
 				if (!$exist_time_slot) {
 					$rows_affected[] = $wpdb->insert($table_name, array(
@@ -144,6 +150,20 @@ class Devm_WXR_Importer extends WP_Importer {
 			}
 		}
     }
+    
+    /**
+     * Check if specific plugin is active
+     */
+    public function check_if_plugin_active( $slug ){
+        $active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+        $plugin_to_check = $slug;
+        if ( in_array( $plugin_to_check, $active_plugins ) ) {
+            return true;
+        }
+
+        return false;
+    }
+    
 
 	/**
 	 * Exist time slot

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Hook for adding the custom plugin page header
  */
@@ -89,7 +88,6 @@ do_action( 'devm/plugin_page_header' );
 	<div class="attr-modal-dialog attr-modal-dialog-centered" role="attr-document">
 		<div class="attr-modal-content">
 			<div class="attr-modal-body devm-import-flip-next devm-modal-main-content" data-step="1">
-
 				<div class="devm-single-content">
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-1.png'; ?>" alt=""></div>
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-2.png'; ?>" alt=""></div>
@@ -97,7 +95,6 @@ do_action( 'devm/plugin_page_header' );
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-4.png'; ?>" alt=""></div>
 					<div class="devm-single-content--preview-img"><img src="<?php echo devm_get_framework_directory_uri() . '/static/img/import-preview-5.png'; ?>" alt=""></div>
 				</div>
-
 				<div class="devm-single-content">
 					<div class="devm-importer-data">
 						<div class="devm-single-importer welcome" data-step="welcome">
@@ -121,12 +118,15 @@ do_action( 'devm/plugin_page_header' );
 						</div>
 
 						<div class="devm-single-importer plugin_install" data-step="plugin_install">
-							<h1 class="devm-importer-data--welcome-title"><?php esc_html_e( 'Required Plugins', 'devmonsta' );?></h1>
-							<div class="devm-importer-plugin-list"></div>
+							<h1 class="devm-importer-data--welcome-title">
+								<?php esc_html_e( 'Required Plugins', 'devmonsta' );?>
+							</h1>
+							<div class="devm-importer-plugin-list">
+							</div>
 							<div class="devm-importer-additional-data">
-
 								<div class="attr-progress devm-progress-bar">
-									<div class="attr-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+									<div class="attr-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -146,7 +146,6 @@ do_action( 'devm/plugin_page_header' );
 								<p><?php esc_html_e( 'Demo has been successfully imported!', 'devmonsta' )?></p>
 							</div>
 						</div>
-
 					</div>
 					<div class="devm-importer-buttons">
 						<div class="devm-importer-final-buttons">
@@ -170,18 +169,15 @@ do_action( 'devm/plugin_page_header' );
 								<?php echo esc_html__( 'Continue', 'devmonsta' ); ?>
 							</button>
 						</div>
-
 					</div>
 				</div>
-
 			</div>
 		</div>
 		<span data-dismiss="modal" class="devm-close-btn devm-importer-close-modal devm devm-cancel"></span>
 	</div>
+</div>
 
-
-
-	<?php
+<?php
 /**
  * Hook for adding the custom admin page footer
  */
