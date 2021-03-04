@@ -130,17 +130,6 @@ class Devm_WXR_Importer extends WP_Importer {
         }
     }
 
-
-    /**
-     * Import Sliders from revslider source
-     */
-    public function import_revslider_data( $source_url ){
-
-        $revslider_instance = \Devmonsta\Core\Helpers\Backup\Inc\Modules\Revslider::instance();
-        $revslider_instance->set_source( $source_url );
-        return $revslider_instance->import_sliders();
-    }
-
     /**
      * process timeshot plugin data
      *
