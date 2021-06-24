@@ -128,10 +128,10 @@ class DEVM_Demo_Importer {
         require_once devm_get_framework_directory() . '/views/import.php';
     }
 
-    private function __clone() {
+    public function __clone() {
     }
 
-    private function __wakeup() {
+    public function __wakeup() {
     }
 
 
