@@ -937,7 +937,7 @@ function devm_import_files() {
     $demo_data = [];
     $demo_file = devm_demo_file_path();
     if ( file_exists( $demo_file ) ) {
-        require $demo_file;
+        require_once $demo_file;
     }
     $demo_data_array = apply_filters( 'devm_import_demo_files', $demo_data );
 

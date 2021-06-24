@@ -37,6 +37,8 @@ final class Devmonsta
         register_activation_hook(__FILE__, [$this, 'activate']);
 
         add_action('plugins_loaded', [$this, 'init_plugin']);
+
+        add_action( 'wp_loaded', [$this, 'add_demo_import_menu']);
     }
 
     /**
@@ -75,8 +77,14 @@ final class Devmonsta
      */
     public function init_plugin()
     {
-
         Devmonsta\Bootstrap::instance()->init();
+    }
+
+    public function add_demo_import_menu(){
+
+        if ( !empty( devm_import_files() ) ) {
+            add_action( 'admin_menu', [new DEVM_Demo_Importer, 'create_import_page'] );
+        }
     }
 
     /**

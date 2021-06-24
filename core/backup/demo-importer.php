@@ -60,7 +60,6 @@ class DEVM_Demo_Importer {
 
         add_action( 'admin_init', [$this, 'devm_demo_import_script_enqueuer'] );
         // Actions.
-        add_action( 'admin_menu', [$this, 'create_import_page'] );
         add_action( "wp_ajax_devm_import_config", [$this, "devm_import_config"] );
         add_action( "wp_ajax_devm_import_content_before", [$this, "devm_import_content_before"] );
         add_action( "wp_ajax_devm_import_erase_data", [$this, "devm_import_erase_data"] );
