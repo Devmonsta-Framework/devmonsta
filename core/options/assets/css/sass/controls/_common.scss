@@ -130,6 +130,7 @@
         &-upload-wrapper{
             display: inline-block;
             position: relative;
+
             .devm_remove_image_button{
                 position: absolute;
                 top: -8px;
@@ -137,7 +138,9 @@
                 display: block;
                 opacity: 0;
                 visibility: hidden;
+                text-decoration: none;
                 transition: all .4s;
+                outline: 0;
                 i{
                     color: #AAAAAA;
                     &:hover{
@@ -154,6 +157,7 @@
         }
         .true_pre_image {
             max-width: 50px !important;
+            cursor: pointer;
         }
         .devm-dimension-attachment-input{
             cursor: pointer;
@@ -334,6 +338,76 @@
         // end image picker
     }
 }
+
+
+/**
+ * Option: Upload
+ **/
+.devm_upload_image_button {
+    display: block;
+    
+    > img {
+        display: block;
+        cursor: pointer;
+    }
+}
+
+.devm-option-upload {
+    &--list {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: -10px;
+    }
+
+    &--item {
+        position: relative;
+        margin-right: 10px;
+        padding-bottom: 10px;
+        max-width: 400px;
+        z-index: 0;
+
+        > img {
+            display: block;
+            width: 100%;
+            cursor: pointer;
+        }
+    }
+    &--list.is--multiple &--item {
+        max-width: 80px;
+
+        > img {
+            height: 60px;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    &--remove {
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        padding: 5px;
+        width: auto;
+        height: auto;
+        color: #aaa;
+        background-color: transparent;
+        border-width: 0;
+        font-size: 20px;
+        line-height: 1em;
+        cursor: pointer;
+        opacity: 0;
+        transition: color .25s, opacity .25s;
+
+        &:hover {
+            color: #CC0000;
+        }
+    }
+    &--item:hover &--remove {
+        opacity: 1;
+    }
+}
+
+
 .devm-taxonomy-wrapper,
 .wp-customizer{
     .devm-option{
