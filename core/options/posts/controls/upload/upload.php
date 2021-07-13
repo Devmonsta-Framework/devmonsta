@@ -59,7 +59,8 @@ class Upload extends Structure {
         }
 
         // markup: image
-        $image = empty($this->value) ? '<div class="devm-option-upload--item"><button type="button" class="devm-option-upload--child button">Upload Image</button></div>' : '' ;
+        $str_img = $multiple ? 'Images' : 'Image';
+        $image = empty($this->value) ? '<div class="devm-option-upload--item has--btn"><button type="button" class="devm-option-upload--child button">Upload '. $str_img .'</button></div>' : '' ;
         $img_ids = explode(',', $this->value);
 
         if ( $this->current_screen == "post" && !empty($this->value) ) {
@@ -128,7 +129,8 @@ class Upload extends Structure {
         }
 
         // markup: image
-        $image = empty($value) ? '<div class="devm-option-upload--item"><button type="button" class="devm-option-upload--child button">Upload Image</button></div>' : '' ;
+        $str_img = $multiple ? 'Images' : 'Image';
+        $image = empty($value) ? '<div class="devm-option-upload--item has--btn"><button type="button" class="devm-option-upload--child button">Upload '. $str_img .'</button></div>' : '' ;
         $img_ids = explode(',', $value);
 
         if ( !empty($value) ) {
@@ -161,7 +163,6 @@ class Upload extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display ) {
-        $is_multi = strpos($value, ',') ? ' is--multiple' : '';
         ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
@@ -169,7 +170,7 @@ class Upload extends Structure {
             </div>
             <div class="devm-option-column right">
                 <div class="devm-option-upload-wrapper">
-                    <div class="devm-option-upload--list<?php echo esc_attr( $is_multi ); ?>" data-multiple="<?php echo esc_attr( $multiple ); ?>">
+                    <div class="devm-option-upload--list" data-multiple="<?php echo esc_attr( $multiple ); ?>">
                         <?php echo devm_render_markup( $image ); ?>
                     </div>
 
