@@ -51,20 +51,23 @@ class Upload extends Structure {
         $label = isset( $this->content['label'] ) ? $this->content['label'] : '';
         $name  = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc  = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
+        $display = '';
 
-        $image_size = 'full';
-        $display    = 'none';
         $multiple   = false;
-        $image      = ' button">Upload image';
-
         if ( isset( $this->content['multiple'] ) && $this->content['multiple'] ) {
             $multiple = true;
         }
 
-        if ( $this->current_screen == "post" && wp_get_attachment_image_src( $this->value, $image_size ) ) {
-            $image_attributes = wp_get_attachment_image_src( $this->value, $image_size );
-            $image            = '"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
-            $display          = 'inline-block';
+        // markup: image
+        $image = empty($this->value) ? '<div class="devm-option-upload--item"><button type="button" class="devm-option-upload--child button">Upload Image</button></div>' : '' ;
+        $img_ids = explode(',', $this->value);
+
+        if ( $this->current_screen == "post" && !empty($this->value) ) {
+            foreach ($img_ids as $img_id) {
+                $img_url = wp_get_attachment_image_src( $img_id, 'large' );
+
+                $image .= '<div class="devm-option-upload--item"><img src="'. $img_url[0] .'" class="devm-option-upload--child" /><button type="button" class="devm-option-upload--remove dashicons dashicons-dismiss" data-id="'. $img_id .'"></button></div>';
+            }
         }
 
         //generate attributes dynamically for parent tag
@@ -97,7 +100,7 @@ class Upload extends Structure {
                 if ( $column_name == $cc['name'] ) {
                     $saved_value = get_term_meta( $term_id, 'devmonsta_' . $column_name, true );
                     if ( $image_attributes = wp_get_attachment_image_src( $saved_value, "full" ) ) {
-                        $image = '<img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
+                        $image = '<img src="' . $image_attributes[0] . '" class="devm-option-upload--child" />';
                         echo esc_html( $image );
                     }
                 }
@@ -117,18 +120,23 @@ class Upload extends Structure {
         $name       = isset( $this->content['name'] ) ? $this->prefix . $this->content['name'] : '';
         $desc       = isset( $this->content['desc'] ) ? $this->content['desc'] : '';
         $value      = ( "" != get_term_meta( $term->term_id, $name, true ) ) && !is_null( get_term_meta( $term->term_id, $name, true ) ) ? get_term_meta( $term->term_id, $name, true ) : "";
-        $image_size = 'full';
-        $display    = 'none';
-        $multiple   = false;
-        $image      = ' button">Upload image';
+        $display    = '';
 
+        $multiple   = false;
         if ( isset( $this->content['multiple'] ) && $this->content['multiple'] ) {
             $multiple = true;
         }
 
-        if ( $image_attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
-            $image   = '"devm_upload_image_button"><img src="' . $image_attributes[0] . '" style="max-width:95%;display:block;" />';
-            $display = 'inline-block';
+        // markup: image
+        $image = empty($value) ? '<div class="devm-option-upload--item"><button type="button" class="devm-option-upload--child button">Upload Image</button></div>' : '' ;
+        $img_ids = explode(',', $value);
+
+        if ( !empty($value) ) {
+            foreach ($img_ids as $img_id) {
+                $img_url = wp_get_attachment_image_src( $img_id, 'large' );
+
+                $image .= '<div class="devm-option-upload--item"><img src="'. $img_url[0] .'" class="devm-option-upload--child" /><button type="button" class="devm-option-upload--remove dashicons dashicons-dismiss" data-id="'. $img_id .'"></button></div>';
+            }
         }
         
         //generate attributes dynamically for parent tag
@@ -153,6 +161,7 @@ class Upload extends Structure {
      * @return void
      */
     public function generate_markup( $default_attributes, $label, $name, $value, $desc, $multiple, $image, $display ) {
+        $is_multi = strpos($value, ',') ? ' is--multiple' : '';
         ?>
         <div <?php echo devm_render_markup( $default_attributes ); ?> >
             <div class="devm-option-column left">
@@ -160,9 +169,16 @@ class Upload extends Structure {
             </div>
             <div class="devm-option-column right">
                 <div class="devm-option-upload-wrapper">
-                    <a data-multiple='<?php echo esc_attr( $multiple ); ?>' class="devm_upload_image_button<?php echo devm_render_markup( $image ); ?> </a>
-                    <input class='devm-ctrl devm-upload' type='hidden' name='<?php echo esc_attr( $name ); ?>' id='<?php echo esc_attr( $name ); ?>' value='<?php echo esc_attr( $value ); ?>' />
-                    <a href='#' class='devm_remove_image_button' style='display:inline-block;display:<?php echo esc_attr( $display ); ?>'> <i class='dashicons dashicons-dismiss'></i></a>
+                    <div class="devm-option-upload--list<?php echo esc_attr( $is_multi ); ?>" data-multiple="<?php echo esc_attr( $multiple ); ?>">
+                        <?php echo devm_render_markup( $image ); ?>
+                    </div>
+
+                    <input class='devm-ctrl devm-upload'
+                           type='hidden'
+                           name='<?php echo esc_attr( $name ); ?>'
+                           id='<?php echo esc_attr( $name ); ?>'
+                           value='<?php echo esc_attr( $value ); ?>'
+                           />
                 </div>
                 <p class="devm-option-desc"><?php echo esc_html( $desc ); ?> </p>
             </div>
