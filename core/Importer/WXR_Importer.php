@@ -1,4 +1,6 @@
 <?php
+namespace Devmonsta\Importer;
+defined('ABSPATH') || exit;
 
 if ( !class_exists( 'WP_Importer' ) ) {
     return;
@@ -8,46 +10,70 @@ if ( !class_exists( 'WP_Importer' ) ) {
 define( 'IMPORT_DEBUG', false );
 
 // Include WXR file parsers.
-require dirname( __FILE__ ) . '/class-wxr-parsers.php';
 require_once ABSPATH . 'wp-admin/includes/post.php';
 require_once ABSPATH . 'wp-admin/includes/comment.php';
 require_once ABSPATH . 'wp-admin/includes/taxonomy.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 
-class Devm_WXR_Importer extends WP_Importer {
+class WXR_Importer extends \WP_Importer {
     var $max_wxr_version = 1.2; // max. supported WXR version
 
-    var $id;
-    // WXR attachment ID
+    // var $id;
+    // // WXR attachment ID
 
-    // information to import from WXR file
-    var $version;
-    var $authors                = [];
-    var $posts                  = [];
-    var $terms                  = [];
-    var $categories             = [];
-    var $tags                   = [];
-    var $customizers            = [];
-    var $widget_sidebars        = [];
-    var $elementors             = [];
-    var $base_url               = '';
-    var $base_content_url       = '';
-    var $base_site_url          = '';
-    var $time_slots             = [];
+    // // information to import from WXR file
+    // var $version;
+    // var $authors                = [];
+    // var $posts                  = [];
+    // var $terms                  = [];
+    // var $categories             = [];
+    // var $tags                   = [];
+    // var $customizers            = [];
+    // var $widget_sidebars        = [];
+    // var $elementors             = [];
+    // var $base_url               = '';
+    // var $base_content_url       = '';
+    // var $base_site_url          = '';
+    // var $time_slots             = [];
 
-    // mappings from old information to new
-    var $processed_authors    = [];
-    var $author_mapping       = [];
-    var $processed_terms      = [];
-    var $processed_posts      = [];
-    var $post_orphans         = [];
-    var $processed_menu_items = [];
-    var $menu_item_orphans    = [];
-    var $missing_menu_items   = [];
+    // // mappings from old information to new
+    // var $processed_authors    = [];
+    // var $author_mapping       = [];
+    // var $processed_terms      = [];
+    // var $processed_posts      = [];
+    // var $post_orphans         = [];
+    // var $processed_menu_items = [];
+    // var $menu_item_orphans    = [];
+    // var $missing_menu_items   = [];
+    
+    // var $fetch_attachments = false;
+    // var $url_remap         = [];
+    // var $featured_images   = [];
 
-    var $fetch_attachments = false;
-    var $url_remap         = [];
-    var $featured_images   = [];
+    protected $container = [
+        'fetch_attachments' => false
+    ];
+
+    private $db;
+
+    public function __get($name) {
+        if(isset($this->{$name})){
+            return $this->{$name};
+        }
+
+        if(isset($this->container[$name])){
+            return $this->container[$name];
+        }
+
+        return null;
+    }
+
+    public function __set($name, $value) {
+        if(isset($this->{$name})){
+            $this->{$name} = $value;
+        }
+        $this->container[$name] = $value;
+    }
 
     /**
      * The main controller for the actual import stage.
@@ -57,6 +83,8 @@ class Devm_WXR_Importer extends WP_Importer {
     function import( $file, $selected_demo_array = [] ) {
         add_filter( 'import_post_meta_key', [ $this, 'is_valid_meta_key' ] );
         add_filter( 'http_request_timeout', [ &$this, 'bump_request_timeout' ] );
+
+        $this->db = Db_Controller::instance();
 
         //Executes before starting import action.
         do_action('devm_before_import_execution_start');
@@ -89,6 +117,8 @@ class Devm_WXR_Importer extends WP_Importer {
         // Execute the after all import actions.
         $this->import_end();
 
+        // error_log(print_r($this), true);
+
         //Executes after ending import action.
         do_action('devm_after_import_execution_end', $selected_demo_array );
        
@@ -117,16 +147,11 @@ class Devm_WXR_Importer extends WP_Importer {
     }
 
     public function import_module($module_name, $module_source){
-        $file_name      = DEVMONSTA_DIR . '/core/helpers/backup/inc/modules/'.$module_name.'.php';
-        $class_name     = 'Devmonsta\Core\Helpers\Backup\Inc\Modules\\' . ucfirst($module_name);
-        if( file_exists( $file_name ) ){
+        $class_name     = '\Devmonsta\Importer\Custom_Supports\\' . ucfirst($module_name);
 
-            include $file_name;
-
-            if(class_exists( $class_name )){
-                $module_class = new $class_name;
-                $module_class->set_source( $module_source )->process_data();
-            }
+        if(class_exists( $class_name )){
+            $module_class = new $class_name;
+            $module_class->set_source( $module_source )->process_data();
         }
     }
 
@@ -279,6 +304,8 @@ class Devm_WXR_Importer extends WP_Importer {
         wp_defer_comment_counting( true );
 
         do_action( 'import_start' );
+
+        // error_log(print_r($this->posts, true));
     }
 
     /**
@@ -298,6 +325,7 @@ class Devm_WXR_Importer extends WP_Importer {
         wp_defer_comment_counting( false );
 
         do_action( 'import_end' );
+        $this->db->set($this->db->imp_status, 'Import completed');
     }
 
     function get_authors_from_import( $import_data ) {
@@ -453,7 +481,7 @@ class Devm_WXR_Importer extends WP_Importer {
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
         wp_cache_flush();
 
-        $upgrader  = new Plugin_Upgrader();
+        $upgrader  = new \Plugin_Upgrader();
         $installed = $upgrader->install( $plugin_zip );
 
         return $installed;
@@ -463,7 +491,7 @@ class Devm_WXR_Importer extends WP_Importer {
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
         wp_cache_flush();
 
-        $upgrader = new Plugin_Upgrader();
+        $upgrader = new \Plugin_Upgrader();
         $upgraded = $upgrader->upgrade( $plugin_slug );
 
         return $upgraded;
@@ -501,6 +529,8 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function process_widgets_sidebar() {
 
+        $this->db->set($this->db->imp_status, 'Import sidebar and widgets');
+
         $this->sidebar_widgets = apply_filters( 'devm_import_widget_sidebars', $this->sidebar_widgets );
         if ( empty( $this->sidebar_widgets ) ) {
             return;
@@ -510,6 +540,8 @@ class Devm_WXR_Importer extends WP_Importer {
     }
 
     function process_categories() {
+        $this->db->set($this->db->imp_status, 'Import taxonomies');
+
         $this->categories = apply_filters( 'wp_import_categories', $this->categories );
 
         if ( empty( $this->categories ) ) {
@@ -750,6 +782,8 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function process_posts() {
         $this->posts = apply_filters( 'wp_import_posts', $this->posts );
+        $this->db->set($this->db->imp_status, 'Import posts and medias');
+
 
         foreach ( $this->posts as $post ) {
             $post = apply_filters( 'wp_import_post_data_raw', $post );
@@ -1190,7 +1224,7 @@ class Devm_WXR_Importer extends WP_Importer {
     function process_attachment( $post, $url ) {
 
         if ( !$this->fetch_attachments ) {
-            return new WP_Error(
+            return new \WP_Error(
                 'attachment_processing_error',
                 __( 'Fetching attachments is not enabled', 'devmonsta' )
             );
@@ -1209,7 +1243,7 @@ class Devm_WXR_Importer extends WP_Importer {
         if ( $info = wp_check_filetype( $upload['file'] ) ) {
             $post['post_mime_type'] = $info['type'];
         } else {
-            return new WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'devmonsta' ) );
+            return new \WP_Error( 'attachment_processing_error', __( 'Invalid file type', 'devmonsta' ) );
         }
 
         $post['guid'] = $upload['url'];
@@ -1240,7 +1274,7 @@ class Devm_WXR_Importer extends WP_Importer {
         $upload = wp_upload_bits( $file_name, 0, '', $post['upload_date'] );
 
         if ( $upload['error'] ) {
-            return new WP_Error( 'upload_dir_error', $upload['error'] );
+            return new \WP_Error( 'upload_dir_error', $upload['error'] );
         }
 
         // fetch the remote url and write it to the placeholder file
@@ -1258,7 +1292,7 @@ class Devm_WXR_Importer extends WP_Importer {
         // request failed
         if ( !$headers ) {
             @unlink( $upload['file'] );
-            return new WP_Error( 'import_file_error', __( 'Remote server did not respond', 'devmonsta' ) );
+            return new \WP_Error( 'import_file_error', __( 'Remote server did not respond', 'devmonsta' ) );
         }
 
         $remote_response_code = wp_remote_retrieve_response_code( $remote_response );
@@ -1266,21 +1300,21 @@ class Devm_WXR_Importer extends WP_Importer {
         // make sure the fetch was successful
         if ( $remote_response_code != '200' ) {
             @unlink( $upload['file'] );
-            return new WP_Error( 'import_file_error', sprintf( __( 'Remote server returned error response %1$d %2$s', 'devmonsta' ), esc_html( $remote_response_code ), get_status_header_desc( $remote_response_code ) ) );
+            return new \WP_Error( 'import_file_error', sprintf( __( 'Remote server returned error response %1$d %2$s', 'devmonsta' ), esc_html( $remote_response_code ), get_status_header_desc( $remote_response_code ) ) );
         }
 
         $filesize = filesize( $upload['file'] );
 
         if ( 0 == $filesize ) {
             @unlink( $upload['file'] );
-            return new WP_Error( 'import_file_error', __( 'Zero size file downloaded', 'devmonsta' ) );
+            return new \WP_Error( 'import_file_error', __( 'Zero size file downloaded', 'devmonsta' ) );
         }
 
         $max_size = (int) $this->max_attachment_size();
 
         if ( !empty( $max_size ) && $filesize > $max_size ) {
             @unlink( $upload['file'] );
-            return new WP_Error( 'import_file_error', sprintf( __( 'Remote file is too large, limit is %s', 'devmonsta' ), size_format( $max_size ) ) );
+            return new \WP_Error( 'import_file_error', sprintf( __( 'Remote file is too large, limit is %s', 'devmonsta' ), size_format( $max_size ) ) );
         }
 
         // keep track of the old and new urls so we can substitute them later
@@ -1298,6 +1332,8 @@ class Devm_WXR_Importer extends WP_Importer {
 
     function backfill_parents() {
         global $wpdb;
+
+        $this->db->set($this->db->imp_status, 'Backfill IDs');
 
         // find parents for post orphans
         foreach ( $this->post_orphans as $child_id => $parent_id ) {
@@ -1388,7 +1424,7 @@ class Devm_WXR_Importer extends WP_Importer {
      * @return array Information gathered from the WXR file
      */
     function parse( $file ) {
-        $parser = new Devm_WXR_Parser();
+        $parser = new WXR_Parsers();
         return $parser->parse( $file );
     }
 
@@ -1453,7 +1489,3 @@ class Devm_WXR_Importer extends WP_Importer {
     }
 
 }
-
-
-// $importer = new Devm_WXR_Importer();
-// $importer->import_module('revslider', get_template_directory() . "/sliders/home-default/slider.zip" );

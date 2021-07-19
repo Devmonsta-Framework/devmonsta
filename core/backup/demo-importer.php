@@ -65,7 +65,7 @@ class DEVM_Demo_Importer {
         add_action( "wp_ajax_devm_import_erase_data", [$this, "devm_import_erase_data"] );
         add_action( "wp_ajax_devm_import_plugin_install", [$this, "devm_import_plugin_install"] );
 
-        add_action( "wp_ajax_devm_import_demo", [$this, "devm_import_demo_ajax_call_back"] );
+        new \Devmonsta\Importer\Base;
     }
 
     function devm_demo_import_script_enqueuer() {
@@ -95,6 +95,11 @@ class DEVM_Demo_Importer {
             wp_enqueue_script(
                 'devm_import_script',
                 devm_get_framework_directory_uri( '/static/js/devm_import_script.js' ),
+                ['jquery'] );
+
+            wp_enqueue_script(
+                'devm_import_events',
+                devm_get_framework_directory_uri( '/static/js/import-events.js' ),
                 ['jquery'] );
 
             wp_localize_script( 'devm_import_script', 'devmAjax', ['ajaxurl' => admin_url( 'admin-ajax.php' )] );
@@ -163,38 +168,6 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
-    /**
-     * Erase existing data in checkbox selected
-     *
-     * @return void
-     */
-    function devm_import_erase_data() {
-
-        if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
-            exit( "Access Denied" );
-        }
-
-        $result_array = [
-            "status"   => "1",
-            'next'     => 'devm_import_plugin_install',
-            'config'   => $_POST['config'],
-            "messages" => [],
-            "data"     => [],
-        ];
-
-        $config_data     = $_POST["config"];
-        $delete_selected = $config_data["devm_delete_data"];
-
-        if ( $delete_selected == "true" ) {
-            $reset_db_obj = new Devm_Reset_DB();
-            $reset_db_obj->devm_reset_previous_data();
-
-            $result_array["messages"] = ["Previous data erased"];
-        }
-
-        wp_send_json_success( $result_array );
-        wp_die();
-    }
 
     /**
      * Install and active all required plugins
@@ -219,7 +192,7 @@ class DEVM_Demo_Importer {
             "data"     => [],
         ];
 
-        $devm_plugin_obj           = new Devm_Plugin_Backup_Restore();
+        $devm_plugin_obj           = new \Devmonsta\Importer\Plugin_Backup_Restore();
         $result_message           = $devm_plugin_obj->devm_process_plugins( $required_plugins_array );
         $result_array["messages"] = [$result_message];
 
@@ -227,93 +200,37 @@ class DEVM_Demo_Importer {
         wp_die();
     }
 
+
     /**
-     * Handle XML import
+     * Erase existing data in checkbox selected
      *
      * @return void
      */
-    function devm_import_demo_ajax_call_back() {
+    function devm_import_erase_data() {
 
-        // nonce check for an extra layer of security, the function will exit if it fails
         if ( !wp_verify_nonce( $_REQUEST['nonce'], "devm_demo_import_nonce" ) ) {
             exit( "Access Denied" );
         }
 
-        $xml_config = $_POST['config'];
-        $xml_link   = $xml_config["xml_link"]["xml_link"];
-        $xml_name   = $xml_config["xml_link"]["name"];
-        $result     = [
+        $result_array = [
             "status"   => "1",
-            'next'     => 'final',
-            'xml_link' => $xml_link,
-            'nonce'    => $_POST["nonce"],
+            'next'     => 'devm_import_plugin_install',
             'config'   => $_POST['config'],
-            "messages" => ['Successfully imported the content.'],
+            "messages" => [],
             "data"     => [],
         ];
 
-        $d                      = new Devm_Downloader();
-        $im                     = new Devm_Importer();
-        $filename               = 'devm_production.xml';
-        $devm_imported_file_path = $im->get_import_file_path( $filename );
+        $config_data     = $_POST["config"];
+        $delete_selected = $config_data["devm_delete_data"];
 
-        ignore_user_abort( true );
-        try {
-            if ( set_time_limit( 0 ) !== true ) {
-                ini_set( 'max_execution_time', 0 );
-            }
+        if ( $delete_selected == "true" ) {
+            $reset_db_obj = new \Devmonsta\Importer\Reset_DB();
+            $reset_db_obj->devm_reset_previous_data();
 
-            if ( ini_get( 'max_execution_time' ) !== '0' ) {
-                // error_log( "timeout could not be updated to unlimited." );
-
-                if ( set_time_limit( 600 ) !== true ) {
-                    ini_set( 'max_execution_time', 600 );
-                }
-
-                if ( ini_get( 'max_execution_time' ) !== '600' ) {
-                    // error_log( "timeout could not be updated." );
-                }
-
-            }
-
-        } catch ( Exception $ex ) {
-            error_log( "timeout could not be updated: " . $ex->getMessage() );
+            $result_array["messages"] = ["Previous data erased"];
         }
 
-        if ( file_exists( $devm_imported_file_path ) ) {
-            unlink( $devm_imported_file_path );
-        }
-
-        try {
-            $devm_imported_file_path = $d->download_xml_file( $xml_link, $devm_imported_file_path );
-        } catch ( Exception $ex ) {
-            error_log( $devm_imported_file_path . ": could not be downloaded. error message:" . $ex->getMessage() );
-        }
-
-        if ( !empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' ) {
-
-            try {
-                $error = esc_html__( 'Data import failed', 'devm' );
-
-                $selected_demo_array = $_POST['config']["xml_link"]["xml_selected_demo"];
-                $return_success = $im->import_dummy_xml( $devm_imported_file_path, $selected_demo_array );
-                if ( $return_success ) {
-                    wp_send_json_success( $result );
-                } else {
-                    throw new Exception( $error );
-                }
-
-            } catch ( Exception $e ) {
-                // error_log($devm_imported_file_path  . ": could not be imported. error message:" . $e->getMessage());
-                $result['messages'] = ["demo import failed"];
-                wp_send_json_error( $result );
-            }
-
-        } else {
-            header( "Location: " . $_SERVER["HTTP_REFERER"] );
-        }
-
-        // don't forget to end your scripts with a die() function - very important
+        wp_send_json_success( $result_array );
         wp_die();
     }
 

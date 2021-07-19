@@ -1,6 +1,6 @@
 <?php
 
-namespace Devmonsta\Core\Helpers\Backup\Inc\Modules;
+namespace Devmonsta\Importer\Custom_Supports;
 
 class Revslider {
     private $slider_source;

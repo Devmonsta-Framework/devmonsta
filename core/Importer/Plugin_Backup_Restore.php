@@ -1,8 +1,8 @@
 <?php
+namespace Devmonsta\Importer;
+defined('ABSPATH') || exit;
 
-defined( 'ABSPATH' ) || exit;
-
-class Devm_Plugin_Backup_Restore {
+class Plugin_Backup_Restore {
 
     public $pluginsInstall = [];
 
@@ -50,7 +50,7 @@ class Devm_Plugin_Backup_Restore {
             <?php
 
         foreach ( $active_plugins as $plugin ) {?>
-                <wp:slug><?php echo DEVM_Helpers::render( $plugin ); ?></wp:slug>
+                <wp:slug><?php echo Helpers::render( $plugin ); ?></wp:slug>
             <?php }
 
         ?>
@@ -88,8 +88,8 @@ class Devm_Plugin_Backup_Restore {
         require_once ABSPATH . 'wp-admin/includes/class-wp-ajax-upgrader-skin.php';
         require_once ABSPATH . 'wp-admin/includes/class-plugin-upgrader.php';
 
-        $skin     = new WP_Ajax_Upgrader_Skin();
-        $upgrader = new Plugin_Upgrader( $skin );
+        $skin     = new \WP_Ajax_Upgrader_Skin();
+        $upgrader = new \Plugin_Upgrader( $skin );
         $plugin_download_link = "";
 
         if ( null == $plugin_source ) {
@@ -172,8 +172,8 @@ class Devm_Plugin_Backup_Restore {
                 ],
             ]
         );
-        $skin     = new WP_Ajax_Upgrader_Skin();
-        $upgrader = new Plugin_Upgrader( $skin );
+        $skin     = new \WP_Ajax_Upgrader_Skin();
+        $upgrader = new \Plugin_Upgrader( $skin );
         $upgrader->upgrade( $api->download_link );
     }
 
@@ -246,6 +246,3 @@ class Devm_Plugin_Backup_Restore {
     }
 
 }
-
-// $devm_plugin_obj = new Devm_Plugin_Backup_Restore();
-// devm_print($devm_plugin_obj->devm_get_all_installed_plugins_directory());

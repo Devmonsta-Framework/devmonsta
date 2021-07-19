@@ -1,8 +1,8 @@
 <?php
+namespace Devmonsta\Importer;
+defined('ABSPATH') || exit;
 
-defined( 'ABSPATH' ) || exit;
-
-class Devm_Reset_DB {
+class Reset_DB {
 
     private $core_tables_to_truncate = [
         'commentmeta',
@@ -94,6 +94,3 @@ class Devm_Reset_DB {
     }
 
 }
-
-// $reset_db_obj = new Devm_Reset_DB();
-// $reset_db_obj->devm_reset_previous_data();

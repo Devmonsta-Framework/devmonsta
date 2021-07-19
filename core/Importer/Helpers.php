@@ -1,6 +1,8 @@
 <?php
+namespace Devmonsta\Importer;
+defined('ABSPATH') || exit;
 
-class DEVM_Helpers {
+class Helpers {
 
     public static $demo_import_start_time = '';
 
@@ -34,7 +36,7 @@ class DEVM_Helpers {
             'customizer' => '',
 
         ];
-        $downloader = new Devm_Downloader();
+        $downloader = new Downloader();
 
         $import_file_info = apply_filters( 'devm/pre_download_import_files', $import_file_info );
 

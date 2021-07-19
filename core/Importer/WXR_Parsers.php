@@ -1,19 +1,20 @@
 <?php
+namespace Devmonsta\Importer;
 defined('ABSPATH') || exit;
-class Devm_WXR_Parser
-{
-	function parse($file)
+
+class WXR_Parsers{
+	public function parse($file)
 	{
 		// Attempt to use proper XML parsers first
 		if (extension_loaded('simplexml')) {
-			$parser = new Devm_WXR_Parser_SimpleXML;
+			$parser = new WXR_Parser_SimpleXML;
 			$result = $parser->parse($file);
 
 			// If SimpleXML succeeds or this is an invalid WXR file then return the results
 			if (!is_wp_error($result) || 'SimpleXML_parse_error' != $result->get_error_code())
 				return $result;
 		} else if (extension_loaded('xml')) {
-			$parser = new Devm_WXR_Parser_XML;
+			$parser = new WXR_Parser_XML;
 			$result = $parser->parse($file);
 
 			// If XMLParser succeeds or this is an invalid WXR file then return the results
@@ -36,7 +37,7 @@ class Devm_WXR_Parser
 		}
 
 		// use regular expressions if nothing else available or this is bad XML
-		$parser = new Devm_WXR_Parser_Regex;
+		$parser = new WXR_Parser_Regex;
 		return $parser->parse($file);
 	}
 }
@@ -44,9 +45,9 @@ class Devm_WXR_Parser
 /**
  * WXR Parser that makes use of the SimpleXML PHP extension.
  */
-class Devm_WXR_Parser_SimpleXML
+class WXR_Parser_SimpleXML
 {
-	function parse($file)
+	public function parse($file)
 	{
 		global $wp_filesystem;
 		
@@ -57,7 +58,7 @@ class Devm_WXR_Parser_SimpleXML
 
 		$internal_errors = libxml_use_internal_errors(true);
 
-		$dom = new DOMDocument;
+		$dom = new \DOMDocument;
 		$old_value = null;
 		if (function_exists('libxml_disable_entity_loader')) {
 			$old_value = libxml_disable_entity_loader(true);
@@ -70,7 +71,7 @@ class Devm_WXR_Parser_SimpleXML
 		}
 
 		if (!$success || isset($dom->doctype)) {
-			return new WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
+			return new \WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
 		}
 
 		$xml = simplexml_import_dom($dom);
@@ -78,16 +79,16 @@ class Devm_WXR_Parser_SimpleXML
 
 		// halt if loading produces an error
 		if (!$xml)
-			return new WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
+			return new \WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
 
 		$wxr_version = $xml->xpath('/rss/channel/wp:wxr_version');
 		if (!$wxr_version)
-			return new WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
+			return new \WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
 
 		$wxr_version = (string) trim($wxr_version[0]);
 		// confirm that we are dealing with the correct file format
 		if (!preg_match('/^\d+\.\d+$/', $wxr_version))
-			return new WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
+			return new \WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
 
 		$base_url = $xml->xpath('/rss/channel/wp:base_site_url');
 		$base_url = (string) trim($base_url[0]);
@@ -342,7 +343,7 @@ class Devm_WXR_Parser_SimpleXML
 /**
  * WXR Parser that makes use of the XML Parser PHP extension.
  */
-class Devm_WXR_Parser_XML
+class WXR_Parser_XML
 {
 	var $wp_tags = array(
 		'wp:post_id', 'wp:post_date', 'wp:post_date_gmt', 'wp:comment_status', 'wp:ping_status', 'wp:attachment_url',
@@ -358,7 +359,7 @@ class Devm_WXR_Parser_XML
 		'wp:comment_approved', 'wp:comment_type', 'wp:comment_parent', 'wp:comment_user_id',
 	);
 
-	function parse($file)
+	public function parse($file)
 	{
 		global $wp_filesystem;
 		$this->wxr_version = $this->in_post = $this->cdata = $this->data = $this->sub_data = $this->in_tag = $this->in_sub_tag = false;
@@ -376,12 +377,12 @@ class Devm_WXR_Parser_XML
 			$current_column = xml_get_current_column_number($xml);
 			$error_code = xml_get_error_code($xml);
 			$error_string = xml_error_string($error_code);
-			return new WP_Error('XML_parse_error', 'There was an error when reading this WXR file', array($current_line, $current_column, $error_string));
+			return new \WP_Error('XML_parse_error', 'There was an error when reading this WXR file', array($current_line, $current_column, $error_string));
 		}
 		xml_parser_free($xml);
 
 		if (!preg_match('/^\d+\.\d+$/', $this->wxr_version))
-			return new WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
+			return new \WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
 
 		return array(
 			'authors' => $this->authors,
@@ -394,7 +395,7 @@ class Devm_WXR_Parser_XML
 		);
 	}
 
-	function tag_open($parse, $tag, $attr)
+	public function tag_open($parse, $tag, $attr)
 	{
 		if (in_array($tag, $this->wp_tags)) {
 			$this->in_tag = substr($tag, 3);
@@ -443,7 +444,7 @@ class Devm_WXR_Parser_XML
 		}
 	}
 
-	function cdata($parser, $cdata)
+	public function cdata($parser, $cdata)
 	{
 		if (!trim($cdata))
 			return;
@@ -455,7 +456,7 @@ class Devm_WXR_Parser_XML
 		}
 	}
 
-	function tag_close($parser, $tag)
+	public function tag_close($parser, $tag)
 	{
 		switch ($tag) {
 			case 'wp:comment':
@@ -522,7 +523,7 @@ class Devm_WXR_Parser_XML
 /**
  * WXR Parser that uses regular expressions. Fallback for installs without an XML parser.
  */
-class Devm_WXR_Parser_Regex
+class WXR_Parser_Regex
 {
 	var $authors = array();
 	var $posts = array();
@@ -531,12 +532,12 @@ class Devm_WXR_Parser_Regex
 	var $terms = array();
 	var $base_url = '';
 
-	function __construct()
+	public function __construct()
 	{
 		$this->has_gzip = is_callable('gzopen');
 	}
 
-	function parse($file)
+	public function parse($file)
 	{
 		$wxr_version = $in_multiline = false;
 
@@ -598,7 +599,7 @@ class Devm_WXR_Parser_Regex
 		}
 
 		if (!$wxr_version)
-			return new WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
+			return new \WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
 
 		return array(
 			'elementor' => "",
@@ -614,14 +615,14 @@ class Devm_WXR_Parser_Regex
 		);
 	}
 
-	function parse_again($file)
+	public function parse_again($file)
 	{
 		global $wp_filesystem;
 		$authors = $posts = $categories = $tags = $terms = array();
 
 		$internal_errors = libxml_use_internal_errors(true);
 
-		$dom = new DOMDocument;
+		$dom = new \DOMDocument;
 		$old_value = null;
 		if (function_exists('libxml_disable_entity_loader')) {
 			$old_value = libxml_disable_entity_loader(true);
@@ -633,7 +634,7 @@ class Devm_WXR_Parser_Regex
 		}
 
 		if (!$success || isset($dom->doctype)) {
-			return new WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
+			return new \WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
 		}
 
 		$xml = simplexml_import_dom($dom);
@@ -641,16 +642,16 @@ class Devm_WXR_Parser_Regex
 
 		// halt if loading produces an error
 		if (!$xml)
-			return new WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
+			return new \WP_Error('SimpleXML_parse_error', __('There was an error when reading this WXR file', 'themegrill-demo-importer'), libxml_get_errors());
 
 		$wxr_version = $xml->xpath('/rss/channel/wp:wxr_version');
 		if (!$wxr_version)
-			return new WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
+			return new \WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
 
 		$wxr_version = (string) trim($wxr_version[0]);
 		// confirm that we are dealing with the correct file format
 		if (!preg_match('/^\d+\.\d+$/', $wxr_version))
-			return new WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
+			return new \WP_Error('WXR_parse_error', __('This does not appear to be a WXR file, missing/invalid WXR version number', 'themegrill-demo-importer'));
 
 		$base_url = $xml->xpath('/rss/channel/wp:base_site_url');
 		$base_url = (string) trim($base_url[0]);
@@ -860,7 +861,7 @@ class Devm_WXR_Parser_Regex
 		);
 	}
 
-	function get_tag($string, $tag)
+	public function get_tag($string, $tag)
 	{
 		preg_match("|<$tag.*?>(.*?)</$tag>|is", $string, $return);
 		if (isset($return[1])) {
@@ -882,7 +883,7 @@ class Devm_WXR_Parser_Regex
 		return $return;
 	}
 
-	function process_category($c)
+	public function process_category($c)
 	{
 		return array(
 			'term_id' => $this->get_tag($c, 'wp:term_id'),
@@ -893,7 +894,7 @@ class Devm_WXR_Parser_Regex
 		);
 	}
 
-	function process_tag($t)
+	public function process_tag($t)
 	{
 		return array(
 			'term_id' => $this->get_tag($t, 'wp:term_id'),
@@ -903,7 +904,7 @@ class Devm_WXR_Parser_Regex
 		);
 	}
 
-	function process_term($t)
+	public function process_term($t)
 	{
 		return array(
 			'term_id' => $this->get_tag($t, 'wp:term_id'),
@@ -915,7 +916,7 @@ class Devm_WXR_Parser_Regex
 		);
 	}
 
-	function process_author($a)
+	public function process_author($a)
 	{
 		return array(
 			'author_id' => $this->get_tag($a, 'wp:author_id'),
@@ -927,7 +928,7 @@ class Devm_WXR_Parser_Regex
 		);
 	}
 
-	function process_post($post)
+	public function process_post($post)
 	{
 		$post_id        = $this->get_tag($post, 'wp:post_id');
 		$post_title     = $this->get_tag($post, 'title');
@@ -1037,33 +1038,33 @@ class Devm_WXR_Parser_Regex
 		return $postdata;
 	}
 
-	function _normalize_tag($matches)
+	public function _normalize_tag($matches)
 	{
 		return '<' . strtolower($matches[1]);
 	}
 
-	function fopen($filename, $mode = 'r')
+	public function fopen($filename, $mode = 'r')
 	{
 		if ($this->has_gzip)
 			return gzopen($filename, $mode);
 		return fopen($filename, $mode);
 	}
 
-	function feof($fp)
+	public function feof($fp)
 	{
 		if ($this->has_gzip)
 			return gzeof($fp);
 		return feof($fp);
 	}
 
-	function fgets($fp, $len = 8192)
+	public function fgets($fp, $len = 8192)
 	{
 		if ($this->has_gzip)
 			return gzgets($fp, $len);
 		return fgets($fp, $len);
 	}
 
-	function fclose($fp)
+	public function fclose($fp)
 	{
 		if ($this->has_gzip)
 			return gzclose($fp);

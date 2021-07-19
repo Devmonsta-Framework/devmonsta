@@ -1,6 +1,8 @@
 <?php
+namespace Devmonsta\Importer;
+defined('ABSPATH') || exit;
 
-class Devm_Downloader {
+class Downloader {
     /**
      * Holds full path to where the files will be saved.
      *
@@ -32,7 +34,7 @@ class Devm_Downloader {
             return $content;
         }
 
-        return DEVM_Helpers::write_to_file( $content, $this->download_directory_path . $filename );
+        return Helpers::write_to_file( $content, $this->download_directory_path . $filename );
     }
 
     public function download_xml_file( $url, $file_full_path ) {
@@ -43,7 +45,7 @@ class Devm_Downloader {
             return $content;
         }
 
-        return DEVM_Helpers::write_to_file( $content, $file_full_path );
+        return Helpers::write_to_file( $content, $file_full_path );
     }
 
     /**
