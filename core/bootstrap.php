@@ -48,8 +48,11 @@ final class Bootstrap {
         //        require_once plugin_dir_path(__FILE__ ) . '/optimization/minify.php';
 
         //include file to backup data
-        require dirname( __FILE__ ) . '/backup/export.php';
-        require dirname( __FILE__ ) . '/backup/export-timetable-plugin-data.php';
+        $current_page = substr( $_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"], "/") + 1); 
+        if(is_admin() && 'export.php' == $current_page ){
+            require dirname( __FILE__ ) . '/backup/export.php';
+            require dirname( __FILE__ ) . '/backup/export-timetable-plugin-data.php';
+        }
         require dirname( __FILE__ ) . '/backup/demo-importer.php';
         require dirname( __FILE__ ) . '/autoload.php';
     }
