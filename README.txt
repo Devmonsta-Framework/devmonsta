@@ -2,8 +2,8 @@
 Contributors: devmonsta
 Tags: customizer, Demo content install
 Requires at least: 5.0
-Tested up to: 5.4
-Stable tag: 1.0.4
+Tested up to: 5.7
+Stable tag: 1.0.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,6 +42,10 @@ coming soon
 
 
 == Changelog ==
+version: 1.0.5
+    * Fix   Invalid RSS feed bug fix 
+    * Added Gallery support for 'upload' control
+
 version: 1.0.4
     * Fix   RGBA color picker bug
     * Tweak Add demo import menu conditionally
