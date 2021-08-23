@@ -1,9 +1,9 @@
 === Devmonsta ===
 Contributors: devmonsta
 Tags: customizer, Demo content install
-Requires at least: 5.0
-Tested up to: 5.7
-Stable tag: 1.0.5
+Requires at least: 5.3
+Tested up to: 5.8
+Stable tag: 1.0.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,6 +42,11 @@ coming soon
 
 
 == Changelog ==
+version: 1.0.6
+    * Fix   Compatibility issues with PHP 8 
+    * Fix   Compatibility issues with Wordpress 5.8 
+    * Added More google fonts support
+
 version: 1.0.5
     * Fix   Invalid RSS feed bug fix 
     * Added Gallery support for 'upload' control
