@@ -175,7 +175,7 @@ class DEVM_Db_Options_Model_Post extends DEVM_Db_Options_Model {
          * @param string|null $option_id Specific option id (accepts multikey). null - all options
          * @param $value
          */
-        function devm_set_post_option( $post_id = null, $option_id = null, $value ) {
+        function devm_set_post_option( $post_id = null, $option_id = null, $value = '' ) {
             DEVM_Db_Options_Model::get_instance_protected( 'post' )->set( intval( $post_id ), $option_id, $value );
         }
 
@@ -372,7 +372,7 @@ class DEVM_Db_Options_Model_Term extends DEVM_Db_Options_Model {
          *
          * @return null
          */
-        function devm_set_term_option( $term_id, $taxonomy, $option_id = null, $value ) {
+        function devm_set_term_option( $term_id, $taxonomy, $option_id = null, $value ='' ) {
 
             if ( !taxonomy_exists( $taxonomy ) ) {
                 return null;
@@ -466,7 +466,7 @@ class DEVM_Db_Options_Model_Customizer extends DEVM_Db_Options_Model {
          * @param null $option_id Specific option id (accepts multikey). null - all options
          * @param mixed $value
          */
-        function devm_set_customizer_option( $option_id = null, $value ) {
+        function devm_set_customizer_option( $option_id = null, $value = '') {
             DEVM_Db_Options_Model::get_instance_protected( 'customizer' )->set( null, $option_id, $value );
         }
 
